@@ -93,6 +93,9 @@
 }
 
 html[data-theme="dark"] {
+  --bt-color-primary: #8da2ff;
+  --bt-color-primary-hover: #b3c2ff;
+  --bt-color-primary-active: #6b82e8;
   --bt-color-background: #1f222d;
   --bt-color-surface: #17182b;
   --bt-color-surface-raised: #1e2035;

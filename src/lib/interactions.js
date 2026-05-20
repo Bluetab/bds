@@ -5,8 +5,34 @@ const toArray = (selector, root = document) => [...root.querySelectorAll(selecto
 const getThemeIcon = (root = document) => root.querySelector('[data-theme-icon]');
 
 const findLocalTarget = (trigger, id, root = document) => {
-  const scope = trigger.closest('.bt-example, .bt-doc-card, main, body') || root;
+  const scope = trigger.closest('.bt-example, .bt-doc-card, .bt-shell, main, body') || root;
   return scope.querySelector(`#${CSS.escape(id)}`) || root.getElementById(id);
+};
+
+const openDialog = (target) => {
+  if (!target) return;
+
+  if (typeof HTMLDialogElement !== 'undefined' && target instanceof HTMLDialogElement) {
+    if (!target.open && typeof target.showModal === 'function') {
+      target.showModal();
+    }
+    return;
+  }
+
+  target.setAttribute('open', '');
+};
+
+const closeDialog = (dialog) => {
+  if (!dialog) return;
+
+  if (typeof HTMLDialogElement !== 'undefined' && dialog instanceof HTMLDialogElement) {
+    if (dialog.open && typeof dialog.close === 'function') {
+      dialog.close();
+    }
+    return;
+  }
+
+  dialog.removeAttribute('open');
 };
 
 const closeMenus = (root = document, except) => {
@@ -72,13 +98,13 @@ function initBtInteractions(options = {}) {
     const dialogOpen = event.target.closest('[data-dialog-open]');
     if (dialogOpen) {
       const target = findLocalTarget(dialogOpen, dialogOpen.dataset.dialogOpen, root);
-      target?.setAttribute('open', '');
+      openDialog(target);
       return;
     }
 
     const dialogClose = event.target.closest('[data-dialog-close]');
     if (dialogClose) {
-      dialogClose.closest('.bt-dialog')?.removeAttribute('open');
+      closeDialog(dialogClose.closest('.bt-dialog'));
       return;
     }
 

@@ -1,5 +1,39 @@
 .bt-code-block { position: relative; display: grid; gap: var(--bt-space-2); width: 100%; }
-.bt-code { max-height: 22rem; overflow: auto; margin: 0; padding: var(--bt-space-4); border-left: 4px solid var(--bt-color-secondary); border-radius: var(--bt-radius-md); background: color-mix(in srgb, var(--bt-color-surface-muted), transparent 20%); color: var(--bt-color-text); font-size: .82rem; line-height: 1.55; white-space: pre-wrap; tab-size: 2; }
+
+/* Block snippets only — do not use on inline <code> inside sentences */
+.bt-code {
+  max-height: 22rem;
+  overflow: auto;
+  margin: 0;
+  padding: var(--bt-space-4);
+  border-left: 4px solid var(--bt-color-secondary);
+  border-radius: var(--bt-radius-md);
+  background: color-mix(in srgb, var(--bt-color-surface-muted), transparent 20%);
+  color: var(--bt-color-text);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  tab-size: 2;
+}
+
+/* Inline identifiers in prose (class names, short paths) */
+.bt-code-inline {
+  padding: 0.1em 0.4em;
+  border: 1px solid var(--bt-color-border);
+  border-radius: var(--bt-radius-sm);
+  background: color-mix(in srgb, var(--bt-color-surface-muted), transparent 25%);
+  color: var(--bt-color-text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+  font-size: 0.88em;
+  line-height: 1.4;
+  vertical-align: baseline;
+}
+
+.bt-code-inline--wrap {
+  white-space: normal;
+  word-break: break-all;
+}
 .bt-code__tag { color: var(--bt-color-primary); }
 .bt-code__attr { color: var(--bt-color-secondary-hover); }
 .bt-code__value { color: var(--bt-color-error); }

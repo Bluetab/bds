@@ -94,6 +94,9 @@ const snippets = {
 }
 
 html[data-theme="dark"] {
+  --bt-color-primary: #8da2ff;
+  --bt-color-primary-hover: #b3c2ff;
+  --bt-color-primary-active: #6b82e8;
   --bt-color-background: #1f222d;
   --bt-color-surface: #17182b;
   --bt-color-surface-raised: #1e2035;
@@ -122,7 +125,7 @@ const COMPONENTS = [
     examples: [
       { title: 'Estructura recomendada', block: true, html: String.raw`<div class="bt-card bt-card--filled">
   <h3>Arquitectura del proyecto</h3>
-  <p>Modifica primero <code>src/styles/tokens.css</code>. Después ajusta cada componente en <code>src/styles/components/</code>.</p>
+  <p>Modifica primero <code class="bt-code-inline">src/styles/tokens.css</code>. Después ajusta cada componente en <code class="bt-code-inline">src/styles/components/</code>.</p>
   <div class="bt-code-block">
     <pre class="bt-code">src/styles/tokens.css
 src/styles/components/buttons.css
@@ -270,6 +273,39 @@ src/main.js</pre>
 <span class="bt-status bt-status--warning">Pendiente</span>
 <span class="bt-status bt-status--error">Error</span>
 <span class="bt-status bt-status--info">Info</span>` }
+    ]
+  },
+  {
+    id: 'code', group: 'Foundations', icon: '{}', title: 'Code',
+    description: 'Código inline en prosa y bloques multilínea. No mezclar clases.',
+    examples: [
+      {
+        title: 'Inline en prosa',
+        block: true,
+        html: String.raw`<p class="bt-muted">
+  Menciona clases con <code class="bt-code-inline">bt-button</code> o rutas con
+  <code class="bt-code-inline bt-code-inline--wrap">docs/how-to-use-design-system.md</code>.
+</p>`
+      },
+      {
+        title: 'Bloque multilínea',
+        block: true,
+        html: String.raw`<div class="bt-code-block">
+  <pre class="bt-code"><code>@import "bluetab-design-system/styles.css";
+
+import { initBtInteractions } from "bluetab-design-system/interactions";
+initBtInteractions();</code></pre>
+</div>`
+      },
+      {
+        title: 'Cards en bt-example-grid',
+        block: true,
+        html: String.raw`<div class="bt-example-grid">
+  <article class="bt-card bt-card--elevated bt-card--third">A</article>
+  <article class="bt-card bt-card--filled bt-card--third">B</article>
+  <article class="bt-card bt-card--third">C</article>
+</div>`
+      }
     ]
   },
   {
@@ -428,7 +464,7 @@ src/main.js</pre>
     <span class="bt-status bt-status--info">Inline</span>
     <span class="bt-status bt-status--success">Wrap</span>
   </div>
-  <p class="bt-muted">Usa <code>.bt-stack</code>, <code>.bt-inline</code>, <code>.bt-row</code> para composición.</p>
+  <p class="bt-muted">Usa <code class="bt-code-inline">.bt-stack</code>, <code class="bt-code-inline">.bt-inline</code>, <code class="bt-code-inline">.bt-row</code> para composición.</p>
 </div>` },
       { title: 'Radius and elevation helpers', html: String.raw`<div class="bt-surface bt-round-sm bt-shadow-sm" style="padding: var(--bt-space-4);">Small radius</div>
 <div class="bt-surface bt-round-lg bt-shadow-md" style="padding: var(--bt-space-4);">Large radius</div>` }
@@ -455,6 +491,15 @@ src/main.js</pre>
     examples: [
       { title: 'Basic shell', block: true, html: String.raw`<div class="bt-shell">
   <aside class="bt-sidebar">Sidebar</aside>
+  <main class="bt-main">Contenido principal</main>
+</div>` },
+      { title: 'App shell (no sidebar)', block: true, html: String.raw`<div class="bt-shell bt-shell--app">
+  <header class="bt-topbar">
+    <span class="bt-brand__text">App</span>
+    <div class="bt-topbar__actions">
+      <button type="button" class="bt-button bt-button--ghost">Link</button>
+    </div>
+  </header>
   <main class="bt-main">Contenido principal</main>
 </div>` },
       { title: 'Section header', block: true, html: String.raw`<section class="bt-section">

@@ -48,9 +48,10 @@ Salidas principales en `dist/`:
 
 ## Uso desde aplicaciones consumidoras
 
-Guía paso a paso para LiveView:
+Guías para LiveView y otras apps:
 
-- [`docs/how-to-use-design-system.md`](docs/how-to-use-design-system.md)
+- [`docs/how-to-use-design-system.md`](docs/how-to-use-design-system.md) — instalación e imports
+- [`docs/integration-patterns.md`](docs/integration-patterns.md) — layout, grid, código, dialogs, Phoenix
 
 ## Qué puedes tocar primero
 

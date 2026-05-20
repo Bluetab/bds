@@ -1,44 +1,46 @@
 # How To Use The Bluetab Design System Package
 
-This repository ships a publishable npm package with:
+Publishable npm package (`bluetab-design-system`) with:
 
-- All design tokens and component styles (`bds.css`)
-- Optional runtime helpers for interactive components (`interactions.js`)
+- Tokens and component styles (`dist/bds.css`, source in `src/styles/`)
+- Interactive helpers (`dist/interactions.js`)
 
-Use it from Phoenix/LiveView projects to keep visual consistency across apps.
+See **[integration-patterns.md](integration-patterns.md)** for layout grids, code classes, dialogs, and LiveView-specific notes.
 
-## 1) Install In A Phoenix/LiveView Project
-
-From your Phoenix app root:
+## 1) Install in a Phoenix/LiveView project
 
 ```bash
 cd assets
-npm install bluetab-design-system-full
+npm install bluetab-design-system
 ```
 
-If you publish under a private scope, install with that scope name instead.
+Local sibling repo (hot reload during DS development):
 
-## 2) Import Styles
+```json
+"bluetab-design-system": "file:../../bds"
+```
+
+Configure Vite dev aliases to `bds/src/styles/main.css` and `bds/src/lib/interactions.js` if needed.
+
+## 2) Import styles
 
 In `assets/css/app.css`:
 
 ```css
-@import "bluetab-design-system-full/styles.css";
+@import "bluetab-design-system/styles.css";
 ```
 
-This imports all tokens and component styles.
+## 3) Enable interactions
 
-## 3) Enable Optional JS Behaviors
-
-If your pages use DS interactions (dialogs, overlays, menus, tabs, snackbars, expansions, theme toggle), initialize them in `assets/js/app.js`:
+In `assets/js/app.js`:
 
 ```js
-import { initBtInteractions } from 'bluetab-design-system-full';
+import { initBtInteractions } from "bluetab-design-system/interactions";
 
 initBtInteractions();
 ```
 
-The helper reads DS data attributes such as:
+Supported data attributes:
 
 - `data-dialog-open` / `data-dialog-close`
 - `data-overlay-open` / `data-overlay-close`
@@ -46,52 +48,63 @@ The helper reads DS data attributes such as:
 - `data-expansion-toggle`
 - `data-snackbar-open` / `data-snackbar-close`
 - `data-tab`
-- `data-theme-toggle`
+- `data-theme-toggle` (with `[data-theme-icon]` inside the toggle)
 
-## 4) Use Component Classes In HEEx
-
-Example button in a LiveView template:
+## 4) Use component classes in HEEx
 
 ```heex
 <button class="bt-button">Save changes</button>
 <button class="bt-button bt-button--secondary">Cancel</button>
-```
 
-Example card:
-
-```heex
 <article class="bt-card bt-card--elevated">
   <h3>Data product</h3>
-  <p>Reusable style from the shared package.</p>
+  <p class="bt-muted">Reusable styles from the shared package.</p>
 </article>
+
+<p>
+  Use <code class="bt-code-inline">bt-button</code> in sentences.
+</p>
+
+<div class="bt-code-block">
+  <pre class="bt-code"><code>@import "bluetab-design-system/styles.css";</code></pre>
+</div>
 ```
 
-## 5) Build And Deploy In Phoenix
+## 5) Build and deploy
 
-No custom steps are required beyond your usual build:
+Build the library when consuming `dist/`:
+
+```bash
+cd bds && npm run build:lib
+```
+
+Then in the Phoenix app:
 
 ```bash
 mix assets.deploy
 ```
 
-## 6) Update Strategy Across Many Projects
+## 6) Versioning across projects
 
-Recommended process:
-
-1. Publish a new DS package version.
-2. Open automated upgrade PRs in each LiveView app (Renovate/Dependabot).
+1. Publish a new package version from `bds`.
+2. Upgrade consumers (Renovate/Dependabot).
 3. Validate visually and merge.
 
-Versioning guidance:
+SemVer:
 
-- Patch (`x.y.Z`): fixes, no API/class/token breaks
-- Minor (`x.Y.z`): additive changes (new components, non-breaking variants)
-- Major (`X.y.z`): breaking class names, removed tokens, behavior changes
+- **Patch**: fixes, no breaking class/token changes
+- **Minor**: additive components or variants
+- **Major**: removed or renamed classes/tokens
 
 ## 7) Troubleshooting
 
-- Styles are missing: verify `@import "bluetab-design-system-full/styles.css";` is in `assets/css/app.css`.
-- Interactive components do nothing: verify `initBtInteractions()` is imported and executed.
-- Theme icon does not change: ensure your toggle element contains `[data-theme-icon]`.
-- Unexpected visual regressions: check package version in `assets/package.json` and lockfile.
-
+| Issue | Check |
+|-------|--------|
+| Styles missing | `@import "bluetab-design-system/styles.css"` in `app.css` |
+| Interactions inert | `initBtInteractions()` called after DOM ready |
+| Theme icon static | `[data-theme-icon]` present on toggle |
+| Topbar in left column | Use `bt-shell--app` without sidebar |
+| Cards crushed in a row | Add `bt-card--third` / `bt-example--half` in `bt-example-grid` |
+| Inline code too large | Use `bt-code-inline`, not `bt-code` |
+| Dialog stuck top-left | Use `div.bt-dialog` or let interactions call `showModal()` on `<dialog>` |
+| Stale production CSS | Run `npm run build:lib` in `bds` after source changes |
