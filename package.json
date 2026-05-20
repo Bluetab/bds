@@ -3,10 +3,34 @@
   "version": "1.0.0",
   "description": "Bluetab Design System starter con catálogo completo de componentes inspirado en Beer CSS, sin dependencia visual de Beer CSS.",
   "type": "module",
+  "main": "./dist/bds.js",
+  "module": "./dist/bds.js",
+  "style": "./dist/bds.css",
+  "exports": {
+    ".": {
+      "import": "./dist/bds.js",
+      "default": "./dist/bds.js"
+    },
+    "./interactions": {
+      "import": "./dist/interactions.js",
+      "default": "./dist/interactions.js"
+    },
+    "./styles.css": "./dist/bds.css"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "npm run build:lib",
+    "build:lib": "vite build --config vite.lib.config.js",
+    "build:docs": "vite build --outDir dist-docs",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build:lib"
   },
   "keywords": ["design-system", "bluetab", "html", "css", "vite", "components"],
   "author": "",

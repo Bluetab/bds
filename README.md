@@ -1,21 +1,56 @@
-# Bluetab Design System Full Starter
+# Bluetab Design System
 
-Starter en HTML + CSS + JavaScript para documentar un Design System propio de Bluetab con catálogo de componentes inspirado en la cobertura de Beer CSS, pero sin depender visualmente de Beer CSS.
+Design System basado en HTML + CSS + JavaScript para Bluetab, con dos objetivos:
 
-Prueba
+- Servir como catálogo local de componentes durante el desarrollo.
+- Publicarse como paquete npm reusable en proyectos Phoenix/LiveView.
 
-## Arranque
+## Scripts
 
 ```bash
 npm install
 npm run dev
 ```
 
-Normalmente se abrirá en:
+Catálogo local (Vite):
 
 ```text
 http://localhost:5173/
 ```
+
+Build de paquete publicable:
+
+```bash
+npm run build:lib
+```
+
+Build del catálogo estático:
+
+```bash
+npm run build:docs
+```
+
+Salida del catálogo: `dist-docs/`
+
+## Entrypoints del paquete
+
+Este repositorio separa catálogo y librería:
+
+- `src/main.js`: solo catálogo/documentación local.
+- `src/lib/index.js`: entrada del paquete para consumo externo.
+- `src/lib/interactions.js`: utilidades JS reutilizables.
+
+Salidas principales en `dist/`:
+
+- `dist/bds.css`: tokens + estilos de componentes.
+- `dist/bds.js`: entrada principal del paquete.
+- `dist/interactions.js`: subpath de interacciones.
+
+## Uso desde aplicaciones consumidoras
+
+Guía paso a paso para LiveView:
+
+- [`docs/how-to-use-design-system.md`](docs/how-to-use-design-system.md)
 
 ## Qué puedes tocar primero
 
@@ -40,6 +75,9 @@ Ahí puedes cambiar:
 ```text
 src/
 ├─ main.js
+├─ lib/
+│  ├─ index.js
+│  └─ interactions.js
 ├─ assets/
 │  └─ logo-bluetab.svg
 └─ styles/
@@ -71,7 +109,7 @@ Los ejemplos del catálogo están definidos en:
 src/main.js
 ```
 
-Busca el array `COMPONENTS`. Cada componente tiene esta forma:
+Busca el array `COMPONENTS`. Cada componente sigue esta forma:
 
 ```js
 {
@@ -89,59 +127,18 @@ Busca el array `COMPONENTS`. Cada componente tiene esta forma:
 }
 ```
 
-Cada ejemplo se muestra automáticamente en la página y también aparece en el panel lateral con botón de copiar código.
+## Release y versionado
 
-## Componentes incluidos
+Flujo recomendado:
 
-- Get started
-- App bars
-- Badges
-- Buttons
-- Cards
-- Checkboxes
-- Chips
-- Colors
-- Containers
-- Dialogs
-- Directions
-- Dividers
-- Expansions
-- Fields / Inputs
-- Grid
-- Helpers
-- Icons
-- Layout
-- Lists
-- Main layout
-- Media
-- Menus
-- Navigation
-- Overlays
-- Pages
-- Progress
-- Radio buttons
-- Selects
-- Shapes
-- Sliders
-- Snackbars
-- Switches
-- Tables
-- Tabs
-- Textarea
-- Tooltips
-- Typography
+1. Actualizar estilos/componentes en este repo.
+2. Ejecutar `npm run build:lib`.
+3. Subir versión (`npm version patch|minor|major`).
+4. Publicar (`npm publish` o registry privado).
+5. Actualizar dependencias en proyectos consumidores.
 
-## Funcionalidad incluida
+Reglas de versionado (SemVer):
 
-- Copiar código por ejemplo
-- Copiar todo el componente desde el panel lateral
-- Panel lateral de documentación/código
-- Buscador de componentes
-- Cambio de tema claro/oscuro
-- Dialogs funcionales
-- Overlays funcionales
-- Menús funcionales
-- Snackbars funcionales
-- Tabs funcionales
-- Expansions/acordeones funcionales
-- Sidebar responsive
+- Patch: fixes sin ruptura.
+- Minor: cambios compatibles (nuevos componentes/variantes).
+- Major: cambios de ruptura (clases/tokens removidos o renombrados).

@@ -10,6 +10,7 @@
 /docs/.vitepress/.temp
 /packages/vite/LICENSE
 dist
+dist-docs
 dist-ssr
 explorations
 node_modules
