@@ -1,0 +1,6 @@
+.bt-progress { width: min(100%, 24rem); height: .65rem; overflow: hidden; background: var(--bt-color-surface-muted); border-radius: var(--bt-radius-pill); }
+.bt-progress__bar { height: 100%; width: var(--value, 50%); background: linear-gradient(90deg, var(--bt-color-primary), var(--bt-color-secondary)); border-radius: inherit; }
+.bt-progress-circle { width: 5rem; aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; background: conic-gradient(var(--bt-color-primary) var(--value, 70%), var(--bt-color-surface-muted) 0); color: var(--bt-color-text); font-weight: 850; }
+.bt-progress-circle::before { content: attr(data-label); width: 3.7rem; aspect-ratio: 1; display: grid; place-items: center; background: var(--bt-color-surface-soft); border-radius: 50%; }
+.bt-chart-bars { display: flex; align-items: end; gap: var(--bt-space-2); width: 100%; height: 10rem; padding: var(--bt-space-3); background: var(--bt-color-surface); border: 1px solid var(--bt-color-border); border-radius: var(--bt-radius-lg); }
+.bt-chart-bars span { flex: 1; min-width: 1.25rem; height: var(--h); border-radius: var(--bt-radius-sm) var(--bt-radius-sm) 0 0; background: linear-gradient(180deg, var(--bt-color-secondary), var(--bt-color-primary)); }

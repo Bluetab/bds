@@ -1,0 +1,7 @@
+.bt-badge-wrap { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+.bt-badge { position: absolute; top: -.35rem; right: -.35rem; min-width: 1.15rem; height: 1.15rem; padding-inline: .28rem; display: inline-grid; place-items: center; border-radius: var(--bt-radius-pill); background: var(--bt-color-error); color: #fff; font-size: .68rem; font-weight: 800; line-height: 1; box-shadow: 0 0 0 2px var(--bt-color-surface-soft); }
+.bt-badge--dot { min-width: .55rem; width: .55rem; height: .55rem; padding: 0; }
+.bt-badge--inline { position: static; margin-left: var(--bt-space-1); box-shadow: none; }
+.bt-badge--primary { background: var(--bt-color-primary); }
+.bt-badge--secondary { background: var(--bt-color-secondary); color: var(--bt-color-on-secondary); }
+.bt-badge--success { background: var(--bt-color-success); }

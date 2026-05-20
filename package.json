@@ -1,0 +1,17 @@
+{
+  "name": "bluetab-design-system-full",
+  "version": "1.0.0",
+  "description": "Bluetab Design System starter con catálogo completo de componentes inspirado en Beer CSS, sin dependencia visual de Beer CSS.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": ["design-system", "bluetab", "html", "css", "vite", "components"],
+  "author": "",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "vite": "^8.0.10"
+  }
+}

@@ -1,0 +1,113 @@
+/*
+  BLUETAB DESIGN TOKENS
+  ------------------------------------------------------------------
+  Cambia este archivo para adaptar todo el Design System sin tocar
+  cada componente uno a uno.
+*/
+
+:root {
+  /* Brand */
+  --bt-color-primary: #212492;
+  --bt-color-primary-hover: #0065ff;
+  --bt-color-primary-active: #11135f;
+  --bt-color-primary-soft: #eef0ff;
+  --bt-color-on-primary: #ffffff;
+
+  --bt-color-secondary: #e05206;
+  --bt-color-secondary-hover: #0065ff;
+  --bt-color-secondary-soft: #e6f9fc;
+  --bt-color-on-secondary: #03232b;
+
+  --bt-color-tertiary: #542675;
+  --bt-color-tertiary-soft: #f3ecff;
+  --bt-color-on-tertiary: #ffffff;
+
+  /* Semantic */
+  --bt-color-success: #008b80;
+  --bt-color-success-soft: #e8f7ee;
+  --bt-color-warning: #e78c07;
+  --bt-color-warning-soft: #fff7e6;
+  --bt-color-error: #c21a37;
+  --bt-color-error-soft: #fdeceb;
+  --bt-color-info: #0065ff;
+  --bt-color-info-soft: #e8f2ff;
+
+  /* Neutral / surfaces */
+  --bt-color-background: #f2f2f2;
+  --bt-color-surface: #ffffff;
+  --bt-color-surface-raised: #ffffff;
+  --bt-color-surface-soft: #f0f2f8;
+  --bt-color-surface-muted: #e8ebf4;
+  --bt-color-border: #dce1ee;
+  --bt-color-border-strong: #c4ccdd;
+  --bt-color-text: #1f222d;
+  --bt-color-text-muted: #4a4a4a;
+  --bt-color-text-subtle: #959595;
+
+  /* Typography */
+  --bt-font-family: "Titillium Web", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --bt-font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --bt-font-size-xs: 0.75rem;
+  --bt-font-size-sm: 0.875rem;
+  --bt-font-size-md: 1rem;
+  --bt-font-size-lg: 1.125rem;
+  --bt-font-size-xl: 1.5rem;
+  --bt-font-size-2xl: 2rem;
+  --bt-font-size-3xl: 2.75rem;
+  --bt-line-height-tight: 1.08;
+  --bt-line-height-base: 1.55;
+
+  /* Spacing */
+  --bt-space-1: 0.25rem;
+  --bt-space-2: 0.5rem;
+  --bt-space-3: 0.75rem;
+  --bt-space-4: 1rem;
+  --bt-space-5: 1.5rem;
+  --bt-space-6: 2rem;
+  --bt-space-7: 3rem;
+  --bt-space-8: 4rem;
+
+  /* Shape */
+  --bt-radius-xs: 0.375rem;
+  --bt-radius-sm: 0.5rem;
+  --bt-radius-md: 0.875rem;
+  --bt-radius-lg: 1.25rem;
+  --bt-radius-xl: 1.75rem;
+  --bt-radius-pill: 999px;
+
+  /* Elevation */
+  --bt-shadow-xs: 0 1px 2px rgba(17, 19, 45, 0.06);
+  --bt-shadow-sm: 0 4px 12px rgba(17, 19, 45, 0.08);
+  --bt-shadow-md: 0 12px 32px rgba(17, 19, 45, 0.12);
+  --bt-shadow-lg: 0 24px 60px rgba(17, 19, 45, 0.18);
+
+  /* Layout */
+  --bt-sidebar-width: 17.5rem;
+  --bt-content-max-width: 76rem;
+  --bt-panel-width: min(46rem, 92vw);
+
+  /* Motion */
+  --bt-ease: cubic-bezier(.2, .8, .2, 1);
+  --bt-duration-fast: 140ms;
+  --bt-duration-base: 220ms;
+}
+
+html[data-theme="dark"] {
+  --bt-color-background: #1f222d;
+  --bt-color-surface: #17182b;
+  --bt-color-surface-raised: #1e2035;
+  --bt-color-surface-soft: #22243a;
+  --bt-color-surface-muted: #2c3048;
+  --bt-color-border: #333850;
+  --bt-color-border-strong: #47506b;
+  --bt-color-text: #f5f7ff;
+  --bt-color-text-muted: #b9bfd4;
+  --bt-color-text-subtle: #8e96b1;
+  --bt-color-primary-soft: #252860;
+  --bt-color-secondary-soft: #063846;
+  --bt-color-tertiary-soft: #38225c;
+  --bt-color-success-soft: #173926;
+  --bt-color-warning-soft: #3d2d10;
+  --bt-color-error-soft: #3d1f22;
+  --bt-color-info-soft: #142e4e;
+}

@@ -1,0 +1,10 @@
+h1, h2, h3, h4, h5, h6, p { margin-block-start: 0; }
+h1, h2, h3, h4 { color: var(--bt-color-text); line-height: var(--bt-line-height-tight); letter-spacing: -0.035em; }
+h1 { margin-block-end: var(--bt-space-1); font-size: clamp(2rem, 4vw, var(--bt-font-size-3xl)); }
+h2 { margin-block: 0 var(--bt-space-4); font-size: clamp(1.5rem, 3vw, var(--bt-font-size-2xl)); }
+h3 { margin-block: 0 var(--bt-space-3); font-size: var(--bt-font-size-xl); }
+h4 { margin-block: 0 var(--bt-space-2); font-size: var(--bt-font-size-lg); }
+p { margin-block-end: var(--bt-space-3); color: var(--bt-color-text-muted); }
+.bt-eyebrow { margin-block-end: var(--bt-space-1); color: var(--bt-color-secondary); font-size: var(--bt-font-size-xs); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+.bt-lead { max-width: 72ch; font-size: var(--bt-font-size-lg); }
+.bt-muted { color: var(--bt-color-text-muted); }

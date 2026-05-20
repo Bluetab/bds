@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Bluetab Design System - catálogo de componentes" />
+    <title>Bluetab Design System</title>
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body>
+    <div class="bt-shell">
+      <aside class="bt-sidebar" aria-label="Navegación de componentes">
+        <a class="bt-brand" href="#get-started" data-nav-link="get-started" aria-label="Bluetab Design System">
+          <img 
+  class="bt-brand__logo bt-brand__logo--light" 
+  src="/src/assets/logo-bluetab-light.svg" 
+  alt="" 
+/>
+
+<img 
+  class="bt-brand__logo bt-brand__logo--dark" 
+  src="/src/assets/logo-bluetab-dark.svg" 
+  alt="" 
+/>
+          
+        </a>
+<p class="bt-eyebrow">Bluetab DS / Catálogo HTML + CSS</p>
+        <div class="bt-sidebar__search" role="search">
+          <span class="bt-icon" aria-hidden="true">⌕</span>
+          <input id="component-search" type="search" placeholder="Buscar componente" autocomplete="off" />
+        </div>
+
+        <nav id="sidebar-nav" class="bt-sidebar__nav"></nav>
+      </aside>
+
+      <div class="bt-main-wrap">
+        <header class="bt-topbar">
+          <button class="bt-icon-button bt-sidebar-toggle" type="button" data-toggle-sidebar aria-label="Mostrar u ocultar menú">
+            <span class="bt-icon">☰</span>
+          </button>
+          <div>
+          </div>
+          <div class="bt-topbar__actions">
+            <button class="bt-button bt-button--ghost" type="button" data-open-panel="tokens">
+              Tokens CSS
+            </button>
+            <button class="bt-icon-button" type="button" data-theme-toggle aria-label="Cambiar tema">
+              <span class="bt-icon" data-theme-icon>◐</span>
+            </button>
+          </div>
+        </header>
+
+        <main id="component-root" class="bt-main" tabindex="-1"></main>
+      </div>
+    </div>
+
+    <aside class="bt-doc-panel" data-doc-panel aria-hidden="true">
+      <div class="bt-doc-panel__header">
+        <div>
+          <p class="bt-eyebrow">Código reutilizable</p>
+          <h2 data-doc-title>Componente</h2>
+        </div>
+        <div class="bt-doc-panel__actions">
+          <button class="bt-button bt-button--secondary" type="button" data-copy-current>Copiar todo</button>
+          <button class="bt-icon-button" type="button" data-close-panel aria-label="Cerrar panel">
+            <span class="bt-icon">×</span>
+          </button>
+        </div>
+      </div>
+      <div class="bt-doc-panel__body" data-doc-body></div>
+    </aside>
+
+    <div class="bt-panel-backdrop" data-close-panel></div>
+
+    <div class="bt-toast" role="status" aria-live="polite" data-toast>
+      <span class="bt-toast__text">Copiado al portapapeles</span>
+    </div>
+  </body>
+</html>
