@@ -1,6 +1,6 @@
 {
   "name": "bluetab-design-system",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Bluetab Design System starter con catálogo completo de componentes inspirado en Beer CSS, sin dependencia visual de Beer CSS.",
   "type": "module",
   "main": "./dist/bds.js",

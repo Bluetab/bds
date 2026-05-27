@@ -1,145 +1,48 @@
-# Bluetab Design System
+# Bds — Bluetab Design System
 
-Design System basado en HTML + CSS + JavaScript para Bluetab, con dos objetivos:
+Elixir package for Phoenix/LiveView (`bt_*` components) plus a Vite asset tree under `assets/` (CSS, interactions, component catalog).
 
-- Servir como catálogo local de componentes durante el desarrollo.
-- Publicarse como paquete npm reusable en proyectos Phoenix/LiveView.
+## Layout
 
-## Scripts
+```text
+bds/
+├── mix.exs, lib/          # {:bds, path: "../bds"} — Hex package
+├── priv/static/           # bds.css + interactions.js (synced from assets/dist)
+└── assets/
+    ├── src/styles/        # Design tokens & component CSS (edit here)
+    ├── src/lib/           # interactions.js
+    ├── dist/              # npm run build:lib output
+    └── index.html         # Local catalog (npm run dev)
+```
+
+## Setup
 
 ```bash
-npm install
-npm run dev
+mix setup          # deps + npm install + sync priv/static
+mix assets.build   # rebuild dist + sync priv/static
+mix assets.dev       # catalog at http://localhost:5173/
 ```
 
-Catálogo local (Vite):
+## Consumers (e.g. ds_tester)
 
-```text
-http://localhost:5173/
+```elixir
+{:bds, path: "../bds"}
 ```
 
-Build de paquete publicable:
-
-```bash
-npm run build:lib
+```css
+/* assets/css/app.css */
+@import "bds/styles.css";
 ```
-
-Build del catálogo estático:
-
-```bash
-npm run build:docs
-```
-
-Salida del catálogo: `dist-docs/`
-
-## Entrypoints del paquete
-
-Este repositorio separa catálogo y librería:
-
-- `src/main.js`: solo catálogo/documentación local.
-- `src/lib/index.js`: entrada del paquete para consumo externo.
-- `src/lib/interactions.js`: utilidades JS reutilizables.
-
-Salidas principales en `dist/`:
-
-- `dist/bds.css`: tokens + estilos de componentes.
-- `dist/bds.js`: entrada principal del paquete.
-- `dist/interactions.js`: subpath de interacciones.
-
-## Uso desde aplicaciones consumidoras
-
-Guías para LiveView y otras apps:
-
-- [`docs/how-to-use-design-system.md`](docs/how-to-use-design-system.md) — instalación e imports
-- [`docs/integration-patterns.md`](docs/integration-patterns.md) — layout, grid, código, dialogs, Phoenix
-
-## Qué puedes tocar primero
-
-El archivo principal para parametrizar el diseño es:
-
-```text
-src/styles/tokens.css
-```
-
-Ahí puedes cambiar:
-
-- Colores de marca
-- Tema claro/oscuro
-- Tipografía
-- Radios
-- Sombras
-- Espaciados
-- Tamaños base
-
-## Estructura
-
-```text
-src/
-├─ main.js
-├─ lib/
-│  ├─ index.js
-│  └─ interactions.js
-├─ assets/
-│  └─ logo-bluetab.svg
-└─ styles/
-   ├─ main.css
-   ├─ tokens.css
-   ├─ reset.css
-   ├─ typography.css
-   ├─ layout.css
-   ├─ utilities.css
-   └─ components/
-      ├─ navigation.css
-      ├─ buttons.css
-      ├─ cards.css
-      ├─ badges.css
-      ├─ forms.css
-      ├─ tables.css
-      ├─ dialogs.css
-      ├─ tabs.css
-      ├─ data-viz.css
-      ├─ code.css
-      └─ feedback.css
-```
-
-## Cómo añadir o cambiar componentes
-
-Los ejemplos del catálogo están definidos en:
-
-```text
-src/main.js
-```
-
-Busca el array `COMPONENTS`. Cada componente sigue esta forma:
 
 ```js
-{
-  id: 'buttons',
-  group: 'Componentes',
-  icon: '▣',
-  title: 'Buttons',
-  description: '...',
-  examples: [
-    {
-      title: 'Common buttons',
-      html: `<button class="bt-button">Primary</button>`
-    }
-  ]
-}
+import {initBtInteractions} from "bds/interactions"
 ```
 
-## Release y versionado
+In **dev**, point Vite at `bds/assets/src` (see ds_tester `assets/vite.config.js`) so CSS hot-reloads without republishing. In **prod**, use `deps/bds/priv/static` after `mix assets.build` in this repo.
 
-Flujo recomendado:
+```elixir
+config :bds, gettext_backend: MyAppWeb.Gettext
+import Bds.Components
+```
 
-1. Actualizar estilos/componentes en este repo.
-2. Ejecutar `npm run build:lib`.
-3. Subir versión (`npm version patch|minor|major`).
-4. Publicar (`npm publish` o registry privado).
-5. Actualizar dependencias en proyectos consumidores.
-
-Reglas de versionado (SemVer):
-
-- Patch: fixes sin ruptura.
-- Minor: cambios compatibles (nuevos componentes/variantes).
-- Major: cambios de ruptura (clases/tokens removidos o renombrados).
+See [`assets/docs/bds-how-to-use-design-system.md`](assets/docs/bds-how-to-use-design-system.md) and [`assets/docs/bds-integration-patterns.md`](assets/docs/bds-integration-patterns.md).
