@@ -1,0 +1,843 @@
+{
+  "group_order": [
+    "Inicio",
+    "Foundations",
+    "Layout",
+    "Componentes",
+    "Formularios",
+    "Feedback"
+  ],
+  "tokens_snippet": ":root {\n  /* Brand */\n  --bt-color-primary: #212492;\n  --bt-color-primary-hover: #0065ff;\n  --bt-color-primary-active: #11135f;\n  --bt-color-primary-soft: #eef0ff;\n  --bt-color-on-primary: #ffffff;\n\n  --bt-color-secondary: #e05206;\n  --bt-color-secondary-hover: #0065ff;\n  --bt-color-secondary-soft: #e6f9fc;\n  --bt-color-on-secondary: #03232b;\n\n  --bt-color-tertiary: #542675;\n  --bt-color-tertiary-soft: #f3ecff;\n  --bt-color-on-tertiary: #ffffff;\n\n  /* Semantic */\n  --bt-color-success: #008b80;\n  --bt-color-success-soft: #e8f7ee;\n  --bt-color-warning: #e78c07;\n  --bt-color-warning-soft: #fff7e6;\n  --bt-color-error: #c21a37;\n  --bt-color-error-soft: #fdeceb;\n  --bt-color-info: #0065ff;\n  --bt-color-info-soft: #e8f2ff;\n\n  /* Neutral / surfaces */\n  --bt-color-background: #f2f2f2;\n  --bt-color-surface: #ffffff;\n  --bt-color-surface-raised: #ffffff;\n  --bt-color-surface-soft: #f0f2f8;\n  --bt-color-surface-muted: #e8ebf4;\n  --bt-color-border: #dce1ee;\n  --bt-color-border-strong: #c4ccdd;\n  --bt-color-text: #1f222d;\n  --bt-color-text-muted: #4a4a4a;\n  --bt-color-text-subtle: #959595;\n\n  /* Typography */\n  --bt-font-family: \"Titillium Web\", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;\n  --bt-font-mono: \"SFMono-Regular\", Consolas, \"Liberation Mono\", monospace;\n  --bt-font-size-xs: 0.75rem;\n  --bt-font-size-sm: 0.875rem;\n  --bt-font-size-md: 1rem;\n  --bt-font-size-lg: 1.125rem;\n  --bt-font-size-xl: 1.5rem;\n  --bt-font-size-2xl: 2rem;\n  --bt-font-size-3xl: 2.75rem;\n  --bt-line-height-tight: 1.08;\n  --bt-line-height-base: 1.55;\n\n  /* Spacing */\n  --bt-space-1: 0.25rem;\n  --bt-space-2: 0.5rem;\n  --bt-space-3: 0.75rem;\n  --bt-space-4: 1rem;\n  --bt-space-5: 1.5rem;\n  --bt-space-6: 2rem;\n  --bt-space-7: 3rem;\n  --bt-space-8: 4rem;\n\n  /* Shape */\n  --bt-radius-xs: 0.375rem;\n  --bt-radius-sm: 0.5rem;\n  --bt-radius-md: 0.875rem;\n  --bt-radius-lg: 1.25rem;\n  --bt-radius-xl: 1.75rem;\n  --bt-radius-pill: 999px;\n\n  /* Elevation */\n  --bt-shadow-xs: 0 1px 2px rgba(17, 19, 45, 0.06);\n  --bt-shadow-sm: 0 4px 12px rgba(17, 19, 45, 0.08);\n  --bt-shadow-md: 0 12px 32px rgba(17, 19, 45, 0.12);\n  --bt-shadow-lg: 0 24px 60px rgba(17, 19, 45, 0.18);\n\n  /* Layout */\n  --bt-sidebar-width: 17.5rem;\n  --bt-content-max-width: 76rem;\n  --bt-panel-width: min(46rem, 92vw);\n\n  /* Motion */\n  --bt-ease: cubic-bezier(.2, .8, .2, 1);\n  --bt-duration-fast: 140ms;\n  --bt-duration-base: 220ms;\n}\n\nhtml[data-theme=\"dark\"] {\n  --bt-color-primary: #8da2ff;\n  --bt-color-primary-hover: #b3c2ff;\n  --bt-color-primary-active: #6b82e8;\n  --bt-color-background: #1f222d;\n  --bt-color-surface: #17182b;\n  --bt-color-surface-raised: #1e2035;\n  --bt-color-surface-soft: #22243a;\n  --bt-color-surface-muted: #2c3048;\n  --bt-color-border: #333850;\n  --bt-color-border-strong: #47506b;\n  --bt-color-text: #f5f7ff;\n  --bt-color-text-muted: #b9bfd4;\n  --bt-color-text-subtle: #8e96b1;\n  --bt-color-primary-soft: #252860;\n  --bt-color-secondary-soft: #063846;\n  --bt-color-tertiary-soft: #38225c;\n  --bt-color-success-soft: #173926;\n  --bt-color-warning-soft: #3d2d10;\n  --bt-color-error-soft: #3d1f22;\n  --bt-color-info-soft: #142e4e;\n}",
+  "components": [
+    {
+      "id": "get-started",
+      "group": "Inicio",
+      "icon": "<>",
+      "title": "Get started",
+      "description": "Base HTML, CSS y JavaScript para crear un Design System Bluetab propio.",
+      "intro": true,
+      "examples": [
+        {
+          "title": "Estructura recomendada",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-card bt-card--filled\">\n  <h3>Arquitectura del proyecto</h3>\n  <p>Modifica primero <code class=\"bt-code-inline\">src/styles/tokens.css</code>. Después ajusta cada componente en <code class=\"bt-code-inline\">src/styles/components/</code>.</p>\n  <div class=\"bt-code-block\">\n    <pre class=\"bt-code\">src/styles/tokens.css\nsrc/styles/components/buttons.css\nsrc/styles/components/forms.css\nsrc/styles/components/tables.css\nsrc/main.js</pre>\n  </div>\n</div>"
+        },
+        {
+          "title": "Botón de ejemplo Bluetab",
+          "block": false,
+          "note": null,
+          "html": "<button class=\"bt-button\">\n  <span>Guardar cambios</span>\n</button>\n<button class=\"bt-button bt-button--outline\">\n  <span>Cancelar</span>\n</button>"
+        }
+      ]
+    },
+    {
+      "id": "app-bars",
+      "group": "Componentes",
+      "icon": "▣",
+      "title": "App bars",
+      "description": "Barras superiores e inferiores para navegación, acciones contextuales y estado de una pantalla.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Top app bar",
+          "block": false,
+          "note": null,
+          "html": "<header class=\"bt-appbar\">\n  <button class=\"bt-icon-button\" aria-label=\"Menú\"><span class=\"bt-icon\">☰</span></button>\n  <strong>Proyecto Bluetab</strong>\n  <span class=\"bt-spacer\"></span>\n  <button class=\"bt-icon-button\" aria-label=\"Buscar\"><span class=\"bt-icon\">⌕</span></button>\n  <button class=\"bt-icon-button\" aria-label=\"Usuario\"><span class=\"bt-icon\">◎</span></button>\n</header>"
+        },
+        {
+          "title": "Primary app bar",
+          "block": false,
+          "note": null,
+          "html": "<header class=\"bt-appbar bt-appbar--primary\">\n  <button class=\"bt-icon-button bt-icon-button--primary\" aria-label=\"Volver\"><span class=\"bt-icon\">←</span></button>\n  <strong>Analytics Dashboard</strong>\n  <span class=\"bt-spacer\"></span>\n  <button class=\"bt-button bt-button--secondary\">Publicar</button>\n</header>"
+        },
+        {
+          "title": "Bottom navigation bar",
+          "block": true,
+          "note": null,
+          "html": "<nav class=\"bt-bottom-nav\" aria-label=\"Navegación inferior\">\n  <a href=\"#\" aria-current=\"page\"><span class=\"bt-icon\">⌂</span><span>Home</span></a>\n  <a href=\"#\"><span class=\"bt-icon\">▦</span><span>Apps</span></a>\n  <a href=\"#\"><span class=\"bt-icon\">☷</span><span>Datos</span></a>\n  <a href=\"#\"><span class=\"bt-icon\">⚙</span><span>Ajustes</span></a>\n</nav>"
+        }
+      ]
+    },
+    {
+      "id": "badges",
+      "group": "Componentes",
+      "icon": "◈",
+      "title": "Badges",
+      "description": "Indicadores numéricos o visuales para notificaciones, estados y elementos pendientes.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Badge dot",
+          "block": false,
+          "note": null,
+          "html": "<span class=\"bt-badge-wrap\">\n  <span class=\"bt-icon\">⌂</span>\n  <span class=\"bt-badge bt-badge--dot\"></span>\n</span>"
+        },
+        {
+          "title": "Badge con número",
+          "block": false,
+          "note": null,
+          "html": "<span class=\"bt-badge-wrap\">\n  <span class=\"bt-icon\">⌂</span>\n  <span class=\"bt-badge\">10</span>\n</span>"
+        },
+        {
+          "title": "Badge inline",
+          "block": false,
+          "note": null,
+          "html": "<button class=\"bt-button\">\n  <span>Alertas</span>\n  <span class=\"bt-badge bt-badge--inline\">3</span>\n</button>\n<button class=\"bt-button bt-button--secondary\">\n  <span>Procesos</span>\n  <span class=\"bt-badge bt-badge--inline bt-badge--success\">OK</span>\n</button>"
+        }
+      ]
+    },
+    {
+      "id": "buttons",
+      "group": "Componentes",
+      "icon": "▣",
+      "title": "Buttons",
+      "description": "Acciones principales, secundarias, terciarias, de icono y FAB.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Common buttons",
+          "block": false,
+          "note": null,
+          "html": "<button class=\"bt-button\">Primary</button>\n<button class=\"bt-button bt-button--secondary\">Secondary</button>\n<button class=\"bt-button bt-button--tertiary\">Tertiary</button>\n<button class=\"bt-button bt-button--outline\">Outline</button>\n<button class=\"bt-button bt-button--ghost\">Ghost</button>"
+        },
+        {
+          "title": "Button sizes",
+          "block": false,
+          "note": null,
+          "html": "<button class=\"bt-button bt-button--sm\">Small</button>\n<button class=\"bt-button\">Medium</button>\n<button class=\"bt-button bt-button--lg\">Large</button>"
+        },
+        {
+          "title": "Icon buttons",
+          "block": false,
+          "note": null,
+          "html": "<button class=\"bt-icon-button\" aria-label=\"Buscar\"><span class=\"bt-icon\">⌕</span></button>\n<button class=\"bt-icon-button bt-icon-button--primary\" aria-label=\"Guardar\"><span class=\"bt-icon\">✓</span></button>\n<button class=\"bt-fab\" aria-label=\"Crear\"><span class=\"bt-icon\">＋</span></button>\n<button class=\"bt-fab bt-fab--extended\"><span class=\"bt-icon\">＋</span><span>Crear</span></button>"
+        },
+        {
+          "title": "Segmented buttons",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-segmented\" role=\"group\" aria-label=\"Vista\">\n  <button type=\"button\" aria-pressed=\"true\">Día</button>\n  <button type=\"button\" aria-pressed=\"false\">Semana</button>\n  <button type=\"button\" aria-pressed=\"false\">Mes</button>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "cards",
+      "group": "Componentes",
+      "icon": "▧",
+      "title": "Cards",
+      "description": "Contenedores de contenido con variantes elevadas, rellenas, con media y acciones.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Outlined card",
+          "block": true,
+          "note": null,
+          "html": "<article class=\"bt-card\">\n  <h3>Card estándar</h3>\n  <p>Úsala para agrupar información relacionada dentro de una pantalla.</p>\n  <div class=\"bt-card__actions\">\n    <button class=\"bt-button bt-button--ghost\">Ver más</button>\n    <button class=\"bt-button\">Aceptar</button>\n  </div>\n</article>"
+        },
+        {
+          "title": "Elevated card",
+          "block": true,
+          "note": null,
+          "html": "<article class=\"bt-card bt-card--elevated\">\n  <div class=\"bt-card__media\"></div>\n  <h3>Data product</h3>\n  <p>Tarjeta con bloque visual, sombra y acciones.</p>\n</article>"
+        },
+        {
+          "title": "Filled / Primary cards",
+          "block": true,
+          "note": null,
+          "html": "<article class=\"bt-card bt-card--filled\">\n  <h3>Filled card</h3>\n  <p>Para secciones suaves o agrupaciones secundarias.</p>\n</article>\n<article class=\"bt-card bt-card--primary\">\n  <h3>Primary card</h3>\n  <p>Para mensajes destacados de producto o marca.</p>\n</article>"
+        }
+      ]
+    },
+    {
+      "id": "checkboxes",
+      "group": "Formularios",
+      "icon": "☑",
+      "title": "Checkboxes",
+      "description": "Selección múltiple en formularios, filtros y configuraciones.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Checkbox básico",
+          "block": false,
+          "note": null,
+          "html": "<label class=\"bt-checkbox\">\n  <input type=\"checkbox\" />\n  <span>Acepto condiciones</span>\n</label>\n<label class=\"bt-checkbox\">\n  <input type=\"checkbox\" checked />\n  <span>Enviar copia</span>\n</label>"
+        },
+        {
+          "title": "Checkbox disabled",
+          "block": false,
+          "note": null,
+          "html": "<label class=\"bt-checkbox\">\n  <input type=\"checkbox\" disabled />\n  <span>Opción no disponible</span>\n</label>\n<label class=\"bt-checkbox\">\n  <input type=\"checkbox\" checked disabled />\n  <span>Opción obligatoria</span>\n</label>"
+        }
+      ]
+    },
+    {
+      "id": "chips",
+      "group": "Componentes",
+      "icon": "◌",
+      "title": "Chips",
+      "description": "Etiquetas compactas para filtros, selección, metadatos o acciones rápidas.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Common chips",
+          "block": false,
+          "note": null,
+          "html": "<span class=\"bt-chip\">Data</span>\n<span class=\"bt-chip bt-chip--selected\">Selected</span>\n<span class=\"bt-chip bt-chip--outline\">Outline</span>\n<button class=\"bt-chip\"><span class=\"bt-icon\">＋</span> Añadir filtro</button>"
+        },
+        {
+          "title": "Status chips",
+          "block": false,
+          "note": null,
+          "html": "<span class=\"bt-status bt-status--success\">Activo</span>\n<span class=\"bt-status bt-status--warning\">Pendiente</span>\n<span class=\"bt-status bt-status--error\">Error</span>\n<span class=\"bt-status bt-status--info\">Info</span>"
+        }
+      ]
+    },
+    {
+      "id": "code",
+      "group": "Foundations",
+      "icon": "{}",
+      "title": "Code",
+      "description": "Código inline en prosa y bloques multilínea. No mezclar clases.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Inline en prosa",
+          "block": true,
+          "note": null,
+          "html": "<p class=\"bt-muted\">\n  Menciona clases con <code class=\"bt-code-inline\">bt-button</code> o rutas con\n  <code class=\"bt-code-inline bt-code-inline--wrap\">docs/how-to-use-design-system.md</code>.\n</p>"
+        },
+        {
+          "title": "Bloque multilínea",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-code-block\">\n  <pre class=\"bt-code\"><code>@import \"bluetab-design-system/styles.css\";\n\nimport { initBtInteractions } from \"bluetab-design-system/interactions\";\ninitBtInteractions();</code></pre>\n</div>"
+        },
+        {
+          "title": "Cards en bt-example-grid",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-example-grid\">\n  <article class=\"bt-card bt-card--elevated bt-card--third\">A</article>\n  <article class=\"bt-card bt-card--filled bt-card--third\">B</article>\n  <article class=\"bt-card bt-card--third\">C</article>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "colors",
+      "group": "Foundations",
+      "icon": "◍",
+      "title": "Colors",
+      "description": "Paleta base editable desde tokens CSS.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Brand colors",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-color-grid\">\n  <div class=\"bt-color-swatch\"><div class=\"bt-color-swatch__color\" style=\"--swatch: var(--bt-color-primary)\"></div><div class=\"bt-color-swatch__text\">Primary</div></div>\n  <div class=\"bt-color-swatch\"><div class=\"bt-color-swatch__color\" style=\"--swatch: var(--bt-color-secondary)\"></div><div class=\"bt-color-swatch__text\">Secondary</div></div>\n  <div class=\"bt-color-swatch\"><div class=\"bt-color-swatch__color\" style=\"--swatch: var(--bt-color-tertiary)\"></div><div class=\"bt-color-swatch__text\">Tertiary</div></div>\n  <div class=\"bt-color-swatch\"><div class=\"bt-color-swatch__color\" style=\"--swatch: var(--bt-color-surface-muted)\"></div><div class=\"bt-color-swatch__text\">Surface</div></div>\n</div>"
+        },
+        {
+          "title": "Semantic colors",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-row\">\n  <span class=\"bt-status bt-status--success\">Success</span>\n  <span class=\"bt-status bt-status--warning\">Warning</span>\n  <span class=\"bt-status bt-status--error\">Error</span>\n  <span class=\"bt-status bt-status--info\">Info</span>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "containers",
+      "group": "Layout",
+      "icon": "▤",
+      "title": "Containers",
+      "description": "Bloques estructurales para agrupar contenido y controlar densidad.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Default container",
+          "block": true,
+          "note": null,
+          "html": "<section class=\"bt-container\">\n  <h3>Container</h3>\n  <p>Bloque reutilizable para documentación, paneles y zonas de contenido.</p>\n</section>"
+        },
+        {
+          "title": "Compact container",
+          "block": true,
+          "note": null,
+          "html": "<section class=\"bt-container bt-container--compact\">\n  <p>Container compacto con menos padding.</p>\n</section>"
+        }
+      ]
+    },
+    {
+      "id": "dialogs",
+      "group": "Componentes",
+      "icon": "□",
+      "title": "Dialogs",
+      "description": "Ventanas modales para confirmaciones, mensajes críticos o acciones bloqueantes.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Dialog básico",
+          "block": false,
+          "note": null,
+          "html": "<button class=\"bt-button\" data-dialog-open=\"dialog-basic\">Abrir dialog</button>\n<div class=\"bt-dialog\" id=\"dialog-basic\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"dialog-basic-title\">\n  <div class=\"bt-dialog__surface\">\n    <h3 id=\"dialog-basic-title\">Confirmar acción</h3>\n    <p>Este dialog usa JavaScript local del Design System.</p>\n    <div class=\"bt-dialog__actions\">\n      <button class=\"bt-button bt-button--ghost\" data-dialog-close>Cancelar</button>\n      <button class=\"bt-button\" data-dialog-close>Aceptar</button>\n    </div>\n  </div>\n</div>"
+        },
+        {
+          "title": "Alert dialog",
+          "block": false,
+          "note": null,
+          "html": "<button class=\"bt-button bt-button--danger\" data-dialog-open=\"dialog-alert\">Eliminar</button>\n<div class=\"bt-dialog\" id=\"dialog-alert\" role=\"alertdialog\" aria-modal=\"true\">\n  <div class=\"bt-dialog__surface\">\n    <h3>Eliminar registro</h3>\n    <p>Esta acción no se puede deshacer.</p>\n    <div class=\"bt-dialog__actions\">\n      <button class=\"bt-button bt-button--ghost\" data-dialog-close>Volver</button>\n      <button class=\"bt-button bt-button--danger\" data-dialog-close>Eliminar</button>\n    </div>\n  </div>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "directions",
+      "group": "Layout",
+      "icon": "↔",
+      "title": "Directions",
+      "description": "Utilidades para controlar dirección, orden y alineación de elementos.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Row direction",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-dir-row\">\n  <button class=\"bt-button bt-button--secondary\">Uno</button>\n  <button class=\"bt-button bt-button--secondary\">Dos</button>\n  <button class=\"bt-button bt-button--secondary\">Tres</button>\n</div>"
+        },
+        {
+          "title": "Column direction",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-dir-column\">\n  <button class=\"bt-button bt-button--secondary\">Primero</button>\n  <button class=\"bt-button bt-button--secondary\">Segundo</button>\n  <button class=\"bt-button bt-button--secondary\">Tercero</button>\n</div>"
+        },
+        {
+          "title": "Reverse direction",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-dir-reverse\">\n  <button class=\"bt-button bt-button--secondary\">A</button>\n  <button class=\"bt-button bt-button--secondary\">B</button>\n  <button class=\"bt-button bt-button--secondary\">C</button>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "dividers",
+      "group": "Layout",
+      "icon": "─",
+      "title": "Dividers",
+      "description": "Separadores horizontales y verticales para organizar contenido.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Horizontal divider",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-stack\">\n  <span>Contenido superior</span>\n  <span class=\"bt-divider\" aria-hidden=\"true\"></span>\n  <span>Contenido inferior</span>\n</div>"
+        },
+        {
+          "title": "Vertical divider",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-row\">\n  <span>Inicio</span>\n  <span class=\"bt-divider bt-divider--vertical\" aria-hidden=\"true\"></span>\n  <span>Fin</span>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "expansions",
+      "group": "Componentes",
+      "icon": "⌄",
+      "title": "Expansions",
+      "description": "Acordeones para mostrar u ocultar información progresivamente.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Expansion panel",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-expansion\" data-expansion>\n  <button class=\"bt-expansion__button\" type=\"button\" data-expansion-toggle>\n    <span>¿Qué incluye este componente?</span>\n    <span class=\"bt-expansion__icon\">⌄</span>\n  </button>\n  <div class=\"bt-expansion__content\">\n    <p>Contenido expandible, útil para documentación, FAQs o datos secundarios.</p>\n  </div>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "fields",
+      "group": "Formularios",
+      "icon": "▭",
+      "title": "Fields / Inputs",
+      "description": "Campos de entrada, estados de ayuda y error.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Text fields",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-field\">\n  <label for=\"name-field\">Nombre</label>\n  <input class=\"bt-input\" id=\"name-field\" type=\"text\" placeholder=\"Ej. Data Governance\" />\n  <small class=\"bt-help\">Texto de ayuda opcional.</small>\n</div>\n<div class=\"bt-field bt-field--error\">\n  <label for=\"error-field\">Campo con error</label>\n  <input class=\"bt-input\" id=\"error-field\" type=\"text\" value=\"Valor incorrecto\" />\n  <small class=\"bt-help\">Revisa este valor antes de continuar.</small>\n</div>"
+        },
+        {
+          "title": "Field with icon",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-field\">\n  <label for=\"search-field\">Buscar</label>\n  <input class=\"bt-input\" id=\"search-field\" type=\"search\" placeholder=\"Buscar componente\" />\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "grid",
+      "group": "Layout",
+      "icon": "▦",
+      "title": "Grid",
+      "description": "Sistema de rejilla CSS para distribuir contenido de forma responsive.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Three columns",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-layout-demo\">\n  <div>1</div>\n  <div>2</div>\n  <div>3</div>\n</div>"
+        },
+        {
+          "title": "Auto grid",
+          "block": true,
+          "note": null,
+          "html": "<div style=\"display:grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: var(--bt-space-3); width:100%;\">\n  <article class=\"bt-card bt-card--filled\">A</article>\n  <article class=\"bt-card bt-card--filled\">B</article>\n  <article class=\"bt-card bt-card--filled\">C</article>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "helpers",
+      "group": "Foundations",
+      "icon": "+",
+      "title": "Helpers",
+      "description": "Clases utilitarias para composición rápida.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Stack / Inline",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-stack\">\n  <div class=\"bt-inline\">\n    <span class=\"bt-status bt-status--info\">Inline</span>\n    <span class=\"bt-status bt-status--success\">Wrap</span>\n  </div>\n  <p class=\"bt-muted\">Usa <code class=\"bt-code-inline\">.bt-stack</code>, <code class=\"bt-code-inline\">.bt-inline</code>, <code class=\"bt-code-inline\">.bt-row</code> para composición.</p>\n</div>"
+        },
+        {
+          "title": "Radius and elevation helpers",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-surface bt-round-sm bt-shadow-sm\" style=\"padding: var(--bt-space-4);\">Small radius</div>\n<div class=\"bt-surface bt-round-lg bt-shadow-md\" style=\"padding: var(--bt-space-4);\">Large radius</div>"
+        }
+      ]
+    },
+    {
+      "id": "icons",
+      "group": "Foundations",
+      "icon": "◎",
+      "title": "Icons",
+      "description": "Sistema simple de iconos basado en texto/SVG para que puedas cambiarlo por la librería corporativa.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Iconos inline",
+          "block": false,
+          "note": null,
+          "html": "<span class=\"bt-icon\">⌂</span>\n<span class=\"bt-icon\">⌕</span>\n<span class=\"bt-icon\">⚙</span>\n<span class=\"bt-icon\">✓</span>\n<span class=\"bt-icon\">×</span>"
+        },
+        {
+          "title": "Icon inside button",
+          "block": false,
+          "note": null,
+          "html": "<button class=\"bt-button\">\n  <span class=\"bt-icon\">✓</span>\n  <span>Validar</span>\n</button>"
+        }
+      ]
+    },
+    {
+      "id": "layout",
+      "group": "Layout",
+      "icon": "▥",
+      "title": "Layout",
+      "description": "Shell principal, topbar, sidebar y áreas de contenido.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Basic shell",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-shell\">\n  <aside class=\"bt-sidebar\">Sidebar</aside>\n  <main class=\"bt-main\">Contenido principal</main>\n</div>"
+        },
+        {
+          "title": "App shell (no sidebar)",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-shell bt-shell--app\">\n  <header class=\"bt-topbar\">\n    <div class=\"bt-topbar__inner\">\n      <div class=\"bt-topbar__start\">\n        <a href=\"#\" class=\"bt-navbar-logo-link\" onclick=\"return false;\">App</a>\n      </div>\n      <div class=\"bt-topbar__actions\">\n        <button type=\"button\" class=\"bt-theme-toggle-button\" data-theme-toggle aria-label=\"Tema\">\n          <span class=\"bt-icon\" data-theme-icon>◐</span>\n        </button>\n      </div>\n    </div>\n  </header>\n  <main class=\"bt-main\">Contenido principal</main>\n</div>"
+        },
+        {
+          "title": "Section header",
+          "block": true,
+          "note": null,
+          "html": "<section class=\"bt-section\">\n  <div class=\"bt-section__header\">\n    <h2 class=\"bt-section__title\">Título sección</h2>\n    <button class=\"bt-button bt-button--secondary\">Acción</button>\n  </div>\n  <p class=\"bt-section__description\">Descripción breve de la sección.</p>\n</section>"
+        }
+      ]
+    },
+    {
+      "id": "lists",
+      "group": "Componentes",
+      "icon": "☷",
+      "title": "Lists",
+      "description": "Listados verticales con avatar, contenido y acciones.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "List",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-list\">\n  <div class=\"bt-list-item\">\n    <div class=\"bt-list-item__avatar\">B</div>\n    <div class=\"bt-list-item__content\">\n      <p class=\"bt-list-item__title\">Bluetab Design System</p>\n      <p class=\"bt-list-item__subtitle\">Componente de listado</p>\n    </div>\n    <button class=\"bt-icon-button\" aria-label=\"Más\"><span class=\"bt-icon\">⋯</span></button>\n  </div>\n  <div class=\"bt-list-item\">\n    <div class=\"bt-list-item__avatar\">D</div>\n    <div class=\"bt-list-item__content\">\n      <p class=\"bt-list-item__title\">Data Product</p>\n      <p class=\"bt-list-item__subtitle\">Elemento secundario</p>\n    </div>\n  </div>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "main-layout",
+      "group": "Layout",
+      "icon": "▨",
+      "title": "Main layout",
+      "description": "Composición principal de aplicación/documentación.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Dashboard layout",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-card bt-card--filled\">\n  <div class=\"bt-appbar\">\n    <strong>Dashboard</strong>\n    <span class=\"bt-spacer\"></span>\n    <button class=\"bt-button bt-button--secondary\">Exportar</button>\n  </div>\n  <div class=\"bt-layout-demo\" style=\"margin-top: var(--bt-space-4);\">\n    <div>KPI</div><div>Chart</div><div>Table</div>\n  </div>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "media",
+      "group": "Componentes",
+      "icon": "◫",
+      "title": "Media",
+      "description": "Imágenes, vídeos o placeholders responsivos.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Media placeholder",
+          "block": true,
+          "note": null,
+          "html": "<figure class=\"bt-card\">\n  <div class=\"bt-card__media\"></div>\n  <figcaption class=\"bt-muted\">Media responsivo dentro de una card.</figcaption>\n</figure>"
+        },
+        {
+          "title": "Avatar media",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-list-item__avatar\">BT</div>\n<div class=\"bt-list-item__avatar\" style=\"background: var(--bt-color-secondary-soft); color: var(--bt-color-secondary-hover);\">UX</div>"
+        }
+      ]
+    },
+    {
+      "id": "menus",
+      "group": "Componentes",
+      "icon": "⋮",
+      "title": "Menus",
+      "description": "Menús contextuales activados por botón.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Context menu",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-menu-wrap\">\n  <button class=\"bt-button bt-button--secondary\" data-menu-toggle=\"menu-basic\">Abrir menú</button>\n  <div class=\"bt-menu\" id=\"menu-basic\" role=\"menu\">\n    <button type=\"button\" role=\"menuitem\">Editar</button>\n    <button type=\"button\" role=\"menuitem\">Duplicar</button>\n    <button type=\"button\" role=\"menuitem\">Eliminar</button>\n  </div>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "navigation",
+      "group": "Componentes",
+      "icon": "☰",
+      "title": "Navigation",
+      "description": "Sidebar, enlaces activos y navegación inferior.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Sidebar nav links",
+          "block": true,
+          "note": null,
+          "html": "<nav class=\"bt-sidebar__nav\" style=\"width: 16rem;\">\n  <a class=\"bt-nav-link\" aria-current=\"page\" href=\"#\"><span class=\"bt-icon\">⌂</span> Inicio</a>\n  <a class=\"bt-nav-link\" href=\"#\"><span class=\"bt-icon\">▣</span> Componentes</a>\n  <a class=\"bt-nav-link\" href=\"#\"><span class=\"bt-icon\">⚙</span> Ajustes</a>\n</nav>"
+        },
+        {
+          "title": "Bottom navigation",
+          "block": true,
+          "note": null,
+          "html": "<nav class=\"bt-bottom-nav\">\n  <a href=\"#\" aria-current=\"page\"><span class=\"bt-icon\">⌂</span><span>Home</span></a>\n  <a href=\"#\"><span class=\"bt-icon\">⌕</span><span>Search</span></a>\n  <a href=\"#\"><span class=\"bt-icon\">◎</span><span>Profile</span></a>\n</nav>"
+        }
+      ]
+    },
+    {
+      "id": "overlays",
+      "group": "Componentes",
+      "icon": "▩",
+      "title": "Overlays",
+      "description": "Capas superpuestas para paneles, drawers o estados bloqueantes.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Overlay",
+          "block": false,
+          "note": null,
+          "html": "<button class=\"bt-button\" data-overlay-open=\"overlay-basic\">Abrir overlay</button>\n<div class=\"bt-overlay\" id=\"overlay-basic\" role=\"dialog\" aria-modal=\"true\">\n  <div class=\"bt-overlay__surface\">\n    <h3>Overlay</h3>\n    <p>Útil para paneles y contenidos temporales.</p>\n    <button class=\"bt-button\" data-overlay-close>Cerrar</button>\n  </div>\n</div>"
+        },
+        {
+          "title": "Drawer visual",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-drawer-demo\">\n  <aside class=\"bt-drawer-demo__panel\">\n    <strong>Drawer</strong>\n    <p>Panel lateral.</p>\n  </aside>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "pages",
+      "group": "Layout",
+      "icon": "□",
+      "title": "Pages",
+      "description": "Patrón simple de páginas internas SPA.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Page sections",
+          "block": true,
+          "note": null,
+          "html": "<section class=\"bt-section\" id=\"overview-page\">\n  <div class=\"bt-section__header\">\n    <h2 class=\"bt-section__title\">Overview</h2>\n  </div>\n  <p class=\"bt-section__description\">Contenido de página.</p>\n</section>"
+        },
+        {
+          "title": "Page link",
+          "block": false,
+          "note": null,
+          "html": "<a class=\"bt-nav-link\" href=\"#components\" aria-current=\"page\">\n  <span class=\"bt-icon\">▣</span>\n  Componentes\n</a>"
+        }
+      ]
+    },
+    {
+      "id": "progress",
+      "group": "Feedback",
+      "icon": "◔",
+      "title": "Progress",
+      "description": "Indicadores de progreso lineales y circulares.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Linear progress",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-progress\" aria-label=\"Progreso al 68%\">\n  <div class=\"bt-progress__bar\" style=\"--value: 68%\"></div>\n</div>"
+        },
+        {
+          "title": "Circular progress",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-progress-circle\" style=\"--value: 72%\" data-label=\"72%\"></div>"
+        }
+      ]
+    },
+    {
+      "id": "radio",
+      "group": "Formularios",
+      "icon": "◉",
+      "title": "Radio buttons",
+      "description": "Selección única entre varias opciones.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Radio group",
+          "block": false,
+          "note": null,
+          "html": "<label class=\"bt-radio\">\n  <input type=\"radio\" name=\"view\" checked />\n  <span>Semanal</span>\n</label>\n<label class=\"bt-radio\">\n  <input type=\"radio\" name=\"view\" />\n  <span>Mensual</span>\n</label>\n<label class=\"bt-radio\">\n  <input type=\"radio\" name=\"view\" />\n  <span>Anual</span>\n</label>"
+        }
+      ]
+    },
+    {
+      "id": "selects",
+      "group": "Formularios",
+      "icon": "⌄",
+      "title": "Selects",
+      "description": "Selectores nativos estilizados para formularios.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Select básico",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-field\">\n  <label for=\"framework-select\">Framework</label>\n  <select class=\"bt-select\" id=\"framework-select\">\n    <option>Bluetab DS</option>\n    <option>Material Design</option>\n    <option>Carbon</option>\n  </select>\n</div>"
+        },
+        {
+          "title": "Select con ayuda",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-field\">\n  <label for=\"status-select\">Estado</label>\n  <select class=\"bt-select\" id=\"status-select\">\n    <option>Activo</option>\n    <option>Pendiente</option>\n    <option>Archivado</option>\n  </select>\n  <small class=\"bt-help\">Este valor afecta a la visibilidad.</small>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "shapes",
+      "group": "Foundations",
+      "icon": "◯",
+      "title": "Shapes",
+      "description": "Formas y radios reutilizables.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Shapes",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-center bt-shape-circle\" style=\"width:5rem; background:var(--bt-color-primary-soft); color:var(--bt-color-primary);\">Circle</div>\n<div class=\"bt-center bt-shape-soft\" style=\"width:7rem; height:5rem; background:var(--bt-color-secondary-soft); color:var(--bt-color-secondary-hover);\">Soft</div>\n<div class=\"bt-center bt-shape-blob\" style=\"width:7rem; height:5rem; background:var(--bt-color-tertiary-soft); color:var(--bt-color-tertiary);\">Blob</div>"
+        }
+      ]
+    },
+    {
+      "id": "sliders",
+      "group": "Formularios",
+      "icon": "━",
+      "title": "Sliders",
+      "description": "Control para seleccionar valores dentro de un rango.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Slider básico",
+          "block": false,
+          "note": null,
+          "html": "<input class=\"bt-slider\" type=\"range\" min=\"0\" max=\"100\" value=\"64\" aria-label=\"Porcentaje\" />"
+        },
+        {
+          "title": "Slider con label",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-field\">\n  <label for=\"quality-slider\">Calidad</label>\n  <input class=\"bt-slider\" id=\"quality-slider\" type=\"range\" min=\"0\" max=\"100\" value=\"80\" />\n  <small class=\"bt-help\">Arrastra para ajustar el valor.</small>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "snackbars",
+      "group": "Feedback",
+      "icon": "▤",
+      "title": "Snackbars",
+      "description": "Mensajes temporales para confirmar una acción.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Snackbar",
+          "block": false,
+          "note": null,
+          "html": "<button class=\"bt-button\" data-snackbar-open=\"snackbar-basic\">Mostrar snackbar</button>\n<div class=\"bt-snackbar\" id=\"snackbar-basic\">\n  <span>Elemento guardado correctamente.</span>\n  <button class=\"bt-button bt-button--ghost\" data-snackbar-close>Cerrar</button>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "switches",
+      "group": "Formularios",
+      "icon": "◐",
+      "title": "Switches",
+      "description": "Activación o desactivación de opciones binarias.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Switch básico",
+          "block": false,
+          "note": null,
+          "html": "<label class=\"bt-switch\">\n  <input type=\"checkbox\" checked />\n  <span class=\"bt-switch__track\"></span>\n  <span>Modo activo</span>\n</label>"
+        },
+        {
+          "title": "Switch off",
+          "block": false,
+          "note": null,
+          "html": "<label class=\"bt-switch\">\n  <input type=\"checkbox\" />\n  <span class=\"bt-switch__track\"></span>\n  <span>Notificaciones</span>\n</label>"
+        }
+      ]
+    },
+    {
+      "id": "tables",
+      "group": "Componentes",
+      "icon": "▦",
+      "title": "Tables",
+      "description": "Tablas responsivas para datos de negocio y documentación.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Data table",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-table-wrap\">\n  <table class=\"bt-table\">\n    <thead>\n      <tr><th>Componente</th><th>Estado</th><th>Uso</th></tr>\n    </thead>\n    <tbody>\n      <tr><td>Button</td><td><span class=\"bt-status bt-status--success\">Activo</span></td><td>Acciones</td></tr>\n      <tr><td>Dialog</td><td><span class=\"bt-status bt-status--warning\">Revisar</span></td><td>Modales</td></tr>\n      <tr><td>Table</td><td><span class=\"bt-status bt-status--success\">Activo</span></td><td>Datos</td></tr>\n    </tbody>\n  </table>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "tabs",
+      "group": "Componentes",
+      "icon": "☰",
+      "title": "Tabs",
+      "description": "Organización de contenido por pestañas dentro de una misma vista.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Tabs",
+          "block": true,
+          "note": null,
+          "html": "<div data-tabs>\n  <div class=\"bt-tabs\" role=\"tablist\">\n    <button class=\"bt-tab\" role=\"tab\" aria-selected=\"true\" data-tab=\"tab-1\">Overview</button>\n    <button class=\"bt-tab\" role=\"tab\" aria-selected=\"false\" data-tab=\"tab-2\">Details</button>\n    <button class=\"bt-tab\" role=\"tab\" aria-selected=\"false\" data-tab=\"tab-3\">Settings</button>\n  </div>\n  <div class=\"bt-tab-panel\" id=\"tab-1\" role=\"tabpanel\" aria-hidden=\"false\">Contenido overview.</div>\n  <div class=\"bt-tab-panel\" id=\"tab-2\" role=\"tabpanel\" aria-hidden=\"true\">Contenido details.</div>\n  <div class=\"bt-tab-panel\" id=\"tab-3\" role=\"tabpanel\" aria-hidden=\"true\">Contenido settings.</div>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "textarea",
+      "group": "Formularios",
+      "icon": "▤",
+      "title": "Textarea",
+      "description": "Entrada de texto multilínea.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Textarea básico",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-field\">\n  <label for=\"notes-textarea\">Notas</label>\n  <textarea class=\"bt-textarea\" id=\"notes-textarea\" placeholder=\"Escribe una descripción\"></textarea>\n</div>"
+        },
+        {
+          "title": "Textarea con ayuda",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-field\">\n  <label for=\"description-textarea\">Descripción</label>\n  <textarea class=\"bt-textarea\" id=\"description-textarea\">Texto de ejemplo para documentación.</textarea>\n  <small class=\"bt-help\">Máximo recomendado: 240 caracteres.</small>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "tooltips",
+      "group": "Feedback",
+      "icon": "?",
+      "title": "Tooltips",
+      "description": "Ayuda contextual breve al pasar el cursor o enfocar.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Tooltip en botón",
+          "block": false,
+          "note": null,
+          "html": "<span class=\"bt-tooltip\" data-tooltip=\"Crear nuevo elemento\">\n  <button class=\"bt-icon-button\" aria-label=\"Crear\"><span class=\"bt-icon\">＋</span></button>\n</span>"
+        },
+        {
+          "title": "Tooltip en texto",
+          "block": false,
+          "note": null,
+          "html": "<span class=\"bt-tooltip\" data-tooltip=\"Información adicional\">\n  <span class=\"bt-status bt-status--info\">Hover me</span>\n</span>"
+        }
+      ]
+    },
+    {
+      "id": "typography",
+      "group": "Foundations",
+      "icon": "T",
+      "title": "Typography",
+      "description": "Escala tipográfica editable desde tokens CSS.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Headings",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-stack\">\n  <h1>Heading 1</h1>\n  <h2>Heading 2</h2>\n  <h3>Heading 3</h3>\n  <p class=\"bt-lead\">Lead paragraph para introducciones importantes.</p>\n  <p>Texto base para contenidos habituales de producto y documentación.</p>\n</div>"
+        },
+        {
+          "title": "Eyebrow and muted text",
+          "block": true,
+          "note": null,
+          "html": "<p class=\"bt-eyebrow\">Bluetab label</p>\n<h3>Contenido destacado</h3>\n<p class=\"bt-muted\">Texto secundario con menor énfasis visual.</p>"
+        }
+      ]
+    }
+  ]
+}

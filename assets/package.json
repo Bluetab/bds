@@ -27,7 +27,8 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "npm run build:lib",
-    "build:lib": "vite build --config vite.lib.config.js",
+    "build:lib": "vite build --config vite.lib.config.js && node scripts/export-catalog.mjs",
+    "export:catalog": "node scripts/export-catalog.mjs",
     "build:docs": "vite build --outDir dist-docs",
     "preview": "vite preview",
     "prepublishOnly": "npm run build:lib"

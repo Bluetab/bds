@@ -22,6 +22,8 @@ defmodule Bds do
       use Bds, :html
 
   Ash Authentication Phoenix sign-in UI: `Bds.AuthBanner`, `Bds.AuthUi`.
+
+  Component catalog metadata for storybook apps: `Bds.Catalog` (from `priv/catalog.json`).
   """
 
   @doc "OTP application root for `:bds`."

@@ -27,6 +27,7 @@ defmodule Bds.MixProject do
 
   defp deps do
     [
+      {:jason, "~> 1.4"},
       {:phoenix_html, "~> 4.0"},
       {:phoenix_live_view, "~> 1.0"},
       {:phoenix, "~> 1.7", optional: true},
@@ -36,7 +37,7 @@ defmodule Bds.MixProject do
 
   defp aliases do
     [
-      setup: ["deps.get", "assets.setup", "bds.sync_assets"],
+      setup: ["deps.get", "assets.setup", "cmd --cd assets npm run export:catalog", "bds.sync_assets"],
       "assets.setup": ["cmd --cd assets npm install"],
       "assets.build": ["cmd --cd assets npm run build:lib", "bds.sync_assets"],
       "assets.dev": ["cmd --cd assets npm run dev"],
@@ -49,7 +50,7 @@ defmodule Bds.MixProject do
       maintainers: ["Bluetab"],
       licenses: ["UNLICENSED"],
       links: %{"GitHub" => @source_url},
-      files: ~w(lib priv mix.exs README.md .formatter.exs)
+      files: ~w(lib priv mix.exs README.md .formatter.exs assets/src/catalog.js)
     ]
   end
 
@@ -67,6 +68,16 @@ defmodule Bds.MixProject do
     priv = Path.join(__DIR__, "priv/static")
     fonts_src = Path.join(__DIR__, "assets/src/fonts")
     fonts_dest = Path.join(priv, "fonts")
+
+    catalog_json = Path.join(__DIR__, "priv/catalog.json")
+
+    unless File.exists?(catalog_json) do
+      Mix.shell().error("""
+      Missing #{catalog_json}. Run:
+
+          mix cmd --cd assets npm run export:catalog
+      """)
+    end
 
     for {src, dest} <- [
           {"bds.css", "bds.css"},

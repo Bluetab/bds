@@ -1,0 +1,35 @@
+defmodule Bds.CatalogTest do
+  use ExUnit.Case, async: true
+
+  alias Bds.Catalog
+
+  test "loads catalog with expected default" do
+    assert Catalog.default_id() == "get-started"
+    assert length(Catalog.components()) >= 30
+    assert Catalog.get!("buttons")["title"] == "Buttons"
+    refute Catalog.valid_id?("not-a-component")
+  end
+
+  test "components_in_group/2 filters by title" do
+    matches = Catalog.components_in_group("Componentes", "button")
+    assert Enum.any?(matches, &(&1["id"] == "buttons"))
+    refute Enum.any?(matches, &(&1["id"] == "tables"))
+  end
+
+  test "normalize_snippet/1 trims whitespace" do
+    assert Catalog.normalize_snippet("\n  <button></button>\n") == "<button></button>"
+  end
+
+  test "example_html/1 returns snippet by ref" do
+    html = Catalog.example_html("buttons:0")
+    assert html =~ "bt-button"
+  end
+
+  test "highlight_html/1 escapes and highlights tags" do
+    highlighted = Catalog.highlight_html("<button class=\"bt-button\">")
+    rendered = Phoenix.HTML.safe_to_string(highlighted)
+    assert rendered =~ "bt-code__tag"
+    assert rendered =~ "bt-button"
+    refute rendered =~ "<button"
+  end
+end

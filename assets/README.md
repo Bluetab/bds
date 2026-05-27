@@ -117,10 +117,11 @@ src/
 Los ejemplos del catálogo están definidos en:
 
 ```text
+src/catalog.js
 src/main.js
 ```
 
-Busca el array `COMPONENTS`. Cada componente sigue esta forma:
+Busca el array `COMPONENTS` en `src/catalog.js` (exportado también a `priv/catalog.json` para Phoenix). Cada componente sigue esta forma:
 
 ```js
 {
