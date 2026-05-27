@@ -1,3 +1,29 @@
+/* Phoenix / daisyUI flash_group toasts — above .bt-topbar (z-index 220) */
+.bt-flash-group {
+  position: fixed;
+  top: var(--bt-space-4);
+  right: var(--bt-space-4);
+  z-index: var(--bt-z-flash);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--bt-space-2);
+  max-width: min(90vw, 24rem);
+  pointer-events: none;
+}
+
+.bt-flash-group > * {
+  pointer-events: auto;
+}
+
+/* Stack inside the group instead of each toast fixing to the viewport */
+.bt-flash-group .toast {
+  position: relative;
+  inset: auto;
+  transform: none;
+  z-index: auto;
+}
+
 .bt-toast { position: fixed; left: 50%; bottom: var(--bt-space-5); z-index: 200; min-width: 16rem; max-width: min(90vw, 28rem); padding: var(--bt-space-3) var(--bt-space-4); border-radius: var(--bt-radius-pill); background: var(--bt-color-text); color: var(--bt-color-background); box-shadow: var(--bt-shadow-md); text-align: center; transform: translate(-50%, 1rem); opacity: 0; pointer-events: none; transition: opacity var(--bt-duration-base), transform var(--bt-duration-base); }
 .bt-toast[data-visible="true"] { opacity: 1; transform: translate(-50%, 0); }
 .bt-snackbar { position: fixed; left: 50%; bottom: var(--bt-space-5); z-index: 110; display: none; gap: var(--bt-space-3); align-items: center; min-width: 18rem; padding: var(--bt-space-3) var(--bt-space-4); border-radius: var(--bt-radius-md); background: var(--bt-color-text); color: var(--bt-color-background); box-shadow: var(--bt-shadow-md); transform: translateX(-50%); }

@@ -1,0 +1,91 @@
+/* Ash Authentication Phoenix sign-in banner (AuthOverrides + Banner component) */
+
+.bt-auth-banner {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bt-space-4);
+  padding-block: var(--bt-space-6);
+}
+
+.bt-auth-banner__logo {
+  width: auto;
+  height: clamp(2.75rem, 4vw, 4rem);
+  max-width: min(18rem, 72vw);
+}
+
+.bt-auth-banner__logo--dark {
+  display: none;
+}
+
+html[data-theme="dark"] .bt-auth-banner__logo--light {
+  display: none;
+}
+
+html[data-theme="dark"] .bt-auth-banner__logo--dark {
+  display: block;
+}
+
+.bt-auth-banner__title,
+.bt-auth-banner__title-link {
+  font-family: var(--bt-font-family);
+  font-size: clamp(3rem, 3.5vw, 3rem);
+  font-weight: 900;
+  line-height: var(--bt-line-height-tight);
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: var(--bt-color-text);
+  text-decoration: none;
+}
+
+.bt-auth-banner__title-link:hover {
+  opacity: 0.85;
+}
+
+/* OAuth / social sign-in (AshAuthentication.Phoenix.Components.OAuth2) */
+
+.bt-auth-oauth {
+  width: 100%;
+  margin-block: var(--bt-space-2) var(--bt-space-4);
+}
+
+.bt-auth-oauth-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bt-space-2);
+  width: 100%;
+  min-height: 2.5rem;
+  padding: var(--bt-space-2) var(--bt-space-4);
+  border: 1px solid var(--bt-color-border);
+  border-radius: var(--bt-radius-md);
+  background: var(--bt-color-surface-soft);
+  color: var(--bt-color-text);
+  font-family: var(--bt-font-family);
+  font-size: var(--bt-font-size-sm);
+  font-weight: 600;
+  line-height: 1.25;
+  text-decoration: none;
+  box-shadow: var(--bt-shadow-xs);
+  transition:
+    background var(--bt-duration-fast) var(--bt-ease),
+    border-color var(--bt-duration-fast) var(--bt-ease),
+    color var(--bt-duration-fast) var(--bt-ease);
+}
+
+.bt-auth-oauth-link:hover {
+  background: var(--bt-color-surface-muted);
+  border-color: var(--bt-color-border-strong);
+}
+
+.bt-auth-oauth-link:focus-visible {
+  outline: 2px solid var(--bt-color-primary);
+  outline-offset: 2px;
+}
+
+.bt-auth-oauth-link__icon {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+}

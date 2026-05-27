@@ -115,7 +115,7 @@ html[data-theme="dark"] .bt-brand__logo--dark {display: block;}
 }
 
 .bt-navbar-logo-img {
-  height: clamp(0.88rem, 0.86vw, 1.08rem);
+  height: clamp(2rem, 2.2vw, 2.75rem);
   width: auto;
 }
 
@@ -419,7 +419,7 @@ html[data-theme="dark"] .bt-brand__logo--dark {display: block;}
   }
 
   .bt-navbar-logo-link { font-size: 0.9rem; gap: 0.28rem; }
-  .bt-navbar-logo-img { height: 0.95rem; }
+  .bt-navbar-logo-img { height: 1.75rem; }
 
   .bt-navbar-user__meta,
   .bt-navbar-user__chevron,

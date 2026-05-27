@@ -89,6 +89,9 @@
   --bt-content-max-width: 76rem;
   --bt-panel-width: min(46rem, 92vw);
 
+  /* Stacking (topbar 220, user menu 230 — flash above chrome) */
+  --bt-z-flash: 240;
+
   /* Motion */
   --bt-ease: cubic-bezier(.2, .8, .2, 1);
   --bt-ease-emphasis: cubic-bezier(0.22, 1, 0.36, 1);

@@ -3,31 +3,50 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Bluetab Design System - catálogo de componentes" />
+    <meta
+      name="description"
+      content="Bluetab Design System - catálogo de componentes"
+    />
     <title>Bluetab Design System</title>
     <script type="module" src="/src/main.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="bt-shell">
       <aside class="bt-sidebar" aria-label="Navegación de componentes">
-        <a class="bt-brand" href="#get-started" data-nav-link="get-started" aria-label="Bluetab Design System">
-          <img 
-  class="bt-brand__logo bt-brand__logo--light" 
-  src="/src/assets/logo-bluetab-light.svg" 
-  alt="" 
-/>
+        <a
+          class="bt-brand"
+          href="#get-started"
+          data-nav-link="get-started"
+          aria-label="Bluetab Design System"
+        >
+          <img
+            class="bt-brand__logo bt-brand__logo--light"
+            src="/src/assets/logo-bluetab-light.svg"
+            alt=""
+          />
 
-<img 
-  class="bt-brand__logo bt-brand__logo--dark" 
-  src="/src/assets/logo-bluetab-dark.svg" 
-  alt="" 
-/>
-          
+          <img
+            class="bt-brand__logo bt-brand__logo--dark"
+            src="/src/assets/logo-bluetab-dark.svg"
+            alt=""
+          />
         </a>
-<p class="bt-eyebrow">Bluetab DS / Catálogo HTML + CSS</p>
+        <p class="bt-eyebrow">Bluetab DS / Catálogo HTML + CSS</p>
         <div class="bt-sidebar__search" role="search">
           <span class="bt-icon" aria-hidden="true">⌕</span>
-          <input id="component-search" type="search" placeholder="Buscar componente" autocomplete="off" />
+          <input
+            id="component-search"
+            type="search"
+            placeholder="Buscar componente"
+            autocomplete="off"
+          />
         </div>
 
         <nav id="sidebar-nav" class="bt-sidebar__nav"></nav>
@@ -35,16 +54,29 @@
 
       <div class="bt-main-wrap">
         <header class="bt-topbar">
-          <button class="bt-icon-button bt-sidebar-toggle" type="button" data-toggle-sidebar aria-label="Mostrar u ocultar menú">
+          <button
+            class="bt-icon-button bt-sidebar-toggle"
+            type="button"
+            data-toggle-sidebar
+            aria-label="Mostrar u ocultar menú"
+          >
             <span class="bt-icon">☰</span>
           </button>
-          <div>
-          </div>
+          <div></div>
           <div class="bt-topbar__actions">
-            <button class="bt-button bt-button--ghost" type="button" data-open-panel="tokens">
+            <button
+              class="bt-button bt-button--ghost"
+              type="button"
+              data-open-panel="tokens"
+            >
               Tokens CSS
             </button>
-            <button class="bt-icon-button" type="button" data-theme-toggle aria-label="Cambiar tema">
+            <button
+              class="bt-icon-button"
+              type="button"
+              data-theme-toggle
+              aria-label="Cambiar tema"
+            >
               <span class="bt-icon" data-theme-icon>◐</span>
             </button>
           </div>
@@ -61,8 +93,19 @@
           <h2 data-doc-title>Componente</h2>
         </div>
         <div class="bt-doc-panel__actions">
-          <button class="bt-button bt-button--secondary" type="button" data-copy-current>Copiar todo</button>
-          <button class="bt-icon-button" type="button" data-close-panel aria-label="Cerrar panel">
+          <button
+            class="bt-button bt-button--secondary"
+            type="button"
+            data-copy-current
+          >
+            Copiar todo
+          </button>
+          <button
+            class="bt-icon-button"
+            type="button"
+            data-close-panel
+            aria-label="Cerrar panel"
+          >
             <span class="bt-icon">×</span>
           </button>
         </div>

@@ -20,6 +20,8 @@ defmodule Bds do
   Or in your web module:
 
       use Bds, :html
+
+  Ash Authentication Phoenix sign-in UI: `Bds.AuthBanner`, `Bds.AuthUi`.
   """
 
   @doc "OTP application root for `:bds`."
