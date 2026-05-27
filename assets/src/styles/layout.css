@@ -72,8 +72,6 @@
 }
 .bt-main-wrap { min-width: 0; }
 .bt-main { width: min(100%, var(--bt-content-max-width)); margin-inline: auto; padding: var(--bt-space-6); }
-.bt-topbar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: var(--bt-space-4); padding: var(--bt-space-4) var(--bt-space-6); background: color-mix(in srgb, var(--bt-color-background), transparent 8%); backdrop-filter: blur(16px); }
-.bt-topbar__actions { display: flex; align-items: center; gap: var(--bt-space-2); }
 .bt-sidebar-toggle { display: none !important; }
 .bt-hero { display: grid; gap: var(--bt-space-5); padding: var(--bt-space-6); margin-bottom: var(--bt-space-6); border-radius: var(--bt-radius-xl); background: radial-gradient(circle at top left, var(--bt-color-primary-soft), transparent 34%), linear-gradient(135deg, var(--bt-color-surface), var(--bt-color-surface-soft)); box-shadow: var(--bt-shadow-sm); }
 .bt-section { scroll-margin-top: 7rem; margin-block-end: var(--bt-space-8); }
@@ -105,14 +103,31 @@
     grid-column: 1;
     grid-row: 2;
   }
-  .bt-sidebar { position: fixed; transform: translateX(-105%); transition: transform var(--bt-duration-base) var(--bt-ease); }
+  .bt-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 50;
+    width: var(--bt-sidebar-width);
+    max-width: min(var(--bt-sidebar-width), 92vw);
+    height: 100dvh;
+    transform: translateX(-105%);
+    transition: transform var(--bt-duration-base) var(--bt-ease);
+    box-shadow: var(--bt-shadow-lg);
+  }
+
+  .bt-shell.bt-shell--storybook > .bt-sidebar {
+    top: 3.375rem;
+    height: calc(100dvh - 3.375rem);
+  }
+
   body.bt-sidebar-open .bt-sidebar { transform: translateX(0); }
   .bt-sidebar-toggle { display: inline-flex !important; }
-  .bt-topbar { padding: var(--bt-space-3) var(--bt-space-4); }
   .bt-main { padding: var(--bt-space-4); }
   .bt-example--half,
   .bt-example--third,
   .bt-card--half,
   .bt-card--third { grid-column: span 12; }
 }
-@media (max-width: 640px) { .bt-topbar { align-items: flex-start; } .bt-topbar__actions { flex-wrap: wrap; justify-content: flex-end; } .bt-section__header { align-items: flex-start; flex-direction: column; } }
+@media (max-width: 640px) { .bt-section__header { align-items: flex-start; flex-direction: column; } }

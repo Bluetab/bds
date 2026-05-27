@@ -28,6 +28,26 @@ For apps **without a sidebar** (topbar stacked above main), add `bt-shell--app`:
 
 Without `bt-shell--app`, the first child is placed in the narrow sidebar column (~280px).
 
+### Top navbar
+
+Production apps use the gradient topbar with orange border. In Phoenix:
+
+```heex
+<.bt_topbar>
+  <:brand>
+    <.bt_navbar_logo_link navigate={~p"/"} logo_src={~p"/images/slash_logo_white.png"}>
+      My App
+    </.bt_navbar_logo_link>
+  </:brand>
+  <:actions>
+    <.bt_navbar_theme_toggle />
+    <.bt_navbar_user_menu name="…" role="…" initials="…">
+      …dropdown items with class="bt-navbar-menu-item"…
+    </.bt_navbar_user_menu>
+  </:actions>
+</.bt_topbar>
+```
+
 For **storybook / catalog** layouts (full-width topbar above sidebar + main), use `bt-shell--storybook` and place the topbar as the **first** child:
 
 ```html
@@ -39,6 +59,8 @@ For **storybook / catalog** layouts (full-width topbar above sidebar + main), us
   </div>
 </div>
 ```
+
+On viewports below 980px, add a topbar control with `data-toggle-sidebar` (class `bt-sidebar-toggle`). `initBtInteractions()` toggles `body.bt-sidebar-open` so the fixed sidebar slides in at `--bt-sidebar-width` (not full viewport width). In `bt-shell--storybook`, the drawer sits below the topbar.
 
 ## Grid: `bt-example-grid`
 

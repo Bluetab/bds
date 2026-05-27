@@ -96,6 +96,14 @@ function u(n = {}) {
 			e && (e.dataset.open = "false");
 			return;
 		}
+		if (e.target.closest("[data-toggle-sidebar]")) {
+			s.body.classList.toggle("bt-sidebar-open");
+			return;
+		}
+		if (s.body.classList.contains("bt-sidebar-open") && e.target.closest(".bt-sidebar a, .bt-sidebar .bt-nav-link")) {
+			s.body.classList.remove("bt-sidebar-open");
+			return;
+		}
 		let _ = e.target.closest("[data-tab]");
 		if (_) {
 			let e = _.closest("[data-tabs]");

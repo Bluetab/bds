@@ -49,6 +49,7 @@ Supported data attributes:
 - `data-snackbar-open` / `data-snackbar-close`
 - `data-tab`
 - `data-theme-toggle` (with `[data-theme-icon]` inside the toggle)
+- `data-toggle-sidebar` (toggles `body.bt-sidebar-open` for mobile sidebar shells)
 
 ## 4) Use component classes in HEEx
 

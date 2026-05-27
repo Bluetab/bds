@@ -1,9 +1,10 @@
-import './styles/main.css';
+import "./styles/main.css";
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-const icon = (value) => `<span class="bt-icon" aria-hidden="true">${value}</span>`;
+const icon = (value) =>
+  `<span class="bt-icon" aria-hidden="true">${value}</span>`;
 
 const snippets = {
   tokens: String.raw`:root {
@@ -114,16 +115,23 @@ html[data-theme="dark"] {
   --bt-color-warning-soft: #3d2d10;
   --bt-color-error-soft: #3d1f22;
   --bt-color-info-soft: #142e4e;
-}`
+}`,
 };
 
 const COMPONENTS = [
   {
-    id: 'get-started', group: 'Inicio', icon: '<>', title: 'Get started',
-    description: 'Base HTML, CSS y JavaScript para crear un Design System Bluetab propio.',
+    id: "get-started",
+    group: "Inicio",
+    icon: "<>",
+    title: "Get started",
+    description:
+      "Base HTML, CSS y JavaScript para crear un Design System Bluetab propio.",
     intro: true,
     examples: [
-      { title: 'Estructura recomendada', block: true, html: String.raw`<div class="bt-card bt-card--filled">
+      {
+        title: "Estructura recomendada",
+        block: true,
+        html: String.raw`<div class="bt-card bt-card--filled">
   <h3>Arquitectura del proyecto</h3>
   <p>Modifica primero <code class="bt-code-inline">src/styles/tokens.css</code>. Después ajusta cada componente en <code class="bt-code-inline">src/styles/components/</code>.</p>
   <div class="bt-code-block">
@@ -133,217 +141,333 @@ src/styles/components/forms.css
 src/styles/components/tables.css
 src/main.js</pre>
   </div>
-</div>` },
-      { title: 'Botón de ejemplo Bluetab', html: String.raw`<button class="bt-button">
+</div>`,
+      },
+      {
+        title: "Botón de ejemplo Bluetab",
+        html: String.raw`<button class="bt-button">
   <span>Guardar cambios</span>
 </button>
 <button class="bt-button bt-button--outline">
   <span>Cancelar</span>
-</button>` }
-    ]
+</button>`,
+      },
+    ],
   },
   {
-    id: 'app-bars', group: 'Componentes', icon: '▣', title: 'App bars',
-    description: 'Barras superiores e inferiores para navegación, acciones contextuales y estado de una pantalla.',
+    id: "app-bars",
+    group: "Componentes",
+    icon: "▣",
+    title: "App bars",
+    description:
+      "Barras superiores e inferiores para navegación, acciones contextuales y estado de una pantalla.",
     examples: [
-      { title: 'Top app bar', html: String.raw`<header class="bt-appbar">
+      {
+        title: "Top app bar",
+        html: String.raw`<header class="bt-appbar">
   <button class="bt-icon-button" aria-label="Menú"><span class="bt-icon">☰</span></button>
   <strong>Proyecto Bluetab</strong>
   <span class="bt-spacer"></span>
   <button class="bt-icon-button" aria-label="Buscar"><span class="bt-icon">⌕</span></button>
   <button class="bt-icon-button" aria-label="Usuario"><span class="bt-icon">◎</span></button>
-</header>` },
-      { title: 'Primary app bar', html: String.raw`<header class="bt-appbar bt-appbar--primary">
+</header>`,
+      },
+      {
+        title: "Primary app bar",
+        html: String.raw`<header class="bt-appbar bt-appbar--primary">
   <button class="bt-icon-button bt-icon-button--primary" aria-label="Volver"><span class="bt-icon">←</span></button>
   <strong>Analytics Dashboard</strong>
   <span class="bt-spacer"></span>
   <button class="bt-button bt-button--secondary">Publicar</button>
-</header>` },
-      { title: 'Bottom navigation bar', block: true, html: String.raw`<nav class="bt-bottom-nav" aria-label="Navegación inferior">
+</header>`,
+      },
+      {
+        title: "Bottom navigation bar",
+        block: true,
+        html: String.raw`<nav class="bt-bottom-nav" aria-label="Navegación inferior">
   <a href="#" aria-current="page"><span class="bt-icon">⌂</span><span>Home</span></a>
   <a href="#"><span class="bt-icon">▦</span><span>Apps</span></a>
   <a href="#"><span class="bt-icon">☷</span><span>Datos</span></a>
   <a href="#"><span class="bt-icon">⚙</span><span>Ajustes</span></a>
-</nav>` }
-    ]
+</nav>`,
+      },
+    ],
   },
   {
-    id: 'badges', group: 'Componentes', icon: '◈', title: 'Badges',
-    description: 'Indicadores numéricos o visuales para notificaciones, estados y elementos pendientes.',
+    id: "badges",
+    group: "Componentes",
+    icon: "◈",
+    title: "Badges",
+    description:
+      "Indicadores numéricos o visuales para notificaciones, estados y elementos pendientes.",
     examples: [
-      { title: 'Badge dot', html: String.raw`<span class="bt-badge-wrap">
+      {
+        title: "Badge dot",
+        html: String.raw`<span class="bt-badge-wrap">
   <span class="bt-icon">⌂</span>
   <span class="bt-badge bt-badge--dot"></span>
-</span>` },
-      { title: 'Badge con número', html: String.raw`<span class="bt-badge-wrap">
+</span>`,
+      },
+      {
+        title: "Badge con número",
+        html: String.raw`<span class="bt-badge-wrap">
   <span class="bt-icon">⌂</span>
   <span class="bt-badge">10</span>
-</span>` },
-      { title: 'Badge inline', html: String.raw`<button class="bt-button">
+</span>`,
+      },
+      {
+        title: "Badge inline",
+        html: String.raw`<button class="bt-button">
   <span>Alertas</span>
   <span class="bt-badge bt-badge--inline">3</span>
 </button>
 <button class="bt-button bt-button--secondary">
   <span>Procesos</span>
   <span class="bt-badge bt-badge--inline bt-badge--success">OK</span>
-</button>` }
-    ]
+</button>`,
+      },
+    ],
   },
   {
-    id: 'buttons', group: 'Componentes', icon: '▣', title: 'Buttons',
-    description: 'Acciones principales, secundarias, terciarias, de icono y FAB.',
+    id: "buttons",
+    group: "Componentes",
+    icon: "▣",
+    title: "Buttons",
+    description:
+      "Acciones principales, secundarias, terciarias, de icono y FAB.",
     examples: [
-      { title: 'Common buttons', html: String.raw`<button class="bt-button">Primary</button>
+      {
+        title: "Common buttons",
+        html: String.raw`<button class="bt-button">Primary</button>
 <button class="bt-button bt-button--secondary">Secondary</button>
 <button class="bt-button bt-button--tertiary">Tertiary</button>
 <button class="bt-button bt-button--outline">Outline</button>
-<button class="bt-button bt-button--ghost">Ghost</button>` },
-      { title: 'Button sizes', html: String.raw`<button class="bt-button bt-button--sm">Small</button>
+<button class="bt-button bt-button--ghost">Ghost</button>`,
+      },
+      {
+        title: "Button sizes",
+        html: String.raw`<button class="bt-button bt-button--sm">Small</button>
 <button class="bt-button">Medium</button>
-<button class="bt-button bt-button--lg">Large</button>` },
-      { title: 'Icon buttons', html: String.raw`<button class="bt-icon-button" aria-label="Buscar"><span class="bt-icon">⌕</span></button>
+<button class="bt-button bt-button--lg">Large</button>`,
+      },
+      {
+        title: "Icon buttons",
+        html: String.raw`<button class="bt-icon-button" aria-label="Buscar"><span class="bt-icon">⌕</span></button>
 <button class="bt-icon-button bt-icon-button--primary" aria-label="Guardar"><span class="bt-icon">✓</span></button>
 <button class="bt-fab" aria-label="Crear"><span class="bt-icon">＋</span></button>
-<button class="bt-fab bt-fab--extended"><span class="bt-icon">＋</span><span>Crear</span></button>` },
-      { title: 'Segmented buttons', html: String.raw`<div class="bt-segmented" role="group" aria-label="Vista">
+<button class="bt-fab bt-fab--extended"><span class="bt-icon">＋</span><span>Crear</span></button>`,
+      },
+      {
+        title: "Segmented buttons",
+        html: String.raw`<div class="bt-segmented" role="group" aria-label="Vista">
   <button type="button" aria-pressed="true">Día</button>
   <button type="button" aria-pressed="false">Semana</button>
   <button type="button" aria-pressed="false">Mes</button>
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'cards', group: 'Componentes', icon: '▧', title: 'Cards',
-    description: 'Contenedores de contenido con variantes elevadas, rellenas, con media y acciones.',
+    id: "cards",
+    group: "Componentes",
+    icon: "▧",
+    title: "Cards",
+    description:
+      "Contenedores de contenido con variantes elevadas, rellenas, con media y acciones.",
     examples: [
-      { title: 'Outlined card', block: true, html: String.raw`<article class="bt-card">
+      {
+        title: "Outlined card",
+        block: true,
+        html: String.raw`<article class="bt-card">
   <h3>Card estándar</h3>
   <p>Úsala para agrupar información relacionada dentro de una pantalla.</p>
   <div class="bt-card__actions">
     <button class="bt-button bt-button--ghost">Ver más</button>
     <button class="bt-button">Aceptar</button>
   </div>
-</article>` },
-      { title: 'Elevated card', block: true, html: String.raw`<article class="bt-card bt-card--elevated">
+</article>`,
+      },
+      {
+        title: "Elevated card",
+        block: true,
+        html: String.raw`<article class="bt-card bt-card--elevated">
   <div class="bt-card__media"></div>
   <h3>Data product</h3>
   <p>Tarjeta con bloque visual, sombra y acciones.</p>
-</article>` },
-      { title: 'Filled / Primary cards', block: true, html: String.raw`<article class="bt-card bt-card--filled">
+</article>`,
+      },
+      {
+        title: "Filled / Primary cards",
+        block: true,
+        html: String.raw`<article class="bt-card bt-card--filled">
   <h3>Filled card</h3>
   <p>Para secciones suaves o agrupaciones secundarias.</p>
 </article>
 <article class="bt-card bt-card--primary">
   <h3>Primary card</h3>
   <p>Para mensajes destacados de producto o marca.</p>
-</article>` }
-    ]
+</article>`,
+      },
+    ],
   },
   {
-    id: 'checkboxes', group: 'Formularios', icon: '☑', title: 'Checkboxes',
-    description: 'Selección múltiple en formularios, filtros y configuraciones.',
+    id: "checkboxes",
+    group: "Formularios",
+    icon: "☑",
+    title: "Checkboxes",
+    description:
+      "Selección múltiple en formularios, filtros y configuraciones.",
     examples: [
-      { title: 'Checkbox básico', html: String.raw`<label class="bt-checkbox">
+      {
+        title: "Checkbox básico",
+        html: String.raw`<label class="bt-checkbox">
   <input type="checkbox" />
   <span>Acepto condiciones</span>
 </label>
 <label class="bt-checkbox">
   <input type="checkbox" checked />
   <span>Enviar copia</span>
-</label>` },
-      { title: 'Checkbox disabled', html: String.raw`<label class="bt-checkbox">
+</label>`,
+      },
+      {
+        title: "Checkbox disabled",
+        html: String.raw`<label class="bt-checkbox">
   <input type="checkbox" disabled />
   <span>Opción no disponible</span>
 </label>
 <label class="bt-checkbox">
   <input type="checkbox" checked disabled />
   <span>Opción obligatoria</span>
-</label>` }
-    ]
+</label>`,
+      },
+    ],
   },
   {
-    id: 'chips', group: 'Componentes', icon: '◌', title: 'Chips',
-    description: 'Etiquetas compactas para filtros, selección, metadatos o acciones rápidas.',
-    examples: [
-      { title: 'Common chips', html: String.raw`<span class="bt-chip">Data</span>
-<span class="bt-chip bt-chip--selected">Selected</span>
-<span class="bt-chip bt-chip--outline">Outline</span>
-<button class="bt-chip"><span class="bt-icon">＋</span> Añadir filtro</button>` },
-      { title: 'Status chips', html: String.raw`<span class="bt-status bt-status--success">Activo</span>
-<span class="bt-status bt-status--warning">Pendiente</span>
-<span class="bt-status bt-status--error">Error</span>
-<span class="bt-status bt-status--info">Info</span>` }
-    ]
-  },
-  {
-    id: 'code', group: 'Foundations', icon: '{}', title: 'Code',
-    description: 'Código inline en prosa y bloques multilínea. No mezclar clases.',
+    id: "chips",
+    group: "Componentes",
+    icon: "◌",
+    title: "Chips",
+    description:
+      "Etiquetas compactas para filtros, selección, metadatos o acciones rápidas.",
     examples: [
       {
-        title: 'Inline en prosa',
+        title: "Common chips",
+        html: String.raw`<span class="bt-chip">Data</span>
+<span class="bt-chip bt-chip--selected">Selected</span>
+<span class="bt-chip bt-chip--outline">Outline</span>
+<button class="bt-chip"><span class="bt-icon">＋</span> Añadir filtro</button>`,
+      },
+      {
+        title: "Status chips",
+        html: String.raw`<span class="bt-status bt-status--success">Activo</span>
+<span class="bt-status bt-status--warning">Pendiente</span>
+<span class="bt-status bt-status--error">Error</span>
+<span class="bt-status bt-status--info">Info</span>`,
+      },
+    ],
+  },
+  {
+    id: "code",
+    group: "Foundations",
+    icon: "{}",
+    title: "Code",
+    description:
+      "Código inline en prosa y bloques multilínea. No mezclar clases.",
+    examples: [
+      {
+        title: "Inline en prosa",
         block: true,
         html: String.raw`<p class="bt-muted">
   Menciona clases con <code class="bt-code-inline">bt-button</code> o rutas con
   <code class="bt-code-inline bt-code-inline--wrap">docs/how-to-use-design-system.md</code>.
-</p>`
+</p>`,
       },
       {
-        title: 'Bloque multilínea',
+        title: "Bloque multilínea",
         block: true,
         html: String.raw`<div class="bt-code-block">
   <pre class="bt-code"><code>@import "bluetab-design-system/styles.css";
 
 import { initBtInteractions } from "bluetab-design-system/interactions";
 initBtInteractions();</code></pre>
-</div>`
+</div>`,
       },
       {
-        title: 'Cards en bt-example-grid',
+        title: "Cards en bt-example-grid",
         block: true,
         html: String.raw`<div class="bt-example-grid">
   <article class="bt-card bt-card--elevated bt-card--third">A</article>
   <article class="bt-card bt-card--filled bt-card--third">B</article>
   <article class="bt-card bt-card--third">C</article>
-</div>`
-      }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'colors', group: 'Foundations', icon: '◍', title: 'Colors',
-    description: 'Paleta base editable desde tokens CSS.',
+    id: "colors",
+    group: "Foundations",
+    icon: "◍",
+    title: "Colors",
+    description: "Paleta base editable desde tokens CSS.",
     examples: [
-      { title: 'Brand colors', block: true, html: String.raw`<div class="bt-color-grid">
+      {
+        title: "Brand colors",
+        block: true,
+        html: String.raw`<div class="bt-color-grid">
   <div class="bt-color-swatch"><div class="bt-color-swatch__color" style="--swatch: var(--bt-color-primary)"></div><div class="bt-color-swatch__text">Primary</div></div>
   <div class="bt-color-swatch"><div class="bt-color-swatch__color" style="--swatch: var(--bt-color-secondary)"></div><div class="bt-color-swatch__text">Secondary</div></div>
   <div class="bt-color-swatch"><div class="bt-color-swatch__color" style="--swatch: var(--bt-color-tertiary)"></div><div class="bt-color-swatch__text">Tertiary</div></div>
   <div class="bt-color-swatch"><div class="bt-color-swatch__color" style="--swatch: var(--bt-color-surface-muted)"></div><div class="bt-color-swatch__text">Surface</div></div>
-</div>` },
-      { title: 'Semantic colors', block: true, html: String.raw`<div class="bt-row">
+</div>`,
+      },
+      {
+        title: "Semantic colors",
+        block: true,
+        html: String.raw`<div class="bt-row">
   <span class="bt-status bt-status--success">Success</span>
   <span class="bt-status bt-status--warning">Warning</span>
   <span class="bt-status bt-status--error">Error</span>
   <span class="bt-status bt-status--info">Info</span>
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'containers', group: 'Layout', icon: '▤', title: 'Containers',
-    description: 'Bloques estructurales para agrupar contenido y controlar densidad.',
+    id: "containers",
+    group: "Layout",
+    icon: "▤",
+    title: "Containers",
+    description:
+      "Bloques estructurales para agrupar contenido y controlar densidad.",
     examples: [
-      { title: 'Default container', block: true, html: String.raw`<section class="bt-container">
+      {
+        title: "Default container",
+        block: true,
+        html: String.raw`<section class="bt-container">
   <h3>Container</h3>
   <p>Bloque reutilizable para documentación, paneles y zonas de contenido.</p>
-</section>` },
-      { title: 'Compact container', block: true, html: String.raw`<section class="bt-container bt-container--compact">
+</section>`,
+      },
+      {
+        title: "Compact container",
+        block: true,
+        html: String.raw`<section class="bt-container bt-container--compact">
   <p>Container compacto con menos padding.</p>
-</section>` }
-    ]
+</section>`,
+      },
+    ],
   },
   {
-    id: 'dialogs', group: 'Componentes', icon: '□', title: 'Dialogs',
-    description: 'Ventanas modales para confirmaciones, mensajes críticos o acciones bloqueantes.',
+    id: "dialogs",
+    group: "Componentes",
+    icon: "□",
+    title: "Dialogs",
+    description:
+      "Ventanas modales para confirmaciones, mensajes críticos o acciones bloqueantes.",
     examples: [
-      { title: 'Dialog básico', html: String.raw`<button class="bt-button" data-dialog-open="dialog-basic">Abrir dialog</button>
+      {
+        title: "Dialog básico",
+        html: String.raw`<button class="bt-button" data-dialog-open="dialog-basic">Abrir dialog</button>
 <div class="bt-dialog" id="dialog-basic" role="dialog" aria-modal="true" aria-labelledby="dialog-basic-title">
   <div class="bt-dialog__surface">
     <h3 id="dialog-basic-title">Confirmar acción</h3>
@@ -353,8 +477,11 @@ initBtInteractions();</code></pre>
       <button class="bt-button" data-dialog-close>Aceptar</button>
     </div>
   </div>
-</div>` },
-      { title: 'Alert dialog', html: String.raw`<button class="bt-button bt-button--danger" data-dialog-open="dialog-alert">Eliminar</button>
+</div>`,
+      },
+      {
+        title: "Alert dialog",
+        html: String.raw`<button class="bt-button bt-button--danger" data-dialog-open="dialog-alert">Eliminar</button>
 <div class="bt-dialog" id="dialog-alert" role="alertdialog" aria-modal="true">
   <div class="bt-dialog__surface">
     <h3>Eliminar registro</h3>
@@ -364,51 +491,83 @@ initBtInteractions();</code></pre>
       <button class="bt-button bt-button--danger" data-dialog-close>Eliminar</button>
     </div>
   </div>
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'directions', group: 'Layout', icon: '↔', title: 'Directions',
-    description: 'Utilidades para controlar dirección, orden y alineación de elementos.',
+    id: "directions",
+    group: "Layout",
+    icon: "↔",
+    title: "Directions",
+    description:
+      "Utilidades para controlar dirección, orden y alineación de elementos.",
     examples: [
-      { title: 'Row direction', html: String.raw`<div class="bt-dir-row">
+      {
+        title: "Row direction",
+        html: String.raw`<div class="bt-dir-row">
   <button class="bt-button bt-button--secondary">Uno</button>
   <button class="bt-button bt-button--secondary">Dos</button>
   <button class="bt-button bt-button--secondary">Tres</button>
-</div>` },
-      { title: 'Column direction', html: String.raw`<div class="bt-dir-column">
+</div>`,
+      },
+      {
+        title: "Column direction",
+        html: String.raw`<div class="bt-dir-column">
   <button class="bt-button bt-button--secondary">Primero</button>
   <button class="bt-button bt-button--secondary">Segundo</button>
   <button class="bt-button bt-button--secondary">Tercero</button>
-</div>` },
-      { title: 'Reverse direction', html: String.raw`<div class="bt-dir-reverse">
+</div>`,
+      },
+      {
+        title: "Reverse direction",
+        html: String.raw`<div class="bt-dir-reverse">
   <button class="bt-button bt-button--secondary">A</button>
   <button class="bt-button bt-button--secondary">B</button>
   <button class="bt-button bt-button--secondary">C</button>
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'dividers', group: 'Layout', icon: '─', title: 'Dividers',
-    description: 'Separadores horizontales y verticales para organizar contenido.',
+    id: "dividers",
+    group: "Layout",
+    icon: "─",
+    title: "Dividers",
+    description:
+      "Separadores horizontales y verticales para organizar contenido.",
     examples: [
-      { title: 'Horizontal divider', block: true, html: String.raw`<div class="bt-stack">
+      {
+        title: "Horizontal divider",
+        block: true,
+        html: String.raw`<div class="bt-stack">
   <span>Contenido superior</span>
   <span class="bt-divider" aria-hidden="true"></span>
   <span>Contenido inferior</span>
-</div>` },
-      { title: 'Vertical divider', html: String.raw`<div class="bt-row">
+</div>`,
+      },
+      {
+        title: "Vertical divider",
+        html: String.raw`<div class="bt-row">
   <span>Inicio</span>
   <span class="bt-divider bt-divider--vertical" aria-hidden="true"></span>
   <span>Fin</span>
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'expansions', group: 'Componentes', icon: '⌄', title: 'Expansions',
-    description: 'Acordeones para mostrar u ocultar información progresivamente.',
+    id: "expansions",
+    group: "Componentes",
+    icon: "⌄",
+    title: "Expansions",
+    description:
+      "Acordeones para mostrar u ocultar información progresivamente.",
     examples: [
-      { title: 'Expansion panel', block: true, html: String.raw`<div class="bt-expansion" data-expansion>
+      {
+        title: "Expansion panel",
+        block: true,
+        html: String.raw`<div class="bt-expansion" data-expansion>
   <button class="bt-expansion__button" type="button" data-expansion-toggle>
     <span>¿Qué incluye este componente?</span>
     <span class="bt-expansion__icon">⌄</span>
@@ -416,14 +575,20 @@ initBtInteractions();</code></pre>
   <div class="bt-expansion__content">
     <p>Contenido expandible, útil para documentación, FAQs o datos secundarios.</p>
   </div>
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'fields', group: 'Formularios', icon: '▭', title: 'Fields / Inputs',
-    description: 'Campos de entrada, estados de ayuda y error.',
+    id: "fields",
+    group: "Formularios",
+    icon: "▭",
+    title: "Fields / Inputs",
+    description: "Campos de entrada, estados de ayuda y error.",
     examples: [
-      { title: 'Text fields', html: String.raw`<div class="bt-field">
+      {
+        title: "Text fields",
+        html: String.raw`<div class="bt-field">
   <label for="name-field">Nombre</label>
   <input class="bt-input" id="name-field" type="text" placeholder="Ej. Data Governance" />
   <small class="bt-help">Texto de ayuda opcional.</small>
@@ -432,90 +597,153 @@ initBtInteractions();</code></pre>
   <label for="error-field">Campo con error</label>
   <input class="bt-input" id="error-field" type="text" value="Valor incorrecto" />
   <small class="bt-help">Revisa este valor antes de continuar.</small>
-</div>` },
-      { title: 'Field with icon', html: String.raw`<div class="bt-field">
+</div>`,
+      },
+      {
+        title: "Field with icon",
+        html: String.raw`<div class="bt-field">
   <label for="search-field">Buscar</label>
   <input class="bt-input" id="search-field" type="search" placeholder="Buscar componente" />
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'grid', group: 'Layout', icon: '▦', title: 'Grid',
-    description: 'Sistema de rejilla CSS para distribuir contenido de forma responsive.',
+    id: "grid",
+    group: "Layout",
+    icon: "▦",
+    title: "Grid",
+    description:
+      "Sistema de rejilla CSS para distribuir contenido de forma responsive.",
     examples: [
-      { title: 'Three columns', block: true, html: String.raw`<div class="bt-layout-demo">
+      {
+        title: "Three columns",
+        block: true,
+        html: String.raw`<div class="bt-layout-demo">
   <div>1</div>
   <div>2</div>
   <div>3</div>
-</div>` },
-      { title: 'Auto grid', block: true, html: String.raw`<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: var(--bt-space-3); width:100%;">
+</div>`,
+      },
+      {
+        title: "Auto grid",
+        block: true,
+        html: String.raw`<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: var(--bt-space-3); width:100%;">
   <article class="bt-card bt-card--filled">A</article>
   <article class="bt-card bt-card--filled">B</article>
   <article class="bt-card bt-card--filled">C</article>
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'helpers', group: 'Foundations', icon: '+', title: 'Helpers',
-    description: 'Clases utilitarias para composición rápida.',
+    id: "helpers",
+    group: "Foundations",
+    icon: "+",
+    title: "Helpers",
+    description: "Clases utilitarias para composición rápida.",
     examples: [
-      { title: 'Stack / Inline', block: true, html: String.raw`<div class="bt-stack">
+      {
+        title: "Stack / Inline",
+        block: true,
+        html: String.raw`<div class="bt-stack">
   <div class="bt-inline">
     <span class="bt-status bt-status--info">Inline</span>
     <span class="bt-status bt-status--success">Wrap</span>
   </div>
   <p class="bt-muted">Usa <code class="bt-code-inline">.bt-stack</code>, <code class="bt-code-inline">.bt-inline</code>, <code class="bt-code-inline">.bt-row</code> para composición.</p>
-</div>` },
-      { title: 'Radius and elevation helpers', html: String.raw`<div class="bt-surface bt-round-sm bt-shadow-sm" style="padding: var(--bt-space-4);">Small radius</div>
-<div class="bt-surface bt-round-lg bt-shadow-md" style="padding: var(--bt-space-4);">Large radius</div>` }
-    ]
+</div>`,
+      },
+      {
+        title: "Radius and elevation helpers",
+        html: String.raw`<div class="bt-surface bt-round-sm bt-shadow-sm" style="padding: var(--bt-space-4);">Small radius</div>
+<div class="bt-surface bt-round-lg bt-shadow-md" style="padding: var(--bt-space-4);">Large radius</div>`,
+      },
+    ],
   },
   {
-    id: 'icons', group: 'Foundations', icon: '◎', title: 'Icons',
-    description: 'Sistema simple de iconos basado en texto/SVG para que puedas cambiarlo por la librería corporativa.',
+    id: "icons",
+    group: "Foundations",
+    icon: "◎",
+    title: "Icons",
+    description:
+      "Sistema simple de iconos basado en texto/SVG para que puedas cambiarlo por la librería corporativa.",
     examples: [
-      { title: 'Iconos inline', html: String.raw`<span class="bt-icon">⌂</span>
+      {
+        title: "Iconos inline",
+        html: String.raw`<span class="bt-icon">⌂</span>
 <span class="bt-icon">⌕</span>
 <span class="bt-icon">⚙</span>
 <span class="bt-icon">✓</span>
-<span class="bt-icon">×</span>` },
-      { title: 'Icon inside button', html: String.raw`<button class="bt-button">
+<span class="bt-icon">×</span>`,
+      },
+      {
+        title: "Icon inside button",
+        html: String.raw`<button class="bt-button">
   <span class="bt-icon">✓</span>
   <span>Validar</span>
-</button>` }
-    ]
+</button>`,
+      },
+    ],
   },
   {
-    id: 'layout', group: 'Layout', icon: '▥', title: 'Layout',
-    description: 'Shell principal, topbar, sidebar y áreas de contenido.',
+    id: "layout",
+    group: "Layout",
+    icon: "▥",
+    title: "Layout",
+    description: "Shell principal, topbar, sidebar y áreas de contenido.",
     examples: [
-      { title: 'Basic shell', block: true, html: String.raw`<div class="bt-shell">
+      {
+        title: "Basic shell",
+        block: true,
+        html: String.raw`<div class="bt-shell">
   <aside class="bt-sidebar">Sidebar</aside>
   <main class="bt-main">Contenido principal</main>
-</div>` },
-      { title: 'App shell (no sidebar)', block: true, html: String.raw`<div class="bt-shell bt-shell--app">
+</div>`,
+      },
+      {
+        title: "App shell (no sidebar)",
+        block: true,
+        html: String.raw`<div class="bt-shell bt-shell--app">
   <header class="bt-topbar">
-    <span class="bt-brand__text">App</span>
-    <div class="bt-topbar__actions">
-      <button type="button" class="bt-button bt-button--ghost">Link</button>
+    <div class="bt-topbar__inner">
+      <div class="bt-topbar__start">
+        <a href="#" class="bt-navbar-logo-link" onclick="return false;">App</a>
+      </div>
+      <div class="bt-topbar__actions">
+        <button type="button" class="bt-theme-toggle-button" data-theme-toggle aria-label="Tema">
+          <span class="bt-icon" data-theme-icon>◐</span>
+        </button>
+      </div>
     </div>
   </header>
   <main class="bt-main">Contenido principal</main>
-</div>` },
-      { title: 'Section header', block: true, html: String.raw`<section class="bt-section">
+</div>`,
+      },
+      {
+        title: "Section header",
+        block: true,
+        html: String.raw`<section class="bt-section">
   <div class="bt-section__header">
     <h2 class="bt-section__title">Título sección</h2>
     <button class="bt-button bt-button--secondary">Acción</button>
   </div>
   <p class="bt-section__description">Descripción breve de la sección.</p>
-</section>` }
-    ]
+</section>`,
+      },
+    ],
   },
   {
-    id: 'lists', group: 'Componentes', icon: '☷', title: 'Lists',
-    description: 'Listados verticales con avatar, contenido y acciones.',
+    id: "lists",
+    group: "Componentes",
+    icon: "☷",
+    title: "Lists",
+    description: "Listados verticales con avatar, contenido y acciones.",
     examples: [
-      { title: 'List', block: true, html: String.raw`<div class="bt-list">
+      {
+        title: "List",
+        block: true,
+        html: String.raw`<div class="bt-list">
   <div class="bt-list-item">
     <div class="bt-list-item__avatar">B</div>
     <div class="bt-list-item__content">
@@ -531,14 +759,21 @@ initBtInteractions();</code></pre>
       <p class="bt-list-item__subtitle">Elemento secundario</p>
     </div>
   </div>
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'main-layout', group: 'Layout', icon: '▨', title: 'Main layout',
-    description: 'Composición principal de aplicación/documentación.',
+    id: "main-layout",
+    group: "Layout",
+    icon: "▨",
+    title: "Main layout",
+    description: "Composición principal de aplicación/documentación.",
     examples: [
-      { title: 'Dashboard layout', block: true, html: String.raw`<div class="bt-card bt-card--filled">
+      {
+        title: "Dashboard layout",
+        block: true,
+        html: String.raw`<div class="bt-card bt-card--filled">
   <div class="bt-appbar">
     <strong>Dashboard</strong>
     <span class="bt-spacer"></span>
@@ -547,102 +782,165 @@ initBtInteractions();</code></pre>
   <div class="bt-layout-demo" style="margin-top: var(--bt-space-4);">
     <div>KPI</div><div>Chart</div><div>Table</div>
   </div>
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'media', group: 'Componentes', icon: '◫', title: 'Media',
-    description: 'Imágenes, vídeos o placeholders responsivos.',
+    id: "media",
+    group: "Componentes",
+    icon: "◫",
+    title: "Media",
+    description: "Imágenes, vídeos o placeholders responsivos.",
     examples: [
-      { title: 'Media placeholder', block: true, html: String.raw`<figure class="bt-card">
+      {
+        title: "Media placeholder",
+        block: true,
+        html: String.raw`<figure class="bt-card">
   <div class="bt-card__media"></div>
   <figcaption class="bt-muted">Media responsivo dentro de una card.</figcaption>
-</figure>` },
-      { title: 'Avatar media', html: String.raw`<div class="bt-list-item__avatar">BT</div>
-<div class="bt-list-item__avatar" style="background: var(--bt-color-secondary-soft); color: var(--bt-color-secondary-hover);">UX</div>` }
-    ]
+</figure>`,
+      },
+      {
+        title: "Avatar media",
+        html: String.raw`<div class="bt-list-item__avatar">BT</div>
+<div class="bt-list-item__avatar" style="background: var(--bt-color-secondary-soft); color: var(--bt-color-secondary-hover);">UX</div>`,
+      },
+    ],
   },
   {
-    id: 'menus', group: 'Componentes', icon: '⋮', title: 'Menus',
-    description: 'Menús contextuales activados por botón.',
+    id: "menus",
+    group: "Componentes",
+    icon: "⋮",
+    title: "Menus",
+    description: "Menús contextuales activados por botón.",
     examples: [
-      { title: 'Context menu', html: String.raw`<div class="bt-menu-wrap">
+      {
+        title: "Context menu",
+        html: String.raw`<div class="bt-menu-wrap">
   <button class="bt-button bt-button--secondary" data-menu-toggle="menu-basic">Abrir menú</button>
   <div class="bt-menu" id="menu-basic" role="menu">
     <button type="button" role="menuitem">Editar</button>
     <button type="button" role="menuitem">Duplicar</button>
     <button type="button" role="menuitem">Eliminar</button>
   </div>
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'navigation', group: 'Componentes', icon: '☰', title: 'Navigation',
-    description: 'Sidebar, enlaces activos y navegación inferior.',
+    id: "navigation",
+    group: "Componentes",
+    icon: "☰",
+    title: "Navigation",
+    description: "Sidebar, enlaces activos y navegación inferior.",
     examples: [
-      { title: 'Sidebar nav links', block: true, html: String.raw`<nav class="bt-sidebar__nav" style="width: 16rem;">
+      {
+        title: "Sidebar nav links",
+        block: true,
+        html: String.raw`<nav class="bt-sidebar__nav" style="width: 16rem;">
   <a class="bt-nav-link" aria-current="page" href="#"><span class="bt-icon">⌂</span> Inicio</a>
   <a class="bt-nav-link" href="#"><span class="bt-icon">▣</span> Componentes</a>
   <a class="bt-nav-link" href="#"><span class="bt-icon">⚙</span> Ajustes</a>
-</nav>` },
-      { title: 'Bottom navigation', block: true, html: String.raw`<nav class="bt-bottom-nav">
+</nav>`,
+      },
+      {
+        title: "Bottom navigation",
+        block: true,
+        html: String.raw`<nav class="bt-bottom-nav">
   <a href="#" aria-current="page"><span class="bt-icon">⌂</span><span>Home</span></a>
   <a href="#"><span class="bt-icon">⌕</span><span>Search</span></a>
   <a href="#"><span class="bt-icon">◎</span><span>Profile</span></a>
-</nav>` }
-    ]
+</nav>`,
+      },
+    ],
   },
   {
-    id: 'overlays', group: 'Componentes', icon: '▩', title: 'Overlays',
-    description: 'Capas superpuestas para paneles, drawers o estados bloqueantes.',
+    id: "overlays",
+    group: "Componentes",
+    icon: "▩",
+    title: "Overlays",
+    description:
+      "Capas superpuestas para paneles, drawers o estados bloqueantes.",
     examples: [
-      { title: 'Overlay', html: String.raw`<button class="bt-button" data-overlay-open="overlay-basic">Abrir overlay</button>
+      {
+        title: "Overlay",
+        html: String.raw`<button class="bt-button" data-overlay-open="overlay-basic">Abrir overlay</button>
 <div class="bt-overlay" id="overlay-basic" role="dialog" aria-modal="true">
   <div class="bt-overlay__surface">
     <h3>Overlay</h3>
     <p>Útil para paneles y contenidos temporales.</p>
     <button class="bt-button" data-overlay-close>Cerrar</button>
   </div>
-</div>` },
-      { title: 'Drawer visual', block: true, html: String.raw`<div class="bt-drawer-demo">
+</div>`,
+      },
+      {
+        title: "Drawer visual",
+        block: true,
+        html: String.raw`<div class="bt-drawer-demo">
   <aside class="bt-drawer-demo__panel">
     <strong>Drawer</strong>
     <p>Panel lateral.</p>
   </aside>
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'pages', group: 'Layout', icon: '□', title: 'Pages',
-    description: 'Patrón simple de páginas internas SPA.',
+    id: "pages",
+    group: "Layout",
+    icon: "□",
+    title: "Pages",
+    description: "Patrón simple de páginas internas SPA.",
     examples: [
-      { title: 'Page sections', block: true, html: String.raw`<section class="bt-section" id="overview-page">
+      {
+        title: "Page sections",
+        block: true,
+        html: String.raw`<section class="bt-section" id="overview-page">
   <div class="bt-section__header">
     <h2 class="bt-section__title">Overview</h2>
   </div>
   <p class="bt-section__description">Contenido de página.</p>
-</section>` },
-      { title: 'Page link', html: String.raw`<a class="bt-nav-link" href="#components" aria-current="page">
+</section>`,
+      },
+      {
+        title: "Page link",
+        html: String.raw`<a class="bt-nav-link" href="#components" aria-current="page">
   <span class="bt-icon">▣</span>
   Componentes
-</a>` }
-    ]
+</a>`,
+      },
+    ],
   },
   {
-    id: 'progress', group: 'Feedback', icon: '◔', title: 'Progress',
-    description: 'Indicadores de progreso lineales y circulares.',
+    id: "progress",
+    group: "Feedback",
+    icon: "◔",
+    title: "Progress",
+    description: "Indicadores de progreso lineales y circulares.",
     examples: [
-      { title: 'Linear progress', html: String.raw`<div class="bt-progress" aria-label="Progreso al 68%">
+      {
+        title: "Linear progress",
+        html: String.raw`<div class="bt-progress" aria-label="Progreso al 68%">
   <div class="bt-progress__bar" style="--value: 68%"></div>
-</div>` },
-      { title: 'Circular progress', html: String.raw`<div class="bt-progress-circle" style="--value: 72%" data-label="72%"></div>` }
-    ]
+</div>`,
+      },
+      {
+        title: "Circular progress",
+        html: String.raw`<div class="bt-progress-circle" style="--value: 72%" data-label="72%"></div>`,
+      },
+    ],
   },
   {
-    id: 'radio', group: 'Formularios', icon: '◉', title: 'Radio buttons',
-    description: 'Selección única entre varias opciones.',
+    id: "radio",
+    group: "Formularios",
+    icon: "◉",
+    title: "Radio buttons",
+    description: "Selección única entre varias opciones.",
     examples: [
-      { title: 'Radio group', html: String.raw`<label class="bt-radio">
+      {
+        title: "Radio group",
+        html: String.raw`<label class="bt-radio">
   <input type="radio" name="view" checked />
   <span>Semanal</span>
 </label>
@@ -653,22 +951,31 @@ initBtInteractions();</code></pre>
 <label class="bt-radio">
   <input type="radio" name="view" />
   <span>Anual</span>
-</label>` }
-    ]
+</label>`,
+      },
+    ],
   },
   {
-    id: 'selects', group: 'Formularios', icon: '⌄', title: 'Selects',
-    description: 'Selectores nativos estilizados para formularios.',
+    id: "selects",
+    group: "Formularios",
+    icon: "⌄",
+    title: "Selects",
+    description: "Selectores nativos estilizados para formularios.",
     examples: [
-      { title: 'Select básico', html: String.raw`<div class="bt-field">
+      {
+        title: "Select básico",
+        html: String.raw`<div class="bt-field">
   <label for="framework-select">Framework</label>
   <select class="bt-select" id="framework-select">
     <option>Bluetab DS</option>
     <option>Material Design</option>
     <option>Carbon</option>
   </select>
-</div>` },
-      { title: 'Select con ayuda', html: String.raw`<div class="bt-field">
+</div>`,
+      },
+      {
+        title: "Select con ayuda",
+        html: String.raw`<div class="bt-field">
   <label for="status-select">Estado</label>
   <select class="bt-select" id="status-select">
     <option>Activo</option>
@@ -676,62 +983,99 @@ initBtInteractions();</code></pre>
     <option>Archivado</option>
   </select>
   <small class="bt-help">Este valor afecta a la visibilidad.</small>
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'shapes', group: 'Foundations', icon: '◯', title: 'Shapes',
-    description: 'Formas y radios reutilizables.',
+    id: "shapes",
+    group: "Foundations",
+    icon: "◯",
+    title: "Shapes",
+    description: "Formas y radios reutilizables.",
     examples: [
-      { title: 'Shapes', html: String.raw`<div class="bt-center bt-shape-circle" style="width:5rem; background:var(--bt-color-primary-soft); color:var(--bt-color-primary);">Circle</div>
+      {
+        title: "Shapes",
+        html: String.raw`<div class="bt-center bt-shape-circle" style="width:5rem; background:var(--bt-color-primary-soft); color:var(--bt-color-primary);">Circle</div>
 <div class="bt-center bt-shape-soft" style="width:7rem; height:5rem; background:var(--bt-color-secondary-soft); color:var(--bt-color-secondary-hover);">Soft</div>
-<div class="bt-center bt-shape-blob" style="width:7rem; height:5rem; background:var(--bt-color-tertiary-soft); color:var(--bt-color-tertiary);">Blob</div>` }
-    ]
+<div class="bt-center bt-shape-blob" style="width:7rem; height:5rem; background:var(--bt-color-tertiary-soft); color:var(--bt-color-tertiary);">Blob</div>`,
+      },
+    ],
   },
   {
-    id: 'sliders', group: 'Formularios', icon: '━', title: 'Sliders',
-    description: 'Control para seleccionar valores dentro de un rango.',
+    id: "sliders",
+    group: "Formularios",
+    icon: "━",
+    title: "Sliders",
+    description: "Control para seleccionar valores dentro de un rango.",
     examples: [
-      { title: 'Slider básico', html: String.raw`<input class="bt-slider" type="range" min="0" max="100" value="64" aria-label="Porcentaje" />` },
-      { title: 'Slider con label', html: String.raw`<div class="bt-field">
+      {
+        title: "Slider básico",
+        html: String.raw`<input class="bt-slider" type="range" min="0" max="100" value="64" aria-label="Porcentaje" />`,
+      },
+      {
+        title: "Slider con label",
+        html: String.raw`<div class="bt-field">
   <label for="quality-slider">Calidad</label>
   <input class="bt-slider" id="quality-slider" type="range" min="0" max="100" value="80" />
   <small class="bt-help">Arrastra para ajustar el valor.</small>
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'snackbars', group: 'Feedback', icon: '▤', title: 'Snackbars',
-    description: 'Mensajes temporales para confirmar una acción.',
+    id: "snackbars",
+    group: "Feedback",
+    icon: "▤",
+    title: "Snackbars",
+    description: "Mensajes temporales para confirmar una acción.",
     examples: [
-      { title: 'Snackbar', html: String.raw`<button class="bt-button" data-snackbar-open="snackbar-basic">Mostrar snackbar</button>
+      {
+        title: "Snackbar",
+        html: String.raw`<button class="bt-button" data-snackbar-open="snackbar-basic">Mostrar snackbar</button>
 <div class="bt-snackbar" id="snackbar-basic">
   <span>Elemento guardado correctamente.</span>
   <button class="bt-button bt-button--ghost" data-snackbar-close>Cerrar</button>
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'switches', group: 'Formularios', icon: '◐', title: 'Switches',
-    description: 'Activación o desactivación de opciones binarias.',
+    id: "switches",
+    group: "Formularios",
+    icon: "◐",
+    title: "Switches",
+    description: "Activación o desactivación de opciones binarias.",
     examples: [
-      { title: 'Switch básico', html: String.raw`<label class="bt-switch">
+      {
+        title: "Switch básico",
+        html: String.raw`<label class="bt-switch">
   <input type="checkbox" checked />
   <span class="bt-switch__track"></span>
   <span>Modo activo</span>
-</label>` },
-      { title: 'Switch off', html: String.raw`<label class="bt-switch">
+</label>`,
+      },
+      {
+        title: "Switch off",
+        html: String.raw`<label class="bt-switch">
   <input type="checkbox" />
   <span class="bt-switch__track"></span>
   <span>Notificaciones</span>
-</label>` }
-    ]
+</label>`,
+      },
+    ],
   },
   {
-    id: 'tables', group: 'Componentes', icon: '▦', title: 'Tables',
-    description: 'Tablas responsivas para datos de negocio y documentación.',
+    id: "tables",
+    group: "Componentes",
+    icon: "▦",
+    title: "Tables",
+    description: "Tablas responsivas para datos de negocio y documentación.",
     examples: [
-      { title: 'Data table', block: true, html: String.raw`<div class="bt-table-wrap">
+      {
+        title: "Data table",
+        block: true,
+        html: String.raw`<div class="bt-table-wrap">
   <table class="bt-table">
     <thead>
       <tr><th>Componente</th><th>Estado</th><th>Uso</th></tr>
@@ -742,14 +1086,22 @@ initBtInteractions();</code></pre>
       <tr><td>Table</td><td><span class="bt-status bt-status--success">Activo</span></td><td>Datos</td></tr>
     </tbody>
   </table>
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'tabs', group: 'Componentes', icon: '☰', title: 'Tabs',
-    description: 'Organización de contenido por pestañas dentro de una misma vista.',
+    id: "tabs",
+    group: "Componentes",
+    icon: "☰",
+    title: "Tabs",
+    description:
+      "Organización de contenido por pestañas dentro de una misma vista.",
     examples: [
-      { title: 'Tabs', block: true, html: String.raw`<div data-tabs>
+      {
+        title: "Tabs",
+        block: true,
+        html: String.raw`<div data-tabs>
   <div class="bt-tabs" role="tablist">
     <button class="bt-tab" role="tab" aria-selected="true" data-tab="tab-1">Overview</button>
     <button class="bt-tab" role="tab" aria-selected="false" data-tab="tab-2">Details</button>
@@ -758,74 +1110,111 @@ initBtInteractions();</code></pre>
   <div class="bt-tab-panel" id="tab-1" role="tabpanel" aria-hidden="false">Contenido overview.</div>
   <div class="bt-tab-panel" id="tab-2" role="tabpanel" aria-hidden="true">Contenido details.</div>
   <div class="bt-tab-panel" id="tab-3" role="tabpanel" aria-hidden="true">Contenido settings.</div>
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'textarea', group: 'Formularios', icon: '▤', title: 'Textarea',
-    description: 'Entrada de texto multilínea.',
+    id: "textarea",
+    group: "Formularios",
+    icon: "▤",
+    title: "Textarea",
+    description: "Entrada de texto multilínea.",
     examples: [
-      { title: 'Textarea básico', html: String.raw`<div class="bt-field">
+      {
+        title: "Textarea básico",
+        html: String.raw`<div class="bt-field">
   <label for="notes-textarea">Notas</label>
   <textarea class="bt-textarea" id="notes-textarea" placeholder="Escribe una descripción"></textarea>
-</div>` },
-      { title: 'Textarea con ayuda', html: String.raw`<div class="bt-field">
+</div>`,
+      },
+      {
+        title: "Textarea con ayuda",
+        html: String.raw`<div class="bt-field">
   <label for="description-textarea">Descripción</label>
   <textarea class="bt-textarea" id="description-textarea">Texto de ejemplo para documentación.</textarea>
   <small class="bt-help">Máximo recomendado: 240 caracteres.</small>
-</div>` }
-    ]
+</div>`,
+      },
+    ],
   },
   {
-    id: 'tooltips', group: 'Feedback', icon: '?', title: 'Tooltips',
-    description: 'Ayuda contextual breve al pasar el cursor o enfocar.',
+    id: "tooltips",
+    group: "Feedback",
+    icon: "?",
+    title: "Tooltips",
+    description: "Ayuda contextual breve al pasar el cursor o enfocar.",
     examples: [
-      { title: 'Tooltip en botón', html: String.raw`<span class="bt-tooltip" data-tooltip="Crear nuevo elemento">
+      {
+        title: "Tooltip en botón",
+        html: String.raw`<span class="bt-tooltip" data-tooltip="Crear nuevo elemento">
   <button class="bt-icon-button" aria-label="Crear"><span class="bt-icon">＋</span></button>
-</span>` },
-      { title: 'Tooltip en texto', html: String.raw`<span class="bt-tooltip" data-tooltip="Información adicional">
+</span>`,
+      },
+      {
+        title: "Tooltip en texto",
+        html: String.raw`<span class="bt-tooltip" data-tooltip="Información adicional">
   <span class="bt-status bt-status--info">Hover me</span>
-</span>` }
-    ]
+</span>`,
+      },
+    ],
   },
   {
-    id: 'typography', group: 'Foundations', icon: 'T', title: 'Typography',
-    description: 'Escala tipográfica editable desde tokens CSS.',
+    id: "typography",
+    group: "Foundations",
+    icon: "T",
+    title: "Typography",
+    description: "Escala tipográfica editable desde tokens CSS.",
     examples: [
-      { title: 'Headings', block: true, html: String.raw`<div class="bt-stack">
+      {
+        title: "Headings",
+        block: true,
+        html: String.raw`<div class="bt-stack">
   <h1>Heading 1</h1>
   <h2>Heading 2</h2>
   <h3>Heading 3</h3>
   <p class="bt-lead">Lead paragraph para introducciones importantes.</p>
   <p>Texto base para contenidos habituales de producto y documentación.</p>
-</div>` },
-      { title: 'Eyebrow and muted text', block: true, html: String.raw`<p class="bt-eyebrow">Bluetab label</p>
+</div>`,
+      },
+      {
+        title: "Eyebrow and muted text",
+        block: true,
+        html: String.raw`<p class="bt-eyebrow">Bluetab label</p>
 <h3>Contenido destacado</h3>
-<p class="bt-muted">Texto secundario con menor énfasis visual.</p>` }
-    ]
-  }
+<p class="bt-muted">Texto secundario con menor énfasis visual.</p>`,
+      },
+    ],
+  },
 ];
 
-const GROUP_ORDER = ['Inicio', 'Foundations', 'Layout', 'Componentes', 'Formularios', 'Feedback'];
+const GROUP_ORDER = [
+  "Inicio",
+  "Foundations",
+  "Layout",
+  "Componentes",
+  "Formularios",
+  "Feedback",
+];
 
-const root = $('#component-root');
-const nav = $('#sidebar-nav');
-const title = $('#page-title');
-const panel = $('[data-doc-panel]');
-const panelTitle = $('[data-doc-title]');
-const panelBody = $('[data-doc-body]');
-const toast = $('[data-toast]');
+const root = $("#component-root");
+const nav = $("#sidebar-nav");
+const title = $("#page-title");
+const panel = $("[data-doc-panel]");
+const panelTitle = $("[data-doc-title]");
+const panelBody = $("[data-doc-body]");
+const toast = $("[data-toast]");
 let currentComponent = COMPONENTS[0];
 let activePanelComponent = COMPONENTS[0];
 let toastTimer;
 
 function escapeHtml(value) {
   return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 function highlightHtml(value) {
@@ -836,37 +1225,47 @@ function highlightHtml(value) {
 }
 
 function normalizeSnippet(value) {
-  return value.trim().replace(/^\n+|\n+$/g, '');
+  return value.trim().replace(/^\n+|\n+$/g, "");
 }
 
 function renderNav() {
-  nav.innerHTML = GROUP_ORDER.map(group => {
-    const items = COMPONENTS.filter(component => component.group === group);
-    if (!items.length) return '';
+  nav.innerHTML = GROUP_ORDER.map((group) => {
+    const items = COMPONENTS.filter((component) => component.group === group);
+    if (!items.length) return "";
     return `<div class="bt-sidebar__group" data-group="${group}">
       <span class="bt-sidebar__group-title">${group}</span>
-      ${items.map(component => `<a class="bt-nav-link" href="#${component.id}" data-nav-link="${component.id}">
+      ${items
+        .map(
+          (
+            component,
+          ) => `<a class="bt-nav-link" href="#${component.id}" data-nav-link="${component.id}">
         <span class="bt-icon">${component.icon}</span>
         <span>${component.title}</span>
-      </a>`).join('')}
+      </a>`,
+        )
+        .join("")}
     </div>`;
-  }).join('');
+  }).join("");
 }
 
 function renderComponent(component) {
-  const examples = component.examples.map((example, index) => `
-    <article class="bt-example ${example.block ? '' : 'bt-example--half'}" data-example-card>
+  const examples = component.examples
+    .map(
+      (example, index) => `
+    <article class="bt-example ${example.block ? "" : "bt-example--half"}" data-example-card>
       <div class="bt-example__header">
         <div>
           <h3 class="bt-example__title">${example.title}</h3>
-          ${example.note ? `<p class="bt-muted">${example.note}</p>` : ''}
+          ${example.note ? `<p class="bt-muted">${example.note}</p>` : ""}
         </div>
         <button class="bt-icon-button" type="button" data-copy-example="${component.id}:${index}" aria-label="Copiar código de ${example.title}">
           <span class="bt-icon">&lt;&gt;</span>
         </button>
       </div>
-      <div class="bt-example__preview ${example.block ? 'bt-example__preview--block' : ''}">${example.html}</div>
-    </article>`).join('');
+      <div class="bt-example__preview ${example.block ? "bt-example__preview--block" : ""}">${example.html}</div>
+    </article>`,
+    )
+    .join("");
 
   root.innerHTML = `
     <section class="bt-hero">
@@ -885,17 +1284,20 @@ function renderComponent(component) {
       <div class="bt-example-grid">${examples}</div>
     </section>`;
 
-  $$('#sidebar-nav [data-nav-link]').forEach(link => {
-    link.setAttribute('aria-current', link.dataset.navLink === component.id ? 'page' : 'false');
+  $$("#sidebar-nav [data-nav-link]").forEach((link) => {
+    link.setAttribute(
+      "aria-current",
+      link.dataset.navLink === component.id ? "page" : "false",
+    );
   });
 
   root.focus({ preventScroll: true });
 }
 
 function renderPanel(componentOrMode) {
-  if (componentOrMode === 'tokens') {
+  if (componentOrMode === "tokens") {
     activePanelComponent = null;
-    panelTitle.textContent = 'Tokens CSS';
+    panelTitle.textContent = "Tokens CSS";
     panelBody.innerHTML = `<article class="bt-doc-card">
       <div class="bt-doc-card__header">
         <h3>Variables principales</h3>
@@ -903,21 +1305,23 @@ function renderPanel(componentOrMode) {
       </div>
       <pre class="bt-code"><code>${highlightHtml(snippets.tokens)}</code></pre>
     </article>`;
-    document.body.classList.add('bt-panel-open');
-    panel.setAttribute('aria-hidden', 'false');
+    document.body.classList.add("bt-panel-open");
+    panel.setAttribute("aria-hidden", "false");
     return;
   }
 
-  const component = typeof componentOrMode === 'string'
-    ? COMPONENTS.find(item => item.id === componentOrMode)
-    : componentOrMode;
+  const component =
+    typeof componentOrMode === "string"
+      ? COMPONENTS.find((item) => item.id === componentOrMode)
+      : componentOrMode;
 
   if (!component) return;
   activePanelComponent = component;
   panelTitle.textContent = component.title;
-  panelBody.innerHTML = component.examples.map((example, index) => {
-    const code = normalizeSnippet(example.html);
-    return `<article class="bt-doc-card">
+  panelBody.innerHTML = component.examples
+    .map((example, index) => {
+      const code = normalizeSnippet(example.html);
+      return `<article class="bt-doc-card">
       <div class="bt-doc-card__header">
         <div>
           <p class="bt-eyebrow">${component.title}</p>
@@ -925,18 +1329,19 @@ function renderPanel(componentOrMode) {
         </div>
         <button class="bt-button bt-button--secondary" type="button" data-copy-example="${component.id}:${index}">Copiar</button>
       </div>
-      <div class="bt-doc-card__preview ${example.block ? 'bt-doc-card__preview--block' : ''}">${example.html}</div>
+      <div class="bt-doc-card__preview ${example.block ? "bt-doc-card__preview--block" : ""}">${example.html}</div>
       <pre class="bt-code"><code>${highlightHtml(code)}</code></pre>
     </article>`;
-  }).join('');
+    })
+    .join("");
 
-  document.body.classList.add('bt-panel-open');
-  panel.setAttribute('aria-hidden', 'false');
+  document.body.classList.add("bt-panel-open");
+  panel.setAttribute("aria-hidden", "false");
 }
 
 function closePanel() {
-  document.body.classList.remove('bt-panel-open');
-  panel.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove("bt-panel-open");
+  panel.setAttribute("aria-hidden", "true");
 }
 
 async function copyText(value) {
@@ -944,195 +1349,222 @@ async function copyText(value) {
   try {
     await navigator.clipboard.writeText(text);
   } catch {
-    const area = document.createElement('textarea');
+    const area = document.createElement("textarea");
     area.value = text;
     document.body.append(area);
     area.select();
-    document.execCommand('copy');
+    document.execCommand("copy");
     area.remove();
   }
-  showToast('Código copiado al portapapeles');
+  showToast("Código copiado al portapapeles");
 }
 
 function showToast(message) {
-  $('.bt-toast__text', toast).textContent = message;
-  toast.dataset.visible = 'true';
+  $(".bt-toast__text", toast).textContent = message;
+  toast.dataset.visible = "true";
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { toast.dataset.visible = 'false'; }, 2200);
+  toastTimer = setTimeout(() => {
+    toast.dataset.visible = "false";
+  }, 2200);
 }
 
 function getExampleSnippet(ref) {
-  const [componentId, index] = ref.split(':');
-  const component = COMPONENTS.find(item => item.id === componentId);
-  return component?.examples[Number(index)]?.html || '';
+  const [componentId, index] = ref.split(":");
+  const component = COMPONENTS.find((item) => item.id === componentId);
+  return component?.examples[Number(index)]?.html || "";
 }
 
 function setRoute(id) {
-  const component = COMPONENTS.find(item => item.id === id) || COMPONENTS[0];
+  const component = COMPONENTS.find((item) => item.id === id) || COMPONENTS[0];
   renderComponent(component);
 }
 
 function findLocalTarget(trigger, id) {
-  const scope = trigger.closest('.bt-example, .bt-doc-card, main, body') || document;
-  return scope.querySelector(`#${CSS.escape(id)}`) || document.getElementById(id);
+  const scope =
+    trigger.closest(".bt-example, .bt-doc-card, main, body") || document;
+  return (
+    scope.querySelector(`#${CSS.escape(id)}`) || document.getElementById(id)
+  );
 }
 
 function closeMenus(except) {
-  $$('[data-open="true"].bt-menu').forEach(menu => {
-    if (menu !== except) menu.dataset.open = 'false';
+  $$('[data-open="true"].bt-menu').forEach((menu) => {
+    if (menu !== except) menu.dataset.open = "false";
   });
 }
 
 function setupEvents() {
-  document.addEventListener('click', event => {
-    const navLink = event.target.closest('[data-nav-link]');
+  document.addEventListener("click", (event) => {
+    const navLink = event.target.closest("[data-nav-link]");
     if (navLink) {
       event.preventDefault();
       const id = navLink.dataset.navLink;
-      history.pushState(null, '', `#${id}`);
+      history.pushState(null, "", `#${id}`);
       setRoute(id);
-      document.body.classList.remove('bt-sidebar-open');
+      document.body.classList.remove("bt-sidebar-open");
       return;
     }
 
-    const openPanel = event.target.closest('[data-open-panel]');
+    const openPanel = event.target.closest("[data-open-panel]");
     if (openPanel) {
       renderPanel(openPanel.dataset.openPanel);
       return;
     }
 
-    const closePanelButton = event.target.closest('[data-close-panel]');
+    const closePanelButton = event.target.closest("[data-close-panel]");
     if (closePanelButton) {
       closePanel();
       return;
     }
 
-    const copyExample = event.target.closest('[data-copy-example]');
+    const copyExample = event.target.closest("[data-copy-example]");
     if (copyExample) {
-      copyText(encodeURIComponent(normalizeSnippet(getExampleSnippet(copyExample.dataset.copyExample))));
+      copyText(
+        encodeURIComponent(
+          normalizeSnippet(getExampleSnippet(copyExample.dataset.copyExample)),
+        ),
+      );
       return;
     }
 
-    const copyTextButton = event.target.closest('[data-copy-text]');
+    const copyTextButton = event.target.closest("[data-copy-text]");
     if (copyTextButton) {
       copyText(copyTextButton.dataset.copyText);
       return;
     }
 
-    const copyCurrent = event.target.closest('[data-copy-current]');
+    const copyCurrent = event.target.closest("[data-copy-current]");
     if (copyCurrent) {
       const sourceComponent = activePanelComponent || currentComponent;
-      const combined = sourceComponent.examples.map(example => normalizeSnippet(example.html)).join('\n\n');
+      const combined = sourceComponent.examples
+        .map((example) => normalizeSnippet(example.html))
+        .join("\n\n");
       copyText(encodeURIComponent(combined));
       return;
     }
 
-    const themeToggle = event.target.closest('[data-theme-toggle]');
+    const themeToggle = event.target.closest("[data-theme-toggle]");
     if (themeToggle) {
       const html = document.documentElement;
-      const nextTheme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+      const nextTheme = html.dataset.theme === "dark" ? "light" : "dark";
       html.dataset.theme = nextTheme;
-      localStorage.setItem('bt-theme', nextTheme);
-      $('[data-theme-icon]').textContent = nextTheme === 'dark' ? '☀' : '◐';
+      localStorage.setItem("bt-theme", nextTheme);
+      $("[data-theme-icon]").textContent = nextTheme === "dark" ? "☀" : "◐";
       return;
     }
 
-    const sidebarToggle = event.target.closest('[data-toggle-sidebar]');
+    const sidebarToggle = event.target.closest("[data-toggle-sidebar]");
     if (sidebarToggle) {
-      document.body.classList.toggle('bt-sidebar-open');
+      document.body.classList.toggle("bt-sidebar-open");
       return;
     }
 
-    const dialogOpen = event.target.closest('[data-dialog-open]');
+    const dialogOpen = event.target.closest("[data-dialog-open]");
     if (dialogOpen) {
       const target = findLocalTarget(dialogOpen, dialogOpen.dataset.dialogOpen);
-      target?.setAttribute('open', '');
+      target?.setAttribute("open", "");
       return;
     }
 
-    const dialogClose = event.target.closest('[data-dialog-close]');
+    const dialogClose = event.target.closest("[data-dialog-close]");
     if (dialogClose) {
-      dialogClose.closest('.bt-dialog')?.removeAttribute('open');
+      dialogClose.closest(".bt-dialog")?.removeAttribute("open");
       return;
     }
 
-    const overlayOpen = event.target.closest('[data-overlay-open]');
+    const overlayOpen = event.target.closest("[data-overlay-open]");
     if (overlayOpen) {
-      const target = findLocalTarget(overlayOpen, overlayOpen.dataset.overlayOpen);
-      target?.setAttribute('open', '');
+      const target = findLocalTarget(
+        overlayOpen,
+        overlayOpen.dataset.overlayOpen,
+      );
+      target?.setAttribute("open", "");
       return;
     }
 
-    const overlayClose = event.target.closest('[data-overlay-close]');
+    const overlayClose = event.target.closest("[data-overlay-close]");
     if (overlayClose) {
-      overlayClose.closest('.bt-overlay')?.removeAttribute('open');
+      overlayClose.closest(".bt-overlay")?.removeAttribute("open");
       return;
     }
 
-    const menuToggle = event.target.closest('[data-menu-toggle]');
+    const menuToggle = event.target.closest("[data-menu-toggle]");
     if (menuToggle) {
       const menu = findLocalTarget(menuToggle, menuToggle.dataset.menuToggle);
-      const next = menu?.dataset.open !== 'true';
+      const next = menu?.dataset.open !== "true";
       closeMenus(menu);
       if (menu) menu.dataset.open = String(next);
       return;
     }
 
-    if (!event.target.closest('.bt-menu-wrap')) closeMenus();
+    if (!event.target.closest(".bt-menu-wrap")) closeMenus();
 
-    const expansionToggle = event.target.closest('[data-expansion-toggle]');
+    const expansionToggle = event.target.closest("[data-expansion-toggle]");
     if (expansionToggle) {
-      const expansion = expansionToggle.closest('[data-expansion]');
-      expansion.dataset.open = expansion.dataset.open === 'true' ? 'false' : 'true';
+      const expansion = expansionToggle.closest("[data-expansion]");
+      expansion.dataset.open =
+        expansion.dataset.open === "true" ? "false" : "true";
       return;
     }
 
-    const snackbarOpen = event.target.closest('[data-snackbar-open]');
+    const snackbarOpen = event.target.closest("[data-snackbar-open]");
     if (snackbarOpen) {
-      const snackbar = findLocalTarget(snackbarOpen, snackbarOpen.dataset.snackbarOpen);
+      const snackbar = findLocalTarget(
+        snackbarOpen,
+        snackbarOpen.dataset.snackbarOpen,
+      );
       if (snackbar) {
-        snackbar.dataset.open = 'true';
-        setTimeout(() => { snackbar.dataset.open = 'false'; }, 3200);
+        snackbar.dataset.open = "true";
+        setTimeout(() => {
+          snackbar.dataset.open = "false";
+        }, 3200);
       }
       return;
     }
 
-    const snackbarClose = event.target.closest('[data-snackbar-close]');
+    const snackbarClose = event.target.closest("[data-snackbar-close]");
     if (snackbarClose) {
-      snackbarClose.closest('.bt-snackbar').dataset.open = 'false';
+      snackbarClose.closest(".bt-snackbar").dataset.open = "false";
       return;
     }
 
-    const tab = event.target.closest('[data-tab]');
+    const tab = event.target.closest("[data-tab]");
     if (tab) {
-      const container = tab.closest('[data-tabs]');
-      $$('[role="tab"]', container).forEach(item => item.setAttribute('aria-selected', String(item === tab)));
-      $$('.bt-tab-panel', container).forEach(panel => panel.setAttribute('aria-hidden', String(panel.id !== tab.dataset.tab)));
+      const container = tab.closest("[data-tabs]");
+      $$('[role="tab"]', container).forEach((item) =>
+        item.setAttribute("aria-selected", String(item === tab)),
+      );
+      $$(".bt-tab-panel", container).forEach((panel) =>
+        panel.setAttribute("aria-hidden", String(panel.id !== tab.dataset.tab)),
+      );
     }
   });
 
-  $('#component-search').addEventListener('input', event => {
+  $("#component-search").addEventListener("input", (event) => {
     const value = event.target.value.trim().toLowerCase();
-    $$('#sidebar-nav [data-nav-link]').forEach(link => {
+    $$("#sidebar-nav [data-nav-link]").forEach((link) => {
       const match = link.textContent.toLowerCase().includes(value);
-      link.classList.toggle('is-hidden', value && !match);
+      link.classList.toggle("is-hidden", value && !match);
     });
-    $$('#sidebar-nav .bt-sidebar__group').forEach(group => {
-      const visible = $$('[data-nav-link]:not(.is-hidden)', group).length > 0;
-      group.classList.toggle('bt-hidden', !visible);
+    $$("#sidebar-nav .bt-sidebar__group").forEach((group) => {
+      const visible = $$("[data-nav-link]:not(.is-hidden)", group).length > 0;
+      group.classList.toggle("bt-hidden", !visible);
     });
   });
 
-  window.addEventListener('popstate', () => setRoute(location.hash.replace('#', '')));
+  window.addEventListener("popstate", () =>
+    setRoute(location.hash.replace("#", "")),
+  );
 }
 
 function boot() {
-  const storedTheme = localStorage.getItem('bt-theme');
+  const storedTheme = localStorage.getItem("bt-theme");
   if (storedTheme) document.documentElement.dataset.theme = storedTheme;
-  $('[data-theme-icon]').textContent = document.documentElement.dataset.theme === 'dark' ? '☀' : '◐';
+  $("[data-theme-icon]").textContent =
+    document.documentElement.dataset.theme === "dark" ? "☀" : "◐";
   renderNav();
   setupEvents();
-  setRoute(location.hash.replace('#', '') || 'get-started');
+  setRoute(location.hash.replace("#", "") || "get-started");
 }
 
 boot();

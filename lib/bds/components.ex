@@ -282,22 +282,25 @@ defmodule Bds.Components do
   end
 
   @doc """
-  Top navbar / topbar layout container (`bt-topbar`).
+  Top navbar (`bt-topbar`): Bluetab gradient bar with logo, actions, theme toggle, and user menu.
 
-  Use slots to compose the left/start area, brand, and right-side actions.
+  Pair with `<.bt_navbar_logo_link>`, `<.bt_navbar_theme_toggle>`, and `<.bt_navbar_user_menu>`.
 
   ## Examples
 
       <.bt_topbar>
         <:brand>
-          <a href="/" class="bt-brand">App</a>
+          <.bt_navbar_logo_link navigate={~p"/"} logo_src={~p"/images/slash_logo_white.png"}>
+            My App
+          </.bt_navbar_logo_link>
         </:brand>
         <:actions>
-          <.bt_button variant="ghost">Docs</.bt_button>
+          <.bt_navbar_theme_toggle />
         </:actions>
       </.bt_topbar>
   """
   attr :class, :any, default: nil
+  attr :contained, :boolean, default: false, doc: "constrain inner bar to --bt-content-max-width"
   attr :rest, :global
   slot :start
   slot :brand
@@ -306,14 +309,136 @@ defmodule Bds.Components do
   def bt_topbar(assigns) do
     ~H"""
     <header class={["bt-topbar", @class]} {@rest}>
-      <div class="bt-row" style="gap:var(--bt-space-3);min-width:0;">
-        {render_slot(@start)}
-        {render_slot(@brand)}
-      </div>
-      <div :if={@actions != []} class="bt-topbar__actions">
-        {render_slot(@actions)}
+      <div class={[
+        "bt-topbar__inner",
+        @contained && "bt-topbar__inner--contained"
+      ]}>
+        <div class="bt-topbar__start">
+          {render_slot(@start)}
+          {render_slot(@brand)}
+        </div>
+        <div :if={@actions != []} class="bt-topbar__actions">
+          {render_slot(@actions)}
+        </div>
       </div>
     </header>
+    """
+  end
+
+  @doc """
+  Logo link for the brand topbar (`bt-navbar-logo-link`).
+
+  Pass `navigate` for LiveView navigation or `href` for a plain link.
+  """
+  attr :class, :any, default: nil
+  attr :rest, :global
+  attr :href, :string, default: nil
+  attr :navigate, :any, default: nil
+  attr :patch, :any, default: nil
+  attr :logo_src, :string, required: true
+  attr :logo_alt, :string, default: ""
+  slot :inner_block, required: true
+
+  def bt_navbar_logo_link(%{navigate: navigate} = assigns) when not is_nil(navigate) do
+    ~H"""
+    <.link navigate={@navigate} class={["bt-navbar-logo-link", @class]} {@rest}>
+      <img src={@logo_src} alt={@logo_alt} class="bt-navbar-logo-img" fetchpriority="high" />
+      {render_slot(@inner_block)}
+    </.link>
+    """
+  end
+
+  def bt_navbar_logo_link(%{patch: patch} = assigns) when not is_nil(patch) do
+    ~H"""
+    <.link patch={@patch} class={["bt-navbar-logo-link", @class]} {@rest}>
+      <img src={@logo_src} alt={@logo_alt} class="bt-navbar-logo-img" fetchpriority="high" />
+      {render_slot(@inner_block)}
+    </.link>
+    """
+  end
+
+  def bt_navbar_logo_link(assigns) do
+    ~H"""
+    <a href={@href || "#"} class={["bt-navbar-logo-link", @class]} {@rest}>
+      <img src={@logo_src} alt={@logo_alt} class="bt-navbar-logo-img" fetchpriority="high" />
+      {render_slot(@inner_block)}
+    </a>
+    """
+  end
+
+  @doc """
+  Theme toggle styled for the brand topbar. Uses `data-theme-toggle` (see package interactions).
+  """
+  attr :class, :any, default: nil
+  attr :rest, :global
+  attr :label, :string, default: "Toggle theme"
+
+  def bt_navbar_theme_toggle(assigns) do
+    ~H"""
+    <div class={["bt-navbar-theme-toggle", @class]}>
+      <button
+        type="button"
+        class="bt-theme-toggle-button"
+        data-theme-toggle
+        aria-label={@label}
+        title={@label}
+        {@rest}
+      >
+        <span class="bt-icon" data-theme-icon aria-hidden="true">◐</span>
+      </button>
+    </div>
+    """
+  end
+
+  @doc """
+  User menu trigger + hover/focus dropdown for the brand topbar.
+  """
+  attr :class, :any, default: nil
+  attr :id, :string, default: nil
+  attr :name, :string, required: true
+  attr :role, :string, default: "User"
+  attr :initials, :string, default: "?"
+  attr :avatar_src, :string, default: nil
+  slot :inner_block, required: true
+
+  def bt_navbar_user_menu(assigns) do
+    assigns = assign_new(assigns, :id, fn -> "bt-navbar-user-#{System.unique_integer([:positive])}" end)
+
+    ~H"""
+    <div id={@id} class={["bt-navbar-user", @class]} tabindex="-1">
+      <div
+        class="bt-navbar-user__trigger bt-navbar-user__trigger--compact"
+        role="button"
+        aria-haspopup="menu"
+        tabindex="0"
+      >
+        <div class="bt-navbar-user__meta">
+          <div class="bt-navbar-user__role">{@role}</div>
+          <div class="bt-navbar-user__name">{@name}</div>
+        </div>
+
+        <div class="bt-navbar-user__avatar-wrap">
+          <%= if @avatar_src do %>
+            <img src={@avatar_src} alt={@name} class="bt-navbar-user__avatar" />
+          <% else %>
+            <div class="bt-navbar-user__avatar bt-navbar-user__avatar--initials" aria-hidden="true">
+              {@initials}
+            </div>
+          <% end %>
+          <span class="bt-navbar-user__status" aria-hidden="true"></span>
+        </div>
+
+        <span class="bt-navbar-user__chevron" aria-hidden="true">▾</span>
+      </div>
+
+      <div class="bt-navbar-user__dropdown" role="menu">
+        <div class="bt-navbar-user__dropdown-header">
+          <p class="bt-navbar-user__name">{@name}</p>
+          <p class="bt-navbar-user__role">{@role}</p>
+        </div>
+        {render_slot(@inner_block)}
+      </div>
+    </div>
     """
   end
 

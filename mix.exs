@@ -65,6 +65,8 @@ defmodule Bds.MixProject do
 
     dist = Path.join(__DIR__, "assets/dist")
     priv = Path.join(__DIR__, "priv/static")
+    fonts_src = Path.join(__DIR__, "assets/src/fonts")
+    fonts_dest = Path.join(priv, "fonts")
 
     for {src, dest} <- [
           {"bds.css", "bds.css"},
@@ -83,6 +85,15 @@ defmodule Bds.MixProject do
 
             mix assets.build
         """)
+      end
+    end
+
+    if File.dir?(fonts_src) do
+      create_directory(fonts_dest)
+
+      for font <- File.ls!(fonts_src), String.ends_with?(font, [".woff2", ".woff", ".ttf"]) do
+        File.cp!(Path.join(fonts_src, font), Path.join(fonts_dest, font))
+        Mix.shell().info([:green, "Synced ", :reset, "fonts/#{font} → priv/static/fonts/#{font}"])
       end
     end
   end

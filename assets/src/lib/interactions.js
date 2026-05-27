@@ -158,6 +158,20 @@ function initBtInteractions(options = {}) {
       return;
     }
 
+    const sidebarToggle = event.target.closest('[data-toggle-sidebar]');
+    if (sidebarToggle) {
+      root.body.classList.toggle('bt-sidebar-open');
+      return;
+    }
+
+    if (
+      root.body.classList.contains('bt-sidebar-open') &&
+      event.target.closest('.bt-sidebar a, .bt-sidebar .bt-nav-link')
+    ) {
+      root.body.classList.remove('bt-sidebar-open');
+      return;
+    }
+
     const tab = event.target.closest('[data-tab]');
     if (tab) {
       const container = tab.closest('[data-tabs]');
