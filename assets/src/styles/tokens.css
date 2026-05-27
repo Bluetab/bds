@@ -22,6 +22,8 @@
   --bt-color-tertiary-soft: #f3ecff;
   --bt-color-on-tertiary: #ffffff;
 
+  /* Brand topbar (fixed light palette — see .bt-topbar in navigation.css; not swapped in dark theme) */
+
   /* Semantic */
   --bt-color-success: #008b80;
   --bt-color-success-soft: #e8f7ee;
