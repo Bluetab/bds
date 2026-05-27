@@ -19,6 +19,48 @@
   width: 100%;
 }
 
+/* Storybook / catalog: full-width topbar, then sidebar + main below */
+.bt-shell.bt-shell--storybook {
+  display: grid;
+  grid-template-columns: var(--bt-sidebar-width) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100vh;
+  max-height: 100dvh;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.bt-shell.bt-shell--storybook > .bt-topbar {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  position: relative;
+  z-index: 60;
+  flex-shrink: 0;
+}
+
+.bt-shell.bt-shell--storybook > .bt-sidebar {
+  grid-column: 1;
+  grid-row: 2;
+  position: relative;
+  top: auto;
+  align-self: stretch;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+  z-index: 40;
+}
+
+.bt-shell.bt-shell--storybook > .bt-main-wrap {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
 /* Dialogs/snackbars rendered as direct children of .bt-shell (e.g. Phoenix overlay slot) */
 .bt-shell > .bt-dialog[open],
 .bt-shell > .bt-overlay[open] {
@@ -53,6 +95,16 @@
 .bt-layout-demo > div { min-height: 4rem; display: grid; place-items: center; background: var(--bt-color-primary-soft); color: var(--bt-color-primary); border-radius: var(--bt-radius-md); font-weight: 700; }
 @media (max-width: 980px) {
   .bt-shell { grid-template-columns: 1fr; }
+  .bt-shell.bt-shell--storybook {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .bt-shell.bt-shell--storybook > .bt-topbar { grid-column: 1; }
+  .bt-shell.bt-shell--storybook > .bt-sidebar,
+  .bt-shell.bt-shell--storybook > .bt-main-wrap {
+    grid-column: 1;
+    grid-row: 2;
+  }
   .bt-sidebar { position: fixed; transform: translateX(-105%); transition: transform var(--bt-duration-base) var(--bt-ease); }
   body.bt-sidebar-open .bt-sidebar { transform: translateX(0); }
   .bt-sidebar-toggle { display: inline-flex !important; }

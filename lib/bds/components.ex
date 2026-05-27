@@ -281,6 +281,42 @@ defmodule Bds.Components do
     """
   end
 
+  @doc """
+  Top navbar / topbar layout container (`bt-topbar`).
+
+  Use slots to compose the left/start area, brand, and right-side actions.
+
+  ## Examples
+
+      <.bt_topbar>
+        <:brand>
+          <a href="/" class="bt-brand">App</a>
+        </:brand>
+        <:actions>
+          <.bt_button variant="ghost">Docs</.bt_button>
+        </:actions>
+      </.bt_topbar>
+  """
+  attr :class, :any, default: nil
+  attr :rest, :global
+  slot :start
+  slot :brand
+  slot :actions
+
+  def bt_topbar(assigns) do
+    ~H"""
+    <header class={["bt-topbar", @class]} {@rest}>
+      <div class="bt-row" style="gap:var(--bt-space-3);min-width:0;">
+        {render_slot(@start)}
+        {render_slot(@brand)}
+      </div>
+      <div :if={@actions != []} class="bt-topbar__actions">
+        {render_slot(@actions)}
+      </div>
+    </header>
+    """
+  end
+
   attr :id, :string, required: true
   attr :rows, :list, required: true
   attr :row_id, :any, default: nil, doc: "the function for generating the row id"

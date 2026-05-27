@@ -28,6 +28,18 @@ For apps **without a sidebar** (topbar stacked above main), add `bt-shell--app`:
 
 Without `bt-shell--app`, the first child is placed in the narrow sidebar column (~280px).
 
+For **storybook / catalog** layouts (full-width topbar above sidebar + main), use `bt-shell--storybook` and place the topbar as the **first** child:
+
+```html
+<div class="bt-shell bt-shell--storybook">
+  <header class="bt-topbar">…</header>
+  <aside class="bt-sidebar">…</aside>
+  <div class="bt-main-wrap">
+    <main class="bt-main">…</main>
+  </div>
+</div>
+```
+
 ## Grid: `bt-example-grid`
 
 `bt-example-grid` uses `grid-template-columns: repeat(12, 1fr)`. Children need an explicit span:
