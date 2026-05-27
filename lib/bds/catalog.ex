@@ -76,6 +76,24 @@ defmodule Bds.Catalog do
   end
 
   @doc """
+  Returns HEEx source for a single example by `component_id:index` ref.
+  """
+  @spec example_heex(String.t()) :: String.t()
+  def example_heex(ref) when is_binary(ref), do: Bds.Catalog.Snippets.heex(ref)
+
+  @doc """
+  Escapes HEEx and highlights `<.component` tags and attributes for the doc panel.
+  """
+  @spec highlight_heex(String.t()) :: Phoenix.HTML.safe()
+  def highlight_heex(value) when is_binary(value) do
+    value
+    |> escape_html()
+    |> highlight_component_tags()
+    |> highlight_heex_attrs()
+    |> Phoenix.HTML.raw()
+  end
+
+  @doc """
   Returns HTML for a single example by `component_id:index` ref.
   """
   @spec example_html(String.t()) :: String.t()
@@ -124,8 +142,16 @@ defmodule Bds.Catalog do
     Regex.replace(~r/(&lt;\/?)([\w-]+)/, html, "\\1<span class=\"bt-code__tag\">\\2</span>")
   end
 
+  defp highlight_component_tags(html) do
+    Regex.replace(~r/(&lt;\.)([\w_]+)/, html, "\\1<span class=\"bt-code__tag\">\\2</span>")
+  end
+
   defp highlight_attrs(html) do
     Regex.replace(~r/\s([\w:-]+)=/, html, " <span class=\"bt-code__attr\">\\1</span>=")
+  end
+
+  defp highlight_heex_attrs(html) do
+    Regex.replace(~r/\s([\w_-]+)=(&quot;[^&]*&quot;)/, html, " <span class=\"bt-code__attr\">\\1</span>=\\2")
   end
 
   defp highlight_values(html) do

@@ -25,6 +25,19 @@ defmodule Bds.CatalogTest do
     assert html =~ "bt-button"
   end
 
+  test "example_heex/1 returns Phoenix component markup" do
+    heex = Catalog.example_heex("buttons:0")
+    assert heex =~ "<.bt_button"
+    refute heex =~ "<button class=\"bt-button\""
+  end
+
+  test "highlight_heex/1 highlights component tags" do
+    highlighted = Catalog.highlight_heex("<.bt_button>Save</.bt_button>")
+    rendered = Phoenix.HTML.safe_to_string(highlighted)
+    assert rendered =~ "bt-code__tag"
+    assert rendered =~ "bt_button"
+  end
+
   test "highlight_html/1 escapes and highlights tags" do
     highlighted = Catalog.highlight_html("<button class=\"bt-button\">")
     rendered = Phoenix.HTML.safe_to_string(highlighted)

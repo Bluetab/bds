@@ -45,6 +45,7 @@ defmodule Bds do
   defmacro __using__(which) when which in [:html] do
     quote do
       import Bds.Components
+      import Bds.Components.CatalogUi
     end
   end
 end
