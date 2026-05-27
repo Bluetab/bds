@@ -41,10 +41,7 @@ defmodule Bds.Components do
   slot :inner_block, required: true
 
   def bt_button(assigns) do
-    assigns =
-      assign_new(assigns, :class, fn ->
-        Map.fetch!(@variants, assigns[:variant])
-      end)
+    assigns = assign(assigns, :class, button_class(assigns))
 
     if assigns.href || assigns.navigate || assigns.patch do
       ~H"""
@@ -545,6 +542,18 @@ defmodule Bds.Components do
 
   Configure `config :bds, gettext_backend: MyApp.Gettext` for Gettext support.
   """
+  defp button_class(%{variant: variant} = assigns) do
+    variant_class = Map.fetch!(@variants, variant)
+    extra = Map.get(assigns, :class)
+
+    case extra do
+      nil -> variant_class
+      extra when is_binary(extra) -> "#{variant_class} #{extra}"
+      extra when is_list(extra) -> [variant_class | extra]
+      extra -> [variant_class, extra]
+    end
+  end
+
   def translate_error({msg, opts}) do
     if backend = Application.get_env(:bds, :gettext_backend) do
       if count = opts[:count] do

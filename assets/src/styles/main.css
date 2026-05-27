@@ -15,3 +15,6 @@
 @import './components/code.css';
 @import './components/feedback.css';
 @import './components/auth.css';
+@import './components/tree.css';
+@import './components/combobox.css';
+@import './components/project-picker.css';

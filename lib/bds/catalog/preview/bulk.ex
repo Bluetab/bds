@@ -728,6 +728,76 @@ defmodule Bds.Catalog.Preview.Bulk do
     """
   end
 
+  def render("combobox", 0, assigns) do
+    ~H"""
+    <.bt_combobox name="project_search" label="Project" value="portal" open placeholder="Search by name or ID…">
+      <:options>
+        <.bt_combobox_option selected>
+          <span class="bt-combobox__option-title">1042</span>
+          <span> — Portal Redesign</span>
+        </.bt_combobox_option>
+        <.bt_combobox_option>
+          <span class="bt-combobox__option-title">1088</span>
+          <span> — Portal Maintenance</span>
+        </.bt_combobox_option>
+        <.bt_combobox_option variant="warning">
+          <span class="bt-combobox__option-title">991</span>
+          <span> — Legacy Portal</span>
+          <span class="bt-combobox__option-sub">Ended 2024-12-31</span>
+        </.bt_combobox_option>
+      </:options>
+    </.bt_combobox>
+    """
+  end
+
+  def render("combobox", 1, assigns) do
+    ~H"""
+    <.bt_combobox name="project_search" label="Project" value="data" open loading />
+    """
+  end
+
+  def render("tree", 0, assigns) do
+    nodes = [
+      %{
+        key: "bu:1",
+        kind_label: "BU",
+        name: "Technology",
+        meta: "Alex Rivera",
+        children: [
+          %{
+            key: "cluster:10",
+            kind_label: "Cluster",
+            name: "EMEA",
+            children: [
+              %{
+                key: "project:1",
+                kind_label: "Project",
+                name: "Portal Redesign",
+                doc_num: 1042,
+                children: []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    assigns =
+      assigns
+      |> assign(:nodes, nodes)
+      |> assign(:expanded, MapSet.new(["bu:1", "cluster:10"]))
+
+    ~H"""
+    <.bt_tree id="tree-demo" nodes={@nodes} expanded={@expanded} />
+    """
+  end
+
+  def render("tree", 1, assigns) do
+    ~H"""
+    <.bt_tree_empty>No nodes match your search.</.bt_tree_empty>
+    """
+  end
+
   def render("typography", 0, assigns) do
     ~H"""
     <div class="bt-stack">

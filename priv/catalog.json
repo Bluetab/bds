@@ -354,6 +354,28 @@
       ]
     },
     {
+      "id": "combobox",
+      "group": "Formularios",
+      "icon": "⌕",
+      "title": "Combobox",
+      "description": "Searchable select with async results panel, loading state, and option variants.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Open with results",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-combobox bt-combobox--open\">\n  <div class=\"bt-field\">\n    <label for=\"combobox-demo\">Project</label>\n    <div class=\"bt-combobox__input-wrap\">\n      <input class=\"bt-input\" id=\"combobox-demo\" type=\"text\" name=\"project_search\" value=\"portal\" placeholder=\"Search by name or ID…\" />\n    </div>\n  </div>\n  <div class=\"bt-combobox__panel\" role=\"listbox\">\n    <div class=\"bt-combobox__options\">\n      <button type=\"button\" class=\"bt-combobox__option bt-combobox__option--selected\" role=\"option\" aria-selected=\"true\">\n        <span class=\"bt-combobox__option-title\">1042</span>\n        <span> — Portal Redesign</span>\n      </button>\n      <button type=\"button\" class=\"bt-combobox__option\" role=\"option\" aria-selected=\"false\">\n        <span class=\"bt-combobox__option-title\">1088</span>\n        <span> — Portal Maintenance</span>\n      </button>\n      <button type=\"button\" class=\"bt-combobox__option bt-combobox__option--warning\" role=\"option\" aria-selected=\"false\">\n        <span class=\"bt-combobox__option-title\">991</span>\n        <span> — Legacy Portal</span>\n        <span class=\"bt-combobox__option-sub\">Ended 2024-12-31</span>\n      </button>\n    </div>\n  </div>\n</div>"
+        },
+        {
+          "title": "Loading",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-combobox bt-combobox--open\">\n  <div class=\"bt-field\">\n    <label for=\"combobox-loading\">Project</label>\n    <div class=\"bt-combobox__input-wrap\">\n      <input class=\"bt-input\" id=\"combobox-loading\" type=\"text\" name=\"project_search\" value=\"data\" />\n      <div class=\"bt-combobox__trailing\"><span class=\"bt-combobox__spinner\" aria-hidden=\"true\"></span></div>\n    </div>\n  </div>\n  <div class=\"bt-combobox__panel\"><div class=\"bt-combobox__status\">Searching…</div></div>\n</div>"
+        }
+      ]
+    },
+    {
       "id": "fields",
       "group": "Formularios",
       "icon": "▭",
@@ -466,6 +488,28 @@
           "block": true,
           "note": null,
           "html": "<section class=\"bt-section\">\n  <div class=\"bt-section__header\">\n    <h2 class=\"bt-section__title\">Título sección</h2>\n    <button class=\"bt-button bt-button--secondary\">Acción</button>\n  </div>\n  <p class=\"bt-section__description\">Descripción breve de la sección.</p>\n</section>"
+        }
+      ]
+    },
+    {
+      "id": "tree",
+      "group": "Componentes",
+      "icon": "⎇",
+      "title": "Tree",
+      "description": "Expandable hierarchical lists for org structures, reporting lines, and nested navigation.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Org-style tree",
+          "block": true,
+          "note": null,
+          "html": "<ul class=\"bt-tree\" role=\"tree\">\n  <li class=\"bt-tree__item\" role=\"treeitem\" aria-expanded=\"true\">\n    <div class=\"bt-tree__row\">\n      <div class=\"bt-tree__toggle-col\">\n        <button type=\"button\" class=\"bt-tree__toggle\" aria-expanded=\"true\" aria-label=\"Toggle branch\">\n          <span class=\"bt-tree__chevron bt-tree__chevron--open\">›</span>\n        </button>\n      </div>\n      <div class=\"bt-tree__body\">\n        <div class=\"bt-tree__label-row\">\n          <span class=\"bt-tree__kind\">BU</span>\n          <span class=\"bt-tree__name\">Technology</span>\n          <span class=\"bt-tree__meta\">· Alex Rivera</span>\n        </div>\n        <ul class=\"bt-tree bt-tree--nested\" role=\"tree\">\n          <li class=\"bt-tree__item\" role=\"treeitem\" aria-expanded=\"true\">\n            <div class=\"bt-tree__row\">\n              <div class=\"bt-tree__toggle-col\">\n                <button type=\"button\" class=\"bt-tree__toggle\" aria-expanded=\"true\" aria-label=\"Toggle branch\">\n                  <span class=\"bt-tree__chevron bt-tree__chevron--open\">›</span>\n                </button>\n              </div>\n              <div class=\"bt-tree__body\">\n                <div class=\"bt-tree__label-row\">\n                  <span class=\"bt-tree__kind\">Cluster</span>\n                  <span class=\"bt-tree__name\">EMEA</span>\n                </div>\n                <ul class=\"bt-tree bt-tree--nested\" role=\"tree\">\n                  <li class=\"bt-tree__item\" role=\"treeitem\" aria-expanded=\"false\">\n                    <div class=\"bt-tree__row\">\n                      <div class=\"bt-tree__toggle-col\">\n                        <span class=\"bt-tree__toggle-spacer\" aria-hidden=\"true\"></span>\n                      </div>\n                      <div class=\"bt-tree__body\">\n                        <div class=\"bt-tree__label-row\">\n                          <span class=\"bt-tree__kind\">Project</span>\n                          <span class=\"bt-tree__name\">Portal Redesign</span>\n                          <span class=\"bt-tree__doc\">P-1042</span>\n                        </div>\n                      </div>\n                    </div>\n                  </li>\n                </ul>\n              </div>\n            </div>\n          </li>\n        </ul>\n      </div>\n    </div>\n  </li>\n</ul>"
+        },
+        {
+          "title": "Empty state",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-tree-empty\">No nodes match your search.</div>"
         }
       ]
     },

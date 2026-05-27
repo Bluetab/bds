@@ -11,6 +11,7 @@ defmodule Bds.Catalog.Snippets.Bulk do
     |> Map.merge(checkboxes())
     |> Map.merge(chips())
     |> Map.merge(code())
+    |> Map.merge(combobox())
     |> Map.merge(colors())
     |> Map.merge(containers())
     |> Map.merge(dialogs())
@@ -39,6 +40,7 @@ defmodule Bds.Catalog.Snippets.Bulk do
     |> Map.merge(tables())
     |> Map.merge(tabs())
     |> Map.merge(textarea())
+    |> Map.merge(tree())
     |> Map.merge(tooltips())
     |> Map.merge(typography())
   end
@@ -697,6 +699,60 @@ defmodule Bds.Catalog.Snippets.Bulk do
         <:panel id="panel-2" tab_id="tab-2">Details content.</:panel>
         <:panel id="panel-3" tab_id="tab-3">Settings content.</:panel>
       </.bt_tabs>
+      """
+    }
+  end
+
+  defp combobox do
+    %{
+      "combobox:0" => ~S"""
+      <.bt_combobox name="project_search" label="Project" value="portal" open placeholder="Search by name or ID…">
+        <:options>
+          <.bt_combobox_option selected>
+            <span class="bt-combobox__option-title">1042</span>
+            <span> — Portal Redesign</span>
+          </.bt_combobox_option>
+          <.bt_combobox_option>
+            <span class="bt-combobox__option-title">1088</span>
+            <span> — Portal Maintenance</span>
+          </.bt_combobox_option>
+        </:options>
+      </.bt_combobox>
+      """,
+      "combobox:1" => ~S"""
+      <.bt_combobox name="project_search" label="Project" value="data" open loading />
+      """
+    }
+  end
+
+  defp tree do
+    %{
+      "tree:0" => ~S"""
+      <.bt_tree
+        id="tree-demo"
+        nodes={[
+          %{
+            key: "bu:1",
+            kind_label: "BU",
+            name: "Technology",
+            meta: "Alex Rivera",
+            children: [
+              %{
+                key: "cluster:10",
+                kind_label: "Cluster",
+                name: "EMEA",
+                children: [
+                  %{key: "project:1", kind_label: "Project", name: "Portal Redesign", doc_num: 1042, children: []}
+                ]
+              }
+            ]
+          }
+        ]}
+        expanded={MapSet.new(["bu:1", "cluster:10"])}
+      />
+      """,
+      "tree:1" => ~S"""
+      <.bt_tree_empty>No nodes match your search.</.bt_tree_empty>
       """
     }
   end

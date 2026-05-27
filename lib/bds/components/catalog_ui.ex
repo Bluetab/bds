@@ -681,4 +681,214 @@ defmodule Bds.Components.CatalogUi do
   end
 
   def bt_button_variant_class(variant), do: Map.get(@button_variants, variant, "bt-button")
+
+  attr :id, :string, default: nil
+  attr :nodes, :list, required: true
+  attr :expanded, :any, required: true
+  attr :toggle_event, :string, default: "toggle_tree"
+  attr :depth, :integer, default: 0
+  attr :class, :any, default: nil
+
+  def bt_tree(assigns) do
+    ~H"""
+    <ul class={["bt-tree", @depth > 0 && "bt-tree--nested", @class]} id={@id} role={if(@depth == 0, do: "tree")}>
+      <.bt_tree_node
+        :for={node <- @nodes}
+        node={node}
+        expanded={@expanded}
+        toggle_event={@toggle_event}
+        depth={@depth}
+      />
+    </ul>
+    """
+  end
+
+  attr :node, :map, required: true
+  attr :expanded, :any, required: true
+  attr :toggle_event, :string, required: true
+  attr :depth, :integer, required: true
+
+  def bt_tree_node(assigns) do
+    node = assigns.node
+    key = tree_node_key(node)
+    children = Map.get(node, :children, [])
+    has_children? = children != []
+    open? = has_children? and MapSet.member?(assigns.expanded, key)
+    section? = Map.get(node, :section, false) or Map.get(node, :kind) == :section
+
+    assigns =
+      assigns
+      |> assign(:key, key)
+      |> assign(:children, children)
+      |> assign(:has_children?, has_children?)
+      |> assign(:open?, open?)
+      |> assign(:section?, section?)
+
+    ~H"""
+    <li class="bt-tree__item" role={if(@depth == 0, do: "treeitem")} aria-expanded={to_string(@open?)}>
+      <div class="bt-tree__row">
+        <div class="bt-tree__toggle-col">
+          <button
+            :if={@has_children?}
+            type="button"
+            class="bt-tree__toggle"
+            phx-click={@toggle_event}
+            phx-value-key={@key}
+            aria-expanded={to_string(@open?)}
+            aria-label="Toggle branch"
+          >
+            <span class={["bt-tree__chevron", @open? && "bt-tree__chevron--open"]}>›</span>
+          </button>
+          <span :if={not @has_children?} class="bt-tree__toggle-spacer" aria-hidden="true" />
+        </div>
+        <div class="bt-tree__body">
+          <p :if={@section?} class="bt-tree__section-title">{@node.name}</p>
+          <div :if={not @section?} class="bt-tree__label-row">
+            <span :if={@node[:kind_label]} class="bt-tree__kind">{@node.kind_label}</span>
+            <span class="bt-tree__name">{@node.name}</span>
+            <span :if={@node[:doc_num]} class="bt-tree__doc">P-{@node.doc_num}</span>
+            <span :if={@node[:secondary_label]} class="bt-tree__secondary">{@node.secondary_label}</span>
+            <span :if={@node[:badges] != []} class="bt-tree__badges">
+              <.bt_badge
+                :for={badge <- @node[:badges] || []}
+                variant={Map.get(badge, :variant, "secondary")}
+              >
+                {badge.label}
+              </.bt_badge>
+            </span>
+            <span :if={@node[:meta]} class="bt-tree__meta">· {@node.meta}</span>
+          </div>
+          <.bt_tree
+            :if={@has_children? and @open?}
+            nodes={@children}
+            expanded={@expanded}
+            toggle_event={@toggle_event}
+            depth={@depth + 1}
+          />
+        </div>
+      </div>
+    </li>
+    """
+  end
+
+  defp tree_node_key(%{key: key}) when is_binary(key), do: key
+  defp tree_node_key(%{id: id}), do: to_string(id)
+
+  attr :id, :string, default: nil
+  attr :input_id, :string, default: nil
+  attr :class, :any, default: nil
+  attr :label, :string, default: nil
+  attr :name, :string, required: true
+  attr :value, :string, default: ""
+  attr :placeholder, :string, default: nil
+  attr :open, :boolean, default: false
+  attr :loading, :boolean, default: false
+  attr :show_clear, :boolean, default: false
+  attr :errors, :list, default: []
+  attr :target, :any, default: nil
+  attr :clear_event, :string, default: "combobox_clear"
+  attr :rest, :global, include: ~w(phx-change phx-debounce phx-focus phx-blur autocomplete disabled readonly)
+
+  slot :panel_footer
+  slot :options
+  slot :empty
+  slot :loading_content
+
+  def bt_combobox(assigns) do
+    wrapper_id = assigns.id
+    input_id = assigns[:input_id] || (wrapper_id && "#{wrapper_id}-input") || "#{assigns.name}-input"
+
+    assigns =
+      assigns
+      |> assign(:wrapper_id, wrapper_id)
+      |> assign(:input_id, input_id)
+      |> assign(:field_class, ["bt-field", assigns.errors != [] && "bt-field--error"])
+
+    ~H"""
+    <div class={["bt-combobox", @open && "bt-combobox--open", @class]} id={@wrapper_id}>
+      <div class={@field_class}>
+        <label :if={@label} for={@input_id}>{@label}</label>
+        <div class="bt-combobox__input-wrap">
+          <input
+            type="text"
+            id={@input_id}
+            name={@name}
+            value={@value}
+            class="bt-input"
+            placeholder={@placeholder}
+            phx-target={@target}
+            {@rest}
+          />
+          <div class="bt-combobox__trailing">
+            <span :if={@loading} class="bt-combobox__spinner" aria-hidden="true" />
+            <button
+              :if={@show_clear and not @loading}
+              type="button"
+              class="bt-combobox__clear"
+              aria-label="Clear"
+              phx-target={@target}
+              phx-click={@clear_event}
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      </div>
+      <div :if={@open} class="bt-combobox__panel" role="listbox">
+        <div :if={@panel_footer != []} class="bt-combobox__footer">
+          {render_slot(@panel_footer)}
+        </div>
+        <div :if={@loading} class="bt-combobox__status">
+          <%= if @loading_content != [] do %>
+            {render_slot(@loading_content)}
+          <% else %>
+            Searching…
+          <% end %>
+        </div>
+        <div :if={not @loading and @options != []} class="bt-combobox__options">
+          {render_slot(@options)}
+        </div>
+        <div
+          :if={not @loading and @options == [] and @empty != [] and @open}
+          class="bt-combobox__status"
+        >
+          {render_slot(@empty)}
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  attr :selected, :boolean, default: false
+  attr :variant, :string, default: "default", values: ~w(default warning)
+  attr :rest, :global, include: ~w(phx-click phx-value-id type)
+
+  slot :inner_block, required: true
+
+  def bt_combobox_option(assigns) do
+    variant_class =
+      case {assigns.variant, assigns.selected} do
+        {"warning", true} -> "bt-combobox__option bt-combobox__option--warning bt-combobox__option--selected"
+        {"warning", _} -> "bt-combobox__option bt-combobox__option--warning"
+        {_, true} -> "bt-combobox__option bt-combobox__option--selected"
+        _ -> "bt-combobox__option"
+      end
+
+    assigns = assign(assigns, :class, variant_class)
+
+    ~H"""
+    <button type="button" class={@class} role="option" aria-selected={to_string(@selected)} {@rest}>
+      {render_slot(@inner_block)}
+    </button>
+    """
+  end
+
+  attr :class, :any, default: nil
+  slot :inner_block, required: true
+
+  def bt_tree_empty(assigns) do
+    ~H"""
+    <div class={["bt-tree-empty", @class]}>{render_slot(@inner_block)}</div>
+    """
+  end
 end

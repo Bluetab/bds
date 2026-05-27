@@ -23,6 +23,8 @@ defmodule Bds do
 
   Ash Authentication Phoenix sign-in UI: `Bds.AuthBanner`, `Bds.AuthUi`.
 
+  Form widgets: `Bds.Components.ProjectPicker` (LiveComponent — searchable project id picker).
+
   Component catalog metadata for storybook apps: `Bds.Catalog` (from `priv/catalog.json`).
   """
 
