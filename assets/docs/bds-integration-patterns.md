@@ -113,6 +113,8 @@ Prefer a **`div.bt-dialog`** (not native `<dialog>`) for DS-driven modals:
 
 `initBtInteractions()` toggles the `open` attribute. The overlay is full-viewport and centered via CSS.
 
+**Glass effect (default):** `.bt-dialog__surface` uses frosted glass (`backdrop-filter`), a subtle dot pattern, and tinted mesh highlights. Tokens live under `--bt-glass-*` in `tokens.css`. For a classic opaque panel, add `bt-dialog__surface--solid`.
+
 Native `<dialog>` elements are also supported: interactions call `showModal()` / `close()` so the browser top layer is used correctly. Using only the HTML `open` attribute without `showModal()` pins the box to the document origin.
 
 ### Phoenix / LiveView placement

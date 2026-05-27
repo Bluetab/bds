@@ -89,8 +89,34 @@
 
   /* Motion */
   --bt-ease: cubic-bezier(.2, .8, .2, 1);
+  --bt-ease-emphasis: cubic-bezier(0.22, 1, 0.36, 1);
   --bt-duration-fast: 140ms;
   --bt-duration-base: 220ms;
+
+  /* Glass (modals, overlays) — light */
+  --bt-glass-surface-bg: rgba(255, 255, 255, 0.72);
+  --bt-glass-surface-bg-gradient: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(248, 250, 252, 0.82) 45%,
+    rgba(255, 255, 255, 0.86) 100%
+  );
+  --bt-glass-surface-border: rgba(226, 232, 240, 0.85);
+  --bt-glass-surface-border-highlight: rgba(255, 255, 255, 0.95);
+  --bt-glass-surface-shadow:
+    0 8px 32px rgba(15, 23, 42, 0.08),
+    0 22px 48px -24px rgba(15, 23, 42, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 0 48px rgba(241, 245, 249, 0.55);
+  --bt-glass-overlay-bg: linear-gradient(
+    145deg,
+    rgba(15, 23, 42, 0.32) 0%,
+    rgba(51, 65, 85, 0.26) 50%,
+    rgba(15, 23, 42, 0.34) 100%
+  );
+  --bt-glass-panel-backdrop: blur(24px) saturate(150%);
+  --bt-glass-overlay-backdrop: blur(8px) saturate(120%);
+  --bt-glass-mesh-opacity: 0.32;
 }
 
 html[data-theme="dark"] {
@@ -114,4 +140,32 @@ html[data-theme="dark"] {
   --bt-color-warning-soft: #3d2d10;
   --bt-color-error-soft: #3d1f22;
   --bt-color-info-soft: #142e4e;
+
+  --bt-glass-surface-bg: rgba(15, 23, 42, 0.14);
+  --bt-glass-surface-bg-gradient: linear-gradient(
+    145deg,
+    rgba(15, 23, 42, 0.42) 0%,
+    rgba(30, 41, 59, 0.34) 50%,
+    rgba(15, 23, 42, 0.4) 100%
+  );
+  --bt-glass-surface-border: rgba(255, 255, 255, 0.24);
+  --bt-glass-surface-border-highlight: rgba(255, 255, 255, 0.38);
+  --bt-glass-surface-shadow: 0 22px 56px -20px rgba(2, 6, 23, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --bt-glass-overlay-bg: linear-gradient(
+    145deg,
+    rgba(2, 6, 23, 0.72) 0%,
+    rgba(15, 23, 42, 0.66) 50%,
+    rgba(2, 6, 23, 0.74) 100%
+  );
+  --bt-glass-panel-backdrop: blur(25px) saturate(165%);
+  --bt-glass-overlay-backdrop: blur(4px);
+  --bt-glass-mesh-opacity: 0.85;
+}
+
+@media (max-width: 767px) {
+  :root,
+  html[data-theme="dark"] {
+    --bt-glass-panel-backdrop: blur(16px) saturate(135%);
+    --bt-glass-overlay-backdrop: blur(2px);
+  }
 }
