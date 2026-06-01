@@ -592,6 +592,35 @@ defmodule Bds.Components.CatalogUi do
     """
   end
 
+  attr :class, :any, default: nil
+  attr :name, :string, required: true
+  attr :email, :string, default: nil
+  attr :src, :string, default: nil
+  attr :initials, :string, default: nil
+  attr :compactness, :string, default: "compact", values: ~w(compact expanded)
+
+  def bt_avatar(assigns) do
+    initials = assigns.initials || avatar_initials(assigns.name)
+
+    assigns =
+      assigns
+      |> assign(:initials, initials)
+      |> assign(:compactness_class, "bt-avatar--#{assigns.compactness}")
+
+    ~H"""
+    <div class={["bt-avatar", @compactness_class, @class]}>
+      <div class="bt-avatar__media" aria-hidden={is_nil(@src)}>
+        <img :if={@src} src={@src} alt={@name} class="bt-avatar__image" />
+        <span :if={is_nil(@src)}>{@initials}</span>
+      </div>
+      <div class="bt-avatar__text">
+        <p class="bt-avatar__name">{@name}</p>
+        <p :if={@email} class="bt-avatar__email">{@email}</p>
+      </div>
+    </div>
+    """
+  end
+
   attr :initials, :string, required: true
   attr :title, :string, required: true
   attr :subtitle, :string, default: nil
@@ -743,11 +772,27 @@ defmodule Bds.Components.CatalogUi do
         </div>
         <div class="bt-tree__body">
           <p :if={@section?} class="bt-tree__section-title">{@node.name}</p>
-          <div :if={not @section?} class="bt-tree__label-row">
-            <span :if={@node[:kind_label]} class="bt-tree__kind">{@node.kind_label}</span>
-            <span class="bt-tree__name">{@node.name}</span>
-            <span :if={@node[:doc_num]} class="bt-tree__doc">P-{@node.doc_num}</span>
-            <span :if={@node[:secondary_label]} class="bt-tree__secondary">{@node.secondary_label}</span>
+          <div
+            :if={not @section?}
+            class={[
+              "bt-tree__label-row",
+              @node[:avatar] && "bt-tree__label-row--with-avatar"
+            ]}
+          >
+            <.bt_avatar
+              :if={@node[:avatar]}
+              name={@node.avatar.name}
+              email={Map.get(@node.avatar, :email)}
+              src={Map.get(@node.avatar, :src)}
+              initials={Map.get(@node.avatar, :initials)}
+              compactness={Map.get(@node.avatar, :compactness, "compact")}
+            />
+            <span :if={!@node[:avatar] && @node[:kind_label]} class="bt-tree__kind">{@node.kind_label}</span>
+            <span :if={!@node[:avatar]} class="bt-tree__name">{@node.name}</span>
+            <span :if={!@node[:avatar] && @node[:doc_num]} class="bt-tree__doc">P-{@node.doc_num}</span>
+            <span :if={!@node[:avatar] && @node[:secondary_label]} class="bt-tree__secondary">
+              {@node.secondary_label}
+            </span>
             <span :if={@node[:badges] != []} class="bt-tree__badges">
               <.bt_badge
                 :for={badge <- @node[:badges] || []}
@@ -756,7 +801,7 @@ defmodule Bds.Components.CatalogUi do
                 {badge.label}
               </.bt_badge>
             </span>
-            <span :if={@node[:meta]} class="bt-tree__meta">· {@node.meta}</span>
+            <span :if={!@node[:avatar] && @node[:meta]} class="bt-tree__meta">· {@node.meta}</span>
           </div>
           <.bt_tree
             :if={@has_children? and @open?}
@@ -773,6 +818,27 @@ defmodule Bds.Components.CatalogUi do
 
   defp tree_node_key(%{key: key}) when is_binary(key), do: key
   defp tree_node_key(%{id: id}), do: to_string(id)
+
+  defp avatar_initials(name) when is_binary(name) do
+    name
+    |> String.trim()
+    |> String.split(~r/\s+/, trim: true)
+    |> case do
+      [] ->
+        "?"
+
+      [single] ->
+        single |> String.slice(0, 2) |> String.upcase()
+
+      [first | rest] ->
+        [first, List.last(rest)]
+        |> Enum.map(fn part -> part |> String.first() |> to_string() end)
+        |> Enum.join()
+        |> String.upcase()
+    end
+  end
+
+  defp avatar_initials(_), do: "?"
 
   attr :id, :string, default: nil
   attr :input_id, :string, default: nil

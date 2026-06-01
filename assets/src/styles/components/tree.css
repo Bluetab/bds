@@ -90,6 +90,21 @@
   gap: var(--bt-space-1) var(--bt-space-2);
 }
 
+.bt-tree__label-row--with-avatar {
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--bt-space-2) var(--bt-space-3);
+}
+
+.bt-tree__label-row--with-avatar .bt-avatar {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.bt-tree__label-row--with-avatar .bt-tree__badges {
+  flex-shrink: 0;
+}
+
 .bt-tree__kind {
   font-size: var(--bt-font-size-xs);
   font-weight: 650;

@@ -186,6 +186,60 @@ src/main.js</pre>
     ],
   },
   {
+    id: "avatars",
+    group: "Componentes",
+    icon: "◎",
+    title: "Avatars",
+    description:
+      "Identidad de persona con foto o iniciales. Compact muestra nombre; expanded añade email.",
+    examples: [
+      {
+        title: "Compact",
+        html: String.raw`<div class="bt-avatar bt-avatar--compact">
+  <div class="bt-avatar__media"><span>AR</span></div>
+  <div class="bt-avatar__text">
+    <p class="bt-avatar__name">Alejandro Ramos</p>
+    <p class="bt-avatar__email">alejandro.ramos@example.com</p>
+  </div>
+</div>`,
+      },
+      {
+        title: "Expanded",
+        html: String.raw`<div class="bt-avatar bt-avatar--expanded">
+  <div class="bt-avatar__media"><span>ML</span></div>
+  <div class="bt-avatar__text">
+    <p class="bt-avatar__name">María López</p>
+    <p class="bt-avatar__email">maria.lopez@example.com</p>
+  </div>
+</div>`,
+      },
+      {
+        title: "With image",
+        block: true,
+        html: String.raw`<div class="bt-stack" style="gap: var(--bt-space-3);">
+  <div class="bt-avatar bt-avatar--compact">
+    <div class="bt-avatar__media">
+      <img class="bt-avatar__image" src="https://i.pravatar.cc/96?u=compact" alt="" />
+    </div>
+    <div class="bt-avatar__text">
+      <p class="bt-avatar__name">Jordan Kim</p>
+      <p class="bt-avatar__email">jordan.kim@example.com</p>
+    </div>
+  </div>
+  <div class="bt-avatar bt-avatar--expanded">
+    <div class="bt-avatar__media">
+      <img class="bt-avatar__image" src="https://i.pravatar.cc/128?u=expanded" alt="" />
+    </div>
+    <div class="bt-avatar__text">
+      <p class="bt-avatar__name">Jordan Kim</p>
+      <p class="bt-avatar__email">jordan.kim@example.com</p>
+    </div>
+  </div>
+</div>`,
+      },
+    ],
+  },
+  {
     id: "badges",
     group: "Componentes",
     icon: "◈",
@@ -843,6 +897,384 @@ initBtInteractions();</code></pre>
       {
         title: "Empty state",
         html: String.raw`<div class="bt-tree-empty">No nodes match your search.</div>`,
+      },
+    ],
+  },
+  {
+    id: "calendar-day",
+    group: "Componentes",
+    icon: "▦",
+    title: "Calendar day",
+    description:
+      "Month grid day card with status accent, day number, and optional project lines.",
+    examples: [
+      {
+        title: "Imputed day with projects",
+        html: String.raw`<button type="button" class="bt-calendar-day bt-calendar-day--imputado" style="width: 10rem; height: 8rem;">
+  <span class="bt-calendar-day__number">12</span>
+  <div class="bt-calendar-day__content">
+    <div class="bt-calendar-day__projects">
+      <div class="bt-calendar-day__project">
+        <span class="bt-calendar-day__project-name">PX-1024 · Acme</span>
+        <span class="bt-calendar-day__project-hours">5h</span>
+      </div>
+    </div>
+  </div>
+</button>`,
+      },
+      {
+        title: "Status variants",
+        html: String.raw`<div class="bt-stack" style="flex-flow: row wrap; gap: var(--bt-space-2);">
+  <button type="button" class="bt-calendar-day bt-calendar-day--nuevo" style="width: 5rem; height: 5rem;"><span class="bt-calendar-day__number">1</span></button>
+  <button type="button" class="bt-calendar-day bt-calendar-day--completado" style="width: 5rem; height: 5rem;"><span class="bt-calendar-day__number">2</span></button>
+  <button type="button" class="bt-calendar-day bt-calendar-day--aprobado" style="width: 5rem; height: 5rem;"><span class="bt-calendar-day__number">3</span></button>
+  <button type="button" class="bt-calendar-day bt-calendar-day--festivo" style="width: 5rem; height: 5rem;"><span class="bt-calendar-day__number">4</span></button>
+</div>`,
+      },
+    ],
+  },
+  {
+    id: "calendar-toolbar",
+    group: "Componentes",
+    icon: "▦",
+    title: "Calendar toolbar",
+    description: "Month navigation and calendar controls above the weekday row.",
+    examples: [
+      {
+        title: "Toolbar",
+        block: true,
+        html: String.raw`<div class="bt-calendar-toolbar">
+  <div class="bt-calendar-toolbar__row">
+    <div><button type="button" class="bt-icon-button" aria-label="Templates"><span class="bt-icon">▥</span></button></div>
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <button type="button" class="bt-icon-button" aria-label="Previous">‹</button>
+      <span class="bt-calendar-toolbar__month">June 2026</span>
+      <button type="button" class="bt-icon-button" aria-label="Next">›</button>
+    </div>
+    <div style="display: flex; justify-content: flex-end;"><button type="button" class="bt-icon-button" aria-label="Today">◎</button></div>
+  </div>
+</div>`,
+      },
+    ],
+  },
+  {
+    id: "calendar-weekdays",
+    group: "Componentes",
+    icon: "▦",
+    title: "Calendar weekdays",
+    description: "Weekday header row aligned to the month grid columns.",
+    examples: [
+      {
+        title: "Weekdays with weekends",
+        block: true,
+        html: String.raw`<div class="bt-calendar-weekdays">
+  <div class="bt-calendar-weekdays__grid" style="grid-template-columns: repeat(5, minmax(0, 5fr)) repeat(2, minmax(0, 1fr));">
+    <span class="bt-calendar-weekdays__label">MON</span>
+    <span class="bt-calendar-weekdays__label">TUE</span>
+    <span class="bt-calendar-weekdays__label">WED</span>
+    <span class="bt-calendar-weekdays__label">THU</span>
+    <span class="bt-calendar-weekdays__label">FRI</span>
+    <span class="bt-calendar-weekdays__label bt-calendar-weekdays__label--weekend">SAT</span>
+    <span class="bt-calendar-weekdays__label bt-calendar-weekdays__label--weekend">SUN</span>
+  </div>
+</div>`,
+      },
+    ],
+  },
+  {
+    id: "calendar-legend",
+    group: "Componentes",
+    icon: "▦",
+    title: "Calendar legend",
+    description: "Footer legend for timesheet day statuses and counts.",
+    examples: [
+      {
+        title: "Legend",
+        block: true,
+        html: String.raw`<footer class="bt-calendar-legend" aria-label="Calendar status legend">
+  <ul class="bt-calendar-legend__list" role="list">
+    <li class="bt-calendar-legend__item">
+      <span class="bt-calendar-legend__icon bt-calendar-legend__icon--imputado">◐</span>
+      <span>Draft</span>
+      <span class="font-semibold tabular-nums">6</span>
+    </li>
+    <li class="bt-calendar-legend__item">
+      <span class="bt-calendar-legend__icon bt-calendar-legend__icon--completado">●</span>
+      <span>Complete</span>
+      <span class="font-semibold tabular-nums">5</span>
+    </li>
+    <li class="bt-calendar-legend__item">
+      <span class="bt-calendar-legend__icon bt-calendar-legend__icon--aprobado">✓</span>
+      <span>Approved</span>
+      <span class="font-semibold tabular-nums">2</span>
+    </li>
+  </ul>
+</footer>`,
+      },
+    ],
+  },
+  {
+    id: "calendar-template",
+    group: "Componentes",
+    icon: "▦",
+    title: "Calendar template",
+    description: "Template shortcut card for the timesheet sidebar.",
+    examples: [
+      {
+        title: "Template card",
+        html: String.raw`<article class="bt-calendar-template-card">
+  <div class="bt-calendar-template-card__row">
+    <span class="bt-calendar-template-card__key">1</span>
+    <div style="min-width: 0; flex: 1;">
+      <p class="bt-calendar-template-card__name">Acme — billable</p>
+      <div class="bt-calendar-day__projects">
+        <div class="bt-calendar-day__project">
+          <span class="bt-calendar-day__project-name">PX-1024 · Platform rollout</span>
+          <span class="bt-calendar-day__project-hours">8h</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>`,
+      },
+    ],
+  },
+  {
+    id: "calendar-shell",
+    group: "Componentes",
+    icon: "▦",
+    title: "Calendar shell",
+    description:
+      "Composed Tempo-style month view: templates sidebar, toolbar, weekday row, grid, and legend.",
+    examples: [
+      {
+        title: "Month view (static)",
+        block: true,
+        html: String.raw`<div class="bt-calendar-shell bt-calendar-shell--sidebar-open" data-sidebar-open="true" style="min-height: 24rem;">
+  <div class="bt-calendar-shell__toolbar">
+    <div class="bt-calendar-toolbar">
+      <div class="bt-calendar-toolbar__row">
+        <div><button type="button" class="bt-icon-button"><span class="bt-icon">▥</span></button></div>
+        <div><span class="bt-calendar-toolbar__month">June 2026</span></div>
+        <div></div>
+      </div>
+    </div>
+    <div class="bt-calendar-weekdays">
+      <div class="bt-calendar-weekdays__grid" style="grid-template-columns: repeat(5, 1fr) repeat(2, 0.5fr);">
+        <span class="bt-calendar-weekdays__label">MON</span><span class="bt-calendar-weekdays__label">TUE</span><span class="bt-calendar-weekdays__label">WED</span><span class="bt-calendar-weekdays__label">THU</span><span class="bt-calendar-weekdays__label">FRI</span>        <span class="bt-calendar-weekdays__label bt-calendar-weekdays__label--weekend">SAT</span><span class="bt-calendar-weekdays__label bt-calendar-weekdays__label--weekend">SUN</span>
+      </div>
+    </div>
+  </div>
+  <div class="bt-calendar-shell__workspace">
+  <aside class="bt-calendar-shell__sidebar">
+    <div class="bt-calendar-templates h-full min-h-0 flex flex-col">
+      <div class="bt-calendar-templates__header"><span>Templates</span></div>
+      <div class="bt-calendar-templates__body">
+        <article class="bt-calendar-template-card">
+          <div class="bt-calendar-template-card__row">
+            <span class="bt-calendar-template-card__key">1</span>
+            <div style="min-width:0;flex:1"><p class="bt-calendar-template-card__name">Acme — billable</p></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </aside>
+  <div class="bt-calendar-shell__main">
+    <div class="bt-calendar-shell__body">
+    <div class="bt-calendar-month-grid" style="grid-template-columns: repeat(5, 1fr) repeat(2, 0.5fr); grid-auto-rows: minmax(5rem, 1fr); min-height: 12rem; width: 100%;">
+      <div class="bt-calendar-month-grid__cell"><button type="button" class="bt-calendar-day bt-calendar-day--imputado" style="height:100%"><span class="bt-calendar-day__number">2</span></button></div>
+      <div class="bt-calendar-month-grid__cell"><button type="button" class="bt-calendar-day bt-calendar-day--completado" style="height:100%"><span class="bt-calendar-day__number">3</span></button></div>
+      <div class="bt-calendar-month-grid__cell"><button type="button" class="bt-calendar-day bt-calendar-day--aprobado" style="height:100%"><span class="bt-calendar-day__number">4</span></button></div>
+      <div class="bt-calendar-month-grid__cell"><button type="button" class="bt-calendar-day bt-calendar-day--nuevo" style="height:100%"><span class="bt-calendar-day__number">5</span></button></div>
+      <div class="bt-calendar-month-grid__cell"><button type="button" class="bt-calendar-day bt-calendar-day--festivo" style="height:100%"><span class="bt-calendar-day__number">9</span></button></div>
+    </div>
+    </div>
+    <footer class="bt-calendar-legend">
+      <ul class="bt-calendar-legend__list">
+        <li class="bt-calendar-legend__item"><span class="bt-calendar-legend__icon bt-calendar-legend__icon--imputado">◐</span><span>Draft</span><span>6</span></li>
+        <li class="bt-calendar-legend__item"><span class="bt-calendar-legend__icon bt-calendar-legend__icon--aprobado">✓</span><span>Approved</span><span>2</span></li>
+      </ul>
+    </footer>
+  </div>
+  </div>
+</div>`,
+      },
+    ],
+  },
+  {
+    id: "calendar-day-modal",
+    group: "Componentes",
+    icon: "▣",
+    title: "Calendar day modal",
+    description: "Glass day editor opened from a calendar cell — hours summary, entries list, and actions.",
+    examples: [
+      {
+        title: "Draft day with entries",
+        block: true,
+        html: String.raw`<div class="bt-calendar-day-modal" data-testid="calendar-day-modal" style="position: relative; inset: auto; min-height: 22rem;">
+  <div class="bt-calendar-day-modal__panel" style="position: relative;">
+    <div class="bt-calendar-day-modal__shell bt-calendar-day-modal__shell--imputado">
+      <aside class="bt-calendar-day-modal__aside">
+        <div class="bt-calendar-day-modal__aside-top">
+          <p class="bt-calendar-day-modal__day-number">12</p>
+          <div class="bt-calendar-day-modal__day-meta">
+            <p class="bt-calendar-day-modal__weekday">THU</p>
+            <p class="bt-calendar-day-modal__month">June 2026</p>
+          </div>
+        </div>
+        <div class="bt-calendar-day-modal__aside-bottom">
+          <div class="bt-calendar-day-modal__hours"><span class="bt-calendar-day-modal__hours-value">7.5</span><span class="bt-calendar-day-modal__hours-unit">h</span></div>
+          <p class="bt-calendar-day-modal__status">DRAFT</p>
+          <div class="bt-calendar-day-modal__progress"><div class="bt-calendar-day-modal__progress-fill" style="width: 93.8%"></div></div>
+          <p class="bt-calendar-day-modal__progress-label">0.5h to reach 8h</p>
+        </div>
+      </aside>
+      <section class="bt-calendar-day-modal__content">
+        <div class="bt-calendar-day-modal__toolbar">
+          <div><p class="bt-calendar-day-modal__kicker">Activity</p><h2 class="bt-calendar-day-modal__title">Logged hours</h2></div>
+          <button type="button" class="bt-calendar-day-modal__add bt-button bt-button--secondary bt-button--sm"><span class="bt-icon" aria-hidden="true">+</span> New</button>
+        </div>
+        <div class="bt-calendar-day-modal__entries">
+          <article class="bt-calendar-day-modal__entry">
+            <div class="bt-calendar-day-modal__entry-main"><p class="bt-calendar-day-modal__entry-project">PX-1024 · Acme platform</p><p class="bt-calendar-day-modal__entry-type">Billable</p></div>
+            <div class="bt-calendar-day-modal__entry-meta"><span class="bt-calendar-day-modal__entry-hours">5h</span><span class="bt-calendar-day-modal__entry-status">Draft</span></div>
+          </article>
+        </div>
+        <div class="bt-calendar-day-modal__footer">
+          <button type="button" class="bt-button bt-button--ghost bt-button--sm">Close</button>
+          <button type="button" class="bt-button bt-button--primary bt-button--sm">Save draft</button>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>`,
+      },
+    ],
+  },
+  {
+    id: "performance-evaluator",
+    group: "Componentes",
+    icon: "◎",
+    title: "Performance evaluator",
+    description: "Evaluator identity card for Me and user profile workspaces.",
+    examples: [
+      {
+        title: "Evaluator card",
+        block: true,
+        html: String.raw`<article class="bt-performance-card bt-performance-evaluator">
+  <h2 class="bt-performance-section-title">Your evaluator</h2>
+  <div class="bt-performance-evaluator__row">
+    <img src="https://www.gravatar.com/avatar/?d=mp" alt="Morgan Chen" class="bt-performance-evaluator__avatar" />
+    <div>
+      <p class="bt-performance-evaluator__name">Morgan Chen</p>
+      <p class="bt-performance-meta-sub">morgan.chen@example.com</p>
+    </div>
+  </div>
+</article>`,
+      },
+    ],
+  },
+  {
+    id: "performance-hours",
+    group: "Componentes",
+    icon: "◷",
+    title: "Performance reported hours",
+    description: "Compact reported-hours panel with expandable client groups and project rows.",
+    examples: [
+      {
+        title: "Hours panel",
+        block: true,
+        html: String.raw`<div class="bt-performance-panel">
+  <div class="bt-performance-panel__inner">
+    <div class="bt-performance-panel__header">
+      <h3 class="bt-performance-kicker" style="color: var(--bt-color-text-subtle); margin: 0;">Reported hours</h3>
+    </div>
+    <div class="bt-performance-hours-row">
+      <button type="button" class="bt-performance-hours-toggle"><span class="bt-icon">▸</span><span>Acme Corp · Digital</span></button>
+      <span class="bt-performance-hours-pill">128.5h</span>
+    </div>
+    <div class="bt-performance-hours-row">
+      <button type="button" class="bt-performance-hours-toggle"><span class="bt-icon">▸</span><span>Northwind · SAP</span></button>
+      <span class="bt-performance-hours-pill">44h</span>
+    </div>
+  </div>
+</div>`,
+      },
+    ],
+  },
+  {
+    id: "performance-briefing-card",
+    group: "Componentes",
+    icon: "📄",
+    title: "Performance briefing card",
+    description: "Briefing bonded with evaluation: objectives, ratings, acknowledgement, and assessment blocks.",
+    examples: [
+      {
+        title: "Published with evaluation",
+        block: true,
+        html: String.raw`<article class="bt-performance-card" data-briefing-status="published">
+  <header class="bt-performance-card__header">
+    <div style="display: grid; gap: var(--bt-space-2);">
+      <div class="bt-performance-meta-row">
+        <span class="bt-icon">📄</span>
+        <span class="bt-performance-meta-row__date">2026-04-08</span>
+        <span class="bt-performance-chip">H1 2026</span>
+        <span class="bt-performance-ack bt-performance-ack--done"><span class="bt-icon">✓</span><span>Acknowledged</span></span>
+      </div>
+      <p class="bt-performance-meta-sub">Created by Morgan Chen</p>
+    </div>
+    <div class="bt-performance-actions">
+      <button type="button" class="bt-button bt-button--outline bt-button--sm">Edit</button>
+    </div>
+  </header>
+  <div class="bt-performance-card__body">
+    <p style="margin:0;font-size:var(--bt-font-size-sm);color:var(--bt-color-text-muted);">Own technical direction for the Northwind FI rollout.</p>
+    <div class="bt-performance-evaluation">
+      <div style="display:flex;justify-content:space-between;gap:var(--bt-space-3);flex-wrap:wrap;">
+        <div><div class="bt-performance-meta-row"><span class="bt-icon">✦</span><span class="bt-performance-meta-row__date">2026-04-22</span></div><p class="bt-performance-meta-sub">Evaluated by Morgan Chen</p></div>
+        <span class="bt-performance-rating bt-performance-rating--b">B</span>
+      </div>
+    </div>
+  </div>
+</article>`,
+      },
+      {
+        title: "Draft briefing",
+        html: String.raw`<article class="bt-performance-card bt-performance-card--draft" data-briefing-status="draft">
+  <header class="bt-performance-card__header">
+    <p class="bt-performance-kicker">Draft · only visible to you</p>
+    <div class="bt-performance-meta-row"><span class="bt-icon">📄</span><span class="bt-performance-meta-row__date">2026-05-12</span></div>
+  </header>
+  <div class="bt-performance-card__body"><p style="margin:0;font-size:var(--bt-font-size-sm);">Lead delivery on the Acme platform migration.</p></div>
+</article>`,
+      },
+    ],
+  },
+  {
+    id: "performance-team-card",
+    group: "Componentes",
+    icon: "👥",
+    title: "Performance team card",
+    description: "Evaluator team row with project hours, briefing status, and optional delegation.",
+    examples: [
+      {
+        title: "Team member with briefing",
+        block: true,
+        html: String.raw`<article class="bt-performance-card bt-performance-team-card">
+  <div class="bt-performance-team-card__main">
+    <img src="https://www.gravatar.com/avatar/?d=mp" alt="Sam Okonkwo" class="bt-performance-evaluator__avatar bt-performance-evaluator__avatar--sm" />
+    <div>
+      <div style="display:flex;gap:var(--bt-space-2);align-items:center;"><span style="font-weight:600;">Sam Okonkwo</span><span class="bt-performance-chip">Consultant</span></div>
+      <p class="bt-performance-meta-sub">sam.okonkwo@example.com</p>
+      <div style="display:flex;gap:var(--bt-space-2);margin-top:var(--bt-space-1);font-size:var(--bt-font-size-xs);"><span style="font-weight:600;">Acme · Platform migration</span><span class="bt-performance-hours-pill">96h</span></div>
+    </div>
+  </div>
+  <div class="bt-performance-team-card__aside">
+    <span style="font-size:var(--bt-font-size-sm);font-weight:600;color:var(--bt-color-primary);">Briefing on 2026-04-01</span>
+    <span class="bt-status bt-status--info">Published</span>
+    <span class="bt-performance-rating bt-performance-rating--a">A</span>
+  </div>
+</article>`,
       },
     ],
   },

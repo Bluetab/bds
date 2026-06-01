@@ -5,6 +5,7 @@ defmodule Bds.Catalog.Snippets.Bulk do
     %{}
     |> Map.merge(get_started())
     |> Map.merge(app_bars())
+    |> Map.merge(avatars())
     |> Map.merge(badges())
     |> Map.merge(buttons())
     |> Map.merge(cards())
@@ -41,6 +42,8 @@ defmodule Bds.Catalog.Snippets.Bulk do
     |> Map.merge(tabs())
     |> Map.merge(textarea())
     |> Map.merge(tree())
+    |> Map.merge(calendar())
+    |> Map.merge(performance())
     |> Map.merge(tooltips())
     |> Map.merge(typography())
   end
@@ -54,10 +57,12 @@ defmodule Bds.Catalog.Snippets.Bulk do
           Edit <.bt_code>src/styles/tokens.css</.bt_code> first, then each component under
           <.bt_code>src/styles/components/</.bt_code>.
         </p>
-        <.bt_code_block>
+    <.bt_code_block>
       import Bds.Components
       import Bds.Components.CatalogUi
-        </.bt_code_block>
+      import Bds.Components.Calendar
+      import Bds.Components.Performance
+    </.bt_code_block>
       </.bt_card>
       """,
       "get-started:1" => ~S"""
@@ -93,6 +98,33 @@ defmodule Bds.Catalog.Snippets.Bulk do
         <:item icon="☷" label="Data" />
         <:item icon="⚙" label="Settings" />
       </.bt_bottom_nav>
+      """
+    }
+  end
+
+  defp avatars do
+    %{
+      "avatars:0" => ~S"""
+      <.bt_avatar name="Alejandro Ramos" email="alejandro.ramos@example.com" initials="AR" compactness="compact" />
+      """,
+      "avatars:1" => ~S"""
+      <.bt_avatar name="María López" email="maria.lopez@example.com" initials="ML" compactness="expanded" />
+      """,
+      "avatars:2" => ~S"""
+      <div class="bt-stack" style="gap: var(--bt-space-3);">
+        <.bt_avatar
+          name="Jordan Kim"
+          email="jordan.kim@example.com"
+          src="https://i.pravatar.cc/96?u=compact"
+          compactness="compact"
+        />
+        <.bt_avatar
+          name="Jordan Kim"
+          email="jordan.kim@example.com"
+          src="https://i.pravatar.cc/128?u=expanded"
+          compactness="expanded"
+        />
+      </div>
       """
     }
   end
@@ -769,6 +801,191 @@ defmodule Bds.Catalog.Snippets.Bulk do
         type="textarea"
         value="Sample text for documentation."
         help="Recommended maximum: 240 characters."
+      />
+      """
+    }
+  end
+
+  defp calendar do
+    %{
+      "calendar-day:0" => ~S"""
+      <.bt_calendar_day
+        day={12}
+        status="imputado"
+        projects={[%{name: "PX-1024 · Acme", hours: 5.0}]}
+        class="w-40 h-32"
+      />
+      """,
+      "calendar-day:1" => ~S"""
+      <div class="bt-stack" style="flex-flow: row wrap; gap: var(--bt-space-2);">
+        <.bt_calendar_day day={1} status="nuevo" class="w-20 h-20" />
+        <.bt_calendar_day day={2} status="completado" class="w-20 h-20" />
+        <.bt_calendar_day day={3} status="aprobado" class="w-20 h-20" />
+        <.bt_calendar_day day={4} status="festivo" class="w-20 h-20" />
+      </div>
+      """,
+      "calendar-toolbar:0" => ~S"""
+      <.bt_calendar_toolbar month_label="June 2026">
+        <:left><.bt_icon_button label="Templates" icon="▥" /></:left>
+        <:center>
+          <.bt_icon_button label="Previous" icon="‹" />
+          <.bt_icon_button label="Next" icon="›" />
+        </:center>
+        <:right><.bt_icon_button label="Today" icon="◎" /></:right>
+      </.bt_calendar_toolbar>
+      """,
+      "calendar-weekdays:0" => ~S"""
+      <.bt_calendar_weekdays
+        show_weekends
+        grid_columns="repeat(5, minmax(0, 5fr)) repeat(2, minmax(0, 1fr))"
+      />
+      """,
+      "calendar-legend:0" => ~S"""
+      <.bt_calendar_legend
+        items={[
+          %{status: "imputado", icon: "◐", label: "Draft", count: 6},
+          %{status: "completado", icon: "●", label: "Complete", count: 5},
+          %{status: "aprobado", icon: "✓", label: "Approved", count: 2}
+        ]}
+      />
+      """,
+      "calendar-template:0" => ~S"""
+      <.bt_calendar_template_card
+        key="1"
+        name="Acme — billable"
+        projects={[%{name: "PX-1024 · Platform rollout", hours: 8.0}]}
+      />
+      """,
+      "calendar-shell:0" => ~S"""
+      <.bt_calendar_shell sidebar_open class="min-h-96">
+        <:sidebar>
+          <.bt_calendar_templates_panel title="Templates">
+            <.bt_calendar_template_card key="1" name="Acme — billable" hours={8.0} />
+          </.bt_calendar_templates_panel>
+        </:sidebar>
+        <:toolbar>
+          <.bt_calendar_toolbar month_label="June 2026" />
+          <.bt_calendar_weekdays
+            show_weekends
+            grid_columns="repeat(5, minmax(0, 1fr)) repeat(2, minmax(0, 0.5fr))"
+          />
+        </:toolbar>
+        <.bt_calendar_month_grid grid_columns="repeat(5, minmax(0, 1fr)) repeat(2, minmax(0, 0.5fr))">
+          <.bt_calendar_month_cell>
+            <.bt_calendar_day day={2} status="imputado" class="h-full" />
+          </.bt_calendar_month_cell>
+          <.bt_calendar_month_cell>
+            <.bt_calendar_day day={3} status="completado" class="h-full" />
+          </.bt_calendar_month_cell>
+          <.bt_calendar_month_cell>
+            <.bt_calendar_day day={4} status="aprobado" class="h-full" />
+          </.bt_calendar_month_cell>
+        </.bt_calendar_month_grid>
+        <:legend>
+          <.bt_calendar_legend
+            items={[
+              %{status: "imputado", icon: "◐", label: "Draft", count: 6},
+              %{status: "aprobado", icon: "✓", label: "Approved", count: 2}
+            ]}
+          />
+        </:legend>
+      </.bt_calendar_shell>
+      """,
+      "calendar-day-modal:0" => ~S"""
+      <.bt_calendar_day_modal
+        show
+        date={~D[2026-06-12]}
+        status="imputado"
+        weekday_label="THU"
+        month_label="June 2026"
+        total_hours={7.5}
+        entries={[
+          %{
+            project_name: "PX-1024 · Acme platform",
+            hours: 5.0,
+            input_type: "Billable",
+            status_label: "Draft"
+          },
+          %{
+            project_name: "PX-2201 · Hypercare",
+            hours: 2.5,
+            input_type: "Billable",
+            status_label: "Draft"
+          }
+        ]}
+      />
+      """
+    }
+  end
+
+  defp performance do
+    %{
+      "performance-evaluator:0" => ~S"""
+      <.bt_performance_evaluator_card
+        id="catalog-performance-evaluator"
+        title="Your evaluator"
+        name="Morgan Chen"
+        email="morgan.chen@example.com"
+      />
+      """,
+      "performance-hours:0" => ~S"""
+      <.bt_performance_hours_panel
+        id="catalog-performance-hours"
+        hours_groups={[
+          %{key: "acme", label: "Acme Corp · Digital", total_label: "128.5h", projects: []},
+          %{key: "northwind", label: "Northwind · SAP", total_label: "44h", projects: []}
+        ]}
+        hidden_group_count={0}
+      />
+      """,
+      "performance-briefing-card:0" => ~S"""
+      <.bt_performance_briefing_card
+        id="catalog-performance-briefing"
+        status="published"
+        date_label="2026-04-08"
+        period_name="H1 2026"
+        creator_label="Morgan Chen"
+        role_description="Own technical direction for the Northwind FI rollout."
+        ack_state={:acknowledged}
+        objectives={[
+          %{title: "Blueprint sign-off", weight: 35, description: "Signed-off solution design."}
+        ]}
+        evaluation={
+          %{
+            date_label: "2026-04-22",
+            creator_label: "Morgan Chen",
+            rating: "b",
+            rating_label: "B",
+            rationale: "Strong delivery on blueprint and coaching.",
+            strengths: "Clear communication.",
+            weaknesses: "Optimistic test estimates.",
+            recommendations: "Continue pairing on automation."
+          }
+        }
+      />
+      """,
+      "performance-briefing-card:1" => ~S"""
+      <.bt_performance_briefing_card
+        id="catalog-performance-briefing-draft"
+        status="draft"
+        date_label="2026-05-12"
+        creator_label="Morgan Chen"
+        role_description="Lead delivery on the Acme platform migration."
+        ack_state={:hidden}
+      />
+      """,
+      "performance-team-card:0" => ~S"""
+      <.bt_performance_team_card
+        id="catalog-performance-team"
+        name="Sam Okonkwo"
+        email="sam.okonkwo@example.com"
+        category="Consultant"
+        project_label="Acme · Platform migration"
+        hours_label="96h"
+        briefing_date_label="2026-04-01"
+        briefing_status="published"
+        briefing_status_label="Published"
+        rating_label="A"
       />
       """
     }

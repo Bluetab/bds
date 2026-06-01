@@ -1,0 +1,82 @@
+.bt-avatar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bt-space-2);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.bt-avatar__media {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--bt-color-primary-soft);
+  color: var(--bt-color-primary);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.bt-avatar__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bt-avatar__text {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.bt-avatar__name {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--bt-color-text);
+  font-weight: 650;
+}
+
+.bt-avatar__email {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--bt-color-text-muted);
+}
+
+/* Compact — small photo, name only */
+.bt-avatar--compact .bt-avatar__media {
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: var(--bt-font-size-xs);
+}
+
+.bt-avatar--compact .bt-avatar__name {
+  font-size: var(--bt-font-size-sm);
+  line-height: 1.25;
+}
+
+.bt-avatar--compact .bt-avatar__email {
+  display: none;
+}
+
+/* Expanded — larger photo, name + email */
+.bt-avatar--expanded .bt-avatar__media {
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: var(--bt-font-size-sm);
+}
+
+.bt-avatar--expanded .bt-avatar__name {
+  font-size: var(--bt-font-size-md);
+  line-height: 1.3;
+}
+
+.bt-avatar--expanded .bt-avatar__email {
+  display: block;
+  font-size: var(--bt-font-size-sm);
+  line-height: 1.25;
+}

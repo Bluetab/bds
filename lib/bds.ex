@@ -25,6 +25,9 @@ defmodule Bds do
 
   Form widgets: `Bds.Components.ProjectPicker` (LiveComponent — searchable project id picker).
 
+  Performance cycle / Gedex workspace: `Bds.Components.Performance` (`bt-performance-*` briefing,
+  hours, team, and evaluator cards).
+
   Component catalog metadata for storybook apps: `Bds.Catalog` (from `priv/catalog.json`).
   """
 
