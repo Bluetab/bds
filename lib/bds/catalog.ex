@@ -4,6 +4,9 @@ defmodule Bds.Catalog do
 
   Data is generated from [`assets/src/catalog.js`](../../assets/src/catalog.js) into
   `priv/catalog.json` via `npm run export:catalog` (also runs after `npm run build:lib`).
+
+  English strings in the catalog are Gettext msgids; call `localized_component/1` and
+  `localized_group/1` when rendering in Phoenix apps.
   """
 
   @catalog_path Path.join([:code.priv_dir(:bds), "catalog.json"])
@@ -49,6 +52,30 @@ defmodule Bds.Catalog do
   @doc false
   @spec valid_id?(String.t()) :: boolean()
   def valid_id?(id) when is_binary(id), do: Map.has_key?(@component_ids, id)
+
+  @doc "Translates a catalog msgid for the current Gettext locale."
+  @spec localize(String.t() | nil) :: String.t()
+  def localize(nil), do: ""
+  def localize(msgid) when is_binary(msgid), do: Gettext.gettext(Bds.Gettext, msgid)
+
+  @doc "Returns `group` name translated for the current locale."
+  @spec localized_group(String.t()) :: String.t()
+  def localized_group(group), do: localize(group)
+
+  @doc "Returns catalog component map with localized title, description, group, and example titles."
+  @spec localized_component(map()) :: map()
+  def localized_component(%{} = component) do
+    %{
+      component
+      | "title" => localize(component["title"]),
+        "description" => localize(component["description"]),
+        "group" => localize(component["group"]),
+        "examples" =>
+          Enum.map(component["examples"] || [], fn example ->
+            Map.update(example, "title", nil, &localize/1)
+          end)
+    }
+  end
 
   @doc """
   Returns components in `group`, optionally filtered by a case-insensitive query on title/id.

@@ -113,7 +113,7 @@ html[data-theme="dark"] {
 export const COMPONENTS = [
   {
     id: "get-started",
-    group: "Inicio",
+    group: "Home",
     icon: "<>",
     title: "Get started",
     description:
@@ -121,7 +121,7 @@ export const COMPONENTS = [
     intro: true,
     examples: [
       {
-        title: "Estructura recomendada",
+        title: "Recommended structure",
         block: true,
         html: String.raw`<div class="bt-card bt-card--filled">
   <h3>Arquitectura del proyecto</h3>
@@ -136,7 +136,7 @@ src/main.js</pre>
 </div>`,
       },
       {
-        title: "Botón de ejemplo Bluetab",
+        title: "Sample Bluetab button",
         html: String.raw`<button class="bt-button">
   <span>Guardar cambios</span>
 </button>
@@ -148,7 +148,7 @@ src/main.js</pre>
   },
   {
     id: "app-bars",
-    group: "Componentes",
+    group: "Components",
     icon: "▣",
     title: "App bars",
     description:
@@ -187,7 +187,7 @@ src/main.js</pre>
   },
   {
     id: "avatars",
-    group: "Componentes",
+    group: "Components",
     icon: "◎",
     title: "Avatars",
     description:
@@ -241,7 +241,7 @@ src/main.js</pre>
   },
   {
     id: "badges",
-    group: "Componentes",
+    group: "Components",
     icon: "◈",
     title: "Badges",
     description:
@@ -255,14 +255,14 @@ src/main.js</pre>
 </span>`,
       },
       {
-        title: "Badge con número",
+        title: "Badge with number",
         html: String.raw`<span class="bt-badge-wrap">
   <span class="bt-icon">⌂</span>
   <span class="bt-badge">10</span>
 </span>`,
       },
       {
-        title: "Badge inline",
+        title: "Inline badge",
         html: String.raw`<button class="bt-button">
   <span>Alertas</span>
   <span class="bt-badge bt-badge--inline">3</span>
@@ -276,7 +276,7 @@ src/main.js</pre>
   },
   {
     id: "buttons",
-    group: "Componentes",
+    group: "Components",
     icon: "▣",
     title: "Buttons",
     description:
@@ -315,7 +315,7 @@ src/main.js</pre>
   },
   {
     id: "cards",
-    group: "Componentes",
+    group: "Components",
     icon: "▧",
     title: "Cards",
     description:
@@ -358,14 +358,14 @@ src/main.js</pre>
   },
   {
     id: "checkboxes",
-    group: "Formularios",
+    group: "Forms",
     icon: "☑",
     title: "Checkboxes",
     description:
       "Selección múltiple en formularios, filtros y configuraciones.",
     examples: [
       {
-        title: "Checkbox básico",
+        title: "Basic checkbox",
         html: String.raw`<label class="bt-checkbox">
   <input type="checkbox" />
   <span>Acepto condiciones</span>
@@ -376,7 +376,7 @@ src/main.js</pre>
 </label>`,
       },
       {
-        title: "Checkbox disabled",
+        title: "Disabled checkbox",
         html: String.raw`<label class="bt-checkbox">
   <input type="checkbox" disabled />
   <span>Opción no disponible</span>
@@ -390,7 +390,7 @@ src/main.js</pre>
   },
   {
     id: "chips",
-    group: "Componentes",
+    group: "Components",
     icon: "◌",
     title: "Chips",
     description:
@@ -421,7 +421,7 @@ src/main.js</pre>
       "Código inline en prosa y bloques multilínea. No mezclar clases.",
     examples: [
       {
-        title: "Inline en prosa",
+        title: "Inline in prose",
         block: true,
         html: String.raw`<p class="bt-muted">
   Menciona clases con <code class="bt-code-inline">bt-button</code> o rutas con
@@ -429,7 +429,7 @@ src/main.js</pre>
 </p>`,
       },
       {
-        title: "Bloque multilínea",
+        title: "Multiline block",
         block: true,
         html: String.raw`<div class="bt-code-block">
   <pre class="bt-code"><code>@import "bluetab-design-system/styles.css";
@@ -439,7 +439,7 @@ initBtInteractions();</code></pre>
 </div>`,
       },
       {
-        title: "Cards en bt-example-grid",
+        title: "Cards in bt-example-grid",
         block: true,
         html: String.raw`<div class="bt-example-grid">
   <article class="bt-card bt-card--elevated bt-card--third">A</article>
@@ -454,7 +454,7 @@ initBtInteractions();</code></pre>
     group: "Foundations",
     icon: "◍",
     title: "Colors",
-    description: "Paleta base editable desde tokens CSS.",
+    description: "Base palette editable from CSS tokens.",
     examples: [
       {
         title: "Brand colors",
@@ -505,14 +505,14 @@ initBtInteractions();</code></pre>
   },
   {
     id: "dialogs",
-    group: "Componentes",
+    group: "Components",
     icon: "□",
     title: "Dialogs",
     description:
       "Ventanas modales para confirmaciones, mensajes críticos o acciones bloqueantes.",
     examples: [
       {
-        title: "Dialog básico",
+        title: "Basic dialog",
         html: String.raw`<button class="bt-button" data-dialog-open="dialog-basic">Abrir dialog</button>
 <div class="bt-dialog" id="dialog-basic" role="dialog" aria-modal="true" aria-labelledby="dialog-basic-title">
   <div class="bt-dialog__surface">
@@ -604,7 +604,7 @@ initBtInteractions();</code></pre>
   },
   {
     id: "expansions",
-    group: "Componentes",
+    group: "Components",
     icon: "⌄",
     title: "Expansions",
     description:
@@ -627,7 +627,7 @@ initBtInteractions();</code></pre>
   },
   {
     id: "combobox",
-    group: "Formularios",
+    group: "Forms",
     icon: "⌕",
     title: "Combobox",
     description:
@@ -679,10 +679,10 @@ initBtInteractions();</code></pre>
   },
   {
     id: "fields",
-    group: "Formularios",
+    group: "Forms",
     icon: "▭",
     title: "Fields / Inputs",
-    description: "Campos de entrada, estados de ayuda y error.",
+    description: "Text fields, help text, and error states.",
     examples: [
       {
         title: "Text fields",
@@ -739,7 +739,7 @@ initBtInteractions();</code></pre>
     group: "Foundations",
     icon: "+",
     title: "Helpers",
-    description: "Clases utilitarias para composición rápida.",
+    description: "Utility classes for quick layout composition.",
     examples: [
       {
         title: "Stack / Inline",
@@ -789,7 +789,7 @@ initBtInteractions();</code></pre>
     group: "Layout",
     icon: "▥",
     title: "Layout",
-    description: "Shell principal, topbar, sidebar y áreas de contenido.",
+    description: "Main shell, topbar, sidebar, and content areas.",
     examples: [
       {
         title: "Basic shell",
@@ -833,7 +833,7 @@ initBtInteractions();</code></pre>
   },
   {
     id: "tree",
-    group: "Componentes",
+    group: "Components",
     icon: "⎇",
     title: "Tree",
     description:
@@ -902,7 +902,7 @@ initBtInteractions();</code></pre>
   },
   {
     id: "calendar-day",
-    group: "Componentes",
+    group: "Components",
     icon: "▦",
     title: "Calendar day",
     description:
@@ -935,7 +935,7 @@ initBtInteractions();</code></pre>
   },
   {
     id: "calendar-toolbar",
-    group: "Componentes",
+    group: "Components",
     icon: "▦",
     title: "Calendar toolbar",
     description: "Month navigation and calendar controls above the weekday row.",
@@ -959,7 +959,7 @@ initBtInteractions();</code></pre>
   },
   {
     id: "calendar-weekdays",
-    group: "Componentes",
+    group: "Components",
     icon: "▦",
     title: "Calendar weekdays",
     description: "Weekday header row aligned to the month grid columns.",
@@ -983,7 +983,7 @@ initBtInteractions();</code></pre>
   },
   {
     id: "calendar-legend",
-    group: "Componentes",
+    group: "Components",
     icon: "▦",
     title: "Calendar legend",
     description: "Footer legend for timesheet day statuses and counts.",
@@ -1015,7 +1015,7 @@ initBtInteractions();</code></pre>
   },
   {
     id: "calendar-template",
-    group: "Componentes",
+    group: "Components",
     icon: "▦",
     title: "Calendar template",
     description: "Template shortcut card for the timesheet sidebar.",
@@ -1041,7 +1041,7 @@ initBtInteractions();</code></pre>
   },
   {
     id: "calendar-shell",
-    group: "Componentes",
+    group: "Components",
     icon: "▦",
     title: "Calendar shell",
     description:
@@ -1103,7 +1103,7 @@ initBtInteractions();</code></pre>
   },
   {
     id: "calendar-day-modal",
-    group: "Componentes",
+    group: "Components",
     icon: "▣",
     title: "Calendar day modal",
     description: "Glass day editor opened from a calendar cell — hours summary, entries list, and actions.",
@@ -1153,7 +1153,7 @@ initBtInteractions();</code></pre>
   },
   {
     id: "performance-evaluator",
-    group: "Componentes",
+    group: "Components",
     icon: "◎",
     title: "Performance evaluator",
     description: "Evaluator identity card for Me and user profile workspaces.",
@@ -1176,7 +1176,7 @@ initBtInteractions();</code></pre>
   },
   {
     id: "performance-hours",
-    group: "Componentes",
+    group: "Components",
     icon: "◷",
     title: "Performance reported hours",
     description: "Compact reported-hours panel with expandable client groups and project rows.",
@@ -1204,7 +1204,7 @@ initBtInteractions();</code></pre>
   },
   {
     id: "performance-briefing-card",
-    group: "Componentes",
+    group: "Components",
     icon: "📄",
     title: "Performance briefing card",
     description: "Briefing bonded with evaluation: objectives, ratings, acknowledgement, and assessment blocks.",
@@ -1252,7 +1252,7 @@ initBtInteractions();</code></pre>
   },
   {
     id: "performance-team-card",
-    group: "Componentes",
+    group: "Components",
     icon: "👥",
     title: "Performance team card",
     description: "Evaluator team row with project hours, briefing status, and optional delegation.",
@@ -1280,7 +1280,7 @@ initBtInteractions();</code></pre>
   },
   {
     id: "lists",
-    group: "Componentes",
+    group: "Components",
     icon: "☷",
     title: "Lists",
     description: "Listados verticales con avatar, contenido y acciones.",
@@ -1313,7 +1313,7 @@ initBtInteractions();</code></pre>
     group: "Layout",
     icon: "▨",
     title: "Main layout",
-    description: "Composición principal de aplicación/documentación.",
+    description: "Primary application and documentation layout.",
     examples: [
       {
         title: "Dashboard layout",
@@ -1333,10 +1333,10 @@ initBtInteractions();</code></pre>
   },
   {
     id: "media",
-    group: "Componentes",
+    group: "Components",
     icon: "◫",
     title: "Media",
-    description: "Imágenes, vídeos o placeholders responsivos.",
+    description: "Responsive images, video, or placeholders.",
     examples: [
       {
         title: "Media placeholder",
@@ -1355,10 +1355,10 @@ initBtInteractions();</code></pre>
   },
   {
     id: "menus",
-    group: "Componentes",
+    group: "Components",
     icon: "⋮",
     title: "Menus",
-    description: "Menús contextuales activados por botón.",
+    description: "Context menus opened from a button.",
     examples: [
       {
         title: "Context menu",
@@ -1375,10 +1375,10 @@ initBtInteractions();</code></pre>
   },
   {
     id: "navigation",
-    group: "Componentes",
+    group: "Components",
     icon: "☰",
     title: "Navigation",
-    description: "Sidebar, enlaces activos y navegación inferior.",
+    description: "Sidebar, active links, and bottom navigation.",
     examples: [
       {
         title: "Sidebar nav links",
@@ -1402,7 +1402,7 @@ initBtInteractions();</code></pre>
   },
   {
     id: "overlays",
-    group: "Componentes",
+    group: "Components",
     icon: "▩",
     title: "Overlays",
     description:
@@ -1436,7 +1436,7 @@ initBtInteractions();</code></pre>
     group: "Layout",
     icon: "□",
     title: "Pages",
-    description: "Patrón simple de páginas internas SPA.",
+    description: "Simple SPA inner-page pattern.",
     examples: [
       {
         title: "Page sections",
@@ -1478,10 +1478,10 @@ initBtInteractions();</code></pre>
   },
   {
     id: "radio",
-    group: "Formularios",
+    group: "Forms",
     icon: "◉",
     title: "Radio buttons",
-    description: "Selección única entre varias opciones.",
+    description: "Single selection among multiple options.",
     examples: [
       {
         title: "Radio group",
@@ -1502,13 +1502,13 @@ initBtInteractions();</code></pre>
   },
   {
     id: "selects",
-    group: "Formularios",
+    group: "Forms",
     icon: "⌄",
     title: "Selects",
     description: "Selectores nativos estilizados para formularios.",
     examples: [
       {
-        title: "Select básico",
+        title: "Basic select",
         html: String.raw`<div class="bt-field">
   <label for="framework-select">Framework</label>
   <select class="bt-select" id="framework-select">
@@ -1549,13 +1549,13 @@ initBtInteractions();</code></pre>
   },
   {
     id: "sliders",
-    group: "Formularios",
+    group: "Forms",
     icon: "━",
     title: "Sliders",
     description: "Control para seleccionar valores dentro de un rango.",
     examples: [
       {
-        title: "Slider básico",
+        title: "Basic slider",
         html: String.raw`<input class="bt-slider" type="range" min="0" max="100" value="64" aria-label="Porcentaje" />`,
       },
       {
@@ -1573,7 +1573,7 @@ initBtInteractions();</code></pre>
     group: "Feedback",
     icon: "▤",
     title: "Snackbars",
-    description: "Mensajes temporales para confirmar una acción.",
+    description: "Temporary messages to confirm an action.",
     examples: [
       {
         title: "Snackbar",
@@ -1587,13 +1587,13 @@ initBtInteractions();</code></pre>
   },
   {
     id: "switches",
-    group: "Formularios",
+    group: "Forms",
     icon: "◐",
     title: "Switches",
-    description: "Activación o desactivación de opciones binarias.",
+    description: "Toggle binary options on or off.",
     examples: [
       {
-        title: "Switch básico",
+        title: "Basic switch",
         html: String.raw`<label class="bt-switch">
   <input type="checkbox" checked />
   <span class="bt-switch__track"></span>
@@ -1612,10 +1612,10 @@ initBtInteractions();</code></pre>
   },
   {
     id: "tables",
-    group: "Componentes",
+    group: "Components",
     icon: "▦",
     title: "Tables",
-    description: "Tablas responsivas para datos de negocio y documentación.",
+    description: "Responsive tables for product and docs data.",
     examples: [
       {
         title: "Data table",
@@ -1637,7 +1637,7 @@ initBtInteractions();</code></pre>
   },
   {
     id: "tabs",
-    group: "Componentes",
+    group: "Components",
     icon: "☰",
     title: "Tabs",
     description:
@@ -1661,13 +1661,13 @@ initBtInteractions();</code></pre>
   },
   {
     id: "textarea",
-    group: "Formularios",
+    group: "Forms",
     icon: "▤",
     title: "Textarea",
-    description: "Entrada de texto multilínea.",
+    description: "Multiline text input.",
     examples: [
       {
-        title: "Textarea básico",
+        title: "Basic textarea",
         html: String.raw`<div class="bt-field">
   <label for="notes-textarea">Notas</label>
   <textarea class="bt-textarea" id="notes-textarea" placeholder="Escribe una descripción"></textarea>
@@ -1691,7 +1691,7 @@ initBtInteractions();</code></pre>
     description: "Ayuda contextual breve al pasar el cursor o enfocar.",
     examples: [
       {
-        title: "Tooltip en botón",
+        title: "Tooltip on button",
         html: String.raw`<span class="bt-tooltip" data-tooltip="Crear nuevo elemento">
   <button class="bt-icon-button" aria-label="Crear"><span class="bt-icon">＋</span></button>
 </span>`,
@@ -1709,7 +1709,7 @@ initBtInteractions();</code></pre>
     group: "Foundations",
     icon: "T",
     title: "Typography",
-    description: "Escala tipográfica editable desde tokens CSS.",
+    description: "Typography scale driven by CSS tokens.",
     examples: [
       {
         title: "Headings",
@@ -1734,10 +1734,10 @@ initBtInteractions();</code></pre>
 ];
 
 export const GROUP_ORDER = [
-  "Inicio",
+  "Home",
   "Foundations",
   "Layout",
-  "Componentes",
-  "Formularios",
+  "Components",
+  "Forms",
   "Feedback",
 ];

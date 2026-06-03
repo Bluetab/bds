@@ -1,0 +1,54 @@
+---
+description: BDS is the design system — components and catalog.js are the single source of truth
+alwaysApply: true
+---
+
+# BDS component & catalog governance
+
+This package (`bds`) is the **only** source of truth for Bluetab DS components. The Phoenix storybook app (`../storybook`) and the Vite HTML catalog (`assets/index.html`) both consume it.
+
+## Catalog pipeline (do not bypass)
+
+```
+assets/src/catalog.js  --export:catalog-->  priv/catalog.json  -->  Bds.Catalog  -->  storybook HomeLive
+        |                                                                                      |
+        +---- main.js renders index.html (Vite dev catalog) -----------------------------------+
+```
+
+- **Author catalog metadata in** `assets/src/catalog.js` (`COMPONENTS`, `GROUP_ORDER`, `snippets`).
+- **Never** hand-edit `priv/catalog.json` except to debug export; regenerate with `npm run export:catalog`.
+- **Never** duplicate component lists or example HTML in storybook or other apps.
+
+## Required files per catalog component change
+
+| Step | File / action |
+|------|----------------|
+| Metadata + HTML examples | `assets/src/catalog.js` |
+| Export for Elixir | `cd assets && npm run export:catalog` |
+| Live preview (storybook) | `lib/bds/catalog/preview/bulk.ex` — `render/3` for `component_id` |
+| HEEx copy snippet | `lib/bds/catalog/snippets/bulk.ex` — key `"id:index"` |
+| Component API | `lib/bds/components.ex` or `lib/bds/components/*.ex` |
+| Styles | `assets/src/css/components/*.css` (and related `main` imports) |
+| Interactions | `assets/src/` JS if behavior is shared |
+
+If `Bds.Catalog.Preview` falls back to `raw(@html)`, live storybook preview still works but **add Bulk render + HEEx snippet** for any `bt_*` example.
+
+## Verification
+
+1. `mix test test/bds/catalog_test.exs`
+2. `cd assets && npm run dev` — browse `index.html` sidebar and examples
+3. In storybook: recompile and open `/` — must match Vite catalog navigation and content
+
+## Semantics
+
+- `id` in `catalog.js` is stable public API (URLs, tests). Renaming requires coordinated updates in preview/snippets/tests.
+- Catalog `title`, `description`, `group`, and `examples[].title` must be **English Gettext msgids**; Phoenix apps display them via `Bds.Catalog.localize/1` or `gettext/1`.
+- `examples[].html` is the **HTML/CSS catalog** truth; HEEx in snippets must describe the same example for Phoenix consumers.
+- New groups require `GROUP_ORDER` in `catalog.js`.
+
+## Consumers
+
+- **storybook**: path dep `{:bds, path: "../bds"}` — no local catalog fork
+- **npm package**: `npm run build:lib` runs export + vite build
+
+When storybook work needs a component change, **change BDS in this repo**, export catalog, then validate storybook — not the reverse.

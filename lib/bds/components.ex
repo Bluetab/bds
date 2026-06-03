@@ -10,6 +10,7 @@ defmodule Bds.Components do
   is set; otherwise messages are interpolated without Gettext.
   """
   use Phoenix.Component
+  use Gettext, backend: Bds.Gettext
 
   alias Phoenix.LiveView.JS
 
@@ -368,9 +369,11 @@ defmodule Bds.Components do
   """
   attr :class, :any, default: nil
   attr :rest, :global
-  attr :label, :string, default: "Toggle theme"
+  attr :label, :string, default: nil
 
   def bt_navbar_theme_toggle(assigns) do
+    assigns = assign_new(assigns, :label, fn -> gettext("Toggle theme") end)
+
     ~H"""
     <div class={["bt-navbar-theme-toggle", @class]}>
       <button
@@ -388,18 +391,71 @@ defmodule Bds.Components do
   end
 
   @doc """
+  Language toggle for the brand topbar — single control like `bt_navbar_theme_toggle`.
+
+  Click fires `phx-click` with `phx-value-locale` set to the next locale (cycles the `locales` list).
+  """
+  attr :class, :any, default: nil
+  attr :locale, :string, required: true
+  attr :locales, :list, required: true
+  attr :label, :string, default: nil
+  attr :event, :string, default: "set_locale"
+  attr :rest, :global
+
+  def bt_navbar_locale_toggle(assigns) do
+    assigns =
+      assigns
+      |> assign_new(:label, fn -> gettext("Toggle language") end)
+      |> assign_new(:event, fn -> "set_locale" end)
+      |> assign(:next_locale, next_locale(assigns.locale, assigns.locales))
+      |> assign(:locale_display, locale_display(assigns.locale))
+
+    ~H"""
+    <div class={["bt-navbar-theme-toggle", "bt-navbar-locale-toggle", @class]} {@rest}>
+      <button
+        type="button"
+        class="bt-theme-toggle-button"
+        phx-click={@event}
+        phx-value-locale={@next_locale}
+        aria-label={@label}
+        title={@label}
+      >
+        <span class="bt-icon" data-locale-icon aria-hidden="true">{@locale_display}</span>
+      </button>
+    </div>
+    """
+  end
+
+  defp next_locale(current, locales) do
+    codes = Enum.map(locales, & &1.code)
+
+    case Enum.find_index(codes, &(&1 == current)) do
+      nil -> List.first(codes) || "en"
+      index -> Enum.at(codes, rem(index + 1, length(codes)))
+    end
+  end
+
+  defp locale_display("es"), do: "ES"
+  defp locale_display("en"), do: "EN"
+  defp locale_display(code) when is_binary(code), do: String.upcase(code)
+  defp locale_display(_), do: "ES"
+
+  @doc """
   User menu trigger + hover/focus dropdown for the brand topbar.
   """
   attr :class, :any, default: nil
   attr :id, :string, default: nil
   attr :name, :string, required: true
-  attr :role, :string, default: "User"
+  attr :role, :string, default: nil
   attr :initials, :string, default: "?"
   attr :avatar_src, :string, default: nil
   slot :inner_block, required: true
 
   def bt_navbar_user_menu(assigns) do
-    assigns = assign_new(assigns, :id, fn -> "bt-navbar-user-#{System.unique_integer([:positive])}" end)
+    assigns =
+      assigns
+      |> assign_new(:id, fn -> "bt-navbar-user-#{System.unique_integer([:positive])}" end)
+      |> assign_new(:role, fn -> gettext("User") end)
 
     ~H"""
     <div id={@id} class={["bt-navbar-user", @class]} tabindex="-1">

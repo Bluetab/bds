@@ -119,12 +119,20 @@ html[data-theme="dark"] .bt-brand__logo--dark {display: block;}
   width: auto;
 }
 
-.bt-navbar-theme-toggle {
+.bt-navbar-theme-toggle,
+.bt-navbar-locale-toggle {
   display: flex;
   align-items: center;
   height: 2rem;
   transform: none;
   transform-origin: center;
+}
+
+.bt-theme-toggle-button [data-locale-icon] {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
 }
 
 .bt-navbar-theme-toggle .bt-theme-toggle-button {

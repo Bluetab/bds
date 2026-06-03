@@ -1,30 +1,30 @@
 {
   "group_order": [
-    "Inicio",
+    "Home",
     "Foundations",
     "Layout",
-    "Componentes",
-    "Formularios",
+    "Components",
+    "Forms",
     "Feedback"
   ],
   "tokens_snippet": ":root {\n  /* Brand */\n  --bt-color-primary: #212492;\n  --bt-color-primary-hover: #0065ff;\n  --bt-color-primary-active: #11135f;\n  --bt-color-primary-soft: #eef0ff;\n  --bt-color-on-primary: #ffffff;\n\n  --bt-color-secondary: #e05206;\n  --bt-color-secondary-hover: #0065ff;\n  --bt-color-secondary-soft: #e6f9fc;\n  --bt-color-on-secondary: #03232b;\n\n  --bt-color-tertiary: #542675;\n  --bt-color-tertiary-soft: #f3ecff;\n  --bt-color-on-tertiary: #ffffff;\n\n  /* Semantic */\n  --bt-color-success: #008b80;\n  --bt-color-success-soft: #e8f7ee;\n  --bt-color-warning: #e78c07;\n  --bt-color-warning-soft: #fff7e6;\n  --bt-color-error: #c21a37;\n  --bt-color-error-soft: #fdeceb;\n  --bt-color-info: #0065ff;\n  --bt-color-info-soft: #e8f2ff;\n\n  /* Neutral / surfaces */\n  --bt-color-background: #f2f2f2;\n  --bt-color-surface: #ffffff;\n  --bt-color-surface-raised: #ffffff;\n  --bt-color-surface-soft: #f0f2f8;\n  --bt-color-surface-muted: #e8ebf4;\n  --bt-color-border: #dce1ee;\n  --bt-color-border-strong: #c4ccdd;\n  --bt-color-text: #1f222d;\n  --bt-color-text-muted: #4a4a4a;\n  --bt-color-text-subtle: #959595;\n\n  /* Typography */\n  --bt-font-family: \"Titillium Web\", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;\n  --bt-font-mono: \"SFMono-Regular\", Consolas, \"Liberation Mono\", monospace;\n  --bt-font-size-xs: 0.75rem;\n  --bt-font-size-sm: 0.875rem;\n  --bt-font-size-md: 1rem;\n  --bt-font-size-lg: 1.125rem;\n  --bt-font-size-xl: 1.5rem;\n  --bt-font-size-2xl: 2rem;\n  --bt-font-size-3xl: 2.75rem;\n  --bt-line-height-tight: 1.08;\n  --bt-line-height-base: 1.55;\n\n  /* Spacing */\n  --bt-space-1: 0.25rem;\n  --bt-space-2: 0.5rem;\n  --bt-space-3: 0.75rem;\n  --bt-space-4: 1rem;\n  --bt-space-5: 1.5rem;\n  --bt-space-6: 2rem;\n  --bt-space-7: 3rem;\n  --bt-space-8: 4rem;\n\n  /* Shape */\n  --bt-radius-xs: 0.375rem;\n  --bt-radius-sm: 0.5rem;\n  --bt-radius-md: 0.875rem;\n  --bt-radius-lg: 1.25rem;\n  --bt-radius-xl: 1.75rem;\n  --bt-radius-pill: 999px;\n\n  /* Elevation */\n  --bt-shadow-xs: 0 1px 2px rgba(17, 19, 45, 0.06);\n  --bt-shadow-sm: 0 4px 12px rgba(17, 19, 45, 0.08);\n  --bt-shadow-md: 0 12px 32px rgba(17, 19, 45, 0.12);\n  --bt-shadow-lg: 0 24px 60px rgba(17, 19, 45, 0.18);\n\n  /* Layout */\n  --bt-sidebar-width: 17.5rem;\n  --bt-content-max-width: 76rem;\n  --bt-panel-width: min(46rem, 92vw);\n\n  /* Motion */\n  --bt-ease: cubic-bezier(.2, .8, .2, 1);\n  --bt-duration-fast: 140ms;\n  --bt-duration-base: 220ms;\n}\n\nhtml[data-theme=\"dark\"] {\n  --bt-color-primary: #8da2ff;\n  --bt-color-primary-hover: #b3c2ff;\n  --bt-color-primary-active: #6b82e8;\n  --bt-color-background: #1f222d;\n  --bt-color-surface: #17182b;\n  --bt-color-surface-raised: #1e2035;\n  --bt-color-surface-soft: #22243a;\n  --bt-color-surface-muted: #2c3048;\n  --bt-color-border: #333850;\n  --bt-color-border-strong: #47506b;\n  --bt-color-text: #f5f7ff;\n  --bt-color-text-muted: #b9bfd4;\n  --bt-color-text-subtle: #8e96b1;\n  --bt-color-primary-soft: #252860;\n  --bt-color-secondary-soft: #063846;\n  --bt-color-tertiary-soft: #38225c;\n  --bt-color-success-soft: #173926;\n  --bt-color-warning-soft: #3d2d10;\n  --bt-color-error-soft: #3d1f22;\n  --bt-color-info-soft: #142e4e;\n}",
   "components": [
     {
       "id": "get-started",
-      "group": "Inicio",
+      "group": "Home",
       "icon": "<>",
       "title": "Get started",
       "description": "Base HTML, CSS y JavaScript para crear un Design System Bluetab propio.",
       "intro": true,
       "examples": [
         {
-          "title": "Estructura recomendada",
+          "title": "Recommended structure",
           "block": true,
           "note": null,
           "html": "<div class=\"bt-card bt-card--filled\">\n  <h3>Arquitectura del proyecto</h3>\n  <p>Modifica primero <code class=\"bt-code-inline\">src/styles/tokens.css</code>. Después ajusta cada componente en <code class=\"bt-code-inline\">src/styles/components/</code>.</p>\n  <div class=\"bt-code-block\">\n    <pre class=\"bt-code\">src/styles/tokens.css\nsrc/styles/components/buttons.css\nsrc/styles/components/forms.css\nsrc/styles/components/tables.css\nsrc/main.js</pre>\n  </div>\n</div>"
         },
         {
-          "title": "Botón de ejemplo Bluetab",
+          "title": "Sample Bluetab button",
           "block": false,
           "note": null,
           "html": "<button class=\"bt-button\">\n  <span>Guardar cambios</span>\n</button>\n<button class=\"bt-button bt-button--outline\">\n  <span>Cancelar</span>\n</button>"
@@ -33,7 +33,7 @@
     },
     {
       "id": "app-bars",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "▣",
       "title": "App bars",
       "description": "Barras superiores e inferiores para navegación, acciones contextuales y estado de una pantalla.",
@@ -61,7 +61,7 @@
     },
     {
       "id": "avatars",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "◎",
       "title": "Avatars",
       "description": "Identidad de persona con foto o iniciales. Compact muestra nombre; expanded añade email.",
@@ -89,7 +89,7 @@
     },
     {
       "id": "badges",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "◈",
       "title": "Badges",
       "description": "Indicadores numéricos o visuales para notificaciones, estados y elementos pendientes.",
@@ -102,13 +102,13 @@
           "html": "<span class=\"bt-badge-wrap\">\n  <span class=\"bt-icon\">⌂</span>\n  <span class=\"bt-badge bt-badge--dot\"></span>\n</span>"
         },
         {
-          "title": "Badge con número",
+          "title": "Badge with number",
           "block": false,
           "note": null,
           "html": "<span class=\"bt-badge-wrap\">\n  <span class=\"bt-icon\">⌂</span>\n  <span class=\"bt-badge\">10</span>\n</span>"
         },
         {
-          "title": "Badge inline",
+          "title": "Inline badge",
           "block": false,
           "note": null,
           "html": "<button class=\"bt-button\">\n  <span>Alertas</span>\n  <span class=\"bt-badge bt-badge--inline\">3</span>\n</button>\n<button class=\"bt-button bt-button--secondary\">\n  <span>Procesos</span>\n  <span class=\"bt-badge bt-badge--inline bt-badge--success\">OK</span>\n</button>"
@@ -117,7 +117,7 @@
     },
     {
       "id": "buttons",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "▣",
       "title": "Buttons",
       "description": "Acciones principales, secundarias, terciarias, de icono y FAB.",
@@ -151,7 +151,7 @@
     },
     {
       "id": "cards",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "▧",
       "title": "Cards",
       "description": "Contenedores de contenido con variantes elevadas, rellenas, con media y acciones.",
@@ -179,20 +179,20 @@
     },
     {
       "id": "checkboxes",
-      "group": "Formularios",
+      "group": "Forms",
       "icon": "☑",
       "title": "Checkboxes",
       "description": "Selección múltiple en formularios, filtros y configuraciones.",
       "intro": false,
       "examples": [
         {
-          "title": "Checkbox básico",
+          "title": "Basic checkbox",
           "block": false,
           "note": null,
           "html": "<label class=\"bt-checkbox\">\n  <input type=\"checkbox\" />\n  <span>Acepto condiciones</span>\n</label>\n<label class=\"bt-checkbox\">\n  <input type=\"checkbox\" checked />\n  <span>Enviar copia</span>\n</label>"
         },
         {
-          "title": "Checkbox disabled",
+          "title": "Disabled checkbox",
           "block": false,
           "note": null,
           "html": "<label class=\"bt-checkbox\">\n  <input type=\"checkbox\" disabled />\n  <span>Opción no disponible</span>\n</label>\n<label class=\"bt-checkbox\">\n  <input type=\"checkbox\" checked disabled />\n  <span>Opción obligatoria</span>\n</label>"
@@ -201,7 +201,7 @@
     },
     {
       "id": "chips",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "◌",
       "title": "Chips",
       "description": "Etiquetas compactas para filtros, selección, metadatos o acciones rápidas.",
@@ -230,19 +230,19 @@
       "intro": false,
       "examples": [
         {
-          "title": "Inline en prosa",
+          "title": "Inline in prose",
           "block": true,
           "note": null,
           "html": "<p class=\"bt-muted\">\n  Menciona clases con <code class=\"bt-code-inline\">bt-button</code> o rutas con\n  <code class=\"bt-code-inline bt-code-inline--wrap\">docs/how-to-use-design-system.md</code>.\n</p>"
         },
         {
-          "title": "Bloque multilínea",
+          "title": "Multiline block",
           "block": true,
           "note": null,
           "html": "<div class=\"bt-code-block\">\n  <pre class=\"bt-code\"><code>@import \"bluetab-design-system/styles.css\";\n\nimport { initBtInteractions } from \"bluetab-design-system/interactions\";\ninitBtInteractions();</code></pre>\n</div>"
         },
         {
-          "title": "Cards en bt-example-grid",
+          "title": "Cards in bt-example-grid",
           "block": true,
           "note": null,
           "html": "<div class=\"bt-example-grid\">\n  <article class=\"bt-card bt-card--elevated bt-card--third\">A</article>\n  <article class=\"bt-card bt-card--filled bt-card--third\">B</article>\n  <article class=\"bt-card bt-card--third\">C</article>\n</div>"
@@ -254,7 +254,7 @@
       "group": "Foundations",
       "icon": "◍",
       "title": "Colors",
-      "description": "Paleta base editable desde tokens CSS.",
+      "description": "Base palette editable from CSS tokens.",
       "intro": false,
       "examples": [
         {
@@ -295,14 +295,14 @@
     },
     {
       "id": "dialogs",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "□",
       "title": "Dialogs",
       "description": "Ventanas modales para confirmaciones, mensajes críticos o acciones bloqueantes.",
       "intro": false,
       "examples": [
         {
-          "title": "Dialog básico",
+          "title": "Basic dialog",
           "block": false,
           "note": null,
           "html": "<button class=\"bt-button\" data-dialog-open=\"dialog-basic\">Abrir dialog</button>\n<div class=\"bt-dialog\" id=\"dialog-basic\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"dialog-basic-title\">\n  <div class=\"bt-dialog__surface\">\n    <h3 id=\"dialog-basic-title\">Confirmar acción</h3>\n    <p>Este dialog usa JavaScript local del Design System.</p>\n    <div class=\"bt-dialog__actions\">\n      <button class=\"bt-button bt-button--ghost\" data-dialog-close>Cancelar</button>\n      <button class=\"bt-button\" data-dialog-close>Aceptar</button>\n    </div>\n  </div>\n</div>"
@@ -367,7 +367,7 @@
     },
     {
       "id": "expansions",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "⌄",
       "title": "Expansions",
       "description": "Acordeones para mostrar u ocultar información progresivamente.",
@@ -383,7 +383,7 @@
     },
     {
       "id": "combobox",
-      "group": "Formularios",
+      "group": "Forms",
       "icon": "⌕",
       "title": "Combobox",
       "description": "Searchable select with async results panel, loading state, and option variants.",
@@ -405,10 +405,10 @@
     },
     {
       "id": "fields",
-      "group": "Formularios",
+      "group": "Forms",
       "icon": "▭",
       "title": "Fields / Inputs",
-      "description": "Campos de entrada, estados de ayuda y error.",
+      "description": "Text fields, help text, and error states.",
       "intro": false,
       "examples": [
         {
@@ -452,7 +452,7 @@
       "group": "Foundations",
       "icon": "+",
       "title": "Helpers",
-      "description": "Clases utilitarias para composición rápida.",
+      "description": "Utility classes for quick layout composition.",
       "intro": false,
       "examples": [
         {
@@ -496,7 +496,7 @@
       "group": "Layout",
       "icon": "▥",
       "title": "Layout",
-      "description": "Shell principal, topbar, sidebar y áreas de contenido.",
+      "description": "Main shell, topbar, sidebar, and content areas.",
       "intro": false,
       "examples": [
         {
@@ -521,7 +521,7 @@
     },
     {
       "id": "tree",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "⎇",
       "title": "Tree",
       "description": "Expandable hierarchical lists for org structures, reporting lines, and nested navigation.",
@@ -543,7 +543,7 @@
     },
     {
       "id": "calendar-day",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "▦",
       "title": "Calendar day",
       "description": "Month grid day card with status accent, day number, and optional project lines.",
@@ -565,7 +565,7 @@
     },
     {
       "id": "calendar-toolbar",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "▦",
       "title": "Calendar toolbar",
       "description": "Month navigation and calendar controls above the weekday row.",
@@ -581,7 +581,7 @@
     },
     {
       "id": "calendar-weekdays",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "▦",
       "title": "Calendar weekdays",
       "description": "Weekday header row aligned to the month grid columns.",
@@ -597,7 +597,7 @@
     },
     {
       "id": "calendar-legend",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "▦",
       "title": "Calendar legend",
       "description": "Footer legend for timesheet day statuses and counts.",
@@ -613,7 +613,7 @@
     },
     {
       "id": "calendar-template",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "▦",
       "title": "Calendar template",
       "description": "Template shortcut card for the timesheet sidebar.",
@@ -629,7 +629,7 @@
     },
     {
       "id": "calendar-shell",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "▦",
       "title": "Calendar shell",
       "description": "Composed Tempo-style month view: templates sidebar, toolbar, weekday row, grid, and legend.",
@@ -645,7 +645,7 @@
     },
     {
       "id": "calendar-day-modal",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "▣",
       "title": "Calendar day modal",
       "description": "Glass day editor opened from a calendar cell — hours summary, entries list, and actions.",
@@ -661,7 +661,7 @@
     },
     {
       "id": "performance-evaluator",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "◎",
       "title": "Performance evaluator",
       "description": "Evaluator identity card for Me and user profile workspaces.",
@@ -677,7 +677,7 @@
     },
     {
       "id": "performance-hours",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "◷",
       "title": "Performance reported hours",
       "description": "Compact reported-hours panel with expandable client groups and project rows.",
@@ -693,7 +693,7 @@
     },
     {
       "id": "performance-briefing-card",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "📄",
       "title": "Performance briefing card",
       "description": "Briefing bonded with evaluation: objectives, ratings, acknowledgement, and assessment blocks.",
@@ -715,7 +715,7 @@
     },
     {
       "id": "performance-team-card",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "👥",
       "title": "Performance team card",
       "description": "Evaluator team row with project hours, briefing status, and optional delegation.",
@@ -731,7 +731,7 @@
     },
     {
       "id": "lists",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "☷",
       "title": "Lists",
       "description": "Listados verticales con avatar, contenido y acciones.",
@@ -750,7 +750,7 @@
       "group": "Layout",
       "icon": "▨",
       "title": "Main layout",
-      "description": "Composición principal de aplicación/documentación.",
+      "description": "Primary application and documentation layout.",
       "intro": false,
       "examples": [
         {
@@ -763,10 +763,10 @@
     },
     {
       "id": "media",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "◫",
       "title": "Media",
-      "description": "Imágenes, vídeos o placeholders responsivos.",
+      "description": "Responsive images, video, or placeholders.",
       "intro": false,
       "examples": [
         {
@@ -785,10 +785,10 @@
     },
     {
       "id": "menus",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "⋮",
       "title": "Menus",
-      "description": "Menús contextuales activados por botón.",
+      "description": "Context menus opened from a button.",
       "intro": false,
       "examples": [
         {
@@ -801,10 +801,10 @@
     },
     {
       "id": "navigation",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "☰",
       "title": "Navigation",
-      "description": "Sidebar, enlaces activos y navegación inferior.",
+      "description": "Sidebar, active links, and bottom navigation.",
       "intro": false,
       "examples": [
         {
@@ -823,7 +823,7 @@
     },
     {
       "id": "overlays",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "▩",
       "title": "Overlays",
       "description": "Capas superpuestas para paneles, drawers o estados bloqueantes.",
@@ -848,7 +848,7 @@
       "group": "Layout",
       "icon": "□",
       "title": "Pages",
-      "description": "Patrón simple de páginas internas SPA.",
+      "description": "Simple SPA inner-page pattern.",
       "intro": false,
       "examples": [
         {
@@ -889,10 +889,10 @@
     },
     {
       "id": "radio",
-      "group": "Formularios",
+      "group": "Forms",
       "icon": "◉",
       "title": "Radio buttons",
-      "description": "Selección única entre varias opciones.",
+      "description": "Single selection among multiple options.",
       "intro": false,
       "examples": [
         {
@@ -905,14 +905,14 @@
     },
     {
       "id": "selects",
-      "group": "Formularios",
+      "group": "Forms",
       "icon": "⌄",
       "title": "Selects",
       "description": "Selectores nativos estilizados para formularios.",
       "intro": false,
       "examples": [
         {
-          "title": "Select básico",
+          "title": "Basic select",
           "block": false,
           "note": null,
           "html": "<div class=\"bt-field\">\n  <label for=\"framework-select\">Framework</label>\n  <select class=\"bt-select\" id=\"framework-select\">\n    <option>Bluetab DS</option>\n    <option>Material Design</option>\n    <option>Carbon</option>\n  </select>\n</div>"
@@ -943,14 +943,14 @@
     },
     {
       "id": "sliders",
-      "group": "Formularios",
+      "group": "Forms",
       "icon": "━",
       "title": "Sliders",
       "description": "Control para seleccionar valores dentro de un rango.",
       "intro": false,
       "examples": [
         {
-          "title": "Slider básico",
+          "title": "Basic slider",
           "block": false,
           "note": null,
           "html": "<input class=\"bt-slider\" type=\"range\" min=\"0\" max=\"100\" value=\"64\" aria-label=\"Porcentaje\" />"
@@ -968,7 +968,7 @@
       "group": "Feedback",
       "icon": "▤",
       "title": "Snackbars",
-      "description": "Mensajes temporales para confirmar una acción.",
+      "description": "Temporary messages to confirm an action.",
       "intro": false,
       "examples": [
         {
@@ -981,14 +981,14 @@
     },
     {
       "id": "switches",
-      "group": "Formularios",
+      "group": "Forms",
       "icon": "◐",
       "title": "Switches",
-      "description": "Activación o desactivación de opciones binarias.",
+      "description": "Toggle binary options on or off.",
       "intro": false,
       "examples": [
         {
-          "title": "Switch básico",
+          "title": "Basic switch",
           "block": false,
           "note": null,
           "html": "<label class=\"bt-switch\">\n  <input type=\"checkbox\" checked />\n  <span class=\"bt-switch__track\"></span>\n  <span>Modo activo</span>\n</label>"
@@ -1003,10 +1003,10 @@
     },
     {
       "id": "tables",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "▦",
       "title": "Tables",
-      "description": "Tablas responsivas para datos de negocio y documentación.",
+      "description": "Responsive tables for product and docs data.",
       "intro": false,
       "examples": [
         {
@@ -1019,7 +1019,7 @@
     },
     {
       "id": "tabs",
-      "group": "Componentes",
+      "group": "Components",
       "icon": "☰",
       "title": "Tabs",
       "description": "Organización de contenido por pestañas dentro de una misma vista.",
@@ -1035,14 +1035,14 @@
     },
     {
       "id": "textarea",
-      "group": "Formularios",
+      "group": "Forms",
       "icon": "▤",
       "title": "Textarea",
-      "description": "Entrada de texto multilínea.",
+      "description": "Multiline text input.",
       "intro": false,
       "examples": [
         {
-          "title": "Textarea básico",
+          "title": "Basic textarea",
           "block": false,
           "note": null,
           "html": "<div class=\"bt-field\">\n  <label for=\"notes-textarea\">Notas</label>\n  <textarea class=\"bt-textarea\" id=\"notes-textarea\" placeholder=\"Escribe una descripción\"></textarea>\n</div>"
@@ -1064,7 +1064,7 @@
       "intro": false,
       "examples": [
         {
-          "title": "Tooltip en botón",
+          "title": "Tooltip on button",
           "block": false,
           "note": null,
           "html": "<span class=\"bt-tooltip\" data-tooltip=\"Crear nuevo elemento\">\n  <button class=\"bt-icon-button\" aria-label=\"Crear\"><span class=\"bt-icon\">＋</span></button>\n</span>"
@@ -1082,7 +1082,7 @@
       "group": "Foundations",
       "icon": "T",
       "title": "Typography",
-      "description": "Escala tipográfica editable desde tokens CSS.",
+      "description": "Typography scale driven by CSS tokens.",
       "intro": false,
       "examples": [
         {

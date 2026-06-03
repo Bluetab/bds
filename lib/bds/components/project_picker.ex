@@ -10,6 +10,7 @@ defmodule Bds.Components.ProjectPicker do
   parent LiveView when `project` is the selected struct/map, or `nil` when cleared.
   """
   use Phoenix.LiveComponent
+  use Gettext, backend: Bds.Gettext
 
   import Bds.Components
   import Bds.Components.CatalogUi
@@ -52,13 +53,13 @@ defmodule Bds.Components.ProjectPicker do
       |> assign(assigns)
       |> assign_new(:field_name, fn -> "project_id" end)
       |> assign_new(:search_name, fn -> "project_search" end)
-      |> assign_new(:title, fn -> "Project" end)
+      |> assign_new(:title, fn -> gettext("Project") end)
       |> assign_new(:description, fn -> nil end)
-      |> assign_new(:placeholder, fn -> "Search projects…" end)
-      |> assign_new(:include_inactive_label, fn -> "Include inactive projects" end)
-      |> assign_new(:empty_label, fn -> "No projects match your search." end)
-      |> assign_new(:searching_label, fn -> "Searching…" end)
-      |> assign_new(:selected_label, fn -> "Selected" end)
+      |> assign_new(:placeholder, fn -> gettext("Search projects…") end)
+      |> assign_new(:include_inactive_label, fn -> gettext("Include inactive projects") end)
+      |> assign_new(:empty_label, fn -> gettext("No projects match your search.") end)
+      |> assign_new(:searching_label, fn -> gettext("Searching…") end)
+      |> assign_new(:selected_label, fn -> gettext("Selected") end)
       |> assign_new(:clear_event, fn -> "project_picker_clear" end)
       |> assign_new(:class, fn -> nil end)
       |> assign_new(:form, fn -> nil end)

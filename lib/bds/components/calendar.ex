@@ -3,6 +3,7 @@ defmodule Bds.Components.Calendar do
   Timesheet calendar components (`bt-calendar-*`) for Tempo-style month views.
   """
   use Phoenix.Component
+  use Gettext, backend: Bds.Gettext
 
   import Bds.Components, only: [bt_input: 1]
 
@@ -46,7 +47,7 @@ defmodule Bds.Components.Calendar do
         type="button"
         class="bt-calendar-shell__backdrop"
         phx-click={@on_sidebar_close}
-        aria-label="Close templates panel"
+        aria-label={gettext("Close templates panel")}
       />
       <div :if={render_slot(@toolbar) != []} class="bt-calendar-shell__toolbar shrink-0">
         {render_slot(@toolbar)}
@@ -69,13 +70,15 @@ defmodule Bds.Components.Calendar do
   end
 
   attr :class, :any, default: nil
-  attr :title, :string, default: "Templates"
+  attr :title, :string, default: nil
   attr :on_close, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
   slot :actions
 
   def bt_calendar_templates_panel(assigns) do
+    assigns = assign_new(assigns, :title, fn -> gettext("Templates") end)
+
     ~H"""
     <div class={["bt-calendar-templates h-full min-h-0 flex flex-col", @class]} {@rest}>
       <div class="bt-calendar-templates__header">
@@ -84,7 +87,7 @@ defmodule Bds.Components.Calendar do
           type="button"
           phx-click={@on_close}
           class="bt-calendar-templates__close bt-icon-button"
-          aria-label="Close panel"
+          aria-label={gettext("Close panel")}
         >
           <span class="bt-icon">←</span>
         </button>
@@ -124,7 +127,7 @@ defmodule Bds.Components.Calendar do
         ]}
         phx-click={@on_apply}
         phx-value-key={@key}
-        aria-label={"Apply template #{@name}"}
+        aria-label={gettext("Apply template %{name}", name: @name)}
         {@rest}
       >
         <.calendar_template_card_body
@@ -334,7 +337,7 @@ defmodule Bds.Components.Calendar do
             data-calendar-day-open
             phx-click={@on_open}
             phx-value-date={@date_iso}
-            aria-label="Open day"
+            aria-label={gettext("Open day")}
           >
             Open
           </button>
@@ -390,10 +393,12 @@ defmodule Bds.Components.Calendar do
   attr :items, :list, required: true
   attr :id, :string, default: nil
   attr :class, :any, default: nil
-  attr :label, :string, default: "Calendar status legend"
+  attr :label, :string, default: nil
   attr :rest, :global
 
   def bt_calendar_legend(assigns) do
+    assigns = assign_new(assigns, :label, fn -> gettext("Calendar status legend") end)
+
     items =
       Enum.filter(assigns.items, fn item ->
         (item[:count] || item["count"] || 0) > 0
@@ -522,7 +527,7 @@ defmodule Bds.Components.Calendar do
         type="button"
         class="bt-calendar-day-modal__backdrop"
         phx-click={@on_close}
-        aria-label="Close day editor"
+        aria-label={gettext("Close day editor")}
       />
       <div
         class="bt-calendar-day-modal__panel"
@@ -555,8 +560,8 @@ defmodule Bds.Components.Calendar do
           <section class="bt-calendar-day-modal__content">
             <div class="bt-calendar-day-modal__toolbar">
               <div>
-                <p class="bt-calendar-day-modal__kicker">Activity</p>
-                <h2 class="bt-calendar-day-modal__title" id={"#{@id}-title"}>Logged hours</h2>
+                <p class="bt-calendar-day-modal__kicker">{gettext("Activity")}</p>
+                <h2 class="bt-calendar-day-modal__title" id={"#{@id}-title"}>{gettext("Logged hours")}</h2>
               </div>
               <button
                 :if={!@read_only && !@editing? && @on_add_entry}
@@ -564,7 +569,7 @@ defmodule Bds.Components.Calendar do
                 class="bt-calendar-day-modal__add bt-button bt-button--secondary bt-button--sm"
                 phx-click={@on_add_entry}
               >
-                <span class="bt-icon" aria-hidden="true">+</span> New
+                <span class="bt-icon" aria-hidden="true">+</span> {gettext("New")}
               </button>
             </div>
 
@@ -578,7 +583,9 @@ defmodule Bds.Components.Calendar do
                 phx-change={@on_validate_entry}
               >
                 <p class="bt-calendar-day-modal__editor-title">
-                  {if @editing_entry_id == "new", do: "Add time entry", else: "Edit time entry"}
+                  {if @editing_entry_id == "new",
+                    do: gettext("Add time entry"),
+                    else: gettext("Edit time entry")}
                 </p>
                 <div class="bt-calendar-day-modal__editor-fields">
                   <div
@@ -591,15 +598,15 @@ defmodule Bds.Components.Calendar do
                     :if={render_slot(@entry_project) == []}
                     field={@entry_form[:project_name]}
                     type="text"
-                    label="Project"
-                    placeholder="Search or type a project"
+                    label={gettext("Project")}
+                    placeholder={gettext("Search or type a project")}
                     autocomplete="off"
                     required
                   />
                   <.bt_input
                     field={@entry_form[:hours]}
                     type="number"
-                    label="Hours"
+                    label={gettext("Hours")}
                     step="0.25"
                     min="0.25"
                     max="24"
@@ -608,7 +615,7 @@ defmodule Bds.Components.Calendar do
                   <.bt_input
                     field={@entry_form[:input_type]}
                     type="select"
-                    label="Type"
+                    label={gettext("Type")}
                     options={@input_types}
                     prompt={false}
                   />
@@ -620,22 +627,22 @@ defmodule Bds.Components.Calendar do
                     class="bt-button bt-button--ghost bt-button--sm"
                     phx-click={@on_cancel_entry}
                   >
-                    Cancel
+                    {gettext("Cancel")}
                   </button>
                   <button type="submit" class="bt-button bt-button--primary bt-button--sm">
-                    {if @editing_entry_id == "new", do: "Add entry", else: "Update entry"}
+                    {if @editing_entry_id == "new", do: gettext("Add entry"), else: gettext("Update entry")}
                   </button>
                 </div>
               </.form>
 
               <%= if @entries == [] && !@editing? do %>
                 <div class="bt-calendar-day-modal__empty">
-                  <p class="bt-calendar-day-modal__empty-title">No entries yet</p>
+                  <p class="bt-calendar-day-modal__empty-title">{gettext("No entries yet")}</p>
                   <p class="bt-calendar-day-modal__empty-copy">
                     <%= if @read_only do %>
-                      This day cannot be edited.
+                      {gettext("This day cannot be edited.")}
                     <% else %>
-                      Add a project line to log hours for this day.
+                      {gettext("Add a project line to log hours for this day.")}
                     <% end %>
                   </p>
                 </div>
@@ -661,9 +668,9 @@ defmodule Bds.Components.Calendar do
                       class="bt-button bt-button--ghost bt-button--sm"
                       phx-click={@on_edit_entry}
                       phx-value-id={entry_id(entry)}
-                      aria-label="Edit entry"
+                      aria-label={gettext("Edit entry")}
                     >
-                      Edit
+                      {gettext("Edit")}
                     </button>
                     <button
                       :if={@on_delete_entry}
@@ -671,10 +678,10 @@ defmodule Bds.Components.Calendar do
                       class="bt-button bt-button--ghost bt-button--sm"
                       phx-click={@on_delete_entry}
                       phx-value-id={entry_id(entry)}
-                      data-confirm="Remove this time entry?"
-                      aria-label="Delete entry"
+                      data-confirm={gettext("Remove this time entry?")}
+                      aria-label={gettext("Delete entry")}
                     >
-                      Delete
+                      {gettext("Delete")}
                     </button>
                   </div>
                 </article>
@@ -683,7 +690,7 @@ defmodule Bds.Components.Calendar do
 
             <div class="bt-calendar-day-modal__footer">
               <button type="button" class="bt-button bt-button--ghost bt-button--sm" phx-click={@on_close}>
-                Close
+                {gettext("Close")}
               </button>
               <button
                 :if={!@read_only && @on_save && !@editing?}
@@ -691,7 +698,7 @@ defmodule Bds.Components.Calendar do
                 class="bt-button bt-button--primary bt-button--sm"
                 phx-click={@on_save}
               >
-                Save draft
+                {gettext("Save draft")}
               </button>
             </div>
           </section>
@@ -701,19 +708,19 @@ defmodule Bds.Components.Calendar do
     """
   end
 
-  defp status_label("nuevo"), do: "New"
-  defp status_label("imputado"), do: "Draft"
-  defp status_label("completado"), do: "Complete"
-  defp status_label("liberado"), do: "Sent"
-  defp status_label("aprobado"), do: "Approved"
-  defp status_label("rechazado"), do: "Rejected"
-  defp status_label("festivo"), do: "Holiday"
-  defp status_label("vacaciones"), do: "Vacation"
-  defp status_label("no-laborable"), do: "Non-working"
-  defp status_label(_), do: "Day"
+  defp status_label("nuevo"), do: gettext("New")
+  defp status_label("imputado"), do: gettext("Draft")
+  defp status_label("completado"), do: gettext("Complete")
+  defp status_label("liberado"), do: gettext("Sent")
+  defp status_label("aprobado"), do: gettext("Approved")
+  defp status_label("rechazado"), do: gettext("Rejected")
+  defp status_label("festivo"), do: gettext("Holiday")
+  defp status_label("vacaciones"), do: gettext("Vacation")
+  defp status_label("no-laborable"), do: gettext("Non-working")
+  defp status_label(_), do: gettext("Day")
 
-  defp progress_summary(true, _hours_to_goal), do: "Daily goal reached"
-  defp progress_summary(false, hours), do: "#{hours}h to reach 8h"
+  defp progress_summary(true, _hours_to_goal), do: gettext("Daily goal reached")
+  defp progress_summary(false, hours), do: gettext("%{hours}h to reach 8h", hours: hours)
 
   defp entry_id(%{id: id}), do: id
   defp entry_id(%{"id" => id}), do: id

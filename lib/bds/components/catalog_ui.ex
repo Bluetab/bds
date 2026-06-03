@@ -1,6 +1,7 @@
 defmodule Bds.Components.CatalogUi do
   @moduledoc false
   use Phoenix.Component
+  use Gettext, backend: Bds.Gettext
 
   @button_variants %{
     "primary" => "bt-button",
@@ -195,7 +196,7 @@ defmodule Bds.Components.CatalogUi do
     """
   end
 
-  attr :label, :string, default: "Bottom navigation"
+  attr :label, :string, default: nil
   attr :rest, :global
   slot :item, required: true do
     attr :href, :string
@@ -205,6 +206,8 @@ defmodule Bds.Components.CatalogUi do
   end
 
   def bt_bottom_nav(assigns) do
+    assigns = assign_new(assigns, :label, fn -> gettext("Bottom navigation") end)
+
     ~H"""
     <nav class="bt-bottom-nav" aria-label={@label} {@rest}>
       <a
@@ -344,12 +347,14 @@ defmodule Bds.Components.CatalogUi do
   end
 
   attr :id, :string, required: true
-  attr :toggle_label, :string, default: "Open menu"
+  attr :toggle_label, :string, default: nil
   slot :item, required: true do
     attr :label, :string, required: true
   end
 
   def bt_menu_wrap(assigns) do
+    assigns = assign_new(assigns, :toggle_label, fn -> gettext("Open menu") end)
+
     ~H"""
     <div class="bt-menu-wrap">
       <button type="button" class="bt-button bt-button--secondary" data-menu-toggle={@id}>
@@ -444,8 +449,10 @@ defmodule Bds.Components.CatalogUi do
   attr :class, :any, default: nil
 
   def bt_progress(assigns) do
+    assigns = assign_new(assigns, :progress_aria_label, fn -> gettext("Progress") end)
+
     ~H"""
-    <div class={["bt-progress", @class]} aria-label={@label || "Progress"}>
+    <div class={["bt-progress", @class]} aria-label={@label || @progress_aria_label}>
       <div class="bt-progress__bar" style={"--value: #{@value}%"}></div>
     </div>
     """
@@ -560,13 +567,15 @@ defmodule Bds.Components.CatalogUi do
     """
   end
 
-  attr :label, :string, default: "Segmented control"
+  attr :label, :string, default: nil
   slot :item, required: true do
     attr :label, :string, required: true
     attr :pressed, :boolean
   end
 
   def bt_segmented(assigns) do
+    assigns = assign_new(assigns, :label, fn -> gettext("Segmented control") end)
+
     ~H"""
     <div class="bt-segmented" role="group" aria-label={@label}>
       <button
@@ -764,7 +773,7 @@ defmodule Bds.Components.CatalogUi do
             phx-click={@toggle_event}
             phx-value-key={@key}
             aria-expanded={to_string(@open?)}
-            aria-label="Toggle branch"
+            aria-label={gettext("Toggle branch")}
           >
             <span class={["bt-tree__chevron", @open? && "bt-tree__chevron--open"]}>›</span>
           </button>
@@ -891,7 +900,7 @@ defmodule Bds.Components.CatalogUi do
               :if={@show_clear and not @loading}
               type="button"
               class="bt-combobox__clear"
-              aria-label="Clear"
+              aria-label={gettext("Clear")}
               phx-target={@target}
               phx-click={@clear_event}
             >
@@ -908,7 +917,7 @@ defmodule Bds.Components.CatalogUi do
           <%= if @loading_content != [] do %>
             {render_slot(@loading_content)}
           <% else %>
-            Searching…
+            {gettext("Searching…")}
           <% end %>
         </div>
         <div :if={not @loading and @options != []} class="bt-combobox__options">

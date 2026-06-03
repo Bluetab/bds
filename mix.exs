@@ -31,7 +31,7 @@ defmodule Bds.MixProject do
       {:phoenix_html, "~> 4.0"},
       {:phoenix_live_view, "~> 1.0"},
       {:phoenix, "~> 1.7", optional: true},
-      {:gettext, "~> 1.0", optional: true}
+      {:gettext, "~> 1.0"}
     ]
   end
 
@@ -41,7 +41,11 @@ defmodule Bds.MixProject do
       "assets.setup": ["cmd --cd assets npm install"],
       "assets.build": ["cmd --cd assets npm run build:lib", "bds.sync_assets"],
       "assets.dev": ["cmd --cd assets npm run dev"],
-      "bds.sync_assets": &sync_assets/1
+      "bds.sync_assets": &sync_assets/1,
+      "gettext.catalog": [
+        "cmd --cd assets npm run export:catalog",
+        "cmd node scripts/sync-catalog-gettext.mjs"
+      ]
     ]
   end
 

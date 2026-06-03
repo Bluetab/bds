@@ -11,7 +11,7 @@ defmodule Bds.CatalogTest do
   end
 
   test "components_in_group/2 filters by title" do
-    matches = Catalog.components_in_group("Componentes", "button")
+    matches = Catalog.components_in_group("Components", "button")
     assert Enum.any?(matches, &(&1["id"] == "buttons"))
     refute Enum.any?(matches, &(&1["id"] == "tables"))
   end
@@ -36,6 +36,14 @@ defmodule Bds.CatalogTest do
     rendered = Phoenix.HTML.safe_to_string(highlighted)
     assert rendered =~ "bt-code__tag"
     assert rendered =~ "bt_button"
+  end
+
+  test "localized_component/1 translates metadata with locale" do
+    Gettext.put_locale(Bds.Gettext, "es")
+
+    component = Catalog.get!("buttons") |> Catalog.localized_component()
+
+    assert component["title"] == "Botones"
   end
 
   test "highlight_html/1 escapes and highlights tags" do

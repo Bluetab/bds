@@ -45,4 +45,24 @@ config :bds, gettext_backend: MyAppWeb.Gettext
 import Bds.Components
 ```
 
+### Internationalization (Gettext)
+
+Component defaults and catalog metadata use `Bds.Gettext`. In your host app:
+
+```elixir
+# lib/my_app_web/gettext.ex
+use Gettext.Backend, otp_app: :my_app, imports: [{Bds.Gettext, "default"}]
+
+config :bds, gettext_backend: MyAppWeb.Gettext
+```
+
+Set locale on both backends (or rely on imports and set only the host backend):
+
+```elixir
+Gettext.put_locale(MyAppWeb.Gettext, "es")
+Gettext.put_locale(Bds.Gettext, "es")
+```
+
+After changing strings in this package, run `mix gettext.extract` in **bds**, then merge updated `.po` files in the host app.
+
 See [`assets/docs/bds-how-to-use-design-system.md`](assets/docs/bds-how-to-use-design-system.md) and [`assets/docs/bds-integration-patterns.md`](assets/docs/bds-integration-patterns.md).

@@ -4,6 +4,7 @@ defmodule Bds.Components.Performance do
   evaluations, reported hours, and team review rows.
   """
   use Phoenix.Component
+  use Gettext, backend: Bds.Gettext
 
   import Bds.Components, only: [bt_button: 1]
   import Bds.Components.CatalogUi, only: [bt_icon: 1]
@@ -23,13 +24,15 @@ defmodule Bds.Components.Performance do
 
   attr :id, :string, default: nil
   attr :class, :any, default: nil
-  attr :title, :string, default: "Evaluator"
+  attr :title, :string, default: nil
   attr :name, :string, required: true
   attr :email, :string, default: nil
   attr :picture, :string, default: nil
   attr :rest, :global
 
   def bt_performance_evaluator_card(assigns) do
+    assigns = assign_new(assigns, :title, fn -> gettext("Evaluator") end)
+
     ~H"""
     <article
       id={@id}
@@ -54,17 +57,22 @@ defmodule Bds.Components.Performance do
 
   attr :id, :string, default: nil
   attr :class, :any, default: nil
-  attr :title, :string, default: "Reported hours"
+  attr :title, :string, default: nil
   attr :hours_groups, :list, required: true
   attr :expanded_keys, :any, default: MapSet.new()
   attr :show_all_groups?, :boolean, default: false
   attr :hidden_group_count, :integer, default: 0
   attr :toggle_group_event, :string, default: "toggle_hours_group"
   attr :toggle_more_event, :string, default: "toggle_more_hours_groups"
-  attr :empty_message, :string, default: "No reported hours for this scope."
+  attr :empty_message, :string, default: nil
   attr :rest, :global
 
   def bt_performance_hours_panel(assigns) do
+    assigns =
+      assigns
+      |> assign_new(:title, fn -> gettext("Reported hours") end)
+      |> assign_new(:empty_message, fn -> gettext("No reported hours for this scope.") end)
+
     visible =
       if assigns.show_all_groups? or assigns.hidden_group_count == 0 do
         assigns.hours_groups
@@ -117,9 +125,9 @@ defmodule Bds.Components.Performance do
         <div :if={@hidden_group_count > 0} style="padding-top: var(--bt-space-2);">
           <.bt_button variant="ghost" type="button" phx-click={@toggle_more_event}>
             <%= if @show_all_groups? do %>
-              Show fewer clients
+              {gettext("Show fewer clients")}
             <% else %>
-              Show {@hidden_group_count} more clients
+              {gettext("Show %{count} more clients", count: @hidden_group_count)}
             <% end %>
           </.bt_button>
         </div>
@@ -140,13 +148,15 @@ defmodule Bds.Components.Performance do
   attr :evaluation, :map, default: nil
   attr :ack_state, :atom, default: :hidden, values: [:hidden, :pending, :acknowledged]
   attr :default_expanded?, :boolean, default: false
-  attr :draft_label, :string, default: "Draft · only visible to you"
+  attr :draft_label, :string, default: nil
   attr :rest, :global
   slot :actions
 
   def bt_performance_briefing_card(assigns) do
-    assigns =
-      assign(assigns, :has_evaluation, is_map(assigns.evaluation) and map_size(assigns.evaluation) > 0)
+    assigns = assign_new(assigns, :draft_label, fn -> gettext("Draft · only visible to you") end)
+
+    has_evaluation = is_map(assigns.evaluation) and map_size(assigns.evaluation) > 0
+    assigns = assign(assigns, :has_evaluation, has_evaluation)
 
     ~H"""
     <article
@@ -170,7 +180,7 @@ defmodule Bds.Components.Performance do
             </span>
             <.bt_performance_ack_chip :if={@ack_state != :hidden} state={@ack_state} />
           </div>
-          <p class="bt-performance-meta-sub">Created by {@creator_label}</p>
+          <p class="bt-performance-meta-sub">{gettext("Created by %{name}", name: @creator_label)}</p>
         </div>
         <div :if={render_slot(@actions) != []} class="bt-performance-actions">
           {render_slot(@actions)}
@@ -183,13 +193,13 @@ defmodule Bds.Components.Performance do
         <div :if={@objectives != []} style="display: grid; gap: var(--bt-space-2);">
           <h3 class="bt-performance-section-title" style="font-size: var(--bt-font-size-sm);">
             <%= if @has_evaluation do %>
-              Objectives and evaluator assessment
+              {gettext("Objectives and evaluator assessment")}
             <% else %>
-              Objectives
+              {gettext("Objectives")}
             <% end %>
           </h3>
           <details class="bt-performance-objectives" open={@default_expanded?}>
-            <summary>Objectives</summary>
+            <summary>{gettext("Objectives")}</summary>
             <ul class="list-none m-0 p-0" style="margin-top: var(--bt-space-3); display: grid; gap: var(--bt-space-2);">
               <li :for={obj <- @objectives} class="bt-performance-objective">
                 <div class="bt-performance-objective__head">
@@ -217,9 +227,11 @@ defmodule Bds.Components.Performance do
                 <.bt_icon>✦</.bt_icon>
                 <span class="bt-performance-meta-row__date">{@evaluation.date_label}</span>
               </div>
-              <p class="bt-performance-meta-sub">Evaluated by {@evaluation.creator_label}</p>
+              <p class="bt-performance-meta-sub">
+                {gettext("Evaluated by %{name}", name: @evaluation.creator_label)}
+              </p>
               <p class="bt-performance-kicker" style="color: var(--bt-color-text-subtle);">
-                Overall assessment
+                {gettext("Overall assessment")}
               </p>
             </div>
             <span class={["bt-performance-rating", rating_class(@evaluation.rating)]}>
@@ -230,18 +242,18 @@ defmodule Bds.Components.Performance do
             {@evaluation.rationale}
           </p>
           <details class="bt-performance-objectives" open={@default_expanded?} style="background: var(--bt-color-surface-soft);">
-            <summary>Strengths, weaknesses, recommendations</summary>
+            <summary>{gettext("Strengths, weaknesses, recommendations")}</summary>
             <div style="margin-top: var(--bt-space-3); display: grid; gap: var(--bt-space-2); font-size: var(--bt-font-size-sm); color: var(--bt-color-text-muted);">
               <p :if={@evaluation.strengths} style="margin: 0;">
-                <strong style="display: block; margin-bottom: 0.15rem;">Strengths</strong>
+                <strong style="display: block; margin-bottom: 0.15rem;">{gettext("Strengths")}</strong>
                 <span style="white-space: pre-wrap;">{@evaluation.strengths}</span>
               </p>
               <p :if={@evaluation.weaknesses} style="margin: 0;">
-                <strong style="display: block; margin-bottom: 0.15rem;">Weaknesses</strong>
+                <strong style="display: block; margin-bottom: 0.15rem;">{gettext("Weaknesses")}</strong>
                 <span style="white-space: pre-wrap;">{@evaluation.weaknesses}</span>
               </p>
               <p :if={@evaluation.recommendations} style="margin: 0;">
-                <strong style="display: block; margin-bottom: 0.15rem;">Recommendations</strong>
+                <strong style="display: block; margin-bottom: 0.15rem;">{gettext("Recommendations")}</strong>
                 <span style="white-space: pre-wrap;">{@evaluation.recommendations}</span>
               </p>
             </div>
@@ -262,7 +274,11 @@ defmodule Bds.Components.Performance do
       @state == :pending && "bt-performance-ack--pending"
     ]}>
       <.bt_icon>{if @state == :acknowledged, do: "✓", else: "◷"}</.bt_icon>
-      <span>{if @state == :acknowledged, do: "Acknowledged", else: "Awaiting acknowledgement"}</span>
+      <span>
+        {if @state == :acknowledged,
+          do: gettext("Acknowledged"),
+          else: gettext("Awaiting acknowledgement")}
+      </span>
     </span>
     """
   end
@@ -275,7 +291,7 @@ defmodule Bds.Components.Performance do
   attr :category, :string, default: nil
   attr :project_label, :string, default: nil
   attr :hours_label, :string, default: nil
-  attr :no_hours_message, :string, default: "No reported hours in this period for this person."
+  attr :no_hours_message, :string, default: nil
   attr :delegator_name, :string, default: nil
   attr :show_delegator?, :boolean, default: false
   attr :briefing_date_label, :string, default: nil
@@ -291,6 +307,9 @@ defmodule Bds.Components.Performance do
 
     assigns =
       assigns
+      |> assign_new(:no_hours_message, fn ->
+        gettext("No reported hours in this period for this person.")
+      end)
       |> assign(:status_variant, status_variant)
       |> assign(:rating_class, rating_class(assigns.rating))
 
@@ -327,12 +346,12 @@ defmodule Bds.Components.Performance do
       </div>
       <div class="bt-performance-team-card__aside">
         <div :if={@show_delegator? && @delegator_name} class="bt-performance-team-card__delegation">
-          <span>Delegated by</span>
+          <span>{gettext("Delegated by")}</span>
           <strong>{@delegator_name}</strong>
         </div>
         <div :if={@briefing_date_label} style="display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--bt-space-2);">
           <span style="font-size: var(--bt-font-size-sm); font-weight: 600; color: var(--bt-color-primary);">
-            Briefing on {@briefing_date_label}
+            {gettext("Briefing on %{date}", date: @briefing_date_label)}
           </span>
           <span :if={@briefing_status_label} class={"bt-status bt-status--#{@status_variant}"}>
             {@briefing_status_label}
