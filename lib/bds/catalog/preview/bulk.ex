@@ -885,9 +885,9 @@ defmodule Bds.Catalog.Preview.Bulk do
     ~H"""
     <.bt_calendar_legend
       items={[
-        %{status: "imputado", icon: "◐", label: "Draft", count: 6},
-        %{status: "completado", icon: "●", label: "Complete", count: 5},
-        %{status: "aprobado", icon: "✓", label: "Approved", count: 2}
+        %{status: "imputado", icon: "◐", count: 6},
+        %{status: "completado", icon: "●", count: 5},
+        %{status: "aprobado", icon: "✓", count: 2}
       ]}
     />
     """
@@ -909,8 +909,6 @@ defmodule Bds.Catalog.Preview.Bulk do
       show
       date={~D[2026-06-12]}
       status="imputado"
-      weekday_label="THU"
-      month_label="June 2026"
       total_hours={7.5}
       entries={[
         %{
@@ -959,8 +957,8 @@ defmodule Bds.Catalog.Preview.Bulk do
       <:legend>
         <.bt_calendar_legend
           items={[
-            %{status: "imputado", icon: "◐", label: "Draft", count: 6},
-            %{status: "aprobado", icon: "✓", label: "Approved", count: 2}
+            %{status: "imputado", icon: "◐", count: 6},
+            %{status: "aprobado", icon: "✓", count: 2}
           ]}
         />
       </:legend>

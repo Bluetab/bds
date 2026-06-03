@@ -6,6 +6,7 @@ defmodule Bds.Components.Calendar do
   use Gettext, backend: Bds.Gettext
 
   import Bds.Components, only: [bt_input: 1]
+  import Bds.Components.CatalogUi, only: [bt_icon_button: 1]
 
   @entry_input_types ~w(Billable Non-billable Absence)
 
@@ -418,7 +419,7 @@ defmodule Bds.Components.Calendar do
           <span class={["bt-calendar-legend__icon", legend_icon_class(item)]}>
             <span aria-hidden="true">{item[:icon] || item["icon"]}</span>
           </span>
-          <span>{item[:label] || item["label"]}</span>
+          <span>{legend_item_label(item)}</span>
           <span class="font-semibold tabular-nums">{item[:count] || item["count"]}</span>
         </li>
       </ul>
@@ -493,6 +494,7 @@ defmodule Bds.Components.Calendar do
   attr :on_cancel_entry, :string, default: nil
   attr :on_save_entry, :string, default: nil
   attr :on_validate_entry, :string, default: nil
+  attr :on_hours_preset, :string, default: nil, doc: "phx-click event to set hours (phx-value-hours)"
   attr :on_save, :string, default: nil
   attr :class, :any, default: nil
   attr :rest, :global
@@ -504,12 +506,21 @@ defmodule Bds.Components.Calendar do
     goal_reached = total >= goal
     hours_to_goal = Float.round(max(0.0, goal - total), 1)
 
+    weekday_label =
+      assigns.weekday_label ||
+        (assigns.date && calendar_modal_weekday_label(assigns.date))
+
+    month_label =
+      assigns.month_label ||
+        (assigns.date && calendar_modal_month_label(assigns.date))
+
     assigns =
       assigns
+      |> assign(:weekday_label, weekday_label)
+      |> assign(:month_label, month_label)
       |> assign(:progress_pct, Float.round(progress, 1))
       |> assign(:goal_reached, goal_reached)
       |> assign(:hours_to_goal, hours_to_goal)
-      |> assign(:status_label, assigns.status_label || status_label(assigns.status))
       |> assign(:progress_summary, progress_summary(goal_reached, hours_to_goal))
       |> assign(:editing?, !is_nil(assigns.entry_form))
       |> assign(:entry_form_id, "#{assigns.id}-entry-form")
@@ -533,7 +544,7 @@ defmodule Bds.Components.Calendar do
         class="bt-calendar-day-modal__panel"
         role="dialog"
         aria-modal="true"
-        aria-labelledby={"#{@id}-title"}
+        aria-label={gettext("Day %{day}", day: @date.day)}
       >
         <div class={["bt-calendar-day-modal__shell", modal_status_class(@status)]}>
           <aside class="bt-calendar-day-modal__aside">
@@ -549,7 +560,6 @@ defmodule Bds.Components.Calendar do
                 <span class="bt-calendar-day-modal__hours-value">{Float.round(@total_hours * 1.0, 1)}</span>
                 <span class="bt-calendar-day-modal__hours-unit">h</span>
               </div>
-              <p class="bt-calendar-day-modal__status">{String.upcase(@status_label)}</p>
               <div class="bt-calendar-day-modal__progress" aria-hidden="true">
                 <div class="bt-calendar-day-modal__progress-fill" style={"width: #{@progress_pct}%"} />
               </div>
@@ -558,22 +568,19 @@ defmodule Bds.Components.Calendar do
           </aside>
 
           <section class="bt-calendar-day-modal__content">
-            <div class="bt-calendar-day-modal__toolbar">
-              <div>
-                <p class="bt-calendar-day-modal__kicker">{gettext("Activity")}</p>
-                <h2 class="bt-calendar-day-modal__title" id={"#{@id}-title"}>{gettext("Logged hours")}</h2>
-              </div>
-              <button
-                :if={!@read_only && !@editing? && @on_add_entry}
-                type="button"
-                class="bt-calendar-day-modal__add bt-button bt-button--secondary bt-button--sm"
-                phx-click={@on_add_entry}
-              >
-                <span class="bt-icon" aria-hidden="true">+</span> {gettext("New")}
-              </button>
-            </div>
-
             <div class="bt-calendar-day-modal__entries">
+              <div
+                :if={!@read_only && !@editing? && @on_add_entry}
+                class="bt-calendar-day-modal__entries-top"
+              >
+                <button
+                  type="button"
+                  class="bt-calendar-day-modal__add bt-button bt-button--secondary bt-button--sm"
+                  phx-click={@on_add_entry}
+                >
+                  <span class="bt-icon" aria-hidden="true">+</span> {gettext("New")}
+                </button>
+              </div>
               <.form
                 :if={@entry_form && @on_save_entry}
                 for={@entry_form}
@@ -603,22 +610,41 @@ defmodule Bds.Components.Calendar do
                     autocomplete="off"
                     required
                   />
-                  <.bt_input
-                    field={@entry_form[:hours]}
-                    type="number"
-                    label={gettext("Hours")}
-                    step="0.25"
-                    min="0.25"
-                    max="24"
-                    required
-                  />
-                  <.bt_input
-                    field={@entry_form[:input_type]}
-                    type="select"
-                    label={gettext("Type")}
-                    options={@input_types}
-                    prompt={false}
-                  />
+                  <div class="bt-calendar-day-modal__editor-row">
+                    <div class="bt-calendar-day-modal__editor-hours">
+                      <div class="bt-calendar-day-modal__editor-hours-input">
+                        <.bt_input
+                          field={@entry_form[:hours]}
+                          type="number"
+                          label={gettext("Hours")}
+                          step="0.5"
+                          min="0.5"
+                          max="24"
+                          required
+                        />
+                      </div>
+                      <div :if={@on_hours_preset} class="bt-calendar-day-modal__editor-hours-presets">
+                        <button
+                          :for={{label, hours} <- hour_preset_buttons()}
+                          type="button"
+                          class="bt-button bt-button--secondary bt-button--sm"
+                          phx-click={@on_hours_preset}
+                          phx-value-hours={hours}
+                          aria-label={gettext("Set %{hours} hours", hours: hours)}
+                        >
+                          {label}
+                        </button>
+                      </div>
+                    </div>
+                    <div class="bt-calendar-day-modal__editor-type">
+                      <.bt_input
+                        field={@entry_form[:input_type]}
+                        type="select"
+                        label={gettext("Type")}
+                        options={@input_types}
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div class="bt-calendar-day-modal__editor-actions">
                   <button
@@ -656,33 +682,26 @@ defmodule Bds.Components.Calendar do
                     <p class="bt-calendar-day-modal__entry-project">{entry[:project_name] || entry["project_name"]}</p>
                     <p class="bt-calendar-day-modal__entry-type">{entry[:input_type] || entry["input_type"] || "Billable"}</p>
                   </div>
-                  <div class="bt-calendar-day-modal__entry-meta">
-                    <span class="bt-calendar-day-modal__entry-hours">{entry[:hours] || entry["hours"]}h</span>
-                    <span :if={entry[:status_label] || entry["status_label"]} class="bt-calendar-day-modal__entry-status">
-                      {entry[:status_label] || entry["status_label"]}
-                    </span>
-                  </div>
+                  <span class="bt-calendar-day-modal__entry-hours">{entry[:hours] || entry["hours"]}h</span>
                   <div :if={!@read_only && @on_edit_entry} class="bt-calendar-day-modal__entry-actions">
-                    <button
-                      type="button"
-                      class="bt-button bt-button--ghost bt-button--sm"
+                    <.bt_icon_button
+                      class="bt-calendar-day-modal__entry-action"
+                      label={gettext("Edit entry")}
                       phx-click={@on_edit_entry}
                       phx-value-id={entry_id(entry)}
-                      aria-label={gettext("Edit entry")}
                     >
-                      {gettext("Edit")}
-                    </button>
-                    <button
+                      <.calendar_day_modal_icon name="pencil" />
+                    </.bt_icon_button>
+                    <.bt_icon_button
                       :if={@on_delete_entry}
-                      type="button"
-                      class="bt-button bt-button--ghost bt-button--sm"
+                      class="bt-calendar-day-modal__entry-action"
+                      label={gettext("Delete entry")}
                       phx-click={@on_delete_entry}
                       phx-value-id={entry_id(entry)}
                       data-confirm={gettext("Remove this time entry?")}
-                      aria-label={gettext("Delete entry")}
                     >
-                      {gettext("Delete")}
-                    </button>
+                      <.calendar_day_modal_icon name="trash" />
+                    </.bt_icon_button>
                   </div>
                 </article>
               <% end %>
@@ -708,19 +727,116 @@ defmodule Bds.Components.Calendar do
     """
   end
 
-  defp status_label("nuevo"), do: gettext("New")
-  defp status_label("imputado"), do: gettext("Draft")
-  defp status_label("completado"), do: gettext("Complete")
-  defp status_label("liberado"), do: gettext("Sent")
-  defp status_label("aprobado"), do: gettext("Approved")
-  defp status_label("rechazado"), do: gettext("Rejected")
-  defp status_label("festivo"), do: gettext("Holiday")
-  defp status_label("vacaciones"), do: gettext("Vacation")
-  defp status_label("no-laborable"), do: gettext("Non-working")
-  defp status_label(_), do: gettext("Day")
+  @doc """
+  Localized abbreviated weekday for the day modal aside (e.g. `"Thu"`).
+  """
+  def calendar_modal_weekday_label(%Date{} = date) do
+    calendar_weekday_abbreviations()
+    |> Enum.at(Date.day_of_week(date) - 1)
+  end
+
+  @doc """
+  Localized month and year for the day modal aside (e.g. `"June 2026"`).
+  """
+  def calendar_modal_month_label(%Date{} = date) do
+    month = calendar_month_names() |> Enum.at(date.month - 1)
+    "#{month} #{date.year}"
+  end
+
+  @doc """
+  Returns the localized display label for a calendar day/legend `status` slug
+  (e.g. `"imputado"`, `"completado"`).
+  """
+  def calendar_status_label("nuevo"), do: gettext("New")
+  def calendar_status_label("imputado"), do: gettext("Draft")
+  def calendar_status_label("completado"), do: gettext("Complete")
+  def calendar_status_label("liberado"), do: gettext("Sent")
+  def calendar_status_label("aprobado"), do: gettext("Approved")
+  def calendar_status_label("rechazado"), do: gettext("Rejected")
+  def calendar_status_label("festivo"), do: gettext("Holiday")
+  def calendar_status_label("vacaciones"), do: gettext("Vacation")
+  def calendar_status_label("no-laborable"), do: gettext("Non-working")
+  def calendar_status_label(_), do: gettext("Day")
+
+  defp legend_item_label(item) do
+    case item[:status] || item["status"] do
+      status when is_binary(status) -> calendar_status_label(status)
+      _ -> item[:label] || item["label"] || ""
+    end
+  end
+
+  defp hour_preset_buttons do
+    [
+      {gettext("1h"), "1"},
+      {gettext("2h"), "2"},
+      {gettext("4h"), "4"},
+      {gettext("8h"), "8"}
+    ]
+  end
 
   defp progress_summary(true, _hours_to_goal), do: gettext("Daily goal reached")
   defp progress_summary(false, hours), do: gettext("%{hours}h to reach 8h", hours: hours)
+
+  defp calendar_weekday_abbreviations do
+    [
+      gettext("Mon"),
+      gettext("Tue"),
+      gettext("Wed"),
+      gettext("Thu"),
+      gettext("Fri"),
+      gettext("Sat"),
+      gettext("Sun")
+    ]
+  end
+
+  defp calendar_month_names do
+    [
+      gettext("January"),
+      gettext("February"),
+      gettext("March"),
+      gettext("April"),
+      gettext("May"),
+      gettext("June"),
+      gettext("July"),
+      gettext("August"),
+      gettext("September"),
+      gettext("October"),
+      gettext("November"),
+      gettext("December")
+    ]
+  end
+
+  attr :name, :string, required: true, values: ~w(pencil trash)
+  attr :class, :any, default: nil
+
+  def calendar_day_modal_icon(assigns) do
+    ~H"""
+    <svg
+      class={["bt-calendar-day-modal__entry-icon", @class]}
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      aria-hidden="true"
+    >
+      <%= case @name do %>
+        <% "pencil" -> %>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+          />
+        <% "trash" -> %>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+          />
+      <% end %>
+    </svg>
+    """
+  end
 
   defp entry_id(%{id: id}), do: id
   defp entry_id(%{"id" => id}), do: id

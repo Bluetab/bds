@@ -551,13 +551,13 @@ button.bt-calendar-template-card {
   position: absolute;
   top: 0.5rem;
   left: 0.5rem;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 0.625rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   font-weight: 900;
   color: var(--bt-calendar-day-number-color);
   background: var(--bt-calendar-day-number-bg);
@@ -702,7 +702,7 @@ button.bt-calendar-template-card {
 .bt-calendar-day-modal__panel {
   position: relative;
   z-index: 1;
-  width: min(56rem, 100%);
+  width: min(48rem, 100%);
   max-height: min(36rem, calc(100dvh - 2rem));
   display: flex;
   min-height: 0;
@@ -783,15 +783,8 @@ button.bt-calendar-template-card {
   color: var(--bt-color-text-muted);
 }
 
-.bt-calendar-day-modal__status {
-  margin: 0.375rem 0 0.75rem;
-  font-size: 0.65rem;
-  font-weight: 900;
-  letter-spacing: 0.14em;
-  color: var(--bt-color-text-muted);
-}
-
 .bt-calendar-day-modal__progress {
+  margin-top: 0.75rem;
   height: 0.35rem;
   border-radius: 999px;
   background: color-mix(in srgb, var(--bt-color-border) 60%, transparent);
@@ -820,39 +813,21 @@ button.bt-calendar-template-card {
   background: color-mix(in srgb, var(--bt-color-surface) 88%, transparent);
 }
 
-.bt-calendar-day-modal__toolbar {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--bt-space-3);
-  padding: var(--bt-space-4) var(--bt-space-5) var(--bt-space-3);
-  border-bottom: 1px solid var(--bt-calendar-glass-border);
-}
-
-.bt-calendar-day-modal__kicker {
-  margin: 0;
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--bt-color-text-subtle);
-}
-
-.bt-calendar-day-modal__title {
-  margin: 0.125rem 0 0;
-  font-size: 1.125rem;
-  font-weight: 800;
-  color: var(--bt-color-text);
-}
-
 .bt-calendar-day-modal__entries {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: var(--bt-space-3) var(--bt-space-5);
+  padding: var(--bt-space-4) var(--bt-space-5);
   display: flex;
   flex-direction: column;
   gap: var(--bt-space-2);
+}
+
+.bt-calendar-day-modal__entries-top {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  margin-bottom: var(--bt-space-1);
 }
 
 .bt-calendar-day-modal__editor {
@@ -888,15 +863,78 @@ button.bt-calendar-template-card {
   width: 100%;
 }
 
-@media (min-width: 640px) {
-  .bt-calendar-day-modal__editor-fields {
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.5fr) minmax(0, 0.7fr);
-    align-items: end;
-  }
+.bt-calendar-day-modal__editor-project .bt-combobox {
+  width: 100%;
+  max-width: none;
+}
 
-  .bt-calendar-day-modal__editor-fields:has(.bt-calendar-day-modal__editor-project) {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0.35fr) minmax(0, 0.45fr);
-  }
+.bt-calendar-day-modal__editor-project .bt-combobox__input-wrap,
+.bt-calendar-day-modal__editor-project .bt-combobox__input-wrap .bt-input {
+  width: 100%;
+}
+
+.bt-calendar-day-modal__editor-row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--bt-space-3);
+  width: 100%;
+  min-width: 0;
+}
+
+.bt-calendar-day-modal__editor-hours {
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--bt-space-2);
+  min-width: 0;
+}
+
+.bt-calendar-day-modal__editor-hours-input {
+  flex: 0 0 auto;
+  width: 5.5rem;
+  max-width: 100%;
+}
+
+.bt-calendar-day-modal__editor-hours-input .bt-field {
+  margin: 0;
+}
+
+.bt-calendar-day-modal__editor-hours-input .bt-input {
+  width: 100%;
+  min-width: 0;
+}
+
+.bt-calendar-day-modal__editor-hours-presets {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.bt-calendar-day-modal__editor-hours-presets .bt-button {
+  min-height: 2rem;
+  padding-inline: 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.bt-calendar-day-modal__editor-type {
+  flex: 1 1 0;
+  min-width: 8rem;
+}
+
+.bt-calendar-day-modal__editor-type .bt-field {
+  width: 100%;
+  margin: 0;
+}
+
+.bt-calendar-day-modal__editor-type .bt-select {
+  width: 100%;
 }
 
 .bt-calendar-day-modal__editor-actions {
@@ -907,8 +945,7 @@ button.bt-calendar-template-card {
 
 .bt-calendar-day-modal__entry {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: stretch;
   gap: var(--bt-space-3);
   padding: var(--bt-space-3);
   border-radius: 0.75rem;
@@ -916,17 +953,49 @@ button.bt-calendar-template-card {
   background: var(--bt-color-surface);
 }
 
+.bt-calendar-day-modal__entry-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .bt-calendar-day-modal__entry-actions {
   display: flex;
   flex-shrink: 0;
   align-items: center;
-  gap: var(--bt-space-1);
+  align-self: center;
+  gap: 0.125rem;
+}
+
+.bt-calendar-day-modal__entry-action.bt-icon-button {
+  width: 1.625rem;
+  height: 1.625rem;
+  min-height: 1.625rem;
+  padding: 0;
+  color: var(--bt-color-text-muted);
+}
+
+.bt-calendar-day-modal__entry-action.bt-icon-button:hover {
+  color: var(--bt-color-text);
+  background: color-mix(in srgb, var(--bt-color-border) 45%, transparent);
+}
+
+.bt-calendar-day-modal__entry-action.bt-icon-button svg,
+.bt-calendar-day-modal__entry-icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  max-width: 0.875rem;
+  max-height: 0.875rem;
+  display: block;
+  flex: 0 0 auto;
 }
 
 .bt-calendar-day-modal__entry-project {
   margin: 0;
-  font-size: 0.85rem;
-  font-weight: 800;
+  font-size: 0.95rem;
+  font-weight: 600;
   color: var(--bt-color-text);
 }
 
@@ -937,25 +1006,22 @@ button.bt-calendar-template-card {
   color: var(--bt-color-text-muted);
 }
 
-.bt-calendar-day-modal__entry-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.25rem;
-}
-
 .bt-calendar-day-modal__entry-hours {
-  font-size: 0.9rem;
-  font-weight: 900;
-  color: var(--bt-calendar-day-modal-accent, var(--bt-calendar-status-imputado));
-}
-
-.bt-calendar-day-modal__entry-status {
-  font-size: 0.62rem;
+  flex: 0 0 auto;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 3.5rem;
+  padding: 0 var(--bt-space-1);
+  text-align: right;
+  font-size: 1.75rem;
   font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--bt-color-text-subtle);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: var(--bt-calendar-day-modal-accent, var(--bt-calendar-status-imputado));
 }
 
 .bt-calendar-day-modal__empty {

@@ -12,7 +12,6 @@ defmodule Bds.Components.ProjectPicker do
   use Phoenix.LiveComponent
   use Gettext, backend: Bds.Gettext
 
-  import Bds.Components
   import Bds.Components.CatalogUi
 
   attr :class, :any, default: nil

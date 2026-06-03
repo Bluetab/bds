@@ -491,11 +491,16 @@ defmodule Bds.Components.CatalogUi do
   slot :inner_block, required: true
 
   def bt_nav_link(assigns) do
-    class = ["bt-nav-link", assigns.current && "bt-nav-link--current", assigns.class]
+    assigns =
+      assign(
+        assigns,
+        :nav_link_class,
+        ["bt-nav-link", assigns.current && "bt-nav-link--current", assigns.class]
+      )
 
     if assigns.navigate do
       ~H"""
-      <.link navigate={@navigate} class={class} aria-current={@current && "page"}>
+      <.link navigate={@navigate} class={@nav_link_class} aria-current={@current && "page"}>
         <span :if={@icon} class="bt-icon" aria-hidden="true">{@icon}</span>
         {render_slot(@inner_block)}
       </.link>
@@ -503,14 +508,14 @@ defmodule Bds.Components.CatalogUi do
     else
       if assigns.patch do
         ~H"""
-        <.link patch={@patch} class={class} aria-current={@current && "page"}>
+        <.link patch={@patch} class={@nav_link_class} aria-current={@current && "page"}>
           <span :if={@icon} class="bt-icon" aria-hidden="true">{@icon}</span>
           {render_slot(@inner_block)}
         </.link>
         """
       else
         ~H"""
-        <a href={@href} class={class} aria-current={if(@current, do: "page", else: false)}>
+        <a href={@href} class={@nav_link_class} aria-current={if(@current, do: "page", else: false)}>
           <span :if={@icon} class="bt-icon" aria-hidden="true">{@icon}</span>
           {render_slot(@inner_block)}
         </a>
@@ -557,13 +562,18 @@ defmodule Bds.Components.CatalogUi do
   attr :class, :any, default: nil
 
   def bt_divider(assigns) do
-    class =
-      if assigns.vertical,
-        do: ["bt-divider bt-divider--vertical", assigns.class],
-        else: ["bt-divider", assigns.class]
+    assigns =
+      assign(
+        assigns,
+        :divider_class,
+        if(assigns.vertical,
+          do: ["bt-divider bt-divider--vertical", assigns.class],
+          else: ["bt-divider", assigns.class]
+        )
+      )
 
     ~H"""
-    <span class={class} aria-hidden="true"></span>
+    <span class={@divider_class} aria-hidden="true"></span>
     """
   end
 
@@ -705,15 +715,23 @@ defmodule Bds.Components.CatalogUi do
   slot :inner_block, required: true
 
   def bt_example(assigns) do
-    class = if assigns.block, do: "bt-example", else: "bt-example bt-example--half"
-    preview_class = if assigns.block, do: "bt-example__preview--block", else: nil
+    assigns =
+      assigns
+      |> assign(
+        :example_class,
+        if(assigns.block, do: "bt-example", else: "bt-example bt-example--half")
+      )
+      |> assign(
+        :preview_class,
+        if(assigns.block, do: "bt-example__preview--block", else: nil)
+      )
 
     ~H"""
-    <article class={class}>
+    <article class={@example_class}>
       <header class="bt-example__header">
         <h3 class="bt-example__title">{@title}</h3>
       </header>
-      <div class={["bt-example__preview", preview_class]}>{render_slot(@inner_block)}</div>
+      <div class={["bt-example__preview", @preview_class]}>{render_slot(@inner_block)}</div>
     </article>
     """
   end

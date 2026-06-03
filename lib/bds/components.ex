@@ -74,43 +74,60 @@ defmodule Bds.Components do
   slot :icon
 
   def bt_flash(assigns) do
-    assigns = assign_new(assigns, :id, fn -> "flash-#{assigns.kind}" end)
+    assigns =
+      assigns
+      |> assign_new(:id, fn -> "flash-#{assigns.kind}" end)
+      |> assign(:flash_message, Phoenix.Flash.get(assigns.flash, assigns.kind))
 
     ~H"""
-    <div
-      :if={
-        case {render_slot(@inner_block), Phoenix.Flash.get(@flash, @kind)} do
-          {nil, nil} -> false
-          {"", nil} -> false
-          {nil, ""} -> false
-          _ -> true
-        end
-      }
-      id={@id}
-      phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> JS.hide(to: "##{@id}")}
-      role="alert"
-      class={[
-        "bt-surface bt-row",
-        @kind == :info && "bt-status--info",
-        @kind == :error && "bt-status--error"
-      ]}
-      style="padding:var(--bt-space-3);box-shadow:var(--bt-shadow-md);cursor:pointer;"
-      {@rest}
-    >
-      <span :if={@icon != []}>{render_slot(@icon)}</span>
-      <div class="bt-stack" style="gap:var(--bt-space-1);flex:1;">
-        <p :if={@title} style="font-weight:700;margin:0;">{@title}</p>
-        <p style="margin:0;">
-          {case render_slot(@inner_block) do
-            nil -> Phoenix.Flash.get(@flash, @kind)
-            "" -> Phoenix.Flash.get(@flash, @kind)
-            content -> content
-          end}
-        </p>
+    <%= if @title do %>
+      <div
+        id={@id}
+        phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> JS.hide(to: "##{@id}")}
+        role="alert"
+        class={bt_flash_class(@kind)}
+        {@rest}
+      >
+        <span :if={@icon != []}>{render_slot(@icon)}</span>
+        <div class="bt-stack" style="gap:var(--bt-space-1);flex:1;">
+          <p style="font-weight:700;margin:0;">{@title}</p>
+          <p style="margin:0;">{render_slot(@inner_block)}</p>
+        </div>
       </div>
-    </div>
+    <% else %>
+      <%= if bt_flash_visible?(@flash_message) do %>
+        <div
+          id={@id}
+          phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> JS.hide(to: "##{@id}")}
+          role="alert"
+          class={bt_flash_class(@kind)}
+          {@rest}
+        >
+          <span :if={@icon != []}>{render_slot(@icon)}</span>
+          <div class="bt-stack" style="gap:var(--bt-space-1);flex:1;">
+            <p style="margin:0;">{@flash_message}</p>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
     """
   end
+
+  defp bt_flash_class(kind) do
+    [
+      "bt-flash bt-row",
+      kind == :info && "bt-status--info",
+      kind == :error && "bt-status--error"
+    ]
+  end
+
+  defp bt_flash_visible?(nil), do: false
+  defp bt_flash_visible?(""), do: false
+
+  defp bt_flash_visible?(message) when is_binary(message),
+    do: String.trim(message) != ""
+
+  defp bt_flash_visible?(_), do: false
 
   attr :id, :any, default: nil
   attr :name, :any
@@ -144,17 +161,18 @@ defmodule Bds.Components do
   def bt_input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
     errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
 
+    rest = assigns |> Map.get(:rest, %{}) |> Map.drop([:value, "value"])
+
     assigns
-    |> assign(field: nil, id: assigns.id || field.id)
+    |> assign(field: nil, id: assigns.id || field.id, rest: rest, value: field.value)
     |> assign(:errors, Enum.map(errors, &translate_error/1))
     |> assign_new(:name, fn -> if assigns.multiple, do: field.name <> "[]", else: field.name end)
-    |> assign_new(:value, fn -> field.value end)
     |> bt_input()
   end
 
   def bt_input(%{type: "hidden"} = assigns) do
     ~H"""
-    <input type="hidden" id={@id} name={@name} value={@value} {@rest} />
+    <input type="hidden" id={@id} name={@name} {@rest} value={@value} />
     """
   end
 
@@ -232,9 +250,9 @@ defmodule Bds.Components do
         type={@type}
         name={@name}
         id={@id}
-        value={Phoenix.HTML.Form.normalize_value(@type, @value || "")}
         class={@class || "bt-input"}
         {@rest}
+        value={Phoenix.HTML.Form.normalize_value(@type, @value || "")}
       />
       <.bt_field_help :if={@help}>{@help}</.bt_field_help>
       <.bt_field_error :for={msg <- @errors}>{msg}</.bt_field_error>
@@ -593,11 +611,6 @@ defmodule Bds.Components do
     """
   end
 
-  @doc """
-  Translates a changeset or form error tuple.
-
-  Configure `config :bds, gettext_backend: MyApp.Gettext` for Gettext support.
-  """
   defp button_class(%{variant: variant} = assigns) do
     variant_class = Map.fetch!(@variants, variant)
     extra = Map.get(assigns, :class)
@@ -610,6 +623,11 @@ defmodule Bds.Components do
     end
   end
 
+  @doc """
+  Translates a changeset or form error tuple.
+
+  Configure `config :bds, gettext_backend: MyApp.Gettext` for Gettext support.
+  """
   def translate_error({msg, opts}) do
     if backend = Application.get_env(:bds, :gettext_backend) do
       if count = opts[:count] do

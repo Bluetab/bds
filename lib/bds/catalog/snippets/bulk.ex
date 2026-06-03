@@ -57,12 +57,12 @@ defmodule Bds.Catalog.Snippets.Bulk do
           Edit <.bt_code>src/styles/tokens.css</.bt_code> first, then each component under
           <.bt_code>src/styles/components/</.bt_code>.
         </p>
-    <.bt_code_block>
-      import Bds.Components
-      import Bds.Components.CatalogUi
-      import Bds.Components.Calendar
-      import Bds.Components.Performance
-    </.bt_code_block>
+        <.bt_code_block>
+          import Bds.Components
+          import Bds.Components.CatalogUi
+          import Bds.Components.Calendar
+          import Bds.Components.Performance
+        </.bt_code_block>
       </.bt_card>
       """,
       "get-started:1" => ~S"""
@@ -896,8 +896,6 @@ defmodule Bds.Catalog.Snippets.Bulk do
         show
         date={~D[2026-06-12]}
         status="imputado"
-        weekday_label="THU"
-        month_label="June 2026"
         total_hours={7.5}
         entries={[
           %{
