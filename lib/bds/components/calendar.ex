@@ -4,6 +4,10 @@ defmodule Bds.Components.Calendar do
   """
   use Phoenix.Component
 
+  import Bds.Components, only: [bt_input: 1]
+
+  @entry_input_types ~w(Billable Non-billable Absence)
+
   @statuses ~w(
     nuevo imputado completado liberado aprobado rechazado festivo vacaciones no-laborable
   )
@@ -100,27 +104,65 @@ defmodule Bds.Components.Calendar do
   attr :name, :string, required: true
   attr :hours, :any, default: nil
   attr :projects, :list, default: []
+  attr :on_apply, :string, default: nil, doc: "LiveView event when the card is clicked to apply the template"
   attr :class, :any, default: nil
   attr :rest, :global
 
   def bt_calendar_template_card(assigns) do
-    assigns = assign(assigns, :project_rows, template_project_rows(assigns.projects, assigns.hours))
+    assigns =
+      assigns
+      |> assign(:project_rows, template_project_rows(assigns.projects, assigns.hours))
+      |> assign(:clickable?, is_binary(assigns.on_apply))
 
     ~H"""
-    <article class={["bt-calendar-template-card", @class]} {@rest}>
-      <div class="bt-calendar-template-card__row">
-        <span class="bt-calendar-template-card__key">{@key}</span>
-        <div class="min-w-0 flex-1">
-          <p class="bt-calendar-template-card__name">{@name}</p>
-          <div :if={@project_rows != []} class="bt-calendar-day__projects">
-            <div :for={row <- @project_rows} class="bt-calendar-day__project">
-              <span class="bt-calendar-day__project-name">{row.name}</span>
-              <span :if={row.hours != nil} class="bt-calendar-day__project-hours">{row.hours}h</span>
-            </div>
+    <%= if @clickable? do %>
+      <button
+        type="button"
+        class={[
+          "bt-calendar-template-card bt-calendar-template-card--clickable",
+          @class
+        ]}
+        phx-click={@on_apply}
+        phx-value-key={@key}
+        aria-label={"Apply template #{@name}"}
+        {@rest}
+      >
+        <.calendar_template_card_body
+          key={@key}
+          name={@name}
+          project_rows={@project_rows}
+        />
+      </button>
+    <% else %>
+      <article class={["bt-calendar-template-card", @class]} {@rest}>
+        <.calendar_template_card_body
+          key={@key}
+          name={@name}
+          project_rows={@project_rows}
+        />
+      </article>
+    <% end %>
+    """
+  end
+
+  attr :key, :string, required: true
+  attr :name, :string, required: true
+  attr :project_rows, :list, required: true
+
+  defp calendar_template_card_body(assigns) do
+    ~H"""
+    <div class="bt-calendar-template-card__row">
+      <span class="bt-calendar-template-card__key">{@key}</span>
+      <div class="min-w-0 flex-1">
+        <p class="bt-calendar-template-card__name">{@name}</p>
+        <div :if={@project_rows != []} class="bt-calendar-day__projects">
+          <div :for={row <- @project_rows} class="bt-calendar-day__project">
+            <span class="bt-calendar-day__project-name">{row.name}</span>
+            <span :if={row.hours != nil} class="bt-calendar-day__project-hours">{row.hours}h</span>
           </div>
         </div>
       </div>
-    </article>
+    </div>
     """
   end
 
@@ -130,19 +172,26 @@ defmodule Bds.Components.Calendar do
   slot :left
   slot :center
   slot :right
+  slot :far_right
 
   def bt_calendar_toolbar(assigns) do
     ~H"""
     <div class={["bt-calendar-toolbar", @class]} {@rest}>
       <div class="bt-calendar-toolbar__row">
-        <div class="flex items-center gap-1 min-w-0">{render_slot(@left)}</div>
-        <div class="flex items-center justify-center gap-1.5 min-w-0">
+        <div class="bt-calendar-toolbar__start">{render_slot(@left)}</div>
+        <div class="bt-calendar-toolbar__center">
           {render_slot(@center)}
           <span :if={@month_label && render_slot(@center) == []} class="bt-calendar-toolbar__month">
             {@month_label}
           </span>
         </div>
-        <div class="flex items-center justify-end gap-1 min-w-0">{render_slot(@right)}</div>
+        <div class="bt-calendar-toolbar__end">{render_slot(@right)}</div>
+        <div
+          :if={render_slot(@far_right) != []}
+          class="bt-calendar-toolbar__far-end"
+        >
+          {render_slot(@far_right)}
+        </div>
       </div>
     </div>
     """
@@ -201,6 +250,7 @@ defmodule Bds.Components.Calendar do
   end
 
   attr :weekend, :boolean, default: false
+  attr :selected, :boolean, default: false
   attr :class, :any, default: nil
   attr :rest, :global
   slot :inner_block, required: true
@@ -211,6 +261,7 @@ defmodule Bds.Components.Calendar do
       class={[
         "bt-calendar-month-grid__cell",
         @weekend && "bt-calendar-month-grid__cell--weekend",
+        @selected && "bt-calendar-month-grid__cell--selected",
         @class
       ]}
       {@rest}
@@ -225,55 +276,116 @@ defmodule Bds.Components.Calendar do
   attr :selected, :boolean, default: false
   attr :today, :boolean, default: false
   attr :outside, :boolean, default: false
+  attr :selectable, :boolean, default: false
+  attr :date, :any, default: nil
+  attr :on_select, :string, default: nil
+  attr :on_open, :string, default: nil
   attr :projects, :list, default: []
+  attr :grid_row, :integer, default: nil
+  attr :grid_col, :integer, default: nil
   attr :type, :string, default: "button"
   attr :class, :any, default: nil
   attr :rest, :global
 
   def bt_calendar_day(assigns) do
-    if assigns.outside do
-      ~H"""
-      <div
-        class={[
-          "bt-calendar-day bt-calendar-day--outside bt-calendar-day--no-laborable w-full h-full",
-          @class
-        ]}
-        {@rest}
-      />
-      """
-    else
-      ~H"""
-      <button
-        type={@type}
-        class={[
-          "bt-calendar-day w-full h-full text-left",
-          status_class(@status),
-          @today && "bt-calendar-day--today",
-          @selected && "bt-calendar-day--selected",
-          @class
-        ]}
-        {@rest}
-      >
-        <span class="bt-calendar-day__number">{@day}</span>
-        <div class="bt-calendar-day__content">
-          <%= if @projects != [] do %>
-            <div class="bt-calendar-day__projects">
-              <%= for project <- Enum.take(@projects, 2) do %>
-                <div class="bt-calendar-day__project">
-                  <span class="bt-calendar-day__project-name">{project_name(project)}</span>
-                  <span class="bt-calendar-day__project-hours">{project_hours(project)}h</span>
-                </div>
-              <% end %>
-              <%= if length(@projects) > 2 do %>
-                <span class="bt-calendar-day__more">+{length(@projects) - 2} more</span>
-              <% end %>
-            </div>
-          <% end %>
+    cond do
+      assigns.outside ->
+        ~H"""
+        <div
+          class={[
+            "bt-calendar-day bt-calendar-day--outside bt-calendar-day--no-laborable w-full h-full",
+            @class
+          ]}
+          {@rest}
+        />
+        """
+
+      assigns.selectable ->
+        date_iso = calendar_day_iso(assigns.date, assigns.day)
+
+        assigns =
+          assigns
+          |> assign(:date_iso, date_iso)
+          |> assign(:day_body, calendar_day_body(assigns))
+
+        ~H"""
+        <div
+          class={[
+            "bt-calendar-day bt-calendar-day--selectable w-full h-full text-left",
+            status_class(@status),
+            @today && "bt-calendar-day--today",
+            @selected && "bt-calendar-day--selected",
+            @class
+          ]}
+          data-calendar-day={@date_iso}
+          data-calendar-selectable="true"
+          data-calendar-grid-row={@grid_row}
+          data-calendar-grid-col={@grid_col}
+          tabindex="0"
+          phx-click={@on_select}
+          phx-value-date={@date_iso}
+          {@rest}
+        >
+          {@day_body}
+          <button
+            :if={@on_open}
+            type="button"
+            class="bt-calendar-day__open bt-button bt-button--ghost bt-button--sm"
+            data-calendar-day-open
+            phx-click={@on_open}
+            phx-value-date={@date_iso}
+            aria-label="Open day"
+          >
+            Open
+          </button>
         </div>
-      </button>
-      """
+        """
+
+      true ->
+        assigns = assign(assigns, :day_body, calendar_day_body(assigns))
+
+        ~H"""
+        <button
+          type={@type}
+          class={[
+            "bt-calendar-day w-full h-full text-left",
+            status_class(@status),
+            @today && "bt-calendar-day--today",
+            @selected && "bt-calendar-day--selected",
+            @class
+          ]}
+          {@rest}
+        >
+          {@day_body}
+        </button>
+        """
     end
   end
+
+  defp calendar_day_body(assigns) do
+    ~H"""
+    <span class="bt-calendar-day__number">{@day}</span>
+    <div class="bt-calendar-day__content">
+      <%= if @projects != [] do %>
+        <div class="bt-calendar-day__projects">
+          <%= for project <- Enum.take(@projects, 2) do %>
+            <div class="bt-calendar-day__project">
+              <span class="bt-calendar-day__project-name">{project_name(project)}</span>
+              <span class="bt-calendar-day__project-hours">{project_hours(project)}h</span>
+            </div>
+          <% end %>
+          <%= if length(@projects) > 2 do %>
+            <span class="bt-calendar-day__more">+{length(@projects) - 2} more</span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    """
+  end
+
+  defp calendar_day_iso(%Date{} = date, _day), do: Date.to_iso8601(date)
+  defp calendar_day_iso(iso, _day) when is_binary(iso), do: iso
+  defp calendar_day_iso(_, day), do: to_string(day)
 
   attr :items, :list, required: true
   attr :id, :string, default: nil
@@ -366,6 +478,17 @@ defmodule Bds.Components.Calendar do
   attr :total_hours, :float, default: 0.0
   attr :goal_hours, :float, default: 8.0
   attr :read_only, :boolean, default: false
+  attr :entry_form, :any, default: nil
+  attr :editing_entry_id, :string, default: nil
+  attr :input_types, :list, default: @entry_input_types
+  slot :entry_project
+  attr :on_add_entry, :string, default: nil
+  attr :on_edit_entry, :string, default: nil
+  attr :on_delete_entry, :string, default: nil
+  attr :on_cancel_entry, :string, default: nil
+  attr :on_save_entry, :string, default: nil
+  attr :on_validate_entry, :string, default: nil
+  attr :on_save, :string, default: nil
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -383,6 +506,8 @@ defmodule Bds.Components.Calendar do
       |> assign(:hours_to_goal, hours_to_goal)
       |> assign(:status_label, assigns.status_label || status_label(assigns.status))
       |> assign(:progress_summary, progress_summary(goal_reached, hours_to_goal))
+      |> assign(:editing?, !is_nil(assigns.entry_form))
+      |> assign(:entry_form_id, "#{assigns.id}-entry-form")
 
     ~H"""
     <div
@@ -434,16 +559,76 @@ defmodule Bds.Components.Calendar do
                 <h2 class="bt-calendar-day-modal__title" id={"#{@id}-title"}>Logged hours</h2>
               </div>
               <button
-                :if={!@read_only}
+                :if={!@read_only && !@editing? && @on_add_entry}
                 type="button"
                 class="bt-calendar-day-modal__add bt-button bt-button--secondary bt-button--sm"
+                phx-click={@on_add_entry}
               >
                 <span class="bt-icon" aria-hidden="true">+</span> New
               </button>
             </div>
 
             <div class="bt-calendar-day-modal__entries">
-              <%= if @entries == [] do %>
+              <.form
+                :if={@entry_form && @on_save_entry}
+                for={@entry_form}
+                id={@entry_form_id}
+                class="bt-calendar-day-modal__editor"
+                phx-submit={@on_save_entry}
+                phx-change={@on_validate_entry}
+              >
+                <p class="bt-calendar-day-modal__editor-title">
+                  {if @editing_entry_id == "new", do: "Add time entry", else: "Edit time entry"}
+                </p>
+                <div class="bt-calendar-day-modal__editor-fields">
+                  <div
+                    :if={render_slot(@entry_project) != []}
+                    class="bt-calendar-day-modal__editor-project"
+                  >
+                    {render_slot(@entry_project)}
+                  </div>
+                  <.bt_input
+                    :if={render_slot(@entry_project) == []}
+                    field={@entry_form[:project_name]}
+                    type="text"
+                    label="Project"
+                    placeholder="Search or type a project"
+                    autocomplete="off"
+                    required
+                  />
+                  <.bt_input
+                    field={@entry_form[:hours]}
+                    type="number"
+                    label="Hours"
+                    step="0.25"
+                    min="0.25"
+                    max="24"
+                    required
+                  />
+                  <.bt_input
+                    field={@entry_form[:input_type]}
+                    type="select"
+                    label="Type"
+                    options={@input_types}
+                    prompt={false}
+                  />
+                </div>
+                <div class="bt-calendar-day-modal__editor-actions">
+                  <button
+                    :if={@on_cancel_entry}
+                    type="button"
+                    class="bt-button bt-button--ghost bt-button--sm"
+                    phx-click={@on_cancel_entry}
+                  >
+                    Cancel
+                  </button>
+                  <button type="submit" class="bt-button bt-button--primary bt-button--sm">
+                    {if @editing_entry_id == "new", do: "Add entry", else: "Update entry"}
+                  </button>
+                </div>
+              </.form>
+
+              <%= if @entries == [] && !@editing? do %>
                 <div class="bt-calendar-day-modal__empty">
                   <p class="bt-calendar-day-modal__empty-title">No entries yet</p>
                   <p class="bt-calendar-day-modal__empty-copy">
@@ -455,7 +640,11 @@ defmodule Bds.Components.Calendar do
                   </p>
                 </div>
               <% else %>
-                <article :for={entry <- @entries} class="bt-calendar-day-modal__entry">
+                <article
+                  :for={entry <- @entries}
+                  :if={entry_id(entry) != @editing_entry_id}
+                  class="bt-calendar-day-modal__entry"
+                >
                   <div class="bt-calendar-day-modal__entry-main">
                     <p class="bt-calendar-day-modal__entry-project">{entry[:project_name] || entry["project_name"]}</p>
                     <p class="bt-calendar-day-modal__entry-type">{entry[:input_type] || entry["input_type"] || "Billable"}</p>
@@ -466,6 +655,28 @@ defmodule Bds.Components.Calendar do
                       {entry[:status_label] || entry["status_label"]}
                     </span>
                   </div>
+                  <div :if={!@read_only && @on_edit_entry} class="bt-calendar-day-modal__entry-actions">
+                    <button
+                      type="button"
+                      class="bt-button bt-button--ghost bt-button--sm"
+                      phx-click={@on_edit_entry}
+                      phx-value-id={entry_id(entry)}
+                      aria-label="Edit entry"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      :if={@on_delete_entry}
+                      type="button"
+                      class="bt-button bt-button--ghost bt-button--sm"
+                      phx-click={@on_delete_entry}
+                      phx-value-id={entry_id(entry)}
+                      data-confirm="Remove this time entry?"
+                      aria-label="Delete entry"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </article>
               <% end %>
             </div>
@@ -474,7 +685,12 @@ defmodule Bds.Components.Calendar do
               <button type="button" class="bt-button bt-button--ghost bt-button--sm" phx-click={@on_close}>
                 Close
               </button>
-              <button :if={!@read_only} type="button" class="bt-button bt-button--primary bt-button--sm">
+              <button
+                :if={!@read_only && @on_save && !@editing?}
+                type="button"
+                class="bt-button bt-button--primary bt-button--sm"
+                phx-click={@on_save}
+              >
                 Save draft
               </button>
             </div>
@@ -498,4 +714,8 @@ defmodule Bds.Components.Calendar do
 
   defp progress_summary(true, _hours_to_goal), do: "Daily goal reached"
   defp progress_summary(false, hours), do: "#{hours}h to reach 8h"
+
+  defp entry_id(%{id: id}), do: id
+  defp entry_id(%{"id" => id}), do: id
+  defp entry_id(_), do: nil
 end

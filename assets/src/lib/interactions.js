@@ -188,6 +188,8 @@ function initBtInteractions(options = {}) {
   return () => controller.abort();
 }
 
+export { CalendarDaySelection } from './calendar-day-selection.js';
+
 export {
   DEFAULT_THEME_STORAGE_KEY,
   applyStoredTheme,

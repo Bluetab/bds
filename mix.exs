@@ -79,15 +79,17 @@ defmodule Bds.MixProject do
       """)
     end
 
+    create_directory(priv)
+
     for {src, dest} <- [
           {"bds.css", "bds.css"},
+          {"bds.js", "bds.js"},
           {"interactions.js", "interactions.js"}
         ] do
       from = Path.join(dist, src)
       to = Path.join(priv, dest)
 
       if File.exists?(from) do
-        create_directory(priv)
         File.cp!(from, to)
         Mix.shell().info([:green, "Synced ", :reset, "#{src} → priv/static/#{dest}"])
       else
@@ -97,6 +99,11 @@ defmodule Bds.MixProject do
             mix assets.build
         """)
       end
+    end
+
+  # Remove stale Vite chunks from an older multi-entry build.
+    for stale <- File.ls!(priv), String.match?(stale, ~r/^interactions-.+\.js$/) do
+      File.rm!(Path.join(priv, stale))
     end
 
     if File.dir?(fonts_src) do

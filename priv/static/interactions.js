@@ -1,5 +1,55 @@
+//#region src/lib/calendar-day-selection.js
+var e = {
+	mounted() {
+		this.dragging = !1, this.dragMoved = !1, this.anchorDate = null, this.lastFocusDate = null, this.onPointerDown = (e) => {
+			if (e.button !== 0 || e.shiftKey || e.metaKey || e.ctrlKey || e.target.closest("[data-calendar-day-open]")) return;
+			let r = t(e.target);
+			!r || !n(r) || (this.anchorDate = r.dataset.calendarDay, this.lastFocusDate = this.anchorDate, this.dragging = !0, this.dragMoved = !1, this.el.classList.add("bt-calendar-month-grid--dragging"), this.pushBox(this.anchorDate, this.anchorDate));
+		}, this.onPointerOver = (e) => {
+			if (!this.dragging) return;
+			let r = t(e.target);
+			if (!r || !n(r)) return;
+			let i = r.dataset.calendarDay;
+			i !== this.lastFocusDate && (this.lastFocusDate = i, this.dragMoved = !0, this.pushBox(this.anchorDate, i));
+		}, this.onPointerUp = () => {
+			this.dragging && (this.dragging = !1, this.anchorDate = null, this.lastFocusDate = null, this.el.classList.remove("bt-calendar-month-grid--dragging"), window.setTimeout(() => {
+				this.dragMoved = !1;
+			}, 0));
+		}, this.onClickCapture = (e) => {
+			if (e.target.closest("[data-calendar-day-open]")) return;
+			let r = t(e.target);
+			if (!(!r || !n(r))) {
+				if (this.dragMoved) {
+					e.preventDefault(), e.stopPropagation();
+					return;
+				}
+				!e.shiftKey && !e.metaKey && !e.ctrlKey || (e.preventDefault(), e.stopPropagation(), e.stopImmediatePropagation(), this.pushEvent("day_select", {
+					date: r.dataset.calendarDay,
+					shift: e.shiftKey,
+					meta: e.metaKey || e.ctrlKey
+				}));
+			}
+		}, this.el.addEventListener("pointerdown", this.onPointerDown), this.el.addEventListener("pointerover", this.onPointerOver), this.el.addEventListener("click", this.onClickCapture, !0), window.addEventListener("pointerup", this.onPointerUp);
+	},
+	destroyed() {
+		this.el.removeEventListener("pointerdown", this.onPointerDown), this.el.removeEventListener("pointerover", this.onPointerOver), this.el.removeEventListener("click", this.onClickCapture, !0), window.removeEventListener("pointerup", this.onPointerUp);
+	},
+	pushBox(e, t) {
+		this.pushEvent("day_select_box", {
+			anchor: e,
+			focus: t
+		});
+	}
+};
+function t(e) {
+	return e.closest("[data-calendar-day]");
+}
+function n(e) {
+	return e.dataset.calendarSelectable === "true";
+}
+//#endregion
 //#region src/lib/interactions.js
-var e = "bt-theme", t = (e, t = document) => [...t.querySelectorAll(e)], n = (e = document) => e.querySelector("[data-theme-icon]"), r = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), i = (e) => {
+var r = "bt-theme", i = (e, t = document) => [...t.querySelectorAll(e)], a = (e = document) => e.querySelector("[data-theme-icon]"), o = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), s = (e) => {
 	if (e) {
 		if (typeof HTMLDialogElement < "u" && e instanceof HTMLDialogElement) {
 			!e.open && typeof e.showModal == "function" && e.showModal();
@@ -7,7 +57,7 @@ var e = "bt-theme", t = (e, t = document) => [...t.querySelectorAll(e)], n = (e 
 		}
 		e.setAttribute("open", "");
 	}
-}, a = (e) => {
+}, c = (e) => {
 	if (e) {
 		if (typeof HTMLDialogElement < "u" && e instanceof HTMLDialogElement) {
 			e.open && typeof e.close == "function" && e.close();
@@ -15,53 +65,53 @@ var e = "bt-theme", t = (e, t = document) => [...t.querySelectorAll(e)], n = (e 
 		}
 		e.removeAttribute("open");
 	}
-}, o = (e = document, n) => {
-	t("[data-open=\"true\"].bt-menu", e).forEach((e) => {
-		e !== n && (e.dataset.open = "false");
+}, l = (e = document, t) => {
+	i("[data-open=\"true\"].bt-menu", e).forEach((e) => {
+		e !== t && (e.dataset.open = "false");
 	});
-}, s = (t, r = {}) => {
-	let { root: i = document, storageKey: a = e, persist: o = !0 } = r;
-	i.documentElement.dataset.theme = t;
-	let s = n(i);
-	s && (s.textContent = t === "dark" ? "☀" : "◐"), o && localStorage.setItem(a, t);
-}, c = (e = {}) => {
+}, u = (e, t = {}) => {
+	let { root: n = document, storageKey: i = r, persist: o = !0 } = t;
+	n.documentElement.dataset.theme = e;
+	let s = a(n);
+	s && (s.textContent = e === "dark" ? "☀" : "◐"), o && localStorage.setItem(i, e);
+}, d = (e = {}) => {
 	let t = (e.root || document).documentElement.dataset.theme === "dark" ? "light" : "dark";
-	return s(t, e), t;
-}, l = (t = {}) => {
-	let { root: n = document, storageKey: r = e, fallbackTheme: i = "light" } = t, a = localStorage.getItem(r) || i;
-	return s(a, {
-		...t,
-		root: n,
+	return u(t, e), t;
+}, f = (e = {}) => {
+	let { root: t = document, storageKey: n = r, fallbackTheme: i = "light" } = e, a = localStorage.getItem(n) || i;
+	return u(a, {
+		...e,
+		root: t,
 		persist: !1
 	}), a;
 };
-function u(n = {}) {
-	let { root: s = document, storageKey: u = e, autoApplyStoredTheme: d = !0 } = n, f = new AbortController(), { signal: p } = f;
-	return d && l({
-		root: s,
-		storageKey: u,
-		fallbackTheme: s.documentElement.dataset.theme || "light"
-	}), s.addEventListener("click", (e) => {
+function p(e = {}) {
+	let { root: t = document, storageKey: n = r, autoApplyStoredTheme: a = !0 } = e, u = new AbortController(), { signal: p } = u;
+	return a && f({
+		root: t,
+		storageKey: n,
+		fallbackTheme: t.documentElement.dataset.theme || "light"
+	}), t.addEventListener("click", (e) => {
 		if (e.target.closest("[data-theme-toggle]")) {
-			c({
-				root: s,
-				storageKey: u
+			d({
+				root: t,
+				storageKey: n
 			});
 			return;
 		}
-		let n = e.target.closest("[data-dialog-open]");
-		if (n) {
-			i(r(n, n.dataset.dialogOpen, s));
+		let r = e.target.closest("[data-dialog-open]");
+		if (r) {
+			s(o(r, r.dataset.dialogOpen, t));
 			return;
 		}
-		let l = e.target.closest("[data-dialog-close]");
-		if (l) {
-			a(l.closest(".bt-dialog"));
+		let a = e.target.closest("[data-dialog-close]");
+		if (a) {
+			c(a.closest(".bt-dialog"));
 			return;
 		}
-		let d = e.target.closest("[data-overlay-open]");
-		if (d) {
-			r(d, d.dataset.overlayOpen, s)?.setAttribute("open", "");
+		let u = e.target.closest("[data-overlay-open]");
+		if (u) {
+			o(u, u.dataset.overlayOpen, t)?.setAttribute("open", "");
 			return;
 		}
 		let f = e.target.closest("[data-overlay-close]");
@@ -71,11 +121,11 @@ function u(n = {}) {
 		}
 		let p = e.target.closest("[data-menu-toggle]");
 		if (p) {
-			let e = r(p, p.dataset.menuToggle, s), t = e?.dataset.open !== "true";
-			o(s, e), e && (e.dataset.open = String(t));
+			let e = o(p, p.dataset.menuToggle, t), n = e?.dataset.open !== "true";
+			l(t, e), e && (e.dataset.open = String(n));
 			return;
 		}
-		e.target.closest(".bt-menu-wrap") || o(s);
+		e.target.closest(".bt-menu-wrap") || l(t);
 		let m = e.target.closest("[data-expansion-toggle]");
 		if (m) {
 			let e = m.closest("[data-expansion]");
@@ -84,7 +134,7 @@ function u(n = {}) {
 		}
 		let h = e.target.closest("[data-snackbar-open]");
 		if (h) {
-			let e = r(h, h.dataset.snackbarOpen, s);
+			let e = o(h, h.dataset.snackbarOpen, t);
 			e && (e.dataset.open = "true", setTimeout(() => {
 				e.dataset.open = "false";
 			}, 3200));
@@ -97,24 +147,24 @@ function u(n = {}) {
 			return;
 		}
 		if (e.target.closest("[data-toggle-sidebar]")) {
-			s.body.classList.toggle("bt-sidebar-open");
+			t.body.classList.toggle("bt-sidebar-open");
 			return;
 		}
-		if (s.body.classList.contains("bt-sidebar-open") && e.target.closest(".bt-sidebar a, .bt-sidebar .bt-nav-link")) {
-			s.body.classList.remove("bt-sidebar-open");
+		if (t.body.classList.contains("bt-sidebar-open") && e.target.closest(".bt-sidebar a, .bt-sidebar .bt-nav-link")) {
+			t.body.classList.remove("bt-sidebar-open");
 			return;
 		}
 		let _ = e.target.closest("[data-tab]");
 		if (_) {
 			let e = _.closest("[data-tabs]");
 			if (!e) return;
-			t("[role=\"tab\"]", e).forEach((e) => {
+			i("[role=\"tab\"]", e).forEach((e) => {
 				e.setAttribute("aria-selected", String(e === _));
-			}), t(".bt-tab-panel", e).forEach((e) => {
+			}), i(".bt-tab-panel", e).forEach((e) => {
 				e.setAttribute("aria-hidden", String(e.id !== _.dataset.tab));
 			});
 		}
-	}, { signal: p }), () => f.abort();
+	}, { signal: p }), () => u.abort();
 }
 //#endregion
-export { e as DEFAULT_THEME_STORAGE_KEY, l as applyStoredTheme, u as initBtInteractions, s as setTheme, c as toggleTheme };
+export { e as CalendarDaySelection, r as DEFAULT_THEME_STORAGE_KEY, f as applyStoredTheme, p as initBtInteractions, u as setTheme, d as toggleTheme };

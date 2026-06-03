@@ -23,8 +23,13 @@ defmodule Bds.Components.ProjectPicker do
   attr :title, :string, default: "Project"
   attr :description, :string, default: nil
   attr :label, :string, default: nil
-  attr :placeholder, :string, default: "Search by name or doc number…"
+  attr :placeholder, :string, default: "Search projects…"
   attr :selected_project, :any, default: nil
+  attr :bare, :boolean, default: false, doc: "Form field layout without card chrome (e.g. day modal editor)"
+
+  attr :form, :string,
+    default: nil,
+    doc: "Parent form id when the picker is rendered inside a LiveView form (associates hidden input)"
 
   @min_query_length 2
 
@@ -49,13 +54,14 @@ defmodule Bds.Components.ProjectPicker do
       |> assign_new(:search_name, fn -> "project_search" end)
       |> assign_new(:title, fn -> "Project" end)
       |> assign_new(:description, fn -> nil end)
-      |> assign_new(:placeholder, fn -> "Search by name or doc number…" end)
+      |> assign_new(:placeholder, fn -> "Search projects…" end)
       |> assign_new(:include_inactive_label, fn -> "Include inactive projects" end)
       |> assign_new(:empty_label, fn -> "No projects match your search." end)
       |> assign_new(:searching_label, fn -> "Searching…" end)
       |> assign_new(:selected_label, fn -> "Selected" end)
       |> assign_new(:clear_event, fn -> "project_picker_clear" end)
       |> assign_new(:class, fn -> nil end)
+      |> assign_new(:form, fn -> nil end)
       |> sync_from_value(assigns)
 
     {:ok, socket}
@@ -109,7 +115,7 @@ defmodule Bds.Components.ProjectPicker do
       socket
       |> assign(:selected_project, selected)
       |> assign(:value, if(selected, do: project_id(selected), else: nil))
-      |> assign(:search_query, project_display(selected))
+      |> assign(:search_query, "")
       |> assign(:show_panel, false)
 
     notify_parent(socket, selected)
@@ -146,87 +152,119 @@ defmodule Bds.Components.ProjectPicker do
 
   @impl true
   def render(assigns) do
+    bare? = Map.get(assigns, :bare, false)
+
+    assigns =
+      assigns
+      |> assign(:bare, bare?)
+      |> assign(:search_input_id, "#{assigns.id}-search-input")
+      |> assign(:field_label, if(bare?, do: assigns[:label], else: nil))
+      |> assign(:combobox_label, if(bare?, do: nil, else: assigns[:label]))
+
     ~H"""
-    <div class={["bt-project-picker", @class]} id={@id}>
-      <.bt_card variant="filled">
-        <div class="bt-project-picker__header">
-          <div>
-            <h3 class="bt-project-picker__title">{@title}</h3>
-            <p :if={@description} class="bt-project-picker__description">{@description}</p>
-          </div>
-          <div :if={@selected_project} class="bt-project-picker__actions">
-            <.bt_button variant="ghost" type="button" phx-click="project_picker_clear" phx-target={@myself}>
-              {assigns[:clear_button_label] || "Clear"}
-            </.bt_button>
-          </div>
+    <div
+      class={["bt-project-picker", @bare && "bt-project-picker--bare", @class]}
+      id={@id}
+    >
+      <%= if @bare do %>
+        <div class="bt-field">
+          <label :if={@field_label && is_nil(@selected_project)} for={@search_input_id}>
+            {@field_label}
+          </label>
+          <span :if={@field_label && @selected_project} class="bt-label">{@field_label}</span>
+          <.project_picker_body {assigns} />
         </div>
+      <% else %>
+        <.bt_card variant="filled">
+          <div :if={@title != "" or @description} class="bt-project-picker__header">
+            <div>
+              <h3 :if={@title != ""} class="bt-project-picker__title">{@title}</h3>
+              <p :if={@description} class="bt-project-picker__description">{@description}</p>
+            </div>
+          </div>
 
-        <div class="bt-project-picker__body">
-          <input type="hidden" name={@field_name} value={@value || ""} />
+          <.project_picker_body {assigns} />
+        </.bt_card>
+      <% end %>
+    </div>
+    """
+  end
 
-          <.bt_combobox
-            input_id={"#{@id}-search-input"}
-            name={@search_name}
-            label={assigns[:label]}
-            value={@search_query}
-            placeholder={@placeholder}
-            open={@show_panel}
-            loading={@loading}
-            show_clear={@selected_project != nil}
-            target={@myself}
-            clear_event="project_picker_clear"
-            phx-change="project_picker_search"
-            phx-debounce="300"
-            phx-focus="project_picker_focus"
-            phx-blur="project_picker_blur"
-            autocomplete="off"
-            errors={Map.get(assigns, :errors, [])}
+  defp project_picker_body(assigns) do
+    assigns = assign_new(assigns, :form, fn -> nil end)
+
+    ~H"""
+    <div class="bt-project-picker__body">
+      <input type="hidden" name={@field_name} value={@value || ""} form={@form} />
+
+      <.bt_combobox
+        :if={is_nil(@selected_project)}
+        input_id={@search_input_id}
+        name={@search_name}
+        label={@combobox_label}
+        value={@search_query}
+        placeholder={@placeholder}
+        open={@show_panel}
+        loading={@loading}
+        target={@myself}
+        phx-change="project_picker_search"
+        phx-debounce="300"
+        phx-focus="project_picker_focus"
+        phx-blur="project_picker_blur"
+        autocomplete="off"
+        errors={Map.get(assigns, :errors, [])}
+      >
+        <:panel_footer :if={@show_panel}>
+          <label class="bt-checkbox">
+            <input
+              type="checkbox"
+              name="include_ended"
+              value="true"
+              checked={@include_ended}
+              phx-click="project_picker_toggle_ended"
+              phx-target={@myself}
+            />
+            <span>{@include_inactive_label}</span>
+          </label>
+        </:panel_footer>
+        <:options>
+          <.bt_combobox_option
+            :for={project <- @projects}
+            selected={selected?(project, @selected_project)}
+            variant={if(project_inactive?(project), do: "warning", else: "default")}
+            phx-click="project_picker_select"
+            phx-target={@myself}
+            phx-value-project_id={project_id(project)}
           >
-              <:panel_footer :if={@show_panel}>
-                <label class="bt-checkbox">
-                  <input
-                    type="checkbox"
-                    name="include_ended"
-                    value="true"
-                    checked={@include_ended}
-                    phx-click="project_picker_toggle_ended"
-                    phx-target={@myself}
-                  />
-                  <span>{@include_inactive_label}</span>
-                </label>
-              </:panel_footer>
-              <:options>
-                <.bt_combobox_option
-                  :for={project <- @projects}
-                  selected={selected?(project, @selected_project)}
-                  variant={if(project_inactive?(project), do: "warning", else: "default")}
-                  phx-click="project_picker_select"
-                  phx-target={@myself}
-                  phx-value-project_id={project_id(project)}
-                >
-                  <span class="bt-combobox__option-title">{project_doc_num(project) || "—"}</span>
-                  <span> — {project_name(project)}</span>
-                  <span :if={project_end_date(project)} class="bt-combobox__option-sub">
-                    {inactive_label(project)}
-                  </span>
-                </.bt_combobox_option>
-              </:options>
-              <:empty>{@empty_label}</:empty>
-              <:loading_content>{@searching_label}</:loading_content>
-          </.bt_combobox>
+            <span class="bt-combobox__option-title">{project_doc_num(project) || "—"}</span>
+            <span> — {project_name(project)}</span>
+            <span :if={project_end_date(project)} class="bt-combobox__option-sub">
+              {inactive_label(project)}
+            </span>
+          </.bt_combobox_option>
+        </:options>
+        <:empty>{@empty_label}</:empty>
+        <:loading_content>{@searching_label}</:loading_content>
+      </.bt_combobox>
 
-          <div :if={@selected_project} class="bt-project-picker__selected">
-            <p class="bt-project-picker__selected-label">{@selected_label}</p>
-            <p style="margin: 0;">
-              <strong>{project_doc_num(@selected_project)}</strong>
-              — {project_name(@selected_project)}
-            </p>
-            <p :if={project_end_date(@selected_project)} class="bt-muted" style="margin: var(--bt-space-1) 0 0;">
-              {inactive_label(@selected_project)}
-            </p>
-          </div>
-        </div>
-      </.bt_card>
+      <div :if={@selected_project} class="bt-project-picker__selected">
+        <p class="bt-project-picker__selected-text">
+          <strong>{project_doc_num(@selected_project) || "—"}</strong>
+          — {project_name(@selected_project)}
+          <span :if={project_end_date(@selected_project)} class="bt-project-picker__selected-meta">
+            {inactive_label(@selected_project)}
+          </span>
+        </p>
+        <button
+          type="button"
+          class="bt-project-picker__clear"
+          aria-label={assigns[:clear_aria_label] || "Clear selection"}
+          phx-click="project_picker_clear"
+          phx-target={@myself}
+        >
+          ×
+        </button>
+      </div>
     </div>
     """
   end
@@ -240,7 +278,7 @@ defmodule Bds.Components.ProjectPicker do
       socket
       |> assign(:value, value)
       |> assign(:selected_project, selected)
-      |> assign(:search_query, project_display(selected))
+      |> assign(:search_query, "")
     end
   end
 
@@ -259,7 +297,7 @@ defmodule Bds.Components.ProjectPicker do
       socket
       |> assign(:selected_project, selected)
       |> assign(:value, if(selected, do: project_id(selected), else: nil))
-      |> assign(:search_query, project_display(selected))
+      |> assign(:search_query, "")
     else
       socket
     end
@@ -307,15 +345,6 @@ defmodule Bds.Components.ProjectPicker do
   defp project_end_date(_), do: nil
 
   defp project_inactive?(project), do: not is_nil(project_end_date(project))
-
-  defp project_display(nil), do: ""
-
-  defp project_display(project) do
-    case project_doc_num(project) do
-      nil -> project_name(project)
-      num -> "#{num} — #{project_name(project)}"
-    end
-  end
 
   defp inactive_label(project) do
     date = project_end_date(project)

@@ -6,12 +6,9 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     lib: {
-      entry: {
-        index: resolve(__dirname, 'src/lib/index.js'),
-        interactions: resolve(__dirname, 'src/lib/interactions.js')
-      },
+      entry: resolve(__dirname, 'src/lib/index.js'),
       formats: ['es'],
-      fileName: (_format, entryName) => (entryName === 'index' ? 'bds.js' : 'interactions.js'),
+      fileName: 'bds',
       cssFileName: 'bds'
     }
   }
