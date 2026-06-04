@@ -88,6 +88,12 @@ function initBtInteractions(options = {}) {
     applyStoredTheme({ root, storageKey, fallbackTheme: root.documentElement.dataset.theme || 'light' });
   }
 
+  root.addEventListener('mousedown', (event) => {
+    if (event.target.closest('.bt-combobox__panel')) {
+      event.preventDefault();
+    }
+  }, { signal });
+
   root.addEventListener('click', (event) => {
     const themeToggle = event.target.closest('[data-theme-toggle]');
     if (themeToggle) {

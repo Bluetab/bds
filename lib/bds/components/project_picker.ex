@@ -3,8 +3,24 @@ defmodule Bds.Components.ProjectPicker do
   Searchable project picker widget for forms.
 
   Renders a card with a combobox search field and a hidden input for the selected
-  project id. Pass a `search_fn` that accepts `(query, include_ended: boolean)` and
-  returns a list of projects with at least `id`, `name`, `doc_num`, and optional `end_date`.
+  project id.
+
+  ## Browse mode (org tree)
+
+  Pass a `tree_fn` that accepts `(query, include_ended: boolean)` and returns:
+
+    * `:display_tree` — list of nodes for `bt_tree/1` (project leaves should set
+      `:selectable` and `:project_id`)
+    * `:expanded_paths` — `MapSet` of branch keys to expand
+    * `:projects` — flat list of project maps for selection lookup
+
+  The panel opens on focus and shows the full hierarchy; search filters the tree.
+
+  ## Flat search mode
+
+  Pass a `search_fn` that accepts `(query, include_ended: boolean)` and returns
+  a list of projects with at least `id`, `name`, `doc_num`, and optional `end_date`.
+  Requires at least two characters before results appear.
 
   On selection, sends `{:project_picker_change, component_id, project_id, project}` to the
   parent LiveView when `project` is the selected struct/map, or `nil` when cleared.
@@ -17,7 +33,8 @@ defmodule Bds.Components.ProjectPicker do
   attr :class, :any, default: nil
   attr :id, :string, required: true
   attr :value, :string, default: nil
-  attr :search_fn, :any, required: true
+  attr :search_fn, :any, default: nil
+  attr :tree_fn, :any, default: nil
   attr :field_name, :string, default: "project_id"
   attr :search_name, :string, default: "project_search"
   attr :title, :string, default: "Project"
@@ -39,15 +56,33 @@ defmodule Bds.Components.ProjectPicker do
      socket
      |> assign(:search_query, "")
      |> assign(:projects, [])
+     |> assign(:display_tree, [])
+     |> assign(:expanded_paths, MapSet.new())
      |> assign(:include_ended, false)
      |> assign(:show_panel, false)
+     |> assign(:show_config, false)
      |> assign(:loading, false)
-     |> assign(:selected_project, nil)}
+     |> assign(:selected_project, nil)
+     |> assign(:blur_pending, false)}
+  end
+
+  @impl true
+  def update(%{close_panel: true}, socket) do
+    socket =
+      if socket.assigns[:blur_pending] do
+        socket
+        |> assign(:show_panel, false)
+        |> assign(:blur_pending, false)
+      else
+        socket
+      end
+
+    {:ok, socket}
   end
 
   @impl true
   def update(assigns, socket) do
-  socket =
+    socket =
       socket
       |> assign(assigns)
       |> assign_new(:field_name, fn -> "project_id" end)
@@ -56,12 +91,19 @@ defmodule Bds.Components.ProjectPicker do
       |> assign_new(:description, fn -> nil end)
       |> assign_new(:placeholder, fn -> gettext("Search projects…") end)
       |> assign_new(:include_inactive_label, fn -> gettext("Include inactive projects") end)
+      |> assign_new(:settings_label, fn -> gettext("Settings") end)
+      |> assign_new(:collapse_all_label, fn -> gettext("Collapse all") end)
+      |> assign_new(:expand_all_label, fn -> gettext("Expand all") end)
       |> assign_new(:empty_label, fn -> gettext("No projects match your search.") end)
+      |> assign_new(:empty_browse_label, fn -> gettext("No projects available.") end)
       |> assign_new(:searching_label, fn -> gettext("Searching…") end)
       |> assign_new(:selected_label, fn -> gettext("Selected") end)
       |> assign_new(:clear_event, fn -> "project_picker_clear" end)
       |> assign_new(:class, fn -> nil end)
       |> assign_new(:form, fn -> nil end)
+      |> assign_new(:show_config, fn -> false end)
+      |> assign_new(:blur_pending, fn -> false end)
+      |> then(fn s -> assign(s, :tree_mode?, tree_mode?(s)) end)
       |> sync_from_value(assigns)
 
     {:ok, socket}
@@ -74,35 +116,41 @@ defmodule Bds.Components.ProjectPicker do
     socket =
       socket
       |> assign(:search_query, query)
-      |> assign(:loading, String.length(query) >= @min_query_length)
-      |> assign(:show_panel, String.length(query) >= @min_query_length)
+      |> then(fn s ->
+        if tree_mode?(s) do
+          load_tree(s, query)
+        else
+          s
+          |> assign(:loading, String.length(query) >= @min_query_length)
+          |> assign(:show_panel, String.length(query) >= @min_query_length)
+          |> load_flat_search(query)
+        end
+      end)
 
-    if String.length(query) >= @min_query_length do
-      projects =
-        socket.assigns.search_fn.(query, include_ended: socket.assigns.include_ended)
-
-      {:noreply,
-       socket
-       |> assign(:projects, projects)
-       |> assign(:loading, false)}
-    else
-      {:noreply, assign(socket, :projects, [])}
-    end
+    {:noreply, socket}
   end
 
   def handle_event("project_picker_toggle_ended", _params, socket) do
     include_ended = not socket.assigns.include_ended
+    query = socket.assigns.search_query
 
-    socket = assign(socket, :include_ended, include_ended)
+    socket =
+      socket
+      |> assign(:include_ended, include_ended)
+      |> keep_panel_open()
+      |> then(fn s ->
+        if tree_mode?(s) do
+          load_tree(s, query)
+        else
+          if String.length(query) >= @min_query_length do
+            load_flat_search(s, query)
+          else
+            s
+          end
+        end
+      end)
 
-    if String.length(socket.assigns.search_query) >= @min_query_length do
-      projects =
-        socket.assigns.search_fn.(socket.assigns.search_query, include_ended: include_ended)
-
-      {:noreply, assign(socket, :projects, projects)}
-    else
-      {:noreply, socket}
-    end
+    {:noreply, socket}
   end
 
   def handle_event("project_picker_select", %{"project_id" => project_id}, socket) do
@@ -117,6 +165,8 @@ defmodule Bds.Components.ProjectPicker do
       |> assign(:value, if(selected, do: project_id(selected), else: nil))
       |> assign(:search_query, "")
       |> assign(:show_panel, false)
+      |> assign(:display_tree, [])
+      |> assign(:projects, [])
 
     notify_parent(socket, selected)
 
@@ -130,6 +180,7 @@ defmodule Bds.Components.ProjectPicker do
       |> assign(:value, nil)
       |> assign(:search_query, "")
       |> assign(:projects, [])
+      |> assign(:display_tree, [])
       |> assign(:show_panel, false)
 
     notify_parent(socket, nil)
@@ -138,16 +189,61 @@ defmodule Bds.Components.ProjectPicker do
   end
 
   def handle_event("project_picker_focus", _params, socket) do
-    show_panel =
-      String.length(socket.assigns.search_query) >= @min_query_length and
-        (socket.assigns.loading or socket.assigns.projects != [])
+    socket =
+      if tree_mode?(socket) do
+        socket
+        |> assign(:show_panel, true)
+        |> assign(:blur_pending, false)
+        |> load_tree(socket.assigns.search_query)
+      else
+        show_panel =
+          String.length(socket.assigns.search_query) >= @min_query_length and
+            (socket.assigns.loading or socket.assigns.projects != [])
 
-    {:noreply, assign(socket, :show_panel, show_panel)}
+        assign(socket, :show_panel, show_panel)
+      end
+
+    {:noreply, socket}
   end
 
   def handle_event("project_picker_blur", _params, socket) do
-    send_update_after(socket.assigns.myself, [show_panel: false], 200)
-    {:noreply, socket}
+    send_update_after(socket.assigns.myself, %{close_panel: true}, 200)
+    {:noreply, assign(socket, :blur_pending, true)}
+  end
+
+  def handle_event("project_picker_toggle_branch", %{"key" => key}, socket) do
+    expanded = socket.assigns.expanded_paths
+
+    expanded =
+      if MapSet.member?(expanded, key),
+        do: MapSet.delete(expanded, key),
+        else: MapSet.put(expanded, key)
+
+    {:noreply,
+     socket
+     |> assign(:expanded_paths, expanded)
+     |> keep_panel_open()}
+  end
+
+  def handle_event("project_picker_toggle_config", _params, socket) do
+    {:noreply,
+     socket
+     |> assign(:show_config, not socket.assigns.show_config)
+     |> keep_panel_open()}
+  end
+
+  def handle_event("project_picker_collapse_all", _params, socket) do
+    {:noreply,
+     socket
+     |> assign(:expanded_paths, MapSet.new())
+     |> keep_panel_open()}
+  end
+
+  def handle_event("project_picker_expand_all", _params, socket) do
+    {:noreply,
+     socket
+     |> assign(:expanded_paths, all_tree_keys(socket.assigns.display_tree))
+     |> keep_panel_open()}
   end
 
   @impl true
@@ -160,10 +256,17 @@ defmodule Bds.Components.ProjectPicker do
       |> assign(:search_input_id, "#{assigns.id}-search-input")
       |> assign(:field_label, if(bare?, do: assigns[:label], else: nil))
       |> assign(:combobox_label, if(bare?, do: nil, else: assigns[:label]))
+      |> assign(:panel_empty?, panel_empty?(assigns))
+      |> assign(:empty_message, empty_message(assigns))
 
     ~H"""
     <div
-      class={["bt-project-picker", @bare && "bt-project-picker--bare", @class]}
+      class={[
+        "bt-project-picker",
+        @bare && "bt-project-picker--bare",
+        @tree_mode? && "bt-project-picker--tree",
+        @class
+      ]}
       id={@id}
     >
       <%= if @bare do %>
@@ -215,19 +318,66 @@ defmodule Bds.Components.ProjectPicker do
         errors={Map.get(assigns, :errors, [])}
       >
         <:panel_footer :if={@show_panel}>
-          <label class="bt-checkbox">
-            <input
-              type="checkbox"
-              name="include_ended"
-              value="true"
-              checked={@include_ended}
-              phx-click="project_picker_toggle_ended"
+          <div class="bt-project-picker__toolbar">
+            <div :if={@tree_mode?} class="bt-project-picker__toolbar-group">
+              <button
+                type="button"
+                class="bt-project-picker__toolbar-btn"
+                phx-click="project_picker_collapse_all"
+                phx-target={@myself}
+              >
+                {@collapse_all_label}
+              </button>
+              <button
+                type="button"
+                class="bt-project-picker__toolbar-btn"
+                phx-click="project_picker_expand_all"
+                phx-target={@myself}
+              >
+                {@expand_all_label}
+              </button>
+            </div>
+            <button
+              type="button"
+              class={[
+                "bt-project-picker__config-toggle",
+                @show_config && "bt-project-picker__config-toggle--active"
+              ]}
+              aria-label={@settings_label}
+              aria-expanded={to_string(@show_config)}
+              phx-click="project_picker_toggle_config"
               phx-target={@myself}
-            />
-            <span>{@include_inactive_label}</span>
-          </label>
+            >
+              <span class="bt-icon" aria-hidden="true">⚙</span>
+            </button>
+          </div>
+          <div :if={@show_config} class="bt-project-picker__config">
+            <label class="bt-checkbox">
+              <input
+                type="checkbox"
+                name="include_ended"
+                value="true"
+                checked={@include_ended}
+                phx-click="project_picker_toggle_ended"
+                phx-target={@myself}
+              />
+              <span>{@include_inactive_label}</span>
+            </label>
+          </div>
         </:panel_footer>
-        <:options>
+        <:options :if={@tree_mode? and @display_tree != []}>
+          <.bt_tree
+            id={"#{@id}-tree"}
+            nodes={@display_tree}
+            expanded={@expanded_paths}
+            toggle_event="project_picker_toggle_branch"
+            toggle_target={@myself}
+            select_event="project_picker_select"
+            select_target={@myself}
+            class="bt-project-picker__tree"
+          />
+        </:options>
+        <:options :if={not @tree_mode?}>
           <.bt_combobox_option
             :for={project <- @projects}
             selected={selected?(project, @selected_project)}
@@ -243,7 +393,7 @@ defmodule Bds.Components.ProjectPicker do
             </span>
           </.bt_combobox_option>
         </:options>
-        <:empty>{@empty_label}</:empty>
+        <:empty>{@empty_message}</:empty>
         <:loading_content>{@searching_label}</:loading_content>
       </.bt_combobox>
 
@@ -267,6 +417,69 @@ defmodule Bds.Components.ProjectPicker do
       </div>
     </div>
     """
+  end
+
+  defp load_tree(socket, query) do
+    %{display_tree: display_tree, expanded_paths: expanded_paths, projects: projects} =
+      socket.assigns.tree_fn.(query, include_ended: socket.assigns.include_ended)
+
+    socket
+    |> assign(:display_tree, display_tree)
+    |> assign(:expanded_paths, expanded_paths)
+    |> assign(:projects, projects)
+    |> assign(:loading, false)
+    |> assign(:show_panel, true)
+  end
+
+  defp load_flat_search(socket, query) do
+    cond do
+      not is_function(socket.assigns[:search_fn]) ->
+        assign(socket, :projects, [])
+
+      String.length(query) >= @min_query_length ->
+        projects =
+          socket.assigns.search_fn.(query, include_ended: socket.assigns.include_ended)
+
+        socket
+        |> assign(:projects, projects)
+        |> assign(:loading, false)
+
+      true ->
+        assign(socket, :projects, [])
+    end
+  end
+
+  defp keep_panel_open(socket) do
+    socket
+    |> assign(:blur_pending, false)
+    |> assign(:show_panel, true)
+  end
+
+  defp tree_mode?(socket), do: is_function(socket.assigns[:tree_fn])
+
+  defp all_tree_keys(nodes) when is_list(nodes) do
+    Enum.reduce(nodes, MapSet.new(), fn node, acc ->
+      children = Map.get(node, :children, [])
+
+      acc = if children != [], do: MapSet.put(acc, node.key), else: acc
+
+      MapSet.union(acc, all_tree_keys(children))
+    end)
+  end
+
+  defp panel_empty?(assigns) do
+    cond do
+      assigns.tree_mode? -> assigns.display_tree == []
+      true -> assigns.projects == []
+    end
+  end
+
+  defp empty_message(assigns) do
+    if assigns.tree_mode? and String.trim(assigns.search_query || "") == "" do
+      assigns.empty_browse_label
+    else
+      assigns.empty_label
+    end
   end
 
   defp sync_from_value(socket, %{value: value} = assigns) when is_binary(value) and value != "" do

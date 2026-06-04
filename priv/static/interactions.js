@@ -3,8 +3,8 @@ var e = {
 	mounted() {
 		this.dragging = !1, this.dragMoved = !1, this.anchorDate = null, this.lastFocusDate = null, this.onPointerDown = (e) => {
 			if (e.button !== 0 || e.shiftKey || e.metaKey || e.ctrlKey || e.target.closest("[data-calendar-day-open]")) return;
-			let r = t(e.target);
-			!r || !n(r) || (this.anchorDate = r.dataset.calendarDay, this.lastFocusDate = this.anchorDate, this.dragging = !0, this.dragMoved = !1, this.el.classList.add("bt-calendar-month-grid--dragging"), this.pushBox(this.anchorDate, this.anchorDate));
+			let i = t(e.target);
+			!i || !n(i) || r(i) || (this.anchorDate = i.dataset.calendarDay, this.lastFocusDate = this.anchorDate, this.dragging = !0, this.dragMoved = !1, this.el.classList.add("bt-calendar-month-grid--dragging"), this.pushBox(this.anchorDate, this.anchorDate));
 		}, this.onPointerOver = (e) => {
 			if (!this.dragging) return;
 			let r = t(e.target);
@@ -47,9 +47,12 @@ function t(e) {
 function n(e) {
 	return e.dataset.calendarSelectable === "true";
 }
+function r(e) {
+	return e.dataset.templateDraggable === "true";
+}
 //#endregion
 //#region src/lib/interactions.js
-var r = "bt-theme", i = (e, t = document) => [...t.querySelectorAll(e)], a = (e = document) => e.querySelector("[data-theme-icon]"), o = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), s = (e) => {
+var i = "bt-theme", a = (e, t = document) => [...t.querySelectorAll(e)], o = (e = document) => e.querySelector("[data-theme-icon]"), s = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), c = (e) => {
 	if (e) {
 		if (typeof HTMLDialogElement < "u" && e instanceof HTMLDialogElement) {
 			!e.open && typeof e.showModal == "function" && e.showModal();
@@ -57,7 +60,7 @@ var r = "bt-theme", i = (e, t = document) => [...t.querySelectorAll(e)], a = (e 
 		}
 		e.setAttribute("open", "");
 	}
-}, c = (e) => {
+}, l = (e) => {
 	if (e) {
 		if (typeof HTMLDialogElement < "u" && e instanceof HTMLDialogElement) {
 			e.open && typeof e.close == "function" && e.close();
@@ -65,35 +68,37 @@ var r = "bt-theme", i = (e, t = document) => [...t.querySelectorAll(e)], a = (e 
 		}
 		e.removeAttribute("open");
 	}
-}, l = (e = document, t) => {
-	i("[data-open=\"true\"].bt-menu", e).forEach((e) => {
+}, u = (e = document, t) => {
+	a("[data-open=\"true\"].bt-menu", e).forEach((e) => {
 		e !== t && (e.dataset.open = "false");
 	});
-}, u = (e, t = {}) => {
-	let { root: n = document, storageKey: i = r, persist: o = !0 } = t;
+}, d = (e, t = {}) => {
+	let { root: n = document, storageKey: r = i, persist: a = !0 } = t;
 	n.documentElement.dataset.theme = e;
-	let s = a(n);
-	s && (s.textContent = e === "dark" ? "☀" : "◐"), o && localStorage.setItem(i, e);
-}, d = (e = {}) => {
-	let t = (e.root || document).documentElement.dataset.theme === "dark" ? "light" : "dark";
-	return u(t, e), t;
+	let s = o(n);
+	s && (s.textContent = e === "dark" ? "☀" : "◐"), a && localStorage.setItem(r, e);
 }, f = (e = {}) => {
-	let { root: t = document, storageKey: n = r, fallbackTheme: i = "light" } = e, a = localStorage.getItem(n) || i;
-	return u(a, {
+	let t = (e.root || document).documentElement.dataset.theme === "dark" ? "light" : "dark";
+	return d(t, e), t;
+}, p = (e = {}) => {
+	let { root: t = document, storageKey: n = i, fallbackTheme: r = "light" } = e, a = localStorage.getItem(n) || r;
+	return d(a, {
 		...e,
 		root: t,
 		persist: !1
 	}), a;
 };
-function p(e = {}) {
-	let { root: t = document, storageKey: n = r, autoApplyStoredTheme: a = !0 } = e, u = new AbortController(), { signal: p } = u;
-	return a && f({
+function m(e = {}) {
+	let { root: t = document, storageKey: n = i, autoApplyStoredTheme: r = !0 } = e, o = new AbortController(), { signal: d } = o;
+	return r && p({
 		root: t,
 		storageKey: n,
 		fallbackTheme: t.documentElement.dataset.theme || "light"
-	}), t.addEventListener("click", (e) => {
+	}), t.addEventListener("mousedown", (e) => {
+		e.target.closest(".bt-combobox__panel") && e.preventDefault();
+	}, { signal: d }), t.addEventListener("click", (e) => {
 		if (e.target.closest("[data-theme-toggle]")) {
-			d({
+			f({
 				root: t,
 				storageKey: n
 			});
@@ -101,31 +106,31 @@ function p(e = {}) {
 		}
 		let r = e.target.closest("[data-dialog-open]");
 		if (r) {
-			s(o(r, r.dataset.dialogOpen, t));
+			c(s(r, r.dataset.dialogOpen, t));
 			return;
 		}
-		let a = e.target.closest("[data-dialog-close]");
-		if (a) {
-			c(a.closest(".bt-dialog"));
+		let i = e.target.closest("[data-dialog-close]");
+		if (i) {
+			l(i.closest(".bt-dialog"));
 			return;
 		}
-		let u = e.target.closest("[data-overlay-open]");
-		if (u) {
-			o(u, u.dataset.overlayOpen, t)?.setAttribute("open", "");
+		let o = e.target.closest("[data-overlay-open]");
+		if (o) {
+			s(o, o.dataset.overlayOpen, t)?.setAttribute("open", "");
 			return;
 		}
-		let f = e.target.closest("[data-overlay-close]");
-		if (f) {
-			f.closest(".bt-overlay")?.removeAttribute("open");
+		let d = e.target.closest("[data-overlay-close]");
+		if (d) {
+			d.closest(".bt-overlay")?.removeAttribute("open");
 			return;
 		}
 		let p = e.target.closest("[data-menu-toggle]");
 		if (p) {
-			let e = o(p, p.dataset.menuToggle, t), n = e?.dataset.open !== "true";
-			l(t, e), e && (e.dataset.open = String(n));
+			let e = s(p, p.dataset.menuToggle, t), n = e?.dataset.open !== "true";
+			u(t, e), e && (e.dataset.open = String(n));
 			return;
 		}
-		e.target.closest(".bt-menu-wrap") || l(t);
+		e.target.closest(".bt-menu-wrap") || u(t);
 		let m = e.target.closest("[data-expansion-toggle]");
 		if (m) {
 			let e = m.closest("[data-expansion]");
@@ -134,7 +139,7 @@ function p(e = {}) {
 		}
 		let h = e.target.closest("[data-snackbar-open]");
 		if (h) {
-			let e = o(h, h.dataset.snackbarOpen, t);
+			let e = s(h, h.dataset.snackbarOpen, t);
 			e && (e.dataset.open = "true", setTimeout(() => {
 				e.dataset.open = "false";
 			}, 3200));
@@ -158,13 +163,13 @@ function p(e = {}) {
 		if (_) {
 			let e = _.closest("[data-tabs]");
 			if (!e) return;
-			i("[role=\"tab\"]", e).forEach((e) => {
+			a("[role=\"tab\"]", e).forEach((e) => {
 				e.setAttribute("aria-selected", String(e === _));
-			}), i(".bt-tab-panel", e).forEach((e) => {
+			}), a(".bt-tab-panel", e).forEach((e) => {
 				e.setAttribute("aria-hidden", String(e.id !== _.dataset.tab));
 			});
 		}
-	}, { signal: p }), () => u.abort();
+	}, { signal: d }), () => o.abort();
 }
 //#endregion
-export { e as CalendarDaySelection, r as DEFAULT_THEME_STORAGE_KEY, f as applyStoredTheme, p as initBtInteractions, u as setTheme, d as toggleTheme };
+export { e as CalendarDaySelection, i as DEFAULT_THEME_STORAGE_KEY, p as applyStoredTheme, m as initBtInteractions, d as setTheme, f as toggleTheme };

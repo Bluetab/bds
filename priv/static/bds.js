@@ -41,7 +41,9 @@ function u(n = {}) {
 		root: s,
 		storageKey: u,
 		fallbackTheme: s.documentElement.dataset.theme || "light"
-	}), s.addEventListener("click", (e) => {
+	}), s.addEventListener("mousedown", (e) => {
+		e.target.closest(".bt-combobox__panel") && e.preventDefault();
+	}, { signal: p }), s.addEventListener("click", (e) => {
 		if (e.target.closest("[data-theme-toggle]")) {
 			c({
 				root: s,

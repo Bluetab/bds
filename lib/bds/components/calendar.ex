@@ -14,8 +14,6 @@ defmodule Bds.Components.Calendar do
     nuevo imputado completado liberado aprobado rechazado festivo vacaciones no-laborable
   )
 
-  @weekdays ~w(MON TUE WED THU FRI SAT SUN)
-
   attr :id, :string, default: nil
   attr :class, :any, default: nil
   attr :sidebar_open, :boolean, default: false
@@ -104,8 +102,9 @@ defmodule Bds.Components.Calendar do
     """
   end
 
-  attr :key, :string, required: true
-  attr :name, :string, required: true
+  attr :template_id, :string, default: nil
+  attr :name, :string, default: ""
+  attr :show_title, :boolean, default: true
   attr :hours, :any, default: nil
   attr :projects, :list, default: []
   attr :on_apply, :string, default: nil, doc: "LiveView event when the card is clicked to apply the template"
@@ -127,21 +126,21 @@ defmodule Bds.Components.Calendar do
           @class
         ]}
         phx-click={@on_apply}
-        phx-value-key={@key}
+        phx-value-id={@template_id}
         aria-label={gettext("Apply template %{name}", name: @name)}
         {@rest}
       >
         <.calendar_template_card_body
-          key={@key}
           name={@name}
+          show_title={@show_title}
           project_rows={@project_rows}
         />
       </button>
     <% else %>
       <article class={["bt-calendar-template-card", @class]} {@rest}>
         <.calendar_template_card_body
-          key={@key}
           name={@name}
+          show_title={@show_title}
           project_rows={@project_rows}
         />
       </article>
@@ -149,16 +148,15 @@ defmodule Bds.Components.Calendar do
     """
   end
 
-  attr :key, :string, required: true
-  attr :name, :string, required: true
+  attr :name, :string, default: ""
+  attr :show_title, :boolean, default: true
   attr :project_rows, :list, required: true
 
   defp calendar_template_card_body(assigns) do
     ~H"""
     <div class="bt-calendar-template-card__row">
-      <span class="bt-calendar-template-card__key">{@key}</span>
-      <div class="min-w-0 flex-1">
-        <p class="bt-calendar-template-card__name">{@name}</p>
+      <div class="bt-calendar-template-card__body min-w-0 flex-1">
+        <p :if={@show_title} class="bt-calendar-template-card__name">{@name}</p>
         <div :if={@project_rows != []} class="bt-calendar-day__projects">
           <div :for={row <- @project_rows} class="bt-calendar-day__project">
             <span class="bt-calendar-day__project-name">{row.name}</span>
@@ -208,7 +206,7 @@ defmodule Bds.Components.Calendar do
   attr :rest, :global
 
   def bt_calendar_weekdays(assigns) do
-    labels = assigns.labels || @weekdays
+    labels = assigns.labels || calendar_weekday_labels()
     assigns = assign(assigns, :labels, labels)
 
     ~H"""
@@ -488,6 +486,7 @@ defmodule Bds.Components.Calendar do
   attr :editing_entry_id, :string, default: nil
   attr :input_types, :list, default: @entry_input_types
   slot :entry_project
+  slot :footer_actions
   attr :on_add_entry, :string, default: nil
   attr :on_edit_entry, :string, default: nil
   attr :on_delete_entry, :string, default: nil
@@ -707,6 +706,9 @@ defmodule Bds.Components.Calendar do
               <% end %>
             </div>
 
+            <div :if={render_slot(@footer_actions) != []} class="bt-calendar-day-modal__footer-actions px-4 pb-2">
+              {render_slot(@footer_actions)}
+            </div>
             <div class="bt-calendar-day-modal__footer">
               <button type="button" class="bt-button bt-button--ghost bt-button--sm" phx-click={@on_close}>
                 {gettext("Close")}
@@ -731,8 +733,23 @@ defmodule Bds.Components.Calendar do
   Localized abbreviated weekday for the day modal aside (e.g. `"Thu"`).
   """
   def calendar_modal_weekday_label(%Date{} = date) do
-    calendar_weekday_abbreviations()
+    calendar_weekday_labels()
     |> Enum.at(Date.day_of_week(date) - 1)
+  end
+
+  @doc """
+  Localized abbreviated weekday labels for the calendar header row (Mon–Sun).
+  """
+  def calendar_weekday_labels do
+    [
+      gettext("Mon"),
+      gettext("Tue"),
+      gettext("Wed"),
+      gettext("Thu"),
+      gettext("Fri"),
+      gettext("Sat"),
+      gettext("Sun")
+    ]
   end
 
   @doc """
@@ -776,18 +793,6 @@ defmodule Bds.Components.Calendar do
 
   defp progress_summary(true, _hours_to_goal), do: gettext("Daily goal reached")
   defp progress_summary(false, hours), do: gettext("%{hours}h to reach 8h", hours: hours)
-
-  defp calendar_weekday_abbreviations do
-    [
-      gettext("Mon"),
-      gettext("Tue"),
-      gettext("Wed"),
-      gettext("Thu"),
-      gettext("Fri"),
-      gettext("Sat"),
-      gettext("Sun")
-    ]
-  end
 
   defp calendar_month_names do
     [

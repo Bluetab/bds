@@ -247,18 +247,8 @@ button.bt-calendar-template-card {
   gap: var(--bt-space-2);
 }
 
-.bt-calendar-template-card__key {
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 999px;
-  background: var(--bt-color-primary);
-  color: var(--bt-color-on-primary);
-  font-size: var(--bt-font-size-xs);
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+.bt-calendar-template-card__body {
+  min-width: 0;
 }
 
 .bt-calendar-template-card__name {
@@ -272,6 +262,24 @@ button.bt-calendar-template-card {
 
 .bt-calendar-template-card .bt-calendar-day__projects {
   margin-top: var(--bt-space-1);
+  min-width: 0;
+}
+
+.bt-calendar-template-card .bt-calendar-day__project {
+  min-width: 0;
+  gap: var(--bt-space-1);
+}
+
+.bt-calendar-template-card .bt-calendar-day__project-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bt-calendar-template-card .bt-calendar-day__project-hours {
+  flex-shrink: 0;
 }
 
 .bt-calendar-toolbar {

@@ -896,7 +896,6 @@ defmodule Bds.Catalog.Preview.Bulk do
   def render("calendar-template", 0, assigns) do
     ~H"""
     <.bt_calendar_template_card
-      key="1"
       name="Acme — billable"
       projects={[%{name: "PX-1024 · Platform rollout", hours: 8.0}]}
     />
@@ -933,7 +932,7 @@ defmodule Bds.Catalog.Preview.Bulk do
     <.bt_calendar_shell sidebar_open class="min-h-96">
       <:sidebar>
         <.bt_calendar_templates_panel title="Templates">
-          <.bt_calendar_template_card key="1" name="Acme — billable" hours={8.0} />
+          <.bt_calendar_template_card name="Acme — billable" hours={8.0} />
         </.bt_calendar_templates_panel>
       </:sidebar>
       <:toolbar>

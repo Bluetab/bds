@@ -79,6 +79,9 @@
 }
 
 .bt-combobox__footer {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   padding: var(--bt-space-2) var(--bt-space-3);
   border-bottom: 1px solid var(--bt-color-border);
   background: var(--bt-color-surface-soft);

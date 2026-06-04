@@ -90,6 +90,37 @@
   gap: var(--bt-space-1) var(--bt-space-2);
 }
 
+.bt-tree__label-row--selectable {
+  width: 100%;
+  margin: 0;
+  padding: var(--bt-space-1) var(--bt-space-2);
+  border: 0;
+  border-radius: var(--bt-radius-sm);
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--bt-duration-fast), box-shadow var(--bt-duration-fast);
+}
+
+.bt-tree__label-row--selectable:hover {
+  background: color-mix(in srgb, var(--bt-color-primary), transparent 90%);
+}
+
+.bt-tree__label-row--selectable:hover .bt-tree__name {
+  color: var(--bt-color-primary);
+}
+
+.bt-tree__label-row--selectable:focus-visible {
+  outline: none;
+  background: color-mix(in srgb, var(--bt-color-primary), transparent 88%);
+  box-shadow: inset 0 0 0 1px var(--bt-color-primary);
+}
+
+.bt-tree__label-row--selectable:active {
+  background: color-mix(in srgb, var(--bt-color-primary), transparent 82%);
+}
+
 .bt-tree__label-row--with-avatar {
   flex-wrap: nowrap;
   align-items: center;

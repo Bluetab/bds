@@ -742,6 +742,9 @@ defmodule Bds.Components.CatalogUi do
   attr :nodes, :list, required: true
   attr :expanded, :any, required: true
   attr :toggle_event, :string, default: "toggle_tree"
+  attr :toggle_target, :any, default: nil
+  attr :select_event, :string, default: nil
+  attr :select_target, :any, default: nil
   attr :depth, :integer, default: 0
   attr :class, :any, default: nil
 
@@ -753,6 +756,9 @@ defmodule Bds.Components.CatalogUi do
         node={node}
         expanded={@expanded}
         toggle_event={@toggle_event}
+        toggle_target={@toggle_target}
+        select_event={@select_event}
+        select_target={@select_target}
         depth={@depth}
       />
     </ul>
@@ -762,6 +768,9 @@ defmodule Bds.Components.CatalogUi do
   attr :node, :map, required: true
   attr :expanded, :any, required: true
   attr :toggle_event, :string, required: true
+  attr :toggle_target, :any, default: nil
+  attr :select_event, :string, default: nil
+  attr :select_target, :any, default: nil
   attr :depth, :integer, required: true
 
   def bt_tree_node(assigns) do
@@ -771,6 +780,7 @@ defmodule Bds.Components.CatalogUi do
     has_children? = children != []
     open? = has_children? and MapSet.member?(assigns.expanded, key)
     section? = Map.get(node, :section, false) or Map.get(node, :kind) == :section
+    selectable? = Map.get(node, :selectable, false) and not is_nil(assigns[:select_event])
 
     assigns =
       assigns
@@ -779,6 +789,8 @@ defmodule Bds.Components.CatalogUi do
       |> assign(:has_children?, has_children?)
       |> assign(:open?, open?)
       |> assign(:section?, section?)
+      |> assign(:selectable?, selectable?)
+      |> assign(:label_row_class, tree_label_row_class(node, selectable?))
 
     ~H"""
     <li class="bt-tree__item" role={if(@depth == 0, do: "treeitem")} aria-expanded={to_string(@open?)}>
@@ -789,6 +801,7 @@ defmodule Bds.Components.CatalogUi do
             type="button"
             class="bt-tree__toggle"
             phx-click={@toggle_event}
+            phx-target={@toggle_target}
             phx-value-key={@key}
             aria-expanded={to_string(@open?)}
             aria-label={gettext("Toggle branch")}
@@ -799,48 +812,92 @@ defmodule Bds.Components.CatalogUi do
         </div>
         <div class="bt-tree__body">
           <p :if={@section?} class="bt-tree__section-title">{@node.name}</p>
-          <div
-            :if={not @section?}
-            class={[
-              "bt-tree__label-row",
-              @node[:avatar] && "bt-tree__label-row--with-avatar"
-            ]}
+          <button
+            :if={not @section? and @selectable?}
+            type="button"
+            class={@label_row_class}
+            phx-click={@select_event}
+            phx-target={@select_target}
+            phx-value-project_id={@node[:project_id]}
+            role="option"
           >
-            <.bt_avatar
-              :if={@node[:avatar]}
-              name={@node.avatar.name}
-              email={Map.get(@node.avatar, :email)}
-              src={Map.get(@node.avatar, :src)}
-              initials={Map.get(@node.avatar, :initials)}
-              compactness={Map.get(@node.avatar, :compactness, "compact")}
-            />
-            <span :if={!@node[:avatar] && @node[:kind_label]} class="bt-tree__kind">{@node.kind_label}</span>
-            <span :if={!@node[:avatar]} class="bt-tree__name">{@node.name}</span>
-            <span :if={!@node[:avatar] && @node[:doc_num]} class="bt-tree__doc">P-{@node.doc_num}</span>
-            <span :if={!@node[:avatar] && @node[:secondary_label]} class="bt-tree__secondary">
-              {@node.secondary_label}
-            </span>
-            <span :if={@node[:badges] != []} class="bt-tree__badges">
-              <.bt_badge
-                :for={badge <- @node[:badges] || []}
-                variant={Map.get(badge, :variant, "secondary")}
-              >
-                {badge.label}
-              </.bt_badge>
-            </span>
-            <span :if={!@node[:avatar] && @node[:meta]} class="bt-tree__meta">· {@node.meta}</span>
+            <.bt_tree_label_content node={@node} />
+          </button>
+          <div :if={not @section? and not @selectable?} class={@label_row_class}>
+            <.bt_tree_label_content node={@node} />
           </div>
           <.bt_tree
             :if={@has_children? and @open?}
             nodes={@children}
             expanded={@expanded}
             toggle_event={@toggle_event}
+            toggle_target={@toggle_target}
+            select_event={@select_event}
+            select_target={@select_target}
             depth={@depth + 1}
           />
         </div>
       </div>
     </li>
     """
+  end
+
+  attr :node, :map, required: true
+
+  defp bt_tree_label_content(assigns) do
+    ~H"""
+    <.bt_avatar
+      :if={@node[:avatar]}
+      name={@node.avatar.name}
+      email={Map.get(@node.avatar, :email)}
+      src={Map.get(@node.avatar, :src)}
+      initials={Map.get(@node.avatar, :initials)}
+      compactness={Map.get(@node.avatar, :compactness, "compact")}
+    />
+    <.bt_badge
+      :if={!@node[:avatar] && tree_project_doc_badge?(@node)}
+      variant="inline"
+      class="bt-tree__doc-badge"
+    >
+      {tree_project_doc_label(@node)}
+    </.bt_badge>
+    <span :if={!@node[:avatar] && @node[:kind_label]} class="bt-tree__kind">{@node.kind_label}</span>
+    <span :if={!@node[:avatar]} class="bt-tree__name">{@node.name}</span>
+    <span :if={!@node[:avatar] && @node[:doc_num] && !tree_project_doc_badge?(@node)} class="bt-tree__doc">
+      P-{@node.doc_num}
+    </span>
+    <span :if={!@node[:avatar] && @node[:secondary_label]} class="bt-tree__secondary">
+      {@node.secondary_label}
+    </span>
+    <span :if={@node[:badges] != []} class="bt-tree__badges">
+      <.bt_badge
+        :for={badge <- @node[:badges] || []}
+        variant={Map.get(badge, :variant, "secondary")}
+      >
+        {badge.label}
+      </.bt_badge>
+    </span>
+    <span :if={!@node[:avatar] && @node[:meta]} class="bt-tree__meta">· {@node.meta}</span>
+    """
+  end
+
+  defp tree_project_doc_badge?(node) do
+    Map.get(node, :show_doc_badge, false) or Map.get(node, :selectable, false)
+  end
+
+  defp tree_project_doc_label(node) do
+    case Map.get(node, :doc_num) do
+      num when not is_nil(num) -> "P-#{num}"
+      _ -> "P-—"
+    end
+  end
+
+  defp tree_label_row_class(node, selectable?) do
+    [
+      "bt-tree__label-row",
+      Map.get(node, :avatar) && "bt-tree__label-row--with-avatar",
+      selectable? && "bt-tree__label-row--selectable"
+    ]
   end
 
   defp tree_node_key(%{key: key}) when is_binary(key), do: key

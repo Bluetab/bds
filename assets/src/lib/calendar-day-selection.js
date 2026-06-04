@@ -15,7 +15,7 @@ export const CalendarDaySelection = {
       if (event.target.closest("[data-calendar-day-open]")) return
 
       const day = dayEl(event.target)
-      if (!day || !selectable(day)) return
+      if (!day || !selectable(day) || templateDraggable(day)) return
 
       this.anchorDate = day.dataset.calendarDay
       this.lastFocusDate = this.anchorDate
@@ -99,4 +99,8 @@ function dayEl(target) {
 
 function selectable(day) {
   return day.dataset.calendarSelectable === "true"
+}
+
+function templateDraggable(day) {
+  return day.dataset.templateDraggable === "true"
 }
