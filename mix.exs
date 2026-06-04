@@ -1,7 +1,7 @@
 defmodule Bds.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "26.6.4"
   @source_url "https://github.com/bluetab/bds"
 
   def project do
@@ -15,7 +15,7 @@ defmodule Bds.MixProject do
       package: package(),
       description: "Bluetab Design System — CSS, interactions, and Phoenix components",
       docs: docs(),
-      name: "Bds"
+      name: "bds"
     ]
   end
 
@@ -37,7 +37,12 @@ defmodule Bds.MixProject do
 
   defp aliases do
     [
-      setup: ["deps.get", "assets.setup", "cmd --cd assets npm run export:catalog", "bds.sync_assets"],
+      setup: [
+        "deps.get",
+        "assets.setup",
+        "cmd --cd assets npm run export:catalog",
+        "bds.sync_assets"
+      ],
       "assets.setup": ["cmd --cd assets npm install"],
       "assets.build": ["cmd --cd assets npm run build:lib", "bds.sync_assets"],
       "assets.dev": ["cmd --cd assets npm run dev"],
@@ -105,7 +110,7 @@ defmodule Bds.MixProject do
       end
     end
 
-  # Remove stale Vite chunks from an older multi-entry build.
+    # Remove stale Vite chunks from an older multi-entry build.
     for stale <- File.ls!(priv), String.match?(stale, ~r/^interactions-.+\.js$/) do
       File.rm!(Path.join(priv, stale))
     end
