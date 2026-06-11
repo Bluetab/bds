@@ -1108,6 +1108,26 @@ button.bt-calendar-template-card {
   color: var(--bt-calendar-day-modal-accent, var(--bt-calendar-status-imputado));
 }
 
+.bt-calendar-day-modal__entry-hours--imputado {
+  color: var(--bt-calendar-status-imputado);
+}
+
+.bt-calendar-day-modal__entry-hours--completado {
+  color: var(--bt-calendar-status-completado);
+}
+
+.bt-calendar-day-modal__entry-hours--liberado {
+  color: var(--bt-calendar-status-liberado);
+}
+
+.bt-calendar-day-modal__entry-hours--aprobado {
+  color: var(--bt-calendar-status-aprobado);
+}
+
+.bt-calendar-day-modal__entry-hours--rechazado {
+  color: var(--bt-calendar-status-rechazado);
+}
+
 .bt-calendar-day-modal__empty {
   flex: 1;
   display: flex;

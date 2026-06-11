@@ -515,6 +515,16 @@ defmodule Bds.Components.Calendar do
     |> then(&Map.get(@status_icons, &1, ""))
   end
 
+  defp entry_hours_status_class(entry) do
+    case entry_status(entry) do
+      status when is_binary(status) ->
+        "bt-calendar-day-modal__entry-hours--#{normalize_status(status)}"
+
+      _ ->
+        nil
+    end
+  end
+
   defp template_project_rows(projects, card_hours) do
     Enum.map(projects, fn project ->
       %{
@@ -750,7 +760,9 @@ defmodule Bds.Components.Calendar do
                     </div>
                     <p class="bt-calendar-day-modal__entry-type">{entry[:input_type] || entry["input_type"] || "Billable"}</p>
                   </div>
-                  <span class="bt-calendar-day-modal__entry-hours">{entry[:hours] || entry["hours"]}h</span>
+                  <span class={["bt-calendar-day-modal__entry-hours", entry_hours_status_class(entry)]}>
+                    {entry[:hours] || entry["hours"]}h
+                  </span>
                   <div :if={!@read_only && @on_edit_entry} class="bt-calendar-day-modal__entry-actions">
                     <.bt_icon_button
                       class="bt-calendar-day-modal__entry-action"
