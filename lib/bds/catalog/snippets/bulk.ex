@@ -812,7 +812,10 @@ defmodule Bds.Catalog.Snippets.Bulk do
       <.bt_calendar_day
         day={12}
         status="imputado"
-        projects={[%{name: "PX-1024 · Acme", hours: 5.0}]}
+        projects={[
+          %{name: "Proyecto A", hours: 4.0, status: "aprobado"},
+          %{name: "Proyecto B", hours: 4.0, status: "liberado"}
+        ]}
         class="w-40 h-32"
       />
       """,
@@ -896,19 +899,23 @@ defmodule Bds.Catalog.Snippets.Bulk do
         show
         date={~D[2026-06-12]}
         status="imputado"
-        total_hours={7.5}
+        total_hours={8.0}
         entries={[
           %{
-            project_name: "PX-1024 · Acme platform",
-            hours: 5.0,
-            input_type: "Billable",
-            status_label: "Draft"
+            id: "1",
+            project_name: "Proyecto A",
+            hours: 4.0,
+            input_type: "Development",
+            status: "aprobado",
+            status_label: "Approved"
           },
           %{
-            project_name: "PX-2201 · Hypercare",
-            hours: 2.5,
-            input_type: "Billable",
-            status_label: "Draft"
+            id: "2",
+            project_name: "Proyecto B",
+            hours: 4.0,
+            input_type: "Development",
+            status: "liberado",
+            status_label: "Sent"
           }
         ]}
       />

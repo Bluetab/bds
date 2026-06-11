@@ -592,8 +592,11 @@ button.bt-calendar-template-card {
 }
 
 .bt-calendar-day__project {
+  --bt-calendar-project-accent: var(--bt-color-border);
   min-height: 1.25rem;
   border: 1px solid color-mix(in srgb, var(--bt-color-border), transparent 12%);
+  border-inline-start-width: 3px;
+  border-inline-start-color: var(--bt-calendar-project-accent);
   border-radius: 0.375rem;
   background: var(--bt-calendar-day-project-bg);
   padding: 0 0.3125rem;
@@ -601,6 +604,34 @@ button.bt-calendar-template-card {
   align-items: center;
   justify-content: flex-start;
   gap: 0.375rem;
+}
+
+.bt-calendar-day__project--imputado {
+  --bt-calendar-project-accent: var(--bt-calendar-status-imputado);
+}
+
+.bt-calendar-day__project--completado {
+  --bt-calendar-project-accent: var(--bt-calendar-status-completado);
+}
+
+.bt-calendar-day__project--liberado {
+  --bt-calendar-project-accent: var(--bt-calendar-status-liberado);
+}
+
+.bt-calendar-day__project--aprobado {
+  --bt-calendar-project-accent: var(--bt-calendar-status-aprobado);
+}
+
+.bt-calendar-day__project--rechazado {
+  --bt-calendar-project-accent: var(--bt-calendar-status-rechazado);
+}
+
+.bt-calendar-day__project-status {
+  flex-shrink: 0;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 999px;
+  background: var(--bt-calendar-project-accent);
 }
 
 .bt-calendar-day__project-name {
@@ -967,6 +998,51 @@ button.bt-calendar-template-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.bt-calendar-day-modal__entry-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.bt-calendar-day-modal__entry-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, currentColor, transparent 55%);
+  font-size: 0.64rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.bt-calendar-day-modal__entry-status-icon {
+  font-size: 0.58rem;
+  line-height: 1;
+}
+
+.bt-calendar-day-modal__entry-status--imputado {
+  color: var(--bt-calendar-status-imputado);
+}
+
+.bt-calendar-day-modal__entry-status--completado {
+  color: var(--bt-calendar-status-completado);
+}
+
+.bt-calendar-day-modal__entry-status--liberado {
+  color: var(--bt-calendar-status-liberado);
+}
+
+.bt-calendar-day-modal__entry-status--aprobado {
+  color: var(--bt-calendar-status-aprobado);
+}
+
+.bt-calendar-day-modal__entry-status--rechazado {
+  color: var(--bt-calendar-status-rechazado);
 }
 
 .bt-calendar-day-modal__entry-actions {

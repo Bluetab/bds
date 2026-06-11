@@ -14,6 +14,14 @@ defmodule Bds.Components.Calendar do
     nuevo imputado completado liberado aprobado rechazado festivo vacaciones no-laborable
   )
 
+  @status_icons %{
+    "imputado" => "◐",
+    "completado" => "●",
+    "liberado" => "↑",
+    "aprobado" => "✓",
+    "rechazado" => "✕"
+  }
+
   attr :id, :string, default: nil
   attr :class, :any, default: nil
   attr :sidebar_open, :boolean, default: false
@@ -371,7 +379,13 @@ defmodule Bds.Components.Calendar do
       <%= if @projects != [] do %>
         <div class="bt-calendar-day__projects">
           <%= for project <- Enum.take(@projects, 2) do %>
-            <div class="bt-calendar-day__project">
+            <div class={["bt-calendar-day__project", project_status_class(project)]}>
+              <span
+                :if={project_status(project)}
+                class="bt-calendar-day__project-status"
+                title={project_status_label(project)}
+                aria-label={project_status_label(project)}
+              />
               <span class="bt-calendar-day__project-name">{project_name(project)}</span>
               <span class="bt-calendar-day__project-hours">{project_hours(project)}h</span>
             </div>
@@ -456,6 +470,50 @@ defmodule Bds.Components.Calendar do
   defp project_hours(%{hours: hours}), do: hours
   defp project_hours(%{"hours" => hours}), do: hours
   defp project_hours(hours) when is_number(hours), do: hours
+
+  defp project_status(%{status: status}) when is_binary(status), do: status
+  defp project_status(%{"status" => status}) when is_binary(status), do: status
+  defp project_status(_), do: nil
+
+  defp project_status_class(project) do
+    case project_status(project) do
+      status when is_binary(status) -> "bt-calendar-day__project--#{normalize_status(status)}"
+      _ -> nil
+    end
+  end
+
+  defp project_status_label(project) do
+    case project_status(project) do
+      status when is_binary(status) -> calendar_status_label(status)
+      _ -> nil
+    end
+  end
+
+  defp entry_status(%{status: status}) when is_binary(status), do: status
+  defp entry_status(%{"status" => status}) when is_binary(status), do: status
+  defp entry_status(_), do: nil
+
+  defp entry_status_class(entry) do
+    case entry_status(entry) do
+      status when is_binary(status) ->
+        "bt-calendar-day-modal__entry-status--#{normalize_status(status)}"
+
+      _ ->
+        nil
+    end
+  end
+
+  defp entry_status_label(entry) do
+    case entry[:status_label] || entry["status_label"] do
+      label when is_binary(label) and label != "" -> label
+      _ -> calendar_status_label(entry_status(entry) || "")
+    end
+  end
+
+  defp entry_status_icon(entry) do
+    entry_status(entry)
+    |> then(&Map.get(@status_icons, &1, ""))
+  end
 
   defp template_project_rows(projects, card_hours) do
     Enum.map(projects, fn project ->
@@ -678,7 +736,18 @@ defmodule Bds.Components.Calendar do
                   class="bt-calendar-day-modal__entry"
                 >
                   <div class="bt-calendar-day-modal__entry-main">
-                    <p class="bt-calendar-day-modal__entry-project">{entry[:project_name] || entry["project_name"]}</p>
+                    <div class="bt-calendar-day-modal__entry-heading">
+                      <p class="bt-calendar-day-modal__entry-project">{entry[:project_name] || entry["project_name"]}</p>
+                      <span
+                        :if={entry_status(entry)}
+                        class={["bt-calendar-day-modal__entry-status", entry_status_class(entry)]}
+                      >
+                        <span class="bt-calendar-day-modal__entry-status-icon" aria-hidden="true">
+                          {entry_status_icon(entry)}
+                        </span>
+                        {entry_status_label(entry)}
+                      </span>
+                    </div>
                     <p class="bt-calendar-day-modal__entry-type">{entry[:input_type] || entry["input_type"] || "Billable"}</p>
                   </div>
                   <span class="bt-calendar-day-modal__entry-hours">{entry[:hours] || entry["hours"]}h</span>
