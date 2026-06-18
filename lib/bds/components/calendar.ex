@@ -22,18 +22,23 @@ defmodule Bds.Components.Calendar do
     "rechazado" => "✕"
   }
 
-  attr :id, :string, default: nil
-  attr :class, :any, default: nil
-  attr :sidebar_open, :boolean, default: false
-  attr :on_sidebar_close, :string, default: nil, doc: "phx-click event to close sidebar (mobile backdrop)"
-  attr :viewport, :boolean, default: false
-  attr :rest, :global
+  attr(:id, :string, default: nil)
+  attr(:class, :any, default: nil)
+  attr(:sidebar_open, :boolean, default: false)
 
-  slot :banner
-  slot :sidebar
-  slot :toolbar
-  slot :inner_block, required: true
-  slot :legend
+  attr(:on_sidebar_close, :string,
+    default: nil,
+    doc: "phx-click event to close sidebar (mobile backdrop)"
+  )
+
+  attr(:viewport, :boolean, default: false)
+  attr(:rest, :global)
+
+  slot(:banner)
+  slot(:sidebar)
+  slot(:toolbar)
+  slot(:inner_block, required: true)
+  slot(:legend)
 
   def bt_calendar_shell(assigns) do
     ~H"""
@@ -76,12 +81,12 @@ defmodule Bds.Components.Calendar do
     """
   end
 
-  attr :class, :any, default: nil
-  attr :title, :string, default: nil
-  attr :on_close, :any, default: nil
-  attr :rest, :global
-  slot :inner_block, required: true
-  slot :actions
+  attr(:class, :any, default: nil)
+  attr(:title, :string, default: nil)
+  attr(:on_close, :any, default: nil)
+  attr(:rest, :global)
+  slot(:inner_block, required: true)
+  slot(:actions)
 
   def bt_calendar_templates_panel(assigns) do
     assigns = assign_new(assigns, :title, fn -> gettext("Templates") end)
@@ -110,14 +115,19 @@ defmodule Bds.Components.Calendar do
     """
   end
 
-  attr :template_id, :string, default: nil
-  attr :name, :string, default: ""
-  attr :show_title, :boolean, default: true
-  attr :hours, :any, default: nil
-  attr :projects, :list, default: []
-  attr :on_apply, :string, default: nil, doc: "LiveView event when the card is clicked to apply the template"
-  attr :class, :any, default: nil
-  attr :rest, :global
+  attr(:template_id, :string, default: nil)
+  attr(:name, :string, default: "")
+  attr(:show_title, :boolean, default: true)
+  attr(:hours, :any, default: nil)
+  attr(:projects, :list, default: [])
+
+  attr(:on_apply, :string,
+    default: nil,
+    doc: "LiveView event when the card is clicked to apply the template"
+  )
+
+  attr(:class, :any, default: nil)
+  attr(:rest, :global)
 
   def bt_calendar_template_card(assigns) do
     assigns =
@@ -156,9 +166,9 @@ defmodule Bds.Components.Calendar do
     """
   end
 
-  attr :name, :string, default: ""
-  attr :show_title, :boolean, default: true
-  attr :project_rows, :list, required: true
+  attr(:name, :string, default: "")
+  attr(:show_title, :boolean, default: true)
+  attr(:project_rows, :list, required: true)
 
   defp calendar_template_card_body(assigns) do
     ~H"""
@@ -176,13 +186,13 @@ defmodule Bds.Components.Calendar do
     """
   end
 
-  attr :class, :any, default: nil
-  attr :month_label, :string, default: nil
-  attr :rest, :global
-  slot :left
-  slot :center
-  slot :right
-  slot :far_right
+  attr(:class, :any, default: nil)
+  attr(:month_label, :string, default: nil)
+  attr(:rest, :global)
+  slot(:left)
+  slot(:center)
+  slot(:right)
+  slot(:far_right)
 
   def bt_calendar_toolbar(assigns) do
     ~H"""
@@ -207,11 +217,11 @@ defmodule Bds.Components.Calendar do
     """
   end
 
-  attr :show_weekends, :boolean, default: true
-  attr :grid_columns, :string, required: true
-  attr :labels, :list, default: nil
-  attr :class, :any, default: nil
-  attr :rest, :global
+  attr(:show_weekends, :boolean, default: true)
+  attr(:grid_columns, :string, required: true)
+  attr(:labels, :list, default: nil)
+  attr(:class, :any, default: nil)
+  attr(:rest, :global)
 
   def bt_calendar_weekdays(assigns) do
     labels = assigns.labels || calendar_weekday_labels()
@@ -235,12 +245,12 @@ defmodule Bds.Components.Calendar do
     """
   end
 
-  attr :grid_columns, :string, required: true
-  attr :show_weekends, :boolean, default: true
-  attr :id, :string, default: nil
-  attr :class, :any, default: nil
-  attr :rest, :global
-  slot :inner_block, required: true
+  attr(:grid_columns, :string, required: true)
+  attr(:show_weekends, :boolean, default: true)
+  attr(:id, :string, default: nil)
+  attr(:class, :any, default: nil)
+  attr(:rest, :global)
+  slot(:inner_block, required: true)
 
   def bt_calendar_month_grid(assigns) do
     ~H"""
@@ -259,11 +269,11 @@ defmodule Bds.Components.Calendar do
     """
   end
 
-  attr :weekend, :boolean, default: false
-  attr :selected, :boolean, default: false
-  attr :class, :any, default: nil
-  attr :rest, :global
-  slot :inner_block, required: true
+  attr(:weekend, :boolean, default: false)
+  attr(:selected, :boolean, default: false)
+  attr(:class, :any, default: nil)
+  attr(:rest, :global)
+  slot(:inner_block, required: true)
 
   def bt_calendar_month_cell(assigns) do
     ~H"""
@@ -281,21 +291,21 @@ defmodule Bds.Components.Calendar do
     """
   end
 
-  attr :day, :integer, required: true
-  attr :status, :string, required: true, values: @statuses
-  attr :selected, :boolean, default: false
-  attr :today, :boolean, default: false
-  attr :outside, :boolean, default: false
-  attr :selectable, :boolean, default: false
-  attr :date, :any, default: nil
-  attr :on_select, :string, default: nil
-  attr :on_open, :string, default: nil
-  attr :projects, :list, default: []
-  attr :grid_row, :integer, default: nil
-  attr :grid_col, :integer, default: nil
-  attr :type, :string, default: "button"
-  attr :class, :any, default: nil
-  attr :rest, :global
+  attr(:day, :integer, required: true)
+  attr(:status, :string, required: true, values: @statuses)
+  attr(:selected, :boolean, default: false)
+  attr(:today, :boolean, default: false)
+  attr(:outside, :boolean, default: false)
+  attr(:selectable, :boolean, default: false)
+  attr(:date, :any, default: nil)
+  attr(:on_select, :string, default: nil)
+  attr(:on_open, :string, default: nil)
+  attr(:projects, :list, default: [])
+  attr(:grid_row, :integer, default: nil)
+  attr(:grid_col, :integer, default: nil)
+  attr(:type, :string, default: "button")
+  attr(:class, :any, default: nil)
+  attr(:rest, :global)
 
   def bt_calendar_day(assigns) do
     cond do
@@ -403,11 +413,11 @@ defmodule Bds.Components.Calendar do
   defp calendar_day_iso(iso, _day) when is_binary(iso), do: iso
   defp calendar_day_iso(_, day), do: to_string(day)
 
-  attr :items, :list, required: true
-  attr :id, :string, default: nil
-  attr :class, :any, default: nil
-  attr :label, :string, default: nil
-  attr :rest, :global
+  attr(:items, :list, required: true)
+  attr(:id, :string, default: nil)
+  attr(:class, :any, default: nil)
+  attr(:label, :string, default: nil)
+  attr(:rest, :global)
 
   def bt_calendar_legend(assigns) do
     assigns = assign_new(assigns, :label, fn -> gettext("Calendar status legend") end)
@@ -515,6 +525,40 @@ defmodule Bds.Components.Calendar do
     |> then(&Map.get(@status_icons, &1, ""))
   end
 
+  defp entry_comments(entry), do: entry_note_value(entry, :comments, "comments")
+
+  defp entry_reject_reason(entry), do: entry_note_value(entry, :reject_reason, "reject_reason")
+
+  defp entry_note_value(entry, atom_key, string_key) do
+    case Map.get(entry, atom_key) || Map.get(entry, string_key) do
+      value when is_binary(value) ->
+        case String.trim(value) do
+          "" -> nil
+          trimmed -> trimmed
+        end
+
+      _ ->
+        nil
+    end
+  end
+
+  defp entry_note?(entry), do: entry_comments(entry) != nil or entry_reject_reason(entry) != nil
+
+  defp editor_comment_value(form) do
+    case form[:comments] do
+      %Phoenix.HTML.FormField{value: value} -> value |> to_string() |> String.trim()
+      _ -> ""
+    end
+  end
+
+  defp entry_note_summary_label(entry) do
+    cond do
+      entry_reject_reason(entry) && entry_comments(entry) -> gettext("Reason & comment")
+      entry_reject_reason(entry) -> gettext("Rejection reason")
+      true -> gettext("Comment")
+    end
+  end
+
   defp entry_hours_status_class(entry) do
     case entry_status(entry) do
       status when is_binary(status) ->
@@ -538,33 +582,38 @@ defmodule Bds.Components.Calendar do
   defp template_row_hours(%{"hours" => hours}, _card_hours) when not is_nil(hours), do: hours
   defp template_row_hours(_project, card_hours), do: card_hours
 
-  attr :id, :string, default: "calendar-day-modal"
-  attr :show, :boolean, default: false
-  attr :on_close, :string, default: nil
-  attr :date, :any, default: nil
-  attr :status, :string, default: "nuevo", values: @statuses
-  attr :weekday_label, :string, default: nil
-  attr :month_label, :string, default: nil
-  attr :status_label, :string, default: nil
-  attr :entries, :list, default: []
-  attr :total_hours, :float, default: 0.0
-  attr :goal_hours, :float, default: 8.0
-  attr :read_only, :boolean, default: false
-  attr :entry_form, :any, default: nil
-  attr :editing_entry_id, :string, default: nil
-  attr :input_types, :list, default: @entry_input_types
-  slot :entry_project
-  slot :footer_actions
-  attr :on_add_entry, :string, default: nil
-  attr :on_edit_entry, :string, default: nil
-  attr :on_delete_entry, :string, default: nil
-  attr :on_cancel_entry, :string, default: nil
-  attr :on_save_entry, :string, default: nil
-  attr :on_validate_entry, :string, default: nil
-  attr :on_hours_preset, :string, default: nil, doc: "phx-click event to set hours (phx-value-hours)"
-  attr :on_save, :string, default: nil
-  attr :class, :any, default: nil
-  attr :rest, :global
+  attr(:id, :string, default: "calendar-day-modal")
+  attr(:show, :boolean, default: false)
+  attr(:on_close, :string, default: nil)
+  attr(:date, :any, default: nil)
+  attr(:status, :string, default: "nuevo", values: @statuses)
+  attr(:weekday_label, :string, default: nil)
+  attr(:month_label, :string, default: nil)
+  attr(:status_label, :string, default: nil)
+  attr(:entries, :list, default: [])
+  attr(:total_hours, :float, default: 0.0)
+  attr(:goal_hours, :float, default: 8.0)
+  attr(:read_only, :boolean, default: false)
+  attr(:entry_form, :any, default: nil)
+  attr(:editing_entry_id, :string, default: nil)
+  attr(:input_types, :list, default: @entry_input_types)
+  slot(:entry_project)
+  slot(:footer_actions)
+  attr(:on_add_entry, :string, default: nil)
+  attr(:on_edit_entry, :string, default: nil)
+  attr(:on_delete_entry, :string, default: nil)
+  attr(:on_cancel_entry, :string, default: nil)
+  attr(:on_save_entry, :string, default: nil)
+  attr(:on_validate_entry, :string, default: nil)
+
+  attr(:on_hours_preset, :string,
+    default: nil,
+    doc: "phx-click event to set hours (phx-value-hours)"
+  )
+
+  attr(:on_save, :string, default: nil)
+  attr(:class, :any, default: nil)
+  attr(:rest, :global)
 
   def bt_calendar_day_modal(assigns) do
     total = assigns.total_hours || 0.0
@@ -712,6 +761,25 @@ defmodule Bds.Components.Calendar do
                       />
                     </div>
                   </div>
+                  <details
+                    class="bt-calendar-day-modal__editor-comments"
+                    open={editor_comment_value(@entry_form) != ""}
+                  >
+                    <summary class="bt-calendar-day-modal__editor-comments-summary">
+                      <span class="bt-calendar-day-modal__editor-comments-icon" aria-hidden="true">
+                        <.calendar_day_modal_icon name="chat" />
+                      </span>
+                      {gettext("Add a comment")}
+                    </summary>
+                    <div class="bt-calendar-day-modal__editor-comments-field">
+                      <.bt_input
+                        field={@entry_form[:comments]}
+                        type="textarea"
+                        placeholder={gettext("Add a note (optional)")}
+                        rows="2"
+                      />
+                    </div>
+                  </details>
                 </div>
                 <div class="bt-calendar-day-modal__editor-actions">
                   <button
@@ -745,44 +813,73 @@ defmodule Bds.Components.Calendar do
                   :if={entry_id(entry) != @editing_entry_id}
                   class="bt-calendar-day-modal__entry"
                 >
-                  <div class="bt-calendar-day-modal__entry-main">
-                    <div class="bt-calendar-day-modal__entry-heading">
-                      <p class="bt-calendar-day-modal__entry-project">{entry[:project_name] || entry["project_name"]}</p>
-                      <span
-                        :if={entry_status(entry)}
-                        class={["bt-calendar-day-modal__entry-status", entry_status_class(entry)]}
-                      >
-                        <span class="bt-calendar-day-modal__entry-status-icon" aria-hidden="true">
-                          {entry_status_icon(entry)}
+                  <div class="bt-calendar-day-modal__entry-row">
+                    <div class="bt-calendar-day-modal__entry-main">
+                      <div class="bt-calendar-day-modal__entry-heading">
+                        <p class="bt-calendar-day-modal__entry-project">{entry[:project_name] || entry["project_name"]}</p>
+                        <span
+                          :if={entry_status(entry)}
+                          class={["bt-calendar-day-modal__entry-status", entry_status_class(entry)]}
+                        >
+                          <span class="bt-calendar-day-modal__entry-status-icon" aria-hidden="true">
+                            {entry_status_icon(entry)}
+                          </span>
+                          {entry_status_label(entry)}
                         </span>
-                        {entry_status_label(entry)}
-                      </span>
+                      </div>
+                      <p class="bt-calendar-day-modal__entry-type">{entry[:input_type] || entry["input_type"] || "Billable"}</p>
                     </div>
-                    <p class="bt-calendar-day-modal__entry-type">{entry[:input_type] || entry["input_type"] || "Billable"}</p>
-                  </div>
-                  <span class={["bt-calendar-day-modal__entry-hours", entry_hours_status_class(entry)]}>
-                    {entry[:hours] || entry["hours"]}h
-                  </span>
-                  <div :if={!@read_only && @on_edit_entry} class="bt-calendar-day-modal__entry-actions">
-                    <.bt_icon_button
-                      class="bt-calendar-day-modal__entry-action"
-                      label={gettext("Edit entry")}
-                      phx-click={@on_edit_entry}
-                      phx-value-id={entry_id(entry)}
+                    <span class={["bt-calendar-day-modal__entry-hours", entry_hours_status_class(entry)]}>
+                      {entry[:hours] || entry["hours"]}h
+                    </span>
+                    <div
+                      :if={!@read_only && @on_edit_entry && !entry_locked?(entry)}
+                      class="bt-calendar-day-modal__entry-actions"
                     >
-                      <.calendar_day_modal_icon name="pencil" />
-                    </.bt_icon_button>
-                    <.bt_icon_button
-                      :if={@on_delete_entry}
-                      class="bt-calendar-day-modal__entry-action"
-                      label={gettext("Delete entry")}
-                      phx-click={@on_delete_entry}
-                      phx-value-id={entry_id(entry)}
-                      data-confirm={gettext("Remove this time entry?")}
-                    >
-                      <.calendar_day_modal_icon name="trash" />
-                    </.bt_icon_button>
+                      <.bt_icon_button
+                        class="bt-calendar-day-modal__entry-action"
+                        label={gettext("Edit entry")}
+                        phx-click={@on_edit_entry}
+                        phx-value-id={entry_id(entry)}
+                      >
+                        <.calendar_day_modal_icon name="pencil" />
+                      </.bt_icon_button>
+                      <.bt_icon_button
+                        :if={@on_delete_entry}
+                        class="bt-calendar-day-modal__entry-action"
+                        label={gettext("Delete entry")}
+                        phx-click={@on_delete_entry}
+                        phx-value-id={entry_id(entry)}
+                        data-confirm={gettext("Remove this time entry?")}
+                      >
+                        <.calendar_day_modal_icon name="trash" />
+                      </.bt_icon_button>
+                    </div>
                   </div>
+                  <details :if={entry_note?(entry)} class="bt-calendar-day-modal__entry-note">
+                    <summary class="bt-calendar-day-modal__entry-note-summary">
+                      <span class="bt-calendar-day-modal__entry-note-icon" aria-hidden="true">
+                        <.calendar_day_modal_icon name="chat" />
+                      </span>
+                      {entry_note_summary_label(entry)}
+                    </summary>
+                    <div class="bt-calendar-day-modal__entry-note-body">
+                      <p
+                        :if={entry_reject_reason(entry)}
+                        class="bt-calendar-day-modal__entry-note-line bt-calendar-day-modal__entry-note-line--reject"
+                      >
+                        <span class="bt-calendar-day-modal__entry-note-label">{gettext("Rejection reason")}</span>
+                        <span>{entry_reject_reason(entry)}</span>
+                      </p>
+                      <p
+                        :if={entry_comments(entry)}
+                        class="bt-calendar-day-modal__entry-note-line"
+                      >
+                        <span class="bt-calendar-day-modal__entry-note-label">{gettext("Comment")}</span>
+                        <span>{entry_comments(entry)}</span>
+                      </p>
+                    </div>
+                  </details>
                 </article>
               <% end %>
             </div>
@@ -892,8 +989,8 @@ defmodule Bds.Components.Calendar do
     ]
   end
 
-  attr :name, :string, required: true, values: ~w(pencil trash)
-  attr :class, :any, default: nil
+  attr(:name, :string, required: true, values: ~w(pencil trash chat))
+  attr(:class, :any, default: nil)
 
   def calendar_day_modal_icon(assigns) do
     ~H"""
@@ -919,6 +1016,12 @@ defmodule Bds.Components.Calendar do
             stroke-linejoin="round"
             d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
           />
+        <% "chat" -> %>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
+          />
       <% end %>
     </svg>
     """
@@ -927,4 +1030,11 @@ defmodule Bds.Components.Calendar do
   defp entry_id(%{id: id}), do: id
   defp entry_id(%{"id" => id}), do: id
   defp entry_id(_), do: nil
+
+  # Per-entry lock: when truthy, the entry's edit/delete actions are hidden even
+  # if the day modal as a whole is editable (e.g. an approved line on a day that
+  # also has editable lines).
+  defp entry_locked?(%{locked: locked}), do: !!locked
+  defp entry_locked?(%{"locked" => locked}), do: !!locked
+  defp entry_locked?(_), do: false
 end
