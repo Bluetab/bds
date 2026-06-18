@@ -1,7 +1,7 @@
-/* Phoenix / daisyUI flash_group toasts — above .bt-topbar (z-index 220) */
+/* Phoenix / daisyUI flash_group toasts — below .bt-topbar (z-index 220) */
 .bt-flash-group {
   position: fixed;
-  top: var(--bt-space-4);
+  top: calc(var(--bt-topbar-height) + var(--bt-space-2));
   right: var(--bt-space-4);
   z-index: var(--bt-z-flash);
   display: flex;

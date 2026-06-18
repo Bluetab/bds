@@ -86,6 +86,7 @@
 
   /* Layout */
   --bt-sidebar-width: 17.5rem;
+  --bt-topbar-height: 3.375rem;
   --bt-content-max-width: 76rem;
   --bt-panel-width: min(46rem, 92vw);
 
