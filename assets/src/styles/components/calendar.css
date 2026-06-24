@@ -842,6 +842,27 @@ button.bt-calendar-template-card {
   font-size: 0.68rem;
   font-weight: 700;
   color: var(--bt-color-text-subtle);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.bt-calendar-day-modal__progress-over-icon {
+  font-size: 0.7rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.bt-calendar-day-modal__aside-bottom--over .bt-calendar-day-modal__hours-value,
+.bt-calendar-day-modal__aside-bottom--over .bt-calendar-day-modal__hours-unit,
+.bt-calendar-day-modal__aside-bottom--over .bt-calendar-day-modal__progress-fill,
+.bt-calendar-day-modal__aside-bottom--over .bt-calendar-day-modal__progress-label,
+.bt-calendar-day-modal__aside-bottom--over .bt-calendar-day-modal__progress-over-icon {
+  color: var(--bt-color-error);
+}
+
+.bt-calendar-day-modal__aside-bottom--over .bt-calendar-day-modal__progress-fill {
+  background: var(--bt-color-error);
 }
 
 .bt-calendar-day-modal__content {

@@ -619,6 +619,7 @@ defmodule Bds.Components.Calendar do
     total = assigns.total_hours || 0.0
     goal = assigns.goal_hours || 8.0
     progress = min(100.0, total / goal * 100)
+    goal_exceeded = total > goal
     goal_reached = total >= goal
     hours_to_goal = Float.round(max(0.0, goal - total), 1)
 
@@ -635,9 +636,10 @@ defmodule Bds.Components.Calendar do
       |> assign(:weekday_label, weekday_label)
       |> assign(:month_label, month_label)
       |> assign(:progress_pct, Float.round(progress, 1))
+      |> assign(:goal_exceeded, goal_exceeded)
       |> assign(:goal_reached, goal_reached)
       |> assign(:hours_to_goal, hours_to_goal)
-      |> assign(:progress_summary, progress_summary(goal_reached, hours_to_goal))
+      |> assign(:progress_summary, progress_summary(goal_exceeded, goal_reached, hours_to_goal))
       |> assign(:editing?, !is_nil(assigns.entry_form))
       |> assign(:entry_form_id, "#{assigns.id}-entry-form")
 
@@ -671,7 +673,10 @@ defmodule Bds.Components.Calendar do
                 <p class="bt-calendar-day-modal__month">{@month_label}</p>
               </div>
             </div>
-            <div class="bt-calendar-day-modal__aside-bottom">
+            <div class={[
+              "bt-calendar-day-modal__aside-bottom",
+              @goal_exceeded && "bt-calendar-day-modal__aside-bottom--over"
+            ]}>
               <div class="bt-calendar-day-modal__hours">
                 <span class="bt-calendar-day-modal__hours-value">{Float.round(@total_hours * 1.0, 1)}</span>
                 <span class="bt-calendar-day-modal__hours-unit">h</span>
@@ -679,7 +684,16 @@ defmodule Bds.Components.Calendar do
               <div class="bt-calendar-day-modal__progress" aria-hidden="true">
                 <div class="bt-calendar-day-modal__progress-fill" style={"width: #{@progress_pct}%"} />
               </div>
-              <p class="bt-calendar-day-modal__progress-label">{@progress_summary}</p>
+              <p class="bt-calendar-day-modal__progress-label">
+                <span
+                  :if={@goal_exceeded}
+                  class="bt-calendar-day-modal__progress-over-icon"
+                  aria-hidden="true"
+                >
+                  ✕
+                </span>
+                {@progress_summary}
+              </p>
             </div>
           </aside>
 
@@ -969,8 +983,9 @@ defmodule Bds.Components.Calendar do
     ]
   end
 
-  defp progress_summary(true, _hours_to_goal), do: gettext("Daily goal reached")
-  defp progress_summary(false, hours), do: gettext("%{hours}h to reach 8h", hours: hours)
+  defp progress_summary(true, _goal_reached, _hours_to_goal), do: gettext("Daily goal exceeded")
+  defp progress_summary(false, true, _hours_to_goal), do: gettext("Daily goal reached")
+  defp progress_summary(false, false, hours), do: gettext("%{hours}h to reach 8h", hours: hours)
 
   defp calendar_month_names do
     [

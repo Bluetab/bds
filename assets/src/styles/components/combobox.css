@@ -5,7 +5,7 @@
 }
 
 .bt-combobox--open {
-  z-index: 40;
+  z-index: 150;
 }
 
 .bt-combobox__input-wrap {
@@ -76,6 +76,10 @@
   border-radius: var(--bt-radius-lg);
   background: var(--bt-color-surface);
   box-shadow: var(--bt-shadow-md);
+}
+
+.bt-combobox__panel--portal {
+  z-index: 250;
 }
 
 .bt-combobox__footer {

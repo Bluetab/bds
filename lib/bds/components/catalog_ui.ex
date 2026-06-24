@@ -947,15 +947,21 @@ defmodule Bds.Components.CatalogUi do
   def bt_combobox(assigns) do
     wrapper_id = assigns.id
     input_id = assigns[:input_id] || (wrapper_id && "#{wrapper_id}-input") || "#{assigns.name}-input"
+    wrapper_id = wrapper_id || "#{input_id}-combobox"
 
     assigns =
       assigns
       |> assign(:wrapper_id, wrapper_id)
       |> assign(:input_id, input_id)
+      |> assign(:panel_id, "#{input_id}-panel")
       |> assign(:field_class, ["bt-field", assigns.errors != [] && "bt-field--error"])
 
     ~H"""
-    <div class={["bt-combobox", @open && "bt-combobox--open", @class]} id={@wrapper_id}>
+    <div
+      class={["bt-combobox", @open && "bt-combobox--open", @class]}
+      id={@wrapper_id}
+      phx-hook="BtCombobox"
+    >
       <div class={@field_class}>
         <label :if={@label} for={@input_id}>{@label}</label>
         <div class="bt-combobox__input-wrap">
@@ -984,7 +990,12 @@ defmodule Bds.Components.CatalogUi do
           </div>
         </div>
       </div>
-      <div :if={@open} class="bt-combobox__panel" role="listbox">
+      <div
+        :if={@open}
+        id={@panel_id}
+        class="bt-combobox__panel"
+        role="listbox"
+      >
         <div :if={@panel_footer != []} class="bt-combobox__footer">
           {render_slot(@panel_footer)}
         </div>

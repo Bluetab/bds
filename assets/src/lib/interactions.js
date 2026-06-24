@@ -195,6 +195,7 @@ function initBtInteractions(options = {}) {
 }
 
 export { CalendarDaySelection } from './calendar-day-selection.js';
+export { BtCombobox } from './combobox.js';
 
 export {
   DEFAULT_THEME_STORAGE_KEY,
