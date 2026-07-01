@@ -974,25 +974,30 @@ defmodule Bds.Catalog.Preview.Bulk do
 
   def render("performance-evaluator", 0, assigns) do
     ~H"""
-    <.bt_performance_evaluator_card
-      id="catalog-performance-evaluator"
-      title="Your evaluator"
-      name="Morgan Chen"
-      email="morgan.chen@example.com"
-    />
+    <section class="bt-stack" style="gap: var(--bt-space-4);">
+      <h2 class="bt-performance-section-title">Your evaluator</h2>
+      <.bt_performance_evaluator_card
+        id="catalog-performance-evaluator"
+        name="Morgan Chen"
+        email="morgan.chen@example.com"
+      />
+    </section>
     """
   end
 
   def render("performance-hours", 0, assigns) do
     ~H"""
-    <.bt_performance_hours_panel
-      id="catalog-performance-hours"
-      hours_groups={[
-        %{key: "acme", label: "Acme Corp · Digital", total_label: "128.5h", projects: []},
-        %{key: "northwind", label: "Northwind · SAP", total_label: "44h", projects: []}
-      ]}
-      hidden_group_count={0}
-    />
+    <section class="bt-stack" style="gap: var(--bt-space-4);">
+      <h2 class="bt-performance-section-title">Reported hours</h2>
+      <.bt_performance_hours_panel
+        id="catalog-performance-hours"
+        hours_groups={[
+          %{key: "acme", label: "Acme Corp · Digital", total_label: "128.5h", projects: []},
+          %{key: "northwind", label: "Northwind · SAP", total_label: "44h", projects: []}
+        ]}
+        hidden_group_count={0}
+      />
+    </section>
     """
   end
 
@@ -1007,18 +1012,29 @@ defmodule Bds.Catalog.Preview.Bulk do
       role_description="Own technical direction for the Northwind FI rollout."
       ack_state={:acknowledged}
       objectives={[
-        %{title: "Blueprint sign-off", weight: 35, description: "Signed-off solution design."}
+        %{
+          index: 1,
+          category: "PX",
+          title: "Blueprint sign-off",
+          description: "Signed-off solution design.",
+          weight_share_label: "35%",
+          completion: "total",
+          completion_label: "Fully achieved",
+          evaluator_comment: "Delivered on schedule with clear client sign-off."
+        }
       ]}
       evaluation={
         %{
           date_label: "2026-04-22",
           creator_label: "Morgan Chen",
           rating: "b",
-          rating_label: "B",
-          rationale: "Strong delivery on blueprint and coaching.",
+          rating_label: "Above expected",
+          rationale: "—",
           strengths: "Clear communication.",
           weaknesses: "Optimistic test estimates.",
-          recommendations: "Continue pairing on automation."
+          recommendations: "Continue pairing on automation.",
+          ack_state: :acknowledged,
+          ack_date_label: "2026-04-25"
         }
       }
     />
@@ -1047,10 +1063,11 @@ defmodule Bds.Catalog.Preview.Bulk do
       category="Consultant"
       project_label="Acme · Platform migration"
       hours_label="96h"
-      briefing_date_label="2026-04-01"
+      briefing_date_label="2026-01-31"
       briefing_status="published"
-      briefing_status_label="Published"
-      rating_label="A"
+      evaluation_date_label="2026-05-13"
+      evaluation_rating="a"
+      evaluation_status="published"
     />
     """
   end

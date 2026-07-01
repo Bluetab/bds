@@ -926,14 +926,15 @@ defmodule Bds.Catalog.Snippets.Bulk do
   defp performance do
     %{
       "performance-evaluator:0" => ~S"""
+      <h2 class="bt-performance-section-title">Your evaluator</h2>
       <.bt_performance_evaluator_card
         id="catalog-performance-evaluator"
-        title="Your evaluator"
         name="Morgan Chen"
         email="morgan.chen@example.com"
       />
       """,
       "performance-hours:0" => ~S"""
+      <h2 class="bt-performance-section-title">Reported hours</h2>
       <.bt_performance_hours_panel
         id="catalog-performance-hours"
         hours_groups={[
@@ -953,18 +954,19 @@ defmodule Bds.Catalog.Snippets.Bulk do
         role_description="Own technical direction for the Northwind FI rollout."
         ack_state={:acknowledged}
         objectives={[
-          %{title: "Blueprint sign-off", weight: 35, description: "Signed-off solution design."}
+          %{title: "Blueprint sign-off", weight: 35, description: "Signed-off solution design.", category: "PX", rating: "b"}
         ]}
         evaluation={
           %{
             date_label: "2026-04-22",
             creator_label: "Morgan Chen",
             rating: "b",
-            rating_label: "B",
-            rationale: "Strong delivery on blueprint and coaching.",
+            rationale: "—",
             strengths: "Clear communication.",
             weaknesses: "Optimistic test estimates.",
-            recommendations: "Continue pairing on automation."
+            recommendations: "Continue pairing on automation.",
+            acknowledged_at: ~U[2026-04-25 12:00:00Z],
+            ack_date_label: "2026-04-25"
           }
         }
       />
@@ -987,10 +989,11 @@ defmodule Bds.Catalog.Snippets.Bulk do
         category="Consultant"
         project_label="Acme · Platform migration"
         hours_label="96h"
-        briefing_date_label="2026-04-01"
+        briefing_date_label="2026-01-31"
         briefing_status="published"
-        briefing_status_label="Published"
-        rating_label="A"
+        evaluation_date_label="2026-05-13"
+        evaluation_rating="a"
+        evaluation_status="published"
       />
       """
     }

@@ -1189,16 +1189,18 @@ initBtInteractions();</code></pre>
       {
         title: "Evaluator card",
         block: true,
-        html: String.raw`<article class="bt-performance-card bt-performance-evaluator">
+        html: String.raw`<section class="bt-stack" style="gap: var(--bt-space-4);">
   <h2 class="bt-performance-section-title">Your evaluator</h2>
-  <div class="bt-performance-evaluator__row">
-    <img src="https://www.gravatar.com/avatar/?d=mp" alt="Morgan Chen" class="bt-performance-evaluator__avatar" />
-    <div>
-      <p class="bt-performance-evaluator__name">Morgan Chen</p>
-      <p class="bt-performance-meta-sub">morgan.chen@example.com</p>
+  <article class="bt-performance-card bt-performance-evaluator">
+    <div class="bt-performance-evaluator__row">
+      <img src="https://www.gravatar.com/avatar/?d=mp" alt="Morgan Chen" class="bt-performance-evaluator__avatar" />
+      <div>
+        <p class="bt-performance-evaluator__name">Morgan Chen</p>
+        <p class="bt-performance-meta-sub">morgan.chen@example.com</p>
+      </div>
     </div>
-  </div>
-</article>`,
+  </article>
+</section>`,
       },
     ],
   },
@@ -1212,21 +1214,21 @@ initBtInteractions();</code></pre>
       {
         title: "Hours panel",
         block: true,
-        html: String.raw`<div class="bt-performance-panel">
-  <div class="bt-performance-panel__inner">
-    <div class="bt-performance-panel__header">
-      <h3 class="bt-performance-kicker" style="color: var(--bt-color-text-subtle); margin: 0;">Reported hours</h3>
-    </div>
-    <div class="bt-performance-hours-row">
-      <button type="button" class="bt-performance-hours-toggle"><span class="bt-icon">▸</span><span>Acme Corp · Digital</span></button>
-      <span class="bt-performance-hours-pill">128.5h</span>
-    </div>
-    <div class="bt-performance-hours-row">
-      <button type="button" class="bt-performance-hours-toggle"><span class="bt-icon">▸</span><span>Northwind · SAP</span></button>
-      <span class="bt-performance-hours-pill">44h</span>
+        html: String.raw`<section class="bt-stack" style="gap: var(--bt-space-4);">
+  <h2 class="bt-performance-section-title">Reported hours</h2>
+  <div class="bt-performance-panel">
+    <div class="bt-performance-panel__inner">
+      <div class="bt-performance-hours-row">
+        <button type="button" class="bt-performance-hours-toggle"><span class="bt-icon">▸</span><span>Acme Corp · Digital</span></button>
+        <span class="bt-performance-hours-pill">128.5h</span>
+      </div>
+      <div class="bt-performance-hours-row">
+        <button type="button" class="bt-performance-hours-toggle"><span class="bt-icon">▸</span><span>Northwind · SAP</span></button>
+        <span class="bt-performance-hours-pill">44h</span>
+      </div>
     </div>
   </div>
-</div>`,
+</section>`,
       },
     ],
   },
@@ -1247,7 +1249,7 @@ initBtInteractions();</code></pre>
         <span class="bt-icon">📄</span>
         <span class="bt-performance-meta-row__date">2026-04-08</span>
         <span class="bt-performance-chip">H1 2026</span>
-        <span class="bt-performance-ack bt-performance-ack--done"><span class="bt-icon">✓</span><span>Acknowledged</span></span>
+        <span class="bt-performance-ack bt-performance-ack--done"><span class="bt-performance-ack__mark" aria-hidden="true">✓</span><span class="bt-performance-ack__label">Acknowledged</span></span>
       </div>
       <p class="bt-performance-meta-sub">Created by Morgan Chen</p>
     </div>
@@ -1291,16 +1293,28 @@ initBtInteractions();</code></pre>
         html: String.raw`<article class="bt-performance-card bt-performance-team-card">
   <div class="bt-performance-team-card__main">
     <img src="https://www.gravatar.com/avatar/?d=mp" alt="Sam Okonkwo" class="bt-performance-evaluator__avatar bt-performance-evaluator__avatar--sm" />
-    <div>
-      <div style="display:flex;gap:var(--bt-space-2);align-items:center;"><span style="font-weight:600;">Sam Okonkwo</span><span class="bt-performance-chip">Consultant</span></div>
-      <p class="bt-performance-meta-sub">sam.okonkwo@example.com</p>
-      <div style="display:flex;gap:var(--bt-space-2);margin-top:var(--bt-space-1);font-size:var(--bt-font-size-xs);"><span style="font-weight:600;">Acme · Platform migration</span><span class="bt-performance-hours-pill">96h</span></div>
+    <div class="bt-performance-team-card__identity">
+      <div class="bt-performance-team-card__name-row">
+        <span class="bt-performance-team-card__name">Sam Okonkwo</span>
+        <span class="bt-performance-chip bt-performance-chip--category">Consultant</span>
+      </div>
+      <div class="bt-performance-team-card__project-row">
+        <span class="bt-performance-team-card__project">Acme · Platform migration</span>
+        <span class="bt-performance-hours-pill">96h</span>
+      </div>
     </div>
   </div>
   <div class="bt-performance-team-card__aside">
-    <span style="font-size:var(--bt-font-size-sm);font-weight:600;color:var(--bt-color-primary);">Briefing on 2026-04-01</span>
-    <span class="bt-status bt-status--info">Published</span>
-    <span class="bt-performance-rating bt-performance-rating--a">A</span>
+    <div class="bt-performance-team-card__briefing">
+      <div class="bt-performance-meta-row bt-performance-meta-row--compact">
+        <span class="bt-icon">📄</span>
+        <span class="bt-performance-meta-row__date">Briefing on 2026-04-01</span>
+      </div>
+      <div class="bt-performance-team-card__briefing-tags">
+        <span class="bt-status bt-status--sm bt-status--info">Published</span>
+        <span class="bt-performance-rating bt-performance-rating--compact bt-performance-rating--a">Exceptional</span>
+      </div>
+    </div>
   </div>
 </article>`,
       },

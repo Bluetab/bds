@@ -35,6 +35,7 @@ defmodule Bds.Components do
   attr :rest, :global
   attr :class, :any
   attr :variant, :string, default: "primary", values: ~w(primary secondary tertiary outline ghost danger)
+  attr :size, :string, default: nil, values: [nil, "sm", "lg"]
   attr :type, :string, default: "button"
   attr :href, :string, default: nil
   attr :navigate, :any, default: nil
@@ -613,13 +614,25 @@ defmodule Bds.Components do
 
   defp button_class(%{variant: variant} = assigns) do
     variant_class = Map.fetch!(@variants, variant)
+
+    size_class =
+      case Map.get(assigns, :size) do
+        "sm" -> "bt-button--sm"
+        "lg" -> "bt-button--lg"
+        _ -> nil
+      end
+
+    base =
+      [variant_class, size_class]
+      |> Enum.reject(&is_nil/1)
+
     extra = Map.get(assigns, :class)
 
     case extra do
-      nil -> variant_class
-      extra when is_binary(extra) -> "#{variant_class} #{extra}"
-      extra when is_list(extra) -> [variant_class | extra]
-      extra -> [variant_class, extra]
+      nil -> base
+      extra when is_binary(extra) -> base ++ [extra]
+      extra when is_list(extra) -> base ++ extra
+      extra -> base ++ [extra]
     end
   end
 
