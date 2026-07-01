@@ -105,6 +105,10 @@
     box-shadow var(--bt-duration-fast) var(--bt-ease-standard);
 }
 
+a.bt-expense-liquidacion-card {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .bt-expense-liquidacion-card:hover {
   transform: translateY(-1px);
   border-color: color-mix(in srgb, var(--bt-color-primary) 45%, var(--bt-color-border));

@@ -819,6 +819,58 @@ initBtInteractions();</code></pre>
 </div>`,
       },
       {
+        title: "App shell with user menu",
+        block: true,
+        html: String.raw`<div class="bt-shell bt-shell--app">
+  <header class="bt-topbar">
+    <div class="bt-topbar__inner">
+      <div class="bt-topbar__start">
+        <a href="#" class="bt-navbar-logo-link" onclick="return false;">App</a>
+      </div>
+      <div class="bt-topbar__actions">
+        <div class="bt-navbar-user" tabindex="-1">
+          <div class="bt-navbar-user__trigger bt-navbar-user__trigger--compact" role="button" aria-haspopup="menu" tabindex="0">
+            <div class="bt-navbar-user__meta">
+              <div class="bt-navbar-user__role">Member</div>
+              <div class="bt-navbar-user__name">Alex Rivera</div>
+            </div>
+            <div class="bt-navbar-user__avatar-wrap">
+              <div class="bt-navbar-user__avatar bt-navbar-user__avatar--initials" aria-hidden="true">AR</div>
+              <span class="bt-navbar-user__status" aria-hidden="true"></span>
+            </div>
+            <span class="bt-navbar-user__chevron" aria-hidden="true">▾</span>
+          </div>
+          <div class="bt-navbar-user__dropdown" role="menu">
+            <div class="bt-navbar-user__dropdown-header">
+              <div class="bt-avatar bt-avatar--expanded">
+                <div class="bt-avatar__media" aria-hidden="true"><span>AR</span></div>
+                <div class="bt-avatar__text">
+                  <p class="bt-avatar__name">Alex Rivera</p>
+                  <p class="bt-avatar__email">alex.rivera@example.com</p>
+                </div>
+              </div>
+            </div>
+            <div class="bt-navbar-user__dropdown-prefs" role="group" aria-label="Preferences">
+              <button type="button" class="bt-navbar-menu-item bt-navbar-menu-item--toggle" aria-label="Toggle language">
+                <span class="bt-navbar-menu-item__label">Language</span>
+                <span class="bt-navbar-menu-item__value">Spanish</span>
+              </button>
+              <button type="button" class="bt-navbar-menu-item bt-navbar-menu-item--toggle" data-theme-toggle aria-label="Toggle theme">
+                <span class="bt-navbar-menu-item__label">Theme</span>
+                <span data-theme-value data-light="Light" data-dark="Dark" class="bt-navbar-menu-item__value">Light</span>
+              </button>
+            </div>
+            <div class="bt-navbar-menu-divider"></div>
+            <a href="#" class="bt-navbar-menu-item bt-navbar-menu-item--danger" onclick="return false;">Log out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="bt-main">Main content</main>
+</div>`,
+      },
+      {
         title: "Section header",
         block: true,
         html: String.raw`<section class="bt-section">
@@ -1795,15 +1847,12 @@ initBtInteractions();</code></pre>
       {
         title: "Liquidación wizard",
         html: String.raw`<div>
-  <div class="bt-stepper" role="list" aria-label="Progress">
-    <span class="bt-stepper__step bt-stepper__step--complete" role="listitem">1</span>
+  <div class="bt-stepper bt-stepper--labeled" role="list" aria-label="Progress">
+    <span class="bt-stepper__step bt-stepper__step--complete" role="listitem" aria-label="Project">✓</span>
     <span class="bt-stepper__connector" aria-hidden="true"></span>
-    <span class="bt-stepper__step bt-stepper__step--active" role="listitem" aria-current="step">2</span>
+    <span class="bt-stepper__step bt-stepper__step--active bt-stepper__step--badge" role="listitem" aria-current="step" aria-label="Details">Details</span>
     <span class="bt-stepper__connector" aria-hidden="true"></span>
-    <span class="bt-stepper__step" role="listitem">3</span>
-  </div>
-  <div class="bt-stepper__labels">
-    <span>Project</span><span>Details</span><span>Review</span>
+    <span class="bt-stepper__step" role="listitem" aria-label="Review">3</span>
   </div>
 </div>`,
       },

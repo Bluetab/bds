@@ -110,7 +110,12 @@ var i = 4, a = 250, o = {
 	clearDismiss() {
 		this.dismissTimer &&= (clearTimeout(this.dismissTimer), null);
 	}
-}, c = "bt-theme", l = (e, t = document) => [...t.querySelectorAll(e)], u = (e = document) => e.querySelector("[data-theme-icon]"), d = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), f = (e) => {
+}, c = "bt-theme", l = (e, t = document) => [...t.querySelectorAll(e)], u = (e = document) => e.querySelector("[data-theme-icon]"), d = (e = document, t = e.documentElement.dataset.theme) => {
+	let n = u(e);
+	n && (n.textContent = t === "dark" ? "☀" : "◐"), l("[data-theme-value]", e).forEach((e) => {
+		e.textContent = t === "dark" ? e.dataset.dark || "Dark" : e.dataset.light || "Light";
+	});
+}, f = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), p = (e) => {
 	if (e) {
 		if (typeof HTMLDialogElement < "u" && e instanceof HTMLDialogElement) {
 			!e.open && typeof e.showModal == "function" && e.showModal();
@@ -118,7 +123,7 @@ var i = 4, a = 250, o = {
 		}
 		e.setAttribute("open", "");
 	}
-}, p = (e) => {
+}, m = (e) => {
 	if (e) {
 		if (typeof HTMLDialogElement < "u" && e instanceof HTMLDialogElement) {
 			e.open && typeof e.close == "function" && e.close();
@@ -126,37 +131,40 @@ var i = 4, a = 250, o = {
 		}
 		e.removeAttribute("open");
 	}
-}, m = (e = document, t) => {
+}, h = (e = document, t) => {
 	l("[data-open=\"true\"].bt-menu", e).forEach((e) => {
 		e !== t && (e.dataset.open = "false");
 	});
-}, h = (e, t = {}) => {
+}, g = (e, t = {}) => {
 	let { root: n = document, storageKey: r = c, persist: i = !0 } = t;
-	n.documentElement.dataset.theme = e;
-	let a = u(n);
-	a && (a.textContent = e === "dark" ? "☀" : "◐"), i && localStorage.setItem(r, e);
-}, g = (e = {}) => {
-	let t = (e.root || document).documentElement.dataset.theme === "dark" ? "light" : "dark";
-	return h(t, e), t;
+	n.documentElement.dataset.theme = e, d(n, e), i && localStorage.setItem(r, e);
 }, _ = (e = {}) => {
+	let t = (e.root || document).documentElement.dataset.theme === "dark" ? "light" : "dark";
+	return g(t, e), t;
+}, v = (e = {}) => {
 	let { root: t = document, storageKey: n = c, fallbackTheme: r = "light" } = e, i = localStorage.getItem(n) || r;
-	return h(i, {
+	return g(i, {
 		...e,
 		root: t,
 		persist: !1
 	}), i;
 };
-function v(e = {}) {
+function y(e = {}) {
 	let { root: t = document, storageKey: n = c, autoApplyStoredTheme: r = !0 } = e, i = new AbortController(), { signal: a } = i;
-	return r && _({
+	r ? v({
 		root: t,
 		storageKey: n,
 		fallbackTheme: t.documentElement.dataset.theme || "light"
+	}) : d(t);
+	let o = new MutationObserver(() => d(t));
+	return o.observe(t.documentElement, {
+		attributes: !0,
+		attributeFilter: ["data-theme"]
 	}), t.addEventListener("mousedown", (e) => {
 		e.target.closest(".bt-combobox__panel") && e.preventDefault();
 	}, { signal: a }), t.addEventListener("click", (e) => {
 		if (e.target.closest("[data-theme-toggle]")) {
-			g({
+			_({
 				root: t,
 				storageKey: n
 			});
@@ -164,17 +172,17 @@ function v(e = {}) {
 		}
 		let r = e.target.closest("[data-dialog-open]");
 		if (r) {
-			f(d(r, r.dataset.dialogOpen, t));
+			p(f(r, r.dataset.dialogOpen, t));
 			return;
 		}
 		let i = e.target.closest("[data-dialog-close]");
 		if (i) {
-			p(i.closest(".bt-dialog"));
+			m(i.closest(".bt-dialog"));
 			return;
 		}
 		let a = e.target.closest("[data-overlay-open]");
 		if (a) {
-			d(a, a.dataset.overlayOpen, t)?.setAttribute("open", "");
+			f(a, a.dataset.overlayOpen, t)?.setAttribute("open", "");
 			return;
 		}
 		let o = e.target.closest("[data-overlay-close]");
@@ -184,11 +192,11 @@ function v(e = {}) {
 		}
 		let s = e.target.closest("[data-menu-toggle]");
 		if (s) {
-			let e = d(s, s.dataset.menuToggle, t), n = e?.dataset.open !== "true";
-			m(t, e), e && (e.dataset.open = String(n));
+			let e = f(s, s.dataset.menuToggle, t), n = e?.dataset.open !== "true";
+			h(t, e), e && (e.dataset.open = String(n));
 			return;
 		}
-		e.target.closest(".bt-menu-wrap") || m(t);
+		e.target.closest(".bt-menu-wrap") || h(t);
 		let c = e.target.closest("[data-expansion-toggle]");
 		if (c) {
 			let e = c.closest("[data-expansion]");
@@ -197,15 +205,15 @@ function v(e = {}) {
 		}
 		let u = e.target.closest("[data-snackbar-open]");
 		if (u) {
-			let e = d(u, u.dataset.snackbarOpen, t);
+			let e = f(u, u.dataset.snackbarOpen, t);
 			e && (e.dataset.open = "true", setTimeout(() => {
 				e.dataset.open = "false";
 			}, 3200));
 			return;
 		}
-		let h = e.target.closest("[data-snackbar-close]");
-		if (h) {
-			let e = h.closest(".bt-snackbar");
+		let d = e.target.closest("[data-snackbar-close]");
+		if (d) {
+			let e = d.closest(".bt-snackbar");
 			e && (e.dataset.open = "false");
 			return;
 		}
@@ -217,17 +225,19 @@ function v(e = {}) {
 			t.body.classList.remove("bt-sidebar-open");
 			return;
 		}
-		let _ = e.target.closest("[data-tab]");
-		if (_) {
-			let e = _.closest("[data-tabs]");
+		let g = e.target.closest("[data-tab]");
+		if (g) {
+			let e = g.closest("[data-tabs]");
 			if (!e) return;
 			l("[role=\"tab\"]", e).forEach((e) => {
-				e.setAttribute("aria-selected", String(e === _));
+				e.setAttribute("aria-selected", String(e === g));
 			}), l(".bt-tab-panel", e).forEach((e) => {
-				e.setAttribute("aria-hidden", String(e.id !== _.dataset.tab));
+				e.setAttribute("aria-hidden", String(e.id !== g.dataset.tab));
 			});
 		}
-	}, { signal: a }), () => i.abort();
+	}, { signal: a }), () => {
+		i.abort(), o.disconnect();
+	};
 }
 //#endregion
-export { o as BtCombobox, s as BtFlash, e as CalendarDaySelection, c as DEFAULT_THEME_STORAGE_KEY, _ as applyStoredTheme, v as initBtInteractions, h as setTheme, g as toggleTheme };
+export { o as BtCombobox, s as BtFlash, e as CalendarDaySelection, c as DEFAULT_THEME_STORAGE_KEY, v as applyStoredTheme, y as initBtInteractions, g as setTheme, d as syncThemeLabels, _ as toggleTheme };

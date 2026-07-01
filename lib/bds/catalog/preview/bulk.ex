@@ -504,6 +504,37 @@ defmodule Bds.Catalog.Preview.Bulk do
 
   def render("layout", 2, assigns) do
     ~H"""
+    <div class="bt-shell bt-shell--app">
+      <.bt_topbar>
+        <:brand>
+          <.bt_navbar_logo_link href="#" logo_src="/images/logo.png">App</.bt_navbar_logo_link>
+        </:brand>
+        <:actions>
+          <.bt_navbar_user_menu
+            name="Alex Rivera"
+            email="alex.rivera@example.com"
+            role="Member"
+            initials="AR"
+          >
+            <.bt_navbar_user_menu_prefs>
+              <.bt_navbar_user_menu_locale_toggle
+                locale="es"
+                locales={[%{code: "es", label: "Spanish"}, %{code: "en", label: "English"}]}
+              />
+              <.bt_navbar_user_menu_theme_toggle />
+            </.bt_navbar_user_menu_prefs>
+            <div class="bt-navbar-menu-divider" />
+            <a href="#" class="bt-navbar-menu-item bt-navbar-menu-item--danger">Log out</a>
+          </.bt_navbar_user_menu>
+        </:actions>
+      </.bt_topbar>
+      <main class="bt-main">Main content</main>
+    </div>
+    """
+  end
+
+  def render("layout", 3, assigns) do
+    ~H"""
     <.bt_section title="Section title" description="Brief section description.">
       <:actions>
         <.bt_button variant="secondary">Action</.bt_button>

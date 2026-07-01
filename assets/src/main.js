@@ -1,5 +1,6 @@
 import "./styles/main.css";
 import { COMPONENTS, GROUP_ORDER, snippets } from "./catalog.js";
+import { syncThemeLabels } from "./lib/interactions.js";
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -255,7 +256,7 @@ function setupEvents() {
       const nextTheme = html.dataset.theme === "dark" ? "light" : "dark";
       html.dataset.theme = nextTheme;
       localStorage.setItem("bt-theme", nextTheme);
-      $("[data-theme-icon]").textContent = nextTheme === "dark" ? "☀" : "◐";
+      syncThemeLabels(document, nextTheme);
       return;
     }
 
@@ -366,8 +367,7 @@ function setupEvents() {
 function boot() {
   const storedTheme = localStorage.getItem("bt-theme");
   if (storedTheme) document.documentElement.dataset.theme = storedTheme;
-  $("[data-theme-icon]").textContent =
-    document.documentElement.dataset.theme === "dark" ? "☀" : "◐";
+  syncThemeLabels(document);
   renderNav();
   setupEvents();
   setRoute(location.hash.replace("#", "") || "get-started");

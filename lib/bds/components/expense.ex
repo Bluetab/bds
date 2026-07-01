@@ -71,6 +71,9 @@ defmodule Bds.Components.Expense do
   attr :current_step_label, :string, default: nil
   attr :pill_variant, :string, default: "info", values: ~w(info warning success)
   attr :total_steps, :integer, default: 5
+  attr :navigate, :any, default: nil
+  attr :patch, :any, default: nil
+  attr :href, :string, default: nil
   attr :rest, :global
   slot :project_icon
 
@@ -78,40 +81,105 @@ defmodule Bds.Components.Expense do
     pill_class =
       Map.get(@workflow_pill, assigns.pill_variant, @workflow_pill["info"])
 
+    card_class = ["bt-expense-liquidacion-card", assigns.class]
+
     assigns =
       assigns
       |> assign(:rejected_label, resolved_rejected_label(assigns))
       |> assign(:pill_class, pill_class)
+      |> assign(:card_class, card_class)
+      |> assign(:link?, link_card?(assigns))
 
     ~H"""
-    <article id={@id} class={["bt-expense-liquidacion-card", @class]} {@rest}>
-      <div class="bt-expense-liquidacion-card__top">
-        <%= if @rejected? do %>
-          <span class="bt-expense-workflow__pill bt-expense-workflow__pill--error">{@rejected_label}</span>
-        <% else %>
-          <.bt_expense_workflow_track
-            total_steps={@total_steps}
-            current_index={@current_step_index}
-            current_label={@current_step_label}
-            pill_class={@pill_class}
-          />
-        <% end %>
-        <span class="bt-expense-date-chip">{@date_label}</span>
-      </div>
-      <p class="bt-expense-liquidacion-card__concept">{@concept}</p>
-      <div class="bt-expense-liquidacion-card__meta">
-        <div class="bt-expense-liquidacion-card__project">
-          <span :if={render_slot(@project_icon) != []} class="bt-expense-liquidacion-card__project-icon">
-            {render_slot(@project_icon)}
-          </span>
-          <span class="bt-expense-liquidacion-card__project-name">{@project_name}</span>
-        </div>
-        <span>
-          {ngettext("%{count} expense", "%{count} expenses", @gasto_count, count: @gasto_count)}
-        </span>
-      </div>
-    </article>
+    <%= if @link? do %>
+      <.link
+        id={@id}
+        class={@card_class}
+        navigate={@navigate}
+        patch={@patch}
+        href={@href}
+        {@rest}
+      >
+        <.bt_expense_liquidacion_card_body
+          rejected?={@rejected?}
+          rejected_label={@rejected_label}
+          current_step_index={@current_step_index}
+          current_step_label={@current_step_label}
+          pill_class={@pill_class}
+          total_steps={@total_steps}
+          date_label={@date_label}
+          concept={@concept}
+          project_name={@project_name}
+          gasto_count={@gasto_count}
+        >
+          <:project_icon>{render_slot(@project_icon)}</:project_icon>
+        </.bt_expense_liquidacion_card_body>
+      </.link>
+    <% else %>
+      <article id={@id} class={@card_class} {@rest}>
+        <.bt_expense_liquidacion_card_body
+          rejected?={@rejected?}
+          rejected_label={@rejected_label}
+          current_step_index={@current_step_index}
+          current_step_label={@current_step_label}
+          pill_class={@pill_class}
+          total_steps={@total_steps}
+          date_label={@date_label}
+          concept={@concept}
+          project_name={@project_name}
+          gasto_count={@gasto_count}
+        >
+          <:project_icon>{render_slot(@project_icon)}</:project_icon>
+        </.bt_expense_liquidacion_card_body>
+      </article>
+    <% end %>
     """
+  end
+
+  attr :rejected?, :boolean, required: true
+  attr :rejected_label, :string, required: true
+  attr :current_step_index, :integer, required: true
+  attr :current_step_label, :string, default: nil
+  attr :pill_class, :string, required: true
+  attr :total_steps, :integer, required: true
+  attr :date_label, :string, required: true
+  attr :concept, :string, required: true
+  attr :project_name, :string, required: true
+  attr :gasto_count, :integer, required: true
+  slot :project_icon
+
+  defp bt_expense_liquidacion_card_body(assigns) do
+    ~H"""
+    <div class="bt-expense-liquidacion-card__top">
+      <%= if @rejected? do %>
+        <span class="bt-expense-workflow__pill bt-expense-workflow__pill--error">{@rejected_label}</span>
+      <% else %>
+        <.bt_expense_workflow_track
+          total_steps={@total_steps}
+          current_index={@current_step_index}
+          current_label={@current_step_label}
+          pill_class={@pill_class}
+        />
+      <% end %>
+      <span class="bt-expense-date-chip">{@date_label}</span>
+    </div>
+    <p class="bt-expense-liquidacion-card__concept">{@concept}</p>
+    <div class="bt-expense-liquidacion-card__meta">
+      <div class="bt-expense-liquidacion-card__project">
+        <span :if={render_slot(@project_icon) != []} class="bt-expense-liquidacion-card__project-icon">
+          {render_slot(@project_icon)}
+        </span>
+        <span class="bt-expense-liquidacion-card__project-name">{@project_name}</span>
+      </div>
+      <span>
+        {ngettext("%{count} expense", "%{count} expenses", @gasto_count, count: @gasto_count)}
+      </span>
+    </div>
+    """
+  end
+
+  defp link_card?(assigns) do
+    assigns.navigate || assigns.patch || assigns.href
   end
 
   attr :total_steps, :integer, default: 5

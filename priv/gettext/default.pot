@@ -214,7 +214,7 @@ msgid "Overall assessment"
 msgstr ""
 
 #: lib/bds/components/catalog_ui.ex:452
-#: lib/bds/components/catalog_ui.ex:1134
+#: lib/bds/components/catalog_ui.ex:1148
 #, elixir-autogen, elixir-format
 msgid "Progress"
 msgstr ""
@@ -311,7 +311,8 @@ msgstr ""
 msgid "Toggle branch"
 msgstr ""
 
-#: lib/bds/components.ex:407
+#: lib/bds/components.ex:408
+#: lib/bds/components.ex:621
 #, elixir-autogen, elixir-format
 msgid "Toggle theme"
 msgstr ""
@@ -326,7 +327,7 @@ msgstr ""
 msgid "Update entry"
 msgstr ""
 
-#: lib/bds/components.ex:490
+#: lib/bds/components.ex:502
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr ""
@@ -341,7 +342,8 @@ msgstr ""
 msgid "Weaknesses"
 msgstr ""
 
-#: lib/bds/components.ex:440
+#: lib/bds/components.ex:441
+#: lib/bds/components.ex:588
 #, elixir-autogen, elixir-format
 msgid "Toggle language"
 msgstr ""
@@ -622,7 +624,7 @@ msgstr[1] ""
 msgid "Breadcrumb"
 msgstr ""
 
-#: lib/bds/components/catalog_ui.ex:1174
+#: lib/bds/components/catalog_ui.ex:1207
 #, elixir-autogen, elixir-format
 msgid "Close dialog"
 msgstr ""
@@ -646,4 +648,34 @@ msgstr ""
 #: lib/bds/components/expense.ex:322
 #, elixir-autogen, elixir-format
 msgid "Rejected liquidación"
+msgstr ""
+
+#: lib/bds/components.ex:613
+#, elixir-autogen, elixir-format
+msgid "Dark"
+msgstr ""
+
+#: lib/bds/components.ex:578
+#, elixir-autogen, elixir-format
+msgid "Language"
+msgstr ""
+
+#: lib/bds/components.ex:612
+#, elixir-autogen, elixir-format
+msgid "Light"
+msgstr ""
+
+#: lib/bds/components.ex:556
+#, elixir-autogen, elixir-format
+msgid "Preferences"
+msgstr ""
+
+#: lib/bds/components.ex:611
+#, elixir-autogen, elixir-format
+msgid "Theme"
+msgstr ""
+
+#: lib/bds/components/catalog_ui.ex:1188
+#, elixir-autogen, elixir-format
+msgid "Step %{number}"
 msgstr ""

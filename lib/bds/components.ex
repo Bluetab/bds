@@ -12,6 +12,8 @@ defmodule Bds.Components do
   use Phoenix.Component
   use Gettext, backend: Bds.Gettext
 
+  import Bds.Components.CatalogUi, only: [bt_avatar: 1]
+
   alias Phoenix.LiveView.JS
 
   @variants %{
@@ -314,7 +316,8 @@ defmodule Bds.Components do
   @doc """
   Top navbar (`bt-topbar`): Bluetab gradient bar with logo, actions, theme toggle, and user menu.
 
-  Pair with `<.bt_navbar_logo_link>`, `<.bt_navbar_theme_toggle>`, and `<.bt_navbar_user_menu>`.
+  Pair with `<.bt_navbar_logo_link>`, `<.bt_navbar_theme_toggle>`, `<.bt_navbar_locale_toggle>`,
+  and `<.bt_navbar_user_menu>` (with optional `<.bt_navbar_user_menu_prefs>` for language/theme rows).
 
   ## Examples
 
@@ -404,7 +407,7 @@ defmodule Bds.Components do
   attr :label, :string, default: nil
 
   def bt_navbar_theme_toggle(assigns) do
-    assigns = assign_new(assigns, :label, fn -> gettext("Toggle theme") end)
+    assigns = assign_string_default(assigns, :label, fn -> gettext("Toggle theme") end)
 
     ~H"""
     <div class={["bt-navbar-theme-toggle", @class]}>
@@ -437,8 +440,8 @@ defmodule Bds.Components do
   def bt_navbar_locale_toggle(assigns) do
     assigns =
       assigns
-      |> assign_new(:label, fn -> gettext("Toggle language") end)
-      |> assign_new(:event, fn -> "set_locale" end)
+      |> assign_string_default(:label, fn -> gettext("Toggle language") end)
+      |> assign_string_default(:event, fn -> "set_locale" end)
       |> assign(:next_locale, next_locale(assigns.locale, assigns.locales))
       |> assign(:locale_display, locale_display(assigns.locale))
 
@@ -472,13 +475,25 @@ defmodule Bds.Components do
   defp locale_display(code) when is_binary(code), do: String.upcase(code)
   defp locale_display(_), do: "ES"
 
+  defp assign_string_default(assigns, key, value) when is_function(value, 0) do
+    case Map.get(assigns, key) do
+      nil -> assign(assigns, key, value.())
+      "" -> assign(assigns, key, value.())
+      existing -> assign(assigns, key, existing)
+    end
+  end
+
   @doc """
   User menu trigger + hover/focus dropdown for the brand topbar.
+
+  For signed-in apps, nest `<.bt_navbar_user_menu_prefs>` with locale/theme toggles
+  instead of standalone `<.bt_navbar_locale_toggle>` / `<.bt_navbar_theme_toggle>` in `:actions`.
   """
   attr :class, :any, default: nil
   attr :id, :string, default: nil
   attr :name, :string, required: true
   attr :role, :string, default: nil
+  attr :email, :string, default: nil
   attr :initials, :string, default: "?"
   attr :avatar_src, :string, default: nil
   slot :inner_block, required: true
@@ -487,7 +502,7 @@ defmodule Bds.Components do
     assigns =
       assigns
       |> assign_new(:id, fn -> "bt-navbar-user-#{System.unique_integer([:positive])}" end)
-      |> assign_new(:role, fn -> gettext("User") end)
+      |> assign_string_default(:role, fn -> gettext("User") end)
 
     ~H"""
     <div id={@id} class={["bt-navbar-user", @class]} tabindex="-1">
@@ -502,29 +517,151 @@ defmodule Bds.Components do
           <div class="bt-navbar-user__name">{@name}</div>
         </div>
 
-        <div class="bt-navbar-user__avatar-wrap">
-          <%= if @avatar_src do %>
-            <img src={@avatar_src} alt={@name} class="bt-navbar-user__avatar" />
-          <% else %>
-            <div class="bt-navbar-user__avatar bt-navbar-user__avatar--initials" aria-hidden="true">
-              {@initials}
-            </div>
-          <% end %>
-          <span class="bt-navbar-user__status" aria-hidden="true"></span>
-        </div>
+        <.navbar_user_avatar
+          name={@name}
+          initials={@initials}
+          avatar_src={@avatar_src}
+          class="bt-navbar-user__avatar-wrap"
+        />
 
         <span class="bt-navbar-user__chevron" aria-hidden="true">▾</span>
       </div>
 
       <div class="bt-navbar-user__dropdown" role="menu">
         <div class="bt-navbar-user__dropdown-header">
-          <p class="bt-navbar-user__name">{@name}</p>
-          <p class="bt-navbar-user__role">{@role}</p>
+          <.bt_avatar
+            name={@name}
+            email={@email || @role}
+            src={@avatar_src}
+            initials={@initials}
+            compactness="expanded"
+          />
         </div>
         {render_slot(@inner_block)}
       </div>
     </div>
     """
+  end
+
+  attr :name, :string, required: true
+  attr :initials, :string, required: true
+  attr :avatar_src, :string, default: nil
+  attr :class, :any, default: nil
+  attr :show_status, :boolean, default: true
+
+  defp navbar_user_avatar(assigns) do
+    ~H"""
+    <div class={@class}>
+      <%= if @avatar_src do %>
+        <img src={@avatar_src} alt={@name} class="bt-navbar-user__avatar" />
+      <% else %>
+        <div class="bt-navbar-user__avatar bt-navbar-user__avatar--initials" aria-hidden="true">
+          {@initials}
+        </div>
+      <% end %>
+      <span :if={@show_status} class="bt-navbar-user__status" aria-hidden="true"></span>
+    </div>
+    """
+  end
+
+  @doc """
+  Preferences group inside `bt_navbar_user_menu` — language and theme rows.
+
+  ## Examples
+
+      <.bt_navbar_user_menu_prefs>
+        <.bt_navbar_user_menu_locale_toggle locale="es" locales={@locales} />
+        <.bt_navbar_user_menu_theme_toggle />
+      </.bt_navbar_user_menu_prefs>
+  """
+  attr :label, :string, default: nil
+  slot :inner_block, required: true
+
+  def bt_navbar_user_menu_prefs(assigns) do
+    assigns = assign_string_default(assigns, :label, fn -> gettext("Preferences") end)
+
+    ~H"""
+    <div class="bt-navbar-user__dropdown-prefs" role="group" aria-label={@label}>
+      {render_slot(@inner_block)}
+    </div>
+    """
+  end
+
+  @doc """
+  Language row for the user menu dropdown. Cycles `locales` on click (`phx-click` / `phx-value-locale`).
+  """
+  attr :class, :any, default: nil
+  attr :locale, :string, required: true
+  attr :locales, :list, required: true
+  attr :label, :string, default: nil
+  attr :event, :string, default: "set_locale"
+  attr :rest, :global
+
+  def bt_navbar_user_menu_locale_toggle(assigns) do
+    assigns =
+      assigns
+      |> assign_string_default(:label, fn -> gettext("Language") end)
+      |> assign(:next_locale, next_locale(assigns.locale, assigns.locales))
+      |> assign(:current_label, locale_label(assigns.locale, assigns.locales))
+
+    ~H"""
+    <button
+      type="button"
+      class={["bt-navbar-menu-item", "bt-navbar-menu-item--toggle", @class]}
+      phx-click={@event}
+      phx-value-locale={@next_locale}
+      aria-label={gettext("Toggle language")}
+      {@rest}
+    >
+      <span class="bt-navbar-menu-item__label">{@label}</span>
+      <span class="bt-navbar-menu-item__value">{@current_label}</span>
+    </button>
+    """
+  end
+
+  @doc """
+  Theme row for the user menu dropdown. Uses `data-theme-toggle` (see package interactions).
+  """
+  attr :class, :any, default: nil
+  attr :id, :string, default: nil
+  attr :label, :string, default: nil
+  attr :light_label, :string, default: nil
+  attr :dark_label, :string, default: nil
+  attr :rest, :global
+
+  def bt_navbar_user_menu_theme_toggle(assigns) do
+    assigns =
+      assigns
+      |> assign_new(:id, fn -> "bt-navbar-user-theme-#{System.unique_integer([:positive])}" end)
+      |> assign_string_default(:label, fn -> gettext("Theme") end)
+      |> assign_string_default(:light_label, fn -> gettext("Light") end)
+      |> assign_string_default(:dark_label, fn -> gettext("Dark") end)
+
+    ~H"""
+    <button
+      type="button"
+      id={@id}
+      class={["bt-navbar-menu-item", "bt-navbar-menu-item--toggle", @class]}
+      data-theme-toggle
+      aria-label={gettext("Toggle theme")}
+      {@rest}
+    >
+      <span class="bt-navbar-menu-item__label">{@label}</span>
+      <span
+        data-theme-value
+        data-light={@light_label}
+        data-dark={@dark_label}
+        class="bt-navbar-menu-item__value"
+      >{@light_label}</span>
+    </button>
+    """
+  end
+
+  defp locale_label(locale, locales) do
+    case Enum.find(locales, &(&1.code == locale)) do
+      %{label: label} -> label
+      _ -> locale_display(locale)
+    end
   end
 
   attr :id, :string, required: true

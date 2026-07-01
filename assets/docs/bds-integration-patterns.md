@@ -32,6 +32,8 @@ Without `bt-shell--app`, the first child is placed in the narrow sidebar column 
 
 Production apps use the gradient topbar with orange border. In Phoenix:
 
+When the user is **signed in**, put language and theme inside the user menu (not as separate topbar icons):
+
 ```heex
 <.bt_topbar>
   <:brand>
@@ -40,12 +42,25 @@ Production apps use the gradient topbar with orange border. In Phoenix:
     </.bt_navbar_logo_link>
   </:brand>
   <:actions>
-    <.bt_navbar_theme_toggle />
     <.bt_navbar_user_menu name="…" role="…" initials="…">
-      …dropdown items with class="bt-navbar-menu-item"…
+      <.bt_navbar_user_menu_prefs>
+        <.bt_navbar_user_menu_locale_toggle locale={@locale} locales={@locales} />
+        <.bt_navbar_user_menu_theme_toggle />
+      </.bt_navbar_user_menu_prefs>
+      <div class="bt-navbar-menu-divider" />
+      <.link href={~p"/sign-out"} class="bt-navbar-menu-item bt-navbar-menu-item--danger">
+        {gettext("Log out")}
+      </.link>
     </.bt_navbar_user_menu>
   </:actions>
 </.bt_topbar>
+```
+
+When **signed out**, keep standalone toggles in `:actions`:
+
+```heex
+<.bt_navbar_locale_toggle locale={@locale} locales={@locales} />
+<.bt_navbar_theme_toggle />
 ```
 
 For **storybook / catalog** layouts (full-width topbar above sidebar + main), use `bt-shell--storybook` and place the topbar as the **first** child:

@@ -212,7 +212,7 @@ msgid "Overall assessment"
 msgstr "Overall assessment"
 
 #: lib/bds/components/catalog_ui.ex:452
-#: lib/bds/components/catalog_ui.ex:1134
+#: lib/bds/components/catalog_ui.ex:1148
 #, elixir-autogen, elixir-format
 msgid "Progress"
 msgstr "Progress"
@@ -309,7 +309,8 @@ msgstr "This day cannot be edited."
 msgid "Toggle branch"
 msgstr "Toggle branch"
 
-#: lib/bds/components.ex:407
+#: lib/bds/components.ex:408
+#: lib/bds/components.ex:621
 #, elixir-autogen, elixir-format
 msgid "Toggle theme"
 msgstr "Toggle theme"
@@ -324,7 +325,7 @@ msgstr "Type"
 msgid "Update entry"
 msgstr "Update entry"
 
-#: lib/bds/components.ex:490
+#: lib/bds/components.ex:502
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "User"
@@ -339,7 +340,8 @@ msgstr "Vacation"
 msgid "Weaknesses"
 msgstr "Weaknesses"
 
-#: lib/bds/components.ex:440
+#: lib/bds/components.ex:441
+#: lib/bds/components.ex:588
 #, elixir-autogen, elixir-format
 msgid "Toggle language"
 msgstr "Toggle language"
@@ -457,48 +459,48 @@ msgstr "Set %{hours} hours"
 #: lib/bds/components/calendar.ex:1000
 #, elixir-autogen, elixir-format
 msgid "1h"
-msgstr ""
+msgstr "1h"
 
 #: lib/bds/components/calendar.ex:1001
 #, elixir-autogen, elixir-format
 msgid "2h"
-msgstr ""
+msgstr "2h"
 
 #: lib/bds/components/calendar.ex:1002
 #, elixir-autogen, elixir-format
 msgid "4h"
-msgstr ""
+msgstr "4h"
 
 #: lib/bds/components/project_picker.ex:98
 #, elixir-autogen, elixir-format
 msgid "No projects available."
-msgstr ""
+msgstr "No projects available."
 
 #: lib/bds/components/project_picker.ex:95
 #, elixir-autogen, elixir-format
 msgid "Collapse all"
-msgstr ""
+msgstr "Collapse all"
 
 #: lib/bds/components/project_picker.ex:96
 #, elixir-autogen, elixir-format
 msgid "Expand all"
-msgstr ""
+msgstr "Expand all"
 
 #: lib/bds/components/project_picker.ex:94
 #, elixir-autogen, elixir-format
 msgid "Settings"
-msgstr ""
+msgstr "Settings"
 
 #: lib/bds/components/performance.ex:684
 #, elixir-autogen, elixir-format
 msgid "%{percent}%"
-msgstr ""
+msgstr "%{percent}%"
 
 #: lib/bds/components/performance.ex:669
 #: lib/bds/components/performance.ex:676
 #, elixir-autogen, elixir-format
 msgid "Above expected"
-msgstr ""
+msgstr "Above expected"
 
 #: lib/bds/components/performance.ex:289
 #, elixir-autogen, elixir-format, fuzzy
@@ -508,24 +510,24 @@ msgstr "Acknowledged"
 #: lib/bds/components/calendar.ex:801
 #, elixir-autogen, elixir-format
 msgid "Add a comment"
-msgstr ""
+msgstr "Add a comment"
 
 #: lib/bds/components/calendar.ex:807
 #, elixir-autogen, elixir-format
 msgid "Add a note (optional)"
-msgstr ""
+msgstr "Add a note (optional)"
 
 #: lib/bds/components/performance.ex:671
 #: lib/bds/components/performance.ex:678
 #, elixir-autogen, elixir-format
 msgid "Below expected"
-msgstr ""
+msgstr "Below expected"
 
 #: lib/bds/components/calendar.ex:573
 #: lib/bds/components/calendar.ex:907
 #, elixir-autogen, elixir-format
 msgid "Comment"
-msgstr ""
+msgstr "Comment"
 
 #: lib/bds/components/calendar.ex:1007
 #, elixir-autogen, elixir-format, fuzzy
@@ -536,47 +538,47 @@ msgstr "Daily goal reached"
 #: lib/bds/components/performance.ex:675
 #, elixir-autogen, elixir-format
 msgid "Exceptional"
-msgstr ""
+msgstr "Exceptional"
 
 #: lib/bds/components/performance.ex:670
 #: lib/bds/components/performance.ex:677
 #, elixir-autogen, elixir-format
 msgid "Expected"
-msgstr ""
+msgstr "Expected"
 
 #: lib/bds/components/calendar.ex:571
 #, elixir-autogen, elixir-format
 msgid "Reason & comment"
-msgstr ""
+msgstr "Reason & comment"
 
 #: lib/bds/components/calendar.ex:572
 #: lib/bds/components/calendar.ex:900
 #, elixir-autogen, elixir-format
 msgid "Rejection reason"
-msgstr ""
+msgstr "Rejection reason"
 
 #: lib/bds/components/performance.ex:656
 #: lib/bds/components/performance.ex:662
 #, elixir-autogen, elixir-format
 msgid "Fully achieved"
-msgstr ""
+msgstr "Fully achieved"
 
 #: lib/bds/components/performance.ex:654
 #: lib/bds/components/performance.ex:660
 #, elixir-autogen, elixir-format
 msgid "Not achieved"
-msgstr ""
+msgstr "Not achieved"
 
 #: lib/bds/components/performance.ex:655
 #: lib/bds/components/performance.ex:661
 #, elixir-autogen, elixir-format
 msgid "Partially achieved"
-msgstr ""
+msgstr "Partially achieved"
 
 #: lib/bds/components/performance.ex:490
 #, elixir-autogen, elixir-format
 msgid "No briefing yet"
-msgstr ""
+msgstr "No briefing yet"
 
 #: lib/bds/components/performance.ex:465
 #, elixir-autogen, elixir-format
@@ -618,9 +620,9 @@ msgstr[1] ""
 #: lib/bds/components/catalog_ui.ex:1062
 #, elixir-autogen, elixir-format
 msgid "Breadcrumb"
-msgstr ""
+msgstr "Breadcrumb"
 
-#: lib/bds/components/catalog_ui.ex:1174
+#: lib/bds/components/catalog_ui.ex:1207
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Close dialog"
 msgstr "Close"
@@ -628,20 +630,50 @@ msgstr "Close"
 #: lib/bds/components/expense.ex:43
 #, elixir-autogen, elixir-format
 msgid "Liquidaciones filters"
-msgstr ""
+msgstr "Liquidaciones filters"
 
 #: lib/bds/components/expense.ex:178
 #, elixir-autogen, elixir-format
 msgid "No matching projects."
-msgstr ""
+msgstr "No matching projects."
 
 #: lib/bds/components/expense.ex:243
 #, elixir-autogen, elixir-format
 msgid "Rebill"
-msgstr ""
+msgstr "Rebill"
 
 #: lib/bds/components/expense.ex:319
 #: lib/bds/components/expense.ex:322
 #, elixir-autogen, elixir-format
 msgid "Rejected liquidación"
 msgstr "Rejected"
+
+#: lib/bds/components.ex:613
+#, elixir-autogen, elixir-format
+msgid "Dark"
+msgstr "Dark"
+
+#: lib/bds/components.ex:578
+#, elixir-autogen, elixir-format
+msgid "Language"
+msgstr "Language"
+
+#: lib/bds/components.ex:612
+#, elixir-autogen, elixir-format
+msgid "Light"
+msgstr "Light"
+
+#: lib/bds/components.ex:556
+#, elixir-autogen, elixir-format
+msgid "Preferences"
+msgstr "Preferences"
+
+#: lib/bds/components.ex:611
+#, elixir-autogen, elixir-format
+msgid "Theme"
+msgstr "Theme"
+
+#: lib/bds/components/catalog_ui.ex:1188
+#, elixir-autogen, elixir-format
+msgid "Step %{number}"
+msgstr ""

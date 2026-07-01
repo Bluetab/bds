@@ -4,6 +4,16 @@ const toArray = (selector, root = document) => [...root.querySelectorAll(selecto
 
 const getThemeIcon = (root = document) => root.querySelector('[data-theme-icon]');
 
+const syncThemeLabels = (root = document, theme = root.documentElement.dataset.theme) => {
+  const icon = getThemeIcon(root);
+  if (icon) icon.textContent = theme === 'dark' ? '☀' : '◐';
+
+  toArray('[data-theme-value]', root).forEach((el) => {
+    const dark = theme === 'dark';
+    el.textContent = dark ? (el.dataset.dark || 'Dark') : (el.dataset.light || 'Light');
+  });
+};
+
 const findLocalTarget = (trigger, id, root = document) => {
   const scope = trigger.closest('.bt-example, .bt-doc-card, .bt-shell, main, body') || root;
   return scope.querySelector(`#${CSS.escape(id)}`) || root.getElementById(id);
@@ -49,9 +59,7 @@ const setTheme = (theme, options = {}) => {
   } = options;
 
   root.documentElement.dataset.theme = theme;
-
-  const icon = getThemeIcon(root);
-  if (icon) icon.textContent = theme === 'dark' ? '☀' : '◐';
+  syncThemeLabels(root, theme);
 
   if (persist) localStorage.setItem(storageKey, theme);
 };
@@ -86,7 +94,15 @@ function initBtInteractions(options = {}) {
 
   if (autoApplyStoredTheme) {
     applyStoredTheme({ root, storageKey, fallbackTheme: root.documentElement.dataset.theme || 'light' });
+  } else {
+    syncThemeLabels(root);
   }
+
+  const themeObserver = new MutationObserver(() => syncThemeLabels(root));
+  themeObserver.observe(root.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+  });
 
   root.addEventListener('mousedown', (event) => {
     if (event.target.closest('.bt-combobox__panel')) {
@@ -191,7 +207,10 @@ function initBtInteractions(options = {}) {
     }
   }, { signal });
 
-  return () => controller.abort();
+  return () => {
+    controller.abort();
+    themeObserver.disconnect();
+  };
 }
 
 export { CalendarDaySelection } from './calendar-day-selection.js';
@@ -203,5 +222,6 @@ export {
   applyStoredTheme,
   initBtInteractions,
   setTheme,
+  syncThemeLabels,
   toggleTheme
 };

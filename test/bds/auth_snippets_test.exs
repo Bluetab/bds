@@ -18,10 +18,19 @@ defmodule Bds.AuthSnippetsTest do
     assert snippet =~ "AshAuthentication.Phoenix.Components.OAuth2"
   end
 
-  test "install_snippets/1 combines banner and oauth blocks" do
+  test "install_snippets/1 combines banner, oauth, and sign-in shell blocks" do
     combined = Bds.AuthUi.install_snippets("Acme")
 
     assert combined =~ "Components.Banner"
     assert combined =~ "Components.OAuth2"
+    assert combined =~ "SignInLive"
+    assert combined =~ "bt-auth-page"
+  end
+
+  test "sign_in_shell_override_snippet/0 includes flash classes" do
+    snippet = Bds.AuthUi.sign_in_shell_override_snippet()
+
+    assert snippet =~ "bt-auth-flash--info"
+    assert snippet =~ "Components.Flash"
   end
 end

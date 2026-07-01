@@ -1124,10 +1124,24 @@ defmodule Bds.Components.CatalogUi do
   attr :current, :integer, required: true
   attr :steps, :list, required: true
   attr :icons, :boolean, default: false
+  attr :show_labels, :boolean, default: false
 
   def bt_stepper(assigns) do
-    stepper_class = if assigns.icons, do: "bt-stepper bt-stepper--icons", else: "bt-stepper"
-    assigns = assign(assigns, :stepper_class, stepper_class)
+    labeled? = Enum.all?(assigns.steps, &is_binary/1)
+    show_labels? = assigns.show_labels && not labeled?
+
+    stepper_class =
+      cond do
+        assigns.icons -> "bt-stepper bt-stepper--icons"
+        labeled? -> "bt-stepper bt-stepper--labeled"
+        true -> "bt-stepper"
+      end
+
+    assigns =
+      assigns
+      |> assign(:labeled?, labeled?)
+      |> assign(:show_labels?, show_labels?)
+      |> assign(:stepper_class, stepper_class)
 
     ~H"""
     <div class={@class}>
@@ -1135,24 +1149,43 @@ defmodule Bds.Components.CatalogUi do
         <%= for {step, index} <- Enum.with_index(@steps, 1) do %>
           <span :if={index > 1} class="bt-stepper__connector" aria-hidden="true"></span>
           <span
-            class={[
-              "bt-stepper__step",
-              index == @current && "bt-stepper__step--active",
-              index < @current && "bt-stepper__step--complete"
-            ]}
+            class={step_classes(index, @current, @labeled?)}
             role="listitem"
             aria-current={if index == @current, do: "step", else: false}
+            aria-label={step_aria_label(step, index, @labeled?)}
           >
-            {step_marker(step, index)}
+            {step_content(step, index, @current, @labeled?)}
           </span>
         <% end %>
       </div>
-      <div class="bt-stepper__labels">
+      <div :if={@show_labels?} class="bt-stepper__labels">
         <span :for={label <- @steps}>{label}</span>
       </div>
     </div>
     """
   end
+
+  defp step_classes(index, current, labeled?) do
+    [
+      "bt-stepper__step",
+      index == current && "bt-stepper__step--active",
+      index == current && labeled? && "bt-stepper__step--badge",
+      index < current && "bt-stepper__step--complete"
+    ]
+  end
+
+  defp step_content(step, index, current, labeled?) when labeled? do
+    cond do
+      index == current -> step
+      index < current -> "✓"
+      true -> Integer.to_string(index)
+    end
+  end
+
+  defp step_content(step, index, _current, false), do: step_marker(step, index)
+
+  defp step_aria_label(step, _index, true) when is_binary(step), do: step
+  defp step_aria_label(_step, index, false), do: gettext("Step %{number}", number: index)
 
   defp step_marker(step, _index) when is_binary(step), do: step
   defp step_marker(_step, index), do: index

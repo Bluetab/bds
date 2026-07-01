@@ -213,7 +213,7 @@ msgid "Overall assessment"
 msgstr "Evaluación global"
 
 #: lib/bds/components/catalog_ui.ex:452
-#: lib/bds/components/catalog_ui.ex:1134
+#: lib/bds/components/catalog_ui.ex:1148
 #, elixir-autogen, elixir-format
 msgid "Progress"
 msgstr "Progreso"
@@ -310,7 +310,8 @@ msgstr "Este día no se puede editar."
 msgid "Toggle branch"
 msgstr "Alternar rama"
 
-#: lib/bds/components.ex:407
+#: lib/bds/components.ex:408
+#: lib/bds/components.ex:621
 #, elixir-autogen, elixir-format
 msgid "Toggle theme"
 msgstr "Cambiar tema"
@@ -325,7 +326,7 @@ msgstr "Tipo"
 msgid "Update entry"
 msgstr "Actualizar entrada"
 
-#: lib/bds/components.ex:490
+#: lib/bds/components.ex:502
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "Usuario"
@@ -340,7 +341,8 @@ msgstr "Vacaciones"
 msgid "Weaknesses"
 msgstr "Debilidades"
 
-#: lib/bds/components.ex:440
+#: lib/bds/components.ex:441
+#: lib/bds/components.ex:588
 #, elixir-autogen, elixir-format
 msgid "Toggle language"
 msgstr "Cambiar idioma"
@@ -458,17 +460,17 @@ msgstr "Establecer %{hours} horas"
 #: lib/bds/components/calendar.ex:1000
 #, elixir-autogen, elixir-format
 msgid "1h"
-msgstr ""
+msgstr "1h"
 
 #: lib/bds/components/calendar.ex:1001
 #, elixir-autogen, elixir-format
 msgid "2h"
-msgstr ""
+msgstr "2h"
 
 #: lib/bds/components/calendar.ex:1002
 #, elixir-autogen, elixir-format
 msgid "4h"
-msgstr ""
+msgstr "4h"
 
 #: lib/bds/components/project_picker.ex:98
 #, elixir-autogen, elixir-format
@@ -493,7 +495,7 @@ msgstr "Configuración"
 #: lib/bds/components/performance.ex:684
 #, elixir-autogen, elixir-format
 msgid "%{percent}%"
-msgstr ""
+msgstr "%{percent}%"
 
 #: lib/bds/components/performance.ex:669
 #: lib/bds/components/performance.ex:676
@@ -509,12 +511,12 @@ msgstr "Reconocido %{date}"
 #: lib/bds/components/calendar.ex:801
 #, elixir-autogen, elixir-format
 msgid "Add a comment"
-msgstr ""
+msgstr "Add a comment"
 
 #: lib/bds/components/calendar.ex:807
 #, elixir-autogen, elixir-format
 msgid "Add a note (optional)"
-msgstr ""
+msgstr "Add a note (optional)"
 
 #: lib/bds/components/performance.ex:671
 #: lib/bds/components/performance.ex:678
@@ -526,7 +528,7 @@ msgstr "Por debajo de lo esperado"
 #: lib/bds/components/calendar.ex:907
 #, elixir-autogen, elixir-format
 msgid "Comment"
-msgstr ""
+msgstr "Comment"
 
 #: lib/bds/components/calendar.ex:1007
 #, elixir-autogen, elixir-format, fuzzy
@@ -548,13 +550,13 @@ msgstr "Lo esperado"
 #: lib/bds/components/calendar.ex:571
 #, elixir-autogen, elixir-format
 msgid "Reason & comment"
-msgstr ""
+msgstr "Reason & comment"
 
 #: lib/bds/components/calendar.ex:572
 #: lib/bds/components/calendar.ex:900
 #, elixir-autogen, elixir-format
 msgid "Rejection reason"
-msgstr ""
+msgstr "Rejection reason"
 
 #: lib/bds/components/performance.ex:656
 #: lib/bds/components/performance.ex:662
@@ -619,9 +621,9 @@ msgstr[1] ""
 #: lib/bds/components/catalog_ui.ex:1062
 #, elixir-autogen, elixir-format
 msgid "Breadcrumb"
-msgstr ""
+msgstr "Breadcrumb"
 
-#: lib/bds/components/catalog_ui.ex:1174
+#: lib/bds/components/catalog_ui.ex:1207
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Close dialog"
 msgstr "Cerrar"
@@ -629,20 +631,50 @@ msgstr "Cerrar"
 #: lib/bds/components/expense.ex:43
 #, elixir-autogen, elixir-format
 msgid "Liquidaciones filters"
-msgstr ""
+msgstr "Liquidaciones filters"
 
 #: lib/bds/components/expense.ex:178
 #, elixir-autogen, elixir-format
 msgid "No matching projects."
-msgstr ""
+msgstr "No matching projects."
 
 #: lib/bds/components/expense.ex:243
 #, elixir-autogen, elixir-format
 msgid "Rebill"
-msgstr ""
+msgstr "Rebill"
 
 #: lib/bds/components/expense.ex:319
 #: lib/bds/components/expense.ex:322
 #, elixir-autogen, elixir-format
 msgid "Rejected liquidación"
 msgstr "Rechazada"
+
+#: lib/bds/components.ex:613
+#, elixir-autogen, elixir-format
+msgid "Dark"
+msgstr "Oscuro"
+
+#: lib/bds/components.ex:578
+#, elixir-autogen, elixir-format
+msgid "Language"
+msgstr "Idioma"
+
+#: lib/bds/components.ex:612
+#, elixir-autogen, elixir-format
+msgid "Light"
+msgstr "Claro"
+
+#: lib/bds/components.ex:556
+#, elixir-autogen, elixir-format
+msgid "Preferences"
+msgstr "Preferencias"
+
+#: lib/bds/components.ex:611
+#, elixir-autogen, elixir-format
+msgid "Theme"
+msgstr "Tema"
+
+#: lib/bds/components/catalog_ui.ex:1188
+#, elixir-autogen, elixir-format
+msgid "Step %{number}"
+msgstr "Paso %{number}"
