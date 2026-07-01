@@ -66,6 +66,7 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
+#: lib/bds/components.ex:108
 #: lib/bds/components/calendar.ex:921
 #, elixir-autogen, elixir-format
 msgid "Close"
@@ -213,6 +214,7 @@ msgid "Overall assessment"
 msgstr ""
 
 #: lib/bds/components/catalog_ui.ex:452
+#: lib/bds/components/catalog_ui.ex:1134
 #, elixir-autogen, elixir-format
 msgid "Progress"
 msgstr ""
@@ -309,7 +311,7 @@ msgstr ""
 msgid "Toggle branch"
 msgstr ""
 
-#: lib/bds/components.ex:394
+#: lib/bds/components.ex:407
 #, elixir-autogen, elixir-format
 msgid "Toggle theme"
 msgstr ""
@@ -324,7 +326,7 @@ msgstr ""
 msgid "Update entry"
 msgstr ""
 
-#: lib/bds/components.ex:477
+#: lib/bds/components.ex:490
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr ""
@@ -339,7 +341,7 @@ msgstr ""
 msgid "Weaknesses"
 msgstr ""
 
-#: lib/bds/components.ex:427
+#: lib/bds/components.ex:440
 #, elixir-autogen, elixir-format
 msgid "Toggle language"
 msgstr ""
@@ -606,4 +608,42 @@ msgstr ""
 #: lib/bds/components/calendar.ex:97
 #, elixir-autogen, elixir-format
 msgid "Template help"
+msgstr ""
+
+#: lib/bds/components/expense.ex:110
+#, elixir-autogen, elixir-format
+msgid "%{count} expense"
+msgid_plural "%{count} expenses"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/bds/components/catalog_ui.ex:1062
+#, elixir-autogen, elixir-format
+msgid "Breadcrumb"
+msgstr ""
+
+#: lib/bds/components/catalog_ui.ex:1174
+#, elixir-autogen, elixir-format
+msgid "Close dialog"
+msgstr ""
+
+#: lib/bds/components/expense.ex:43
+#, elixir-autogen, elixir-format
+msgid "Liquidaciones filters"
+msgstr ""
+
+#: lib/bds/components/expense.ex:178
+#, elixir-autogen, elixir-format
+msgid "No matching projects."
+msgstr ""
+
+#: lib/bds/components/expense.ex:243
+#, elixir-autogen, elixir-format
+msgid "Rebill"
+msgstr ""
+
+#: lib/bds/components/expense.ex:319
+#: lib/bds/components/expense.ex:322
+#, elixir-autogen, elixir-format
+msgid "Rejected liquidación"
 msgstr ""

@@ -5,6 +5,7 @@ defmodule Bds.Catalog.Preview.Bulk do
   import Bds.Components
   import Bds.Components.Calendar
   import Bds.Components.Performance
+  import Bds.Components.Expense
   import Bds.Components.CatalogUi
 
   @table_rows [
@@ -1089,6 +1090,85 @@ defmodule Bds.Catalog.Preview.Bulk do
     <.bt_eyebrow>Bluetab label</.bt_eyebrow>
     <h3>Highlighted content</h3>
     <.bt_muted>Secondary text with lower visual emphasis.</.bt_muted>
+    """
+  end
+
+  def render("breadcrumb", 0, assigns) do
+    ~H"""
+    <.bt_breadcrumb
+      items={[
+        %{label: "Liquidaciones", navigate: "/"},
+        %{label: "Trip Madrid Q1", current: true}
+      ]}
+      separator="›"
+    />
+    """
+  end
+
+  def render("empty-state", 0, assigns) do
+    ~H"""
+    <.bt_empty title="No liquidaciones in this view" description="Create a new liquidación or sync with SAP.">
+      <:actions>
+        <.bt_button variant="primary">New liquidación</.bt_button>
+        <.bt_button variant="outline">Sync</.bt_button>
+      </:actions>
+    </.bt_empty>
+    """
+  end
+
+  def render("stepper", 0, assigns) do
+    ~H"""
+    <.bt_stepper current={2} steps={["Project", "Details", "Review"]} />
+    """
+  end
+
+  def render("liveview-modal", 0, assigns) do
+    ~H"""
+    <.bt_modal id="catalog-modal" title="New liquidación" subtitle="Complete the expense liquidación details." close_event="noop">
+      <p class="bt-muted">Wizard body content goes here.</p>
+      <:footer>
+        <.bt_button variant="ghost">Cancel</.bt_button>
+        <.bt_button variant="primary">Continue</.bt_button>
+      </:footer>
+    </.bt_modal>
+    """
+  end
+
+  def render("spinner", 0, assigns) do
+    ~H"""
+    <div class="bt-spinner-row">
+      <.bt_spinner size="sm" />
+      <.bt_spinner />
+      <.bt_spinner size="lg" />
+    </div>
+    """
+  end
+
+  def render("expense-liquidacion-card", 0, assigns) do
+    ~H"""
+    <.bt_expense_liquidacion_card
+      id="catalog-expense-liq"
+      concept="Client workshop travel"
+      date_label="2026-03-18"
+      project_name="Northwind rollout"
+      gasto_count={3}
+      current_step_index={2}
+      current_step_label="Pending approval"
+      pill_variant="warning"
+    />
+    """
+  end
+
+  def render("expense-gasto-card", 0, assigns) do
+    ~H"""
+    <.bt_expense_gasto_card
+      id="catalog-expense-gasto"
+      type_label="Taxi"
+      date_label="2026-03-17"
+      title="Airport to hotel"
+      amount="42.50"
+      currency_suffix="EUR"
+    />
     """
   end
 

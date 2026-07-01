@@ -1747,6 +1747,168 @@ initBtInteractions();</code></pre>
     ],
   },
   {
+    id: "breadcrumb",
+    group: "Components",
+    icon: "›",
+    title: "Breadcrumb",
+    description: "Hierarchical navigation trail for nested workspaces.",
+    examples: [
+      {
+        title: "Spend liquidación trail",
+        html: String.raw`<nav class="bt-breadcrumb" aria-label="Breadcrumb">
+  <span class="bt-breadcrumb__item"><a href="#" class="bt-breadcrumb__link">Liquidaciones</a></span>
+  <span class="bt-breadcrumb__sep" aria-hidden="true">›</span>
+  <span class="bt-breadcrumb__item"><span class="bt-breadcrumb__current">Trip Madrid Q1</span></span>
+</nav>`,
+      },
+    ],
+  },
+  {
+    id: "empty-state",
+    group: "Feedback",
+    icon: "○",
+    title: "Empty state",
+    description: "Centered placeholder when a list or panel has no items.",
+    examples: [
+      {
+        title: "No liquidaciones",
+        block: true,
+        html: String.raw`<div class="bt-empty">
+  <div class="bt-empty__icon" aria-hidden="true">◎</div>
+  <h3 class="bt-empty__title">No liquidaciones in this view</h3>
+  <p class="bt-empty__description">Create a new liquidación or sync with SAP to refresh the list.</p>
+  <div class="bt-empty__actions">
+    <button type="button" class="bt-button bt-button--primary">New liquidación</button>
+    <button type="button" class="bt-button bt-button--outline">Sync</button>
+  </div>
+</div>`,
+      },
+    ],
+  },
+  {
+    id: "stepper",
+    group: "Components",
+    icon: "①",
+    title: "Stepper",
+    description: "Wizard progress indicator for multi-step flows.",
+    examples: [
+      {
+        title: "Liquidación wizard",
+        html: String.raw`<div>
+  <div class="bt-stepper" role="list" aria-label="Progress">
+    <span class="bt-stepper__step bt-stepper__step--complete" role="listitem">1</span>
+    <span class="bt-stepper__connector" aria-hidden="true"></span>
+    <span class="bt-stepper__step bt-stepper__step--active" role="listitem" aria-current="step">2</span>
+    <span class="bt-stepper__connector" aria-hidden="true"></span>
+    <span class="bt-stepper__step" role="listitem">3</span>
+  </div>
+  <div class="bt-stepper__labels">
+    <span>Project</span><span>Details</span><span>Review</span>
+  </div>
+</div>`,
+      },
+    ],
+  },
+  {
+    id: "liveview-modal",
+    group: "Feedback",
+    icon: "▢",
+    title: "LiveView modal",
+    description: "Backdrop + panel shell for Phoenix LiveView dialogs (`bt-modal`).",
+    examples: [
+      {
+        title: "New liquidación modal",
+        block: true,
+        html: String.raw`<div class="bt-modal" style="position: relative; inset: auto; min-height: 18rem;">
+  <button type="button" class="bt-modal__backdrop" aria-label="Close dialog"></button>
+  <div class="bt-modal__panel bt-modal__panel--lg" role="dialog" aria-modal="true">
+    <header class="bt-modal__header">
+      <div><h2 class="bt-modal__title">New liquidación</h2><p class="bt-modal__subtitle">Complete the expense liquidación details.</p></div>
+      <button type="button" class="bt-icon-button" aria-label="Close dialog"><span class="bt-icon">×</span></button>
+    </header>
+    <div class="bt-modal__body"><p class="bt-muted">Wizard body content goes here.</p></div>
+    <footer class="bt-modal__footer">
+      <button type="button" class="bt-button bt-button--ghost">Cancel</button>
+      <button type="button" class="bt-button bt-button--primary">Continue</button>
+    </footer>
+  </div>
+</div>`,
+      },
+    ],
+  },
+  {
+    id: "spinner",
+    group: "Feedback",
+    icon: "◌",
+    title: "Spinner",
+    description: "Inline loading indicator for async SAP operations.",
+    examples: [
+      {
+        title: "Sizes",
+        html: String.raw`<div class="bt-spinner-row">
+  <span class="bt-spinner bt-spinner--sm" role="status"></span>
+  <span class="bt-spinner" role="status"></span>
+  <span class="bt-spinner bt-spinner--lg" role="status"></span>
+</div>`,
+      },
+    ],
+  },
+  {
+    id: "expense-liquidacion-card",
+    group: "Components",
+    icon: "₪",
+    title: "Expense liquidación card",
+    description: "List row for Spend liquidaciones with workflow track and project meta.",
+    examples: [
+      {
+        title: "In progress",
+        block: true,
+        html: String.raw`<article class="bt-expense-liquidacion-card">
+  <div class="bt-expense-liquidacion-card__top">
+    <div class="bt-expense-workflow" aria-hidden="true">
+      <span class="bt-expense-workflow__dot bt-expense-workflow__dot--done"></span>
+      <span class="bt-expense-workflow__line"></span>
+      <span class="bt-expense-workflow__pill bt-expense-workflow__pill--warning">Pending approval</span>
+      <span class="bt-expense-workflow__line"></span>
+      <span class="bt-expense-workflow__dot"></span>
+    </div>
+    <span class="bt-expense-date-chip">2026-03-18</span>
+  </div>
+  <p class="bt-expense-liquidacion-card__concept">Client workshop travel</p>
+  <div class="bt-expense-liquidacion-card__meta">
+    <div class="bt-expense-liquidacion-card__project"><span class="bt-icon">📁</span><span>Northwind rollout</span></div>
+    <span>3 expenses</span>
+  </div>
+</article>`,
+      },
+    ],
+  },
+  {
+    id: "expense-gasto-card",
+    group: "Components",
+    icon: "🧾",
+    title: "Expense gasto card",
+    description: "Gasto row inside a liquidación detail with amount and actions.",
+    examples: [
+      {
+        title: "Taxi receipt",
+        block: true,
+        html: String.raw`<article class="bt-expense-gasto-card">
+  <div class="bt-expense-gasto-card__body">
+    <div class="bt-expense-gasto-card__head">
+      <span class="bt-expense-gasto-card__type">Taxi</span>
+      <span class="bt-expense-date-chip">2026-03-17</span>
+    </div>
+    <div class="bt-expense-gasto-card__row">
+      <h3 class="bt-expense-gasto-card__title">Airport to hotel</h3>
+      <p class="bt-expense-gasto-card__amount">42.50 <span class="bt-expense-gasto-card__amount-suffix">EUR</span></p>
+    </div>
+  </div>
+</article>`,
+      },
+    ],
+  },
+  {
     id: "typography",
     group: "Foundations",
     icon: "T",

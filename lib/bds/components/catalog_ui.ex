@@ -1052,4 +1052,162 @@ defmodule Bds.Components.CatalogUi do
     <div class={["bt-tree-empty", @class]}>{render_slot(@inner_block)}</div>
     """
   end
+
+  attr :class, :any, default: nil
+  attr :items, :list, required: true
+  attr :separator, :string, default: "/"
+
+  def bt_breadcrumb(assigns) do
+    ~H"""
+    <nav class={["bt-breadcrumb", @class]} aria-label={gettext("Breadcrumb")}>
+      <%= for {item, index} <- Enum.with_index(@items) do %>
+        <span :if={index > 0} class="bt-breadcrumb__sep" aria-hidden="true">{@separator}</span>
+        <span class="bt-breadcrumb__item">
+          <.link
+            :if={item[:href] || item[:navigate] || item[:patch]}
+            href={item[:href]}
+            navigate={item[:navigate]}
+            patch={item[:patch]}
+            class="bt-breadcrumb__link"
+          >
+            {item.label}
+          </.link>
+          <span :if={item[:current]} class="bt-breadcrumb__current">{item.label}</span>
+        </span>
+      <% end %>
+    </nav>
+    """
+  end
+
+  attr :class, :any, default: nil
+  attr :compact, :boolean, default: false
+  attr :title, :string, default: nil
+  attr :description, :string, default: nil
+  slot :icon
+  slot :actions
+  slot :inner_block
+
+  def bt_empty(assigns) do
+    ~H"""
+    <div class={["bt-empty", @compact && "bt-empty--compact", @class]}>
+      <div :if={render_slot(@icon) != []} class="bt-empty__icon">{render_slot(@icon)}</div>
+      <h3 :if={@title} class="bt-empty__title">{@title}</h3>
+      <p :if={@description} class="bt-empty__description">{@description}</p>
+      <div :if={render_slot(@inner_block) != []}>{render_slot(@inner_block)}</div>
+      <div :if={render_slot(@actions) != []} class="bt-empty__actions">{render_slot(@actions)}</div>
+    </div>
+    """
+  end
+
+  attr :class, :any, default: nil
+  attr :size, :string, default: "md", values: ~w(sm md lg)
+  attr :label, :string, default: nil
+
+  def bt_spinner(assigns) do
+    size_class =
+      case assigns.size do
+        "sm" -> "bt-spinner bt-spinner--sm"
+        "lg" -> "bt-spinner bt-spinner--lg"
+        _ -> "bt-spinner"
+      end
+
+    assigns = assign(assigns, :class, [size_class, assigns.class])
+
+    ~H"""
+    <span class={@class} role="status" aria-live="polite">
+      <span :if={@label} class="sr-only">{@label}</span>
+    </span>
+    """
+  end
+
+  attr :class, :any, default: nil
+  attr :current, :integer, required: true
+  attr :steps, :list, required: true
+  attr :icons, :boolean, default: false
+
+  def bt_stepper(assigns) do
+    stepper_class = if assigns.icons, do: "bt-stepper bt-stepper--icons", else: "bt-stepper"
+    assigns = assign(assigns, :stepper_class, stepper_class)
+
+    ~H"""
+    <div class={@class}>
+      <div class={@stepper_class} role="list" aria-label={gettext("Progress")}>
+        <%= for {step, index} <- Enum.with_index(@steps, 1) do %>
+          <span :if={index > 1} class="bt-stepper__connector" aria-hidden="true"></span>
+          <span
+            class={[
+              "bt-stepper__step",
+              index == @current && "bt-stepper__step--active",
+              index < @current && "bt-stepper__step--complete"
+            ]}
+            role="listitem"
+            aria-current={if index == @current, do: "step", else: false}
+          >
+            {step_marker(step, index)}
+          </span>
+        <% end %>
+      </div>
+      <div class="bt-stepper__labels">
+        <span :for={label <- @steps}>{label}</span>
+      </div>
+    </div>
+    """
+  end
+
+  defp step_marker(step, _index) when is_binary(step), do: step
+  defp step_marker(_step, index), do: index
+
+  attr :id, :string, required: true
+  attr :class, :any, default: nil
+  attr :title, :string, required: true
+  attr :subtitle, :string, default: nil
+  attr :large, :boolean, default: false
+  attr :close_event, :string, required: true
+  attr :close_label, :string, default: nil
+  attr :show_close, :boolean, default: true
+  attr :rest, :global
+  slot :inner_block, required: true
+  slot :footer
+  slot :header_actions
+
+  def bt_modal(assigns) do
+    assigns = assign_new(assigns, :close_label, fn -> gettext("Close dialog") end)
+
+    ~H"""
+    <div
+      id={@id}
+      class={["bt-modal", @class]}
+      phx-key="Escape"
+      phx-window-keydown={@close_event}
+      {@rest}
+    >
+      <button
+        type="button"
+        class="bt-modal__backdrop"
+        phx-click={@close_event}
+        aria-label={@close_label}
+      />
+      <div class={["bt-modal__panel", @large && "bt-modal__panel--lg"]} role="dialog" aria-modal="true">
+        <header class="bt-modal__header">
+          <div class="min-w-0">
+            <h2 class="bt-modal__title">{@title}</h2>
+            <p :if={@subtitle} class="bt-modal__subtitle">{@subtitle}</p>
+          </div>
+          <div :if={render_slot(@header_actions) != []}>{render_slot(@header_actions)}</div>
+          <button
+            :if={@show_close}
+            type="button"
+            class="bt-icon-button"
+            phx-click={@close_event}
+            aria-label={@close_label}
+          >
+            <span class="bt-icon" aria-hidden="true">×</span>
+          </button>
+        </header>
+        <div class="bt-modal__body">{render_slot(@inner_block)}</div>
+        <footer :if={render_slot(@footer) != []} class="bt-modal__footer">{render_slot(@footer)}</footer>
+      </div>
+    </div>
+    """
+  end
 end

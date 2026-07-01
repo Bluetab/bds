@@ -1078,6 +1078,118 @@
       ]
     },
     {
+      "id": "breadcrumb",
+      "group": "Components",
+      "icon": "›",
+      "title": "Breadcrumb",
+      "description": "Hierarchical navigation trail for nested workspaces.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Spend liquidación trail",
+          "block": false,
+          "note": null,
+          "html": "<nav class=\"bt-breadcrumb\" aria-label=\"Breadcrumb\">\n  <span class=\"bt-breadcrumb__item\"><a href=\"#\" class=\"bt-breadcrumb__link\">Liquidaciones</a></span>\n  <span class=\"bt-breadcrumb__sep\" aria-hidden=\"true\">›</span>\n  <span class=\"bt-breadcrumb__item\"><span class=\"bt-breadcrumb__current\">Trip Madrid Q1</span></span>\n</nav>"
+        }
+      ]
+    },
+    {
+      "id": "empty-state",
+      "group": "Feedback",
+      "icon": "○",
+      "title": "Empty state",
+      "description": "Centered placeholder when a list or panel has no items.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "No liquidaciones",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-empty\">\n  <div class=\"bt-empty__icon\" aria-hidden=\"true\">◎</div>\n  <h3 class=\"bt-empty__title\">No liquidaciones in this view</h3>\n  <p class=\"bt-empty__description\">Create a new liquidación or sync with SAP to refresh the list.</p>\n  <div class=\"bt-empty__actions\">\n    <button type=\"button\" class=\"bt-button bt-button--primary\">New liquidación</button>\n    <button type=\"button\" class=\"bt-button bt-button--outline\">Sync</button>\n  </div>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "stepper",
+      "group": "Components",
+      "icon": "①",
+      "title": "Stepper",
+      "description": "Wizard progress indicator for multi-step flows.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Liquidación wizard",
+          "block": false,
+          "note": null,
+          "html": "<div>\n  <div class=\"bt-stepper\" role=\"list\" aria-label=\"Progress\">\n    <span class=\"bt-stepper__step bt-stepper__step--complete\" role=\"listitem\">1</span>\n    <span class=\"bt-stepper__connector\" aria-hidden=\"true\"></span>\n    <span class=\"bt-stepper__step bt-stepper__step--active\" role=\"listitem\" aria-current=\"step\">2</span>\n    <span class=\"bt-stepper__connector\" aria-hidden=\"true\"></span>\n    <span class=\"bt-stepper__step\" role=\"listitem\">3</span>\n  </div>\n  <div class=\"bt-stepper__labels\">\n    <span>Project</span><span>Details</span><span>Review</span>\n  </div>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "liveview-modal",
+      "group": "Feedback",
+      "icon": "▢",
+      "title": "LiveView modal",
+      "description": "Backdrop + panel shell for Phoenix LiveView dialogs (`bt-modal`).",
+      "intro": false,
+      "examples": [
+        {
+          "title": "New liquidación modal",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-modal\" style=\"position: relative; inset: auto; min-height: 18rem;\">\n  <button type=\"button\" class=\"bt-modal__backdrop\" aria-label=\"Close dialog\"></button>\n  <div class=\"bt-modal__panel bt-modal__panel--lg\" role=\"dialog\" aria-modal=\"true\">\n    <header class=\"bt-modal__header\">\n      <div><h2 class=\"bt-modal__title\">New liquidación</h2><p class=\"bt-modal__subtitle\">Complete the expense liquidación details.</p></div>\n      <button type=\"button\" class=\"bt-icon-button\" aria-label=\"Close dialog\"><span class=\"bt-icon\">×</span></button>\n    </header>\n    <div class=\"bt-modal__body\"><p class=\"bt-muted\">Wizard body content goes here.</p></div>\n    <footer class=\"bt-modal__footer\">\n      <button type=\"button\" class=\"bt-button bt-button--ghost\">Cancel</button>\n      <button type=\"button\" class=\"bt-button bt-button--primary\">Continue</button>\n    </footer>\n  </div>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "spinner",
+      "group": "Feedback",
+      "icon": "◌",
+      "title": "Spinner",
+      "description": "Inline loading indicator for async SAP operations.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Sizes",
+          "block": false,
+          "note": null,
+          "html": "<div class=\"bt-spinner-row\">\n  <span class=\"bt-spinner bt-spinner--sm\" role=\"status\"></span>\n  <span class=\"bt-spinner\" role=\"status\"></span>\n  <span class=\"bt-spinner bt-spinner--lg\" role=\"status\"></span>\n</div>"
+        }
+      ]
+    },
+    {
+      "id": "expense-liquidacion-card",
+      "group": "Components",
+      "icon": "₪",
+      "title": "Expense liquidación card",
+      "description": "List row for Spend liquidaciones with workflow track and project meta.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "In progress",
+          "block": true,
+          "note": null,
+          "html": "<article class=\"bt-expense-liquidacion-card\">\n  <div class=\"bt-expense-liquidacion-card__top\">\n    <div class=\"bt-expense-workflow\" aria-hidden=\"true\">\n      <span class=\"bt-expense-workflow__dot bt-expense-workflow__dot--done\"></span>\n      <span class=\"bt-expense-workflow__line\"></span>\n      <span class=\"bt-expense-workflow__pill bt-expense-workflow__pill--warning\">Pending approval</span>\n      <span class=\"bt-expense-workflow__line\"></span>\n      <span class=\"bt-expense-workflow__dot\"></span>\n    </div>\n    <span class=\"bt-expense-date-chip\">2026-03-18</span>\n  </div>\n  <p class=\"bt-expense-liquidacion-card__concept\">Client workshop travel</p>\n  <div class=\"bt-expense-liquidacion-card__meta\">\n    <div class=\"bt-expense-liquidacion-card__project\"><span class=\"bt-icon\">📁</span><span>Northwind rollout</span></div>\n    <span>3 expenses</span>\n  </div>\n</article>"
+        }
+      ]
+    },
+    {
+      "id": "expense-gasto-card",
+      "group": "Components",
+      "icon": "🧾",
+      "title": "Expense gasto card",
+      "description": "Gasto row inside a liquidación detail with amount and actions.",
+      "intro": false,
+      "examples": [
+        {
+          "title": "Taxi receipt",
+          "block": true,
+          "note": null,
+          "html": "<article class=\"bt-expense-gasto-card\">\n  <div class=\"bt-expense-gasto-card__body\">\n    <div class=\"bt-expense-gasto-card__head\">\n      <span class=\"bt-expense-gasto-card__type\">Taxi</span>\n      <span class=\"bt-expense-date-chip\">2026-03-17</span>\n    </div>\n    <div class=\"bt-expense-gasto-card__row\">\n      <h3 class=\"bt-expense-gasto-card__title\">Airport to hotel</h3>\n      <p class=\"bt-expense-gasto-card__amount\">42.50 <span class=\"bt-expense-gasto-card__amount-suffix\">EUR</span></p>\n    </div>\n  </div>\n</article>"
+        }
+      ]
+    },
+    {
       "id": "typography",
       "group": "Foundations",
       "icon": "T",

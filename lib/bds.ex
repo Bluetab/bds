@@ -28,6 +28,9 @@ defmodule Bds do
   Performance cycle / Gedex workspace: `Bds.Components.Performance` (`bt-performance-*` briefing,
   hours, team, and evaluator cards).
 
+  Spend / expense workspace: `Bds.Components.Expense` (`bt-expense-*` liquidaciones, gastos,
+  workflow tracks, and wizards).
+
   Component catalog metadata for storybook apps: `Bds.Catalog` (from `priv/catalog.json`).
   """
 

@@ -44,6 +44,7 @@ defmodule Bds.Catalog.Snippets.Bulk do
     |> Map.merge(tree())
     |> Map.merge(calendar())
     |> Map.merge(performance())
+    |> Map.merge(expense())
     |> Map.merge(tooltips())
     |> Map.merge(typography())
   end
@@ -1029,6 +1030,69 @@ defmodule Bds.Catalog.Snippets.Bulk do
       <.bt_eyebrow>Bluetab label</.bt_eyebrow>
       <h3>Highlighted content</h3>
       <.bt_muted>Secondary text with lower visual emphasis.</.bt_muted>
+      """
+    }
+  end
+
+  defp expense do
+    %{
+      "breadcrumb:0" => ~S"""
+      <.bt_breadcrumb
+        items={[
+          %{label: "Liquidaciones", navigate: ~p"/"},
+          %{label: "Trip Madrid Q1", current: true}
+        ]}
+        separator="›"
+      />
+      """,
+      "empty-state:0" => ~S"""
+      <.bt_empty title="No liquidaciones in this view" description="Create a new liquidación or sync with SAP.">
+        <:actions>
+          <.bt_button variant="primary">New liquidación</.bt_button>
+          <.bt_button variant="outline">Sync</.bt_button>
+        </:actions>
+      </.bt_empty>
+      """,
+      "stepper:0" => ~S"""
+      <.bt_stepper current={2} steps={["Project", "Details", "Review"]} />
+      """,
+      "liveview-modal:0" => ~S"""
+      <.bt_modal id="new-liquidacion-modal" title="New liquidación" subtitle="Complete the details." close_event="close_modal">
+        <p>Wizard body</p>
+        <:footer>
+          <.bt_button variant="ghost" phx-click="close_modal">Cancel</.bt_button>
+          <.bt_button variant="primary">Continue</.bt_button>
+        </:footer>
+      </.bt_modal>
+      """,
+      "spinner:0" => ~S"""
+      <div class="bt-spinner-row">
+        <.bt_spinner size="sm" />
+        <.bt_spinner />
+        <.bt_spinner size="lg" />
+      </div>
+      """,
+      "expense-liquidacion-card:0" => ~S"""
+      <.bt_expense_liquidacion_card
+        id="liquidacion-LQ-2026-0142"
+        concept="Client workshop travel"
+        date_label="2026-03-18"
+        project_name="Northwind rollout"
+        gasto_count={3}
+        current_step_index={2}
+        current_step_label="Pending approval"
+        pill_variant="warning"
+      />
+      """,
+      "expense-gasto-card:0" => ~S"""
+      <.bt_expense_gasto_card
+        id="gasto-1"
+        type_label="Taxi"
+        date_label="2026-03-17"
+        title="Airport to hotel"
+        amount="42.50"
+        currency_suffix="EUR"
+      />
       """
     }
   end

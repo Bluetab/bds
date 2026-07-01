@@ -69,3 +69,40 @@
 .bt-status--warning { background: var(--bt-color-warning-soft); color: var(--bt-color-warning); }
 .bt-status--error { background: var(--bt-color-error-soft); color: var(--bt-color-error); }
 .bt-status--info { background: var(--bt-color-info-soft); color: var(--bt-color-info); }
+
+.bt-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid color-mix(in srgb, var(--bt-color-primary) 25%, transparent);
+  border-top-color: var(--bt-color-primary);
+  border-radius: 50%;
+  animation: bt-spinner-turn 0.65s linear infinite;
+  flex-shrink: 0;
+}
+
+.bt-spinner--sm {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-width: 1.5px;
+}
+
+.bt-spinner--lg {
+  width: 2rem;
+  height: 2rem;
+  border-width: 3px;
+}
+
+@keyframes bt-spinner-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bt-spinner-row {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bt-space-2);
+  font-size: var(--bt-font-size-xs);
+  color: var(--bt-color-text-muted);
+}

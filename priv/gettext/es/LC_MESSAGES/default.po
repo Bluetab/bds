@@ -65,6 +65,7 @@ msgstr "Cancelar"
 msgid "Clear"
 msgstr "Borrar"
 
+#: lib/bds/components.ex:108
 #: lib/bds/components/calendar.ex:921
 #, elixir-autogen, elixir-format
 msgid "Close"
@@ -212,6 +213,7 @@ msgid "Overall assessment"
 msgstr "Evaluación global"
 
 #: lib/bds/components/catalog_ui.ex:452
+#: lib/bds/components/catalog_ui.ex:1134
 #, elixir-autogen, elixir-format
 msgid "Progress"
 msgstr "Progreso"
@@ -308,7 +310,7 @@ msgstr "Este día no se puede editar."
 msgid "Toggle branch"
 msgstr "Alternar rama"
 
-#: lib/bds/components.ex:394
+#: lib/bds/components.ex:407
 #, elixir-autogen, elixir-format
 msgid "Toggle theme"
 msgstr "Cambiar tema"
@@ -323,7 +325,7 @@ msgstr "Tipo"
 msgid "Update entry"
 msgstr "Actualizar entrada"
 
-#: lib/bds/components.ex:477
+#: lib/bds/components.ex:490
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "Usuario"
@@ -338,7 +340,7 @@ msgstr "Vacaciones"
 msgid "Weaknesses"
 msgstr "Debilidades"
 
-#: lib/bds/components.ex:427
+#: lib/bds/components.ex:440
 #, elixir-autogen, elixir-format
 msgid "Toggle language"
 msgstr "Cambiar idioma"
@@ -606,3 +608,41 @@ msgstr "Abrir"
 #, elixir-autogen, elixir-format
 msgid "Template help"
 msgstr "Ayuda de plantillas"
+
+#: lib/bds/components/expense.ex:110
+#, elixir-autogen, elixir-format
+msgid "%{count} expense"
+msgid_plural "%{count} expenses"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/bds/components/catalog_ui.ex:1062
+#, elixir-autogen, elixir-format
+msgid "Breadcrumb"
+msgstr ""
+
+#: lib/bds/components/catalog_ui.ex:1174
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Close dialog"
+msgstr "Cerrar"
+
+#: lib/bds/components/expense.ex:43
+#, elixir-autogen, elixir-format
+msgid "Liquidaciones filters"
+msgstr ""
+
+#: lib/bds/components/expense.ex:178
+#, elixir-autogen, elixir-format
+msgid "No matching projects."
+msgstr ""
+
+#: lib/bds/components/expense.ex:243
+#, elixir-autogen, elixir-format
+msgid "Rebill"
+msgstr ""
+
+#: lib/bds/components/expense.ex:319
+#: lib/bds/components/expense.ex:322
+#, elixir-autogen, elixir-format
+msgid "Rejected liquidación"
+msgstr "Rechazada"

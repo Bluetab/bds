@@ -198,3 +198,103 @@ html[data-theme="dark"] .bt-overlay__surface::before {
 .bt-menu a:hover {
   background: var(--bt-color-surface-soft);
 }
+
+/* LiveView modal shell (backdrop + panel; use with :if={@show}) */
+.bt-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: var(--bt-space-4);
+}
+
+@media (min-width: 640px) {
+  .bt-modal {
+    align-items: center;
+  }
+}
+
+.bt-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: var(--bt-glass-overlay-bg);
+  backdrop-filter: var(--bt-glass-overlay-backdrop);
+  -webkit-backdrop-filter: var(--bt-glass-overlay-backdrop);
+  cursor: pointer;
+}
+
+.bt-modal__panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: min(32rem, 100%);
+  max-height: min(90dvh, calc(100dvh - 2rem));
+  overflow: hidden;
+  border: 1px solid var(--bt-glass-surface-border);
+  border-radius: var(--bt-radius-xl);
+  background: var(--bt-glass-surface-bg);
+  box-shadow: var(--bt-glass-surface-shadow);
+  animation: bt-dialog-in var(--bt-duration-base) var(--bt-ease-emphasis);
+}
+
+.bt-modal__panel--lg {
+  width: min(36rem, 100%);
+}
+
+.bt-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--bt-space-3);
+  padding: var(--bt-space-4) var(--bt-space-5);
+  border-bottom: 1px solid var(--bt-color-border);
+}
+
+.bt-modal__title {
+  margin: 0;
+  font-size: var(--bt-font-size-lg);
+  font-weight: 600;
+  color: var(--bt-color-text);
+}
+
+.bt-modal__subtitle {
+  margin: var(--bt-space-1) 0 0;
+  font-size: var(--bt-font-size-xs);
+  color: var(--bt-color-text-muted);
+}
+
+.bt-modal__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--bt-space-5);
+}
+
+.bt-modal__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--bt-space-2);
+  padding: var(--bt-space-4) var(--bt-space-5);
+  border-top: 1px solid var(--bt-color-border);
+}
+
+.bt-modal__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bt-space-3);
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--bt-color-surface) 92%, transparent);
+  backdrop-filter: blur(2px);
+}
