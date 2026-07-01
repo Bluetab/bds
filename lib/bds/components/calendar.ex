@@ -84,12 +84,17 @@ defmodule Bds.Components.Calendar do
   attr(:class, :any, default: nil)
   attr(:title, :string, default: nil)
   attr(:on_close, :any, default: nil)
+  attr(:on_help, :any, default: nil)
+  attr(:help_label, :string, default: nil)
   attr(:rest, :global)
   slot(:inner_block, required: true)
   slot(:actions)
 
   def bt_calendar_templates_panel(assigns) do
-    assigns = assign_new(assigns, :title, fn -> gettext("Templates") end)
+    assigns =
+      assigns
+      |> assign_new(:title, fn -> gettext("Templates") end)
+      |> assign_new(:help_label, fn -> gettext("Template help") end)
 
     ~H"""
     <div class={["bt-calendar-templates h-full min-h-0 flex flex-col", @class]} {@rest}>
@@ -104,6 +109,16 @@ defmodule Bds.Components.Calendar do
           <span class="bt-icon">←</span>
         </button>
         <span class="truncate">{@title}</span>
+        <button
+          :if={@on_help}
+          type="button"
+          phx-click={@on_help}
+          class="bt-calendar-templates__help bt-icon-button"
+          aria-label={@help_label}
+          title={@help_label}
+        >
+          <span class="bt-icon" aria-hidden="true">?</span>
+        </button>
       </div>
       <div :if={render_slot(@actions) != []} class="shrink-0 px-4 py-2 border-b border-[var(--bt-color-border)] flex items-center justify-between">
         {render_slot(@actions)}
@@ -356,7 +371,7 @@ defmodule Bds.Components.Calendar do
             phx-value-date={@date_iso}
             aria-label={gettext("Open day")}
           >
-            Open
+            {gettext("Open")}
           </button>
         </div>
         """
@@ -945,11 +960,17 @@ defmodule Bds.Components.Calendar do
   end
 
   @doc """
+  Localized month name for calendar UI (e.g. `"August"` / `"Agosto"`).
+  """
+  def calendar_month_name(month) when month in 1..12 do
+    calendar_month_names() |> Enum.at(month - 1) |> capitalize_month_name()
+  end
+
+  @doc """
   Localized month and year for the day modal aside (e.g. `"June 2026"`).
   """
   def calendar_modal_month_label(%Date{} = date) do
-    month = calendar_month_names() |> Enum.at(date.month - 1)
-    "#{month} #{date.year}"
+    "#{calendar_month_name(date.month)} #{date.year}"
   end
 
   @doc """
@@ -1003,6 +1024,8 @@ defmodule Bds.Components.Calendar do
       gettext("December")
     ]
   end
+
+  defp capitalize_month_name(name) when is_binary(name), do: String.capitalize(name)
 
   attr(:name, :string, required: true, values: ~w(pencil trash chat))
   attr(:class, :any, default: nil)

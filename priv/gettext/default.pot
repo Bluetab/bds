@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 
-#: lib/bds/components/calendar.ex:988
+#: lib/bds/components/calendar.ex:1009
 #, elixir-autogen, elixir-format
 msgid "%{hours}h to reach 8h"
 msgstr ""
@@ -16,27 +16,27 @@ msgstr ""
 msgid "Acknowledged"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:820
+#: lib/bds/components/calendar.ex:835
 #, elixir-autogen, elixir-format
 msgid "Add a project line to log hours for this day."
 msgstr ""
 
-#: lib/bds/components/calendar.ex:808
+#: lib/bds/components/calendar.ex:823
 #, elixir-autogen, elixir-format
 msgid "Add entry"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:724
+#: lib/bds/components/calendar.ex:739
 #, elixir-autogen, elixir-format
 msgid "Add time entry"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:148
+#: lib/bds/components/calendar.ex:163
 #, elixir-autogen, elixir-format
 msgid "Apply template %{name}"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:963
+#: lib/bds/components/calendar.ex:984
 #, elixir-autogen, elixir-format
 msgid "Approved"
 msgstr ""
@@ -51,12 +51,12 @@ msgstr ""
 msgid "Bottom navigation"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:423
+#: lib/bds/components/calendar.ex:438
 #, elixir-autogen, elixir-format
 msgid "Calendar status legend"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:805
+#: lib/bds/components/calendar.ex:820
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr ""
@@ -66,17 +66,17 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:906
+#: lib/bds/components/calendar.ex:921
 #, elixir-autogen, elixir-format
 msgid "Close"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:659
+#: lib/bds/components/calendar.ex:674
 #, elixir-autogen, elixir-format
 msgid "Close day editor"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:102
+#: lib/bds/components/calendar.ex:107
 #, elixir-autogen, elixir-format
 msgid "Close panel"
 msgstr ""
@@ -86,7 +86,7 @@ msgstr ""
 msgid "Close templates panel"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:961
+#: lib/bds/components/calendar.ex:982
 #, elixir-autogen, elixir-format
 msgid "Complete"
 msgstr ""
@@ -96,12 +96,12 @@ msgstr ""
 msgid "Created by %{name}"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:987
+#: lib/bds/components/calendar.ex:1008
 #, elixir-autogen, elixir-format
 msgid "Daily goal reached"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:968
+#: lib/bds/components/calendar.ex:989
 #, elixir-autogen, elixir-format
 msgid "Day"
 msgstr ""
@@ -111,12 +111,12 @@ msgstr ""
 msgid "Delegated by"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:864
+#: lib/bds/components/calendar.ex:879
 #, elixir-autogen, elixir-format
 msgid "Delete entry"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:960
+#: lib/bds/components/calendar.ex:981
 #, elixir-autogen, elixir-format
 msgid "Draft"
 msgstr ""
@@ -126,12 +126,12 @@ msgstr ""
 msgid "Draft · only visible to you"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:855
+#: lib/bds/components/calendar.ex:870
 #, elixir-autogen, elixir-format
 msgid "Edit entry"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:725
+#: lib/bds/components/calendar.ex:740
 #, elixir-autogen, elixir-format
 msgid "Edit time entry"
 msgstr ""
@@ -141,12 +141,12 @@ msgstr ""
 msgid "Evaluated by %{name}"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:965
+#: lib/bds/components/calendar.ex:986
 #, elixir-autogen, elixir-format
 msgid "Holiday"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:749
+#: lib/bds/components/calendar.ex:764
 #, elixir-autogen, elixir-format
 msgid "Hours"
 msgstr ""
@@ -156,13 +156,13 @@ msgstr ""
 msgid "Include inactive projects"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:711
-#: lib/bds/components/calendar.ex:959
+#: lib/bds/components/calendar.ex:726
+#: lib/bds/components/calendar.ex:980
 #, elixir-autogen, elixir-format
 msgid "New"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:815
+#: lib/bds/components/calendar.ex:830
 #, elixir-autogen, elixir-format
 msgid "No entries yet"
 msgstr ""
@@ -182,7 +182,7 @@ msgstr ""
 msgid "No reported hours in this period for this person."
 msgstr ""
 
-#: lib/bds/components/calendar.ex:967
+#: lib/bds/components/calendar.ex:988
 #, elixir-autogen, elixir-format
 msgid "Non-working"
 msgstr ""
@@ -197,7 +197,7 @@ msgstr ""
 msgid "Objectives and evaluator assessment"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:357
+#: lib/bds/components/calendar.ex:372
 #, elixir-autogen, elixir-format
 msgid "Open day"
 msgstr ""
@@ -217,7 +217,7 @@ msgstr ""
 msgid "Progress"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:738
+#: lib/bds/components/calendar.ex:753
 #: lib/bds/components/project_picker.ex:90
 #, elixir-autogen, elixir-format
 msgid "Project"
@@ -228,22 +228,22 @@ msgstr ""
 msgid "Recommendations"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:964
+#: lib/bds/components/calendar.ex:985
 #, elixir-autogen, elixir-format
 msgid "Rejected"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:867
+#: lib/bds/components/calendar.ex:882
 #, elixir-autogen, elixir-format
 msgid "Remove this time entry?"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:914
+#: lib/bds/components/calendar.ex:929
 #, elixir-autogen, elixir-format
 msgid "Save draft"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:739
+#: lib/bds/components/calendar.ex:754
 #, elixir-autogen, elixir-format
 msgid "Search or type a project"
 msgstr ""
@@ -269,7 +269,7 @@ msgstr ""
 msgid "Selected"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:962
+#: lib/bds/components/calendar.ex:983
 #, elixir-autogen, elixir-format
 msgid "Sent"
 msgstr ""
@@ -294,12 +294,12 @@ msgstr ""
 msgid "Strengths, weaknesses, recommendations"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:92
+#: lib/bds/components/calendar.ex:96
 #, elixir-autogen, elixir-format
 msgid "Templates"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:818
+#: lib/bds/components/calendar.ex:833
 #, elixir-autogen, elixir-format
 msgid "This day cannot be edited."
 msgstr ""
@@ -314,12 +314,12 @@ msgstr ""
 msgid "Toggle theme"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:773
+#: lib/bds/components/calendar.ex:788
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:808
+#: lib/bds/components/calendar.ex:823
 #, elixir-autogen, elixir-format
 msgid "Update entry"
 msgstr ""
@@ -329,7 +329,7 @@ msgstr ""
 msgid "User"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:966
+#: lib/bds/components/calendar.ex:987
 #, elixir-autogen, elixir-format
 msgid "Vacation"
 msgstr ""
@@ -344,127 +344,127 @@ msgstr ""
 msgid "Toggle language"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:995
+#: lib/bds/components/calendar.ex:1016
 #, elixir-autogen, elixir-format
 msgid "April"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:999
+#: lib/bds/components/calendar.ex:1020
 #, elixir-autogen, elixir-format
 msgid "August"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:665
+#: lib/bds/components/calendar.ex:680
 #, elixir-autogen, elixir-format
 msgid "Day %{day}"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:1003
+#: lib/bds/components/calendar.ex:1024
 #, elixir-autogen, elixir-format
 msgid "December"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:993
+#: lib/bds/components/calendar.ex:1014
 #, elixir-autogen, elixir-format
 msgid "February"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:941
+#: lib/bds/components/calendar.ex:956
 #, elixir-autogen, elixir-format
 msgid "Fri"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:992
+#: lib/bds/components/calendar.ex:1013
 #, elixir-autogen, elixir-format
 msgid "January"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:998
+#: lib/bds/components/calendar.ex:1019
 #, elixir-autogen, elixir-format
 msgid "July"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:997
+#: lib/bds/components/calendar.ex:1018
 #, elixir-autogen, elixir-format
 msgid "June"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:994
+#: lib/bds/components/calendar.ex:1015
 #, elixir-autogen, elixir-format
 msgid "March"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:996
+#: lib/bds/components/calendar.ex:1017
 #, elixir-autogen, elixir-format
 msgid "May"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:937
+#: lib/bds/components/calendar.ex:952
 #, elixir-autogen, elixir-format
 msgid "Mon"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:1002
+#: lib/bds/components/calendar.ex:1023
 #, elixir-autogen, elixir-format
 msgid "November"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:1001
+#: lib/bds/components/calendar.ex:1022
 #, elixir-autogen, elixir-format
 msgid "October"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:942
+#: lib/bds/components/calendar.ex:957
 #, elixir-autogen, elixir-format
 msgid "Sat"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:1000
+#: lib/bds/components/calendar.ex:1021
 #, elixir-autogen, elixir-format
 msgid "September"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:943
+#: lib/bds/components/calendar.ex:958
 #, elixir-autogen, elixir-format
 msgid "Sun"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:940
+#: lib/bds/components/calendar.ex:955
 #, elixir-autogen, elixir-format
 msgid "Thu"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:938
+#: lib/bds/components/calendar.ex:953
 #, elixir-autogen, elixir-format
 msgid "Tue"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:939
+#: lib/bds/components/calendar.ex:954
 #, elixir-autogen, elixir-format
 msgid "Wed"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:982
+#: lib/bds/components/calendar.ex:1003
 #, elixir-autogen, elixir-format
 msgid "8h"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:763
+#: lib/bds/components/calendar.ex:778
 #, elixir-autogen, elixir-format
 msgid "Set %{hours} hours"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:979
+#: lib/bds/components/calendar.ex:1000
 #, elixir-autogen, elixir-format
 msgid "1h"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:980
+#: lib/bds/components/calendar.ex:1001
 #, elixir-autogen, elixir-format
 msgid "2h"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:981
+#: lib/bds/components/calendar.ex:1002
 #, elixir-autogen, elixir-format
 msgid "4h"
 msgstr ""
@@ -505,12 +505,12 @@ msgstr ""
 msgid "Acknowledged %{date}"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:786
+#: lib/bds/components/calendar.ex:801
 #, elixir-autogen, elixir-format
 msgid "Add a comment"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:792
+#: lib/bds/components/calendar.ex:807
 #, elixir-autogen, elixir-format
 msgid "Add a note (optional)"
 msgstr ""
@@ -521,13 +521,13 @@ msgstr ""
 msgid "Below expected"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:558
-#: lib/bds/components/calendar.ex:892
+#: lib/bds/components/calendar.ex:573
+#: lib/bds/components/calendar.ex:907
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:986
+#: lib/bds/components/calendar.ex:1007
 #, elixir-autogen, elixir-format
 msgid "Daily goal exceeded"
 msgstr ""
@@ -544,13 +544,13 @@ msgstr ""
 msgid "Expected"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:556
+#: lib/bds/components/calendar.ex:571
 #, elixir-autogen, elixir-format
 msgid "Reason & comment"
 msgstr ""
 
-#: lib/bds/components/calendar.ex:557
-#: lib/bds/components/calendar.ex:885
+#: lib/bds/components/calendar.ex:572
+#: lib/bds/components/calendar.ex:900
 #, elixir-autogen, elixir-format
 msgid "Rejection reason"
 msgstr ""
@@ -596,4 +596,14 @@ msgstr ""
 #: lib/bds/components/performance.ex:341
 #, elixir-autogen, elixir-format
 msgid "People"
+msgstr ""
+
+#: lib/bds/components/calendar.ex:374
+#, elixir-autogen, elixir-format
+msgid "Open"
+msgstr ""
+
+#: lib/bds/components/calendar.ex:97
+#, elixir-autogen, elixir-format
+msgid "Template help"
 msgstr ""

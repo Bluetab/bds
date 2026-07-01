@@ -69,50 +69,63 @@ defmodule Bds.Components do
   attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
   attr :title, :string, default: nil
   attr :kind, :atom, values: [:info, :error], doc: "used for styling and flash lookup"
+  attr :auto_dismiss, :any, default: :unspecified, doc: "auto-dismiss delay in ms; nil disables"
   attr :rest, :global, doc: "the arbitrary HTML attributes to add to the flash container"
 
   slot :inner_block, doc: "the optional inner block that renders the flash message"
   slot :icon
+  slot :close
 
   def bt_flash(assigns) do
+    assigns = assign_new(assigns, :id, fn -> "flash-#{assigns.kind}" end)
+
     assigns =
       assigns
-      |> assign_new(:id, fn -> "flash-#{assigns.kind}" end)
       |> assign(:flash_message, Phoenix.Flash.get(assigns.flash, assigns.kind))
+      |> then(fn assigns ->
+        assigns
+        |> assign(:auto_dismiss_ms, bt_flash_auto_dismiss(assigns))
+        |> assign(:show?, bt_flash_show?(assigns))
+      end)
 
     ~H"""
-    <%= if @title do %>
-      <div
-        id={@id}
-        phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> JS.hide(to: "##{@id}")}
-        role="alert"
-        class={bt_flash_class(@kind)}
-        {@rest}
-      >
-        <span :if={@icon != []}>{render_slot(@icon)}</span>
-        <div class="bt-stack" style="gap:var(--bt-space-1);flex:1;">
-          <p style="font-weight:700;margin:0;">{@title}</p>
-          <p style="margin:0;">{render_slot(@inner_block)}</p>
-        </div>
+    <div
+      :if={@show?}
+      id={@id}
+      phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> JS.hide(to: "##{@id}")}
+      phx-hook={@auto_dismiss_ms && "BtFlash"}
+      data-auto-dismiss={@auto_dismiss_ms}
+      role="alert"
+      class={bt_flash_class(@kind)}
+      {@rest}
+    >
+      <span :if={@icon != []}>{render_slot(@icon)}</span>
+      <div class="bt-stack" style="gap:var(--bt-space-1);flex:1;">
+        <p :if={@title} style="font-weight:700;margin:0;">{@title}</p>
+        <p :if={@title} style="margin:0;">{render_slot(@inner_block)}</p>
+        <p :if={!@title} style="margin:0;">{@flash_message}</p>
       </div>
-    <% else %>
-      <%= if bt_flash_visible?(@flash_message) do %>
-        <div
-          id={@id}
-          phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> JS.hide(to: "##{@id}")}
-          role="alert"
-          class={bt_flash_class(@kind)}
-          {@rest}
-        >
-          <span :if={@icon != []}>{render_slot(@icon)}</span>
-          <div class="bt-stack" style="gap:var(--bt-space-1);flex:1;">
-            <p style="margin:0;">{@flash_message}</p>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
+      <button type="button" class="bt-icon-button bt-flash__close" aria-label={gettext("Close")}>
+        <%= if @close != [] do %>
+          {render_slot(@close)}
+        <% else %>
+          <span class="bt-icon">×</span>
+        <% end %>
+      </button>
+    </div>
     """
   end
+
+  defp bt_flash_show?(%{title: title}) when not is_nil(title), do: true
+  defp bt_flash_show?(%{flash_message: msg}), do: bt_flash_visible?(msg)
+
+  defp bt_flash_auto_dismiss(%{auto_dismiss: ms}) when is_integer(ms), do: ms
+  defp bt_flash_auto_dismiss(%{auto_dismiss: nil}), do: nil
+
+  defp bt_flash_auto_dismiss(%{auto_dismiss: :unspecified, title: title}) when not is_nil(title),
+    do: nil
+
+  defp bt_flash_auto_dismiss(%{auto_dismiss: :unspecified}), do: 5_000
 
   defp bt_flash_class(kind) do
     [

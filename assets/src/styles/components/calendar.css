@@ -187,8 +187,27 @@
   transform: translateY(-50%);
 }
 
+.bt-calendar-templates__close.bt-icon-button,
+.bt-calendar-templates__help.bt-icon-button {
+  width: 1.875rem;
+  min-height: 1.875rem;
+  font-size: 0.75rem;
+}
+
 .bt-calendar-templates__close.bt-icon-button:hover,
 .bt-calendar-templates__close.bt-icon-button:active {
+  transform: translateY(-50%);
+}
+
+.bt-calendar-templates__help {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.bt-calendar-templates__help.bt-icon-button:hover,
+.bt-calendar-templates__help.bt-icon-button:active {
   transform: translateY(-50%);
 }
 

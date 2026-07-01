@@ -47,6 +47,19 @@
   border-color: color-mix(in srgb, var(--bt-color-error) 22%, transparent);
 }
 
+.bt-flash__close {
+  flex-shrink: 0;
+  align-self: flex-start;
+  width: 2rem;
+  min-height: 2rem;
+  opacity: 0.55;
+}
+
+.bt-flash__close:hover,
+.bt-flash__close:focus-visible {
+  opacity: 1;
+}
+
 .bt-toast { position: fixed; left: 50%; bottom: var(--bt-space-5); z-index: 200; min-width: 16rem; max-width: min(90vw, 28rem); padding: var(--bt-space-3) var(--bt-space-4); border-radius: var(--bt-radius-pill); background: var(--bt-color-text); color: var(--bt-color-background); box-shadow: var(--bt-shadow-md); text-align: center; transform: translate(-50%, 1rem); opacity: 0; pointer-events: none; transition: opacity var(--bt-duration-base), transform var(--bt-duration-base); }
 .bt-toast[data-visible="true"] { opacity: 1; transform: translate(-50%, 0); }
 .bt-snackbar { position: fixed; left: 50%; bottom: var(--bt-space-5); z-index: 110; display: none; gap: var(--bt-space-3); align-items: center; min-width: 18rem; padding: var(--bt-space-3) var(--bt-space-4); border-radius: var(--bt-radius-md); background: var(--bt-color-text); color: var(--bt-color-background); box-shadow: var(--bt-shadow-md); transform: translateX(-50%); }
