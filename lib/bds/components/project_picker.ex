@@ -41,8 +41,6 @@ defmodule Bds.Components.ProjectPicker do
   attr :description, :string, default: nil
   attr :label, :string, default: nil
   attr :placeholder, :string, default: "Search projects…"
-  attr :show_clients_without_group, :boolean, default: false
-  attr :show_projects_without_client, :boolean, default: false
   attr :selected_project, :any, default: nil
   attr :bare, :boolean, default: false, doc: "Form field layout without card chrome (e.g. day modal editor)"
 

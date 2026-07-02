@@ -63,6 +63,33 @@
   display: none;
 }
 
+.bt-avatar__name-row {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--bt-space-1) var(--bt-space-2);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.bt-avatar__name-row .bt-avatar__name {
+  flex: 0 1 auto;
+}
+
+.bt-avatar__badges {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--bt-space-1);
+}
+
+.bt-avatar__badges .bt-badge--inline {
+  font-size: var(--bt-font-size-xs);
+  font-weight: 500;
+  color: var(--bt-color-text-muted);
+  background: var(--bt-color-surface-muted);
+}
+
 /* Expanded — larger photo, name + email */
 .bt-avatar--expanded .bt-avatar__media {
   width: 2.75rem;

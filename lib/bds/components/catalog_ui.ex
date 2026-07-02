@@ -617,6 +617,7 @@ defmodule Bds.Components.CatalogUi do
   attr :src, :string, default: nil
   attr :initials, :string, default: nil
   attr :compactness, :string, default: "compact", values: ~w(compact expanded)
+  attr :badges, :list, default: []
 
   def bt_avatar(assigns) do
     initials = assigns.initials || avatar_initials(assigns.name)
@@ -625,6 +626,7 @@ defmodule Bds.Components.CatalogUi do
       assigns
       |> assign(:initials, initials)
       |> assign(:compactness_class, "bt-avatar--#{assigns.compactness}")
+      |> assign(:show_name_badges?, assigns.badges != [])
 
     ~H"""
     <div class={["bt-avatar", @compactness_class, @class]}>
@@ -633,7 +635,21 @@ defmodule Bds.Components.CatalogUi do
         <span :if={is_nil(@src)}>{@initials}</span>
       </div>
       <div class="bt-avatar__text">
-        <p class="bt-avatar__name">{@name}</p>
+        <%= if @show_name_badges? do %>
+          <div class="bt-avatar__name-row">
+            <p class="bt-avatar__name">{@name}</p>
+            <span class="bt-avatar__badges">
+              <.bt_badge
+                :for={badge <- @badges}
+                variant={Map.get(badge, :variant, "secondary")}
+              >
+                {badge.label}
+              </.bt_badge>
+            </span>
+          </div>
+        <% else %>
+          <p class="bt-avatar__name">{@name}</p>
+        <% end %>
         <p :if={@email} class="bt-avatar__email">{@email}</p>
       </div>
     </div>
@@ -853,6 +869,7 @@ defmodule Bds.Components.CatalogUi do
       src={Map.get(@node.avatar, :src)}
       initials={Map.get(@node.avatar, :initials)}
       compactness={Map.get(@node.avatar, :compactness, "compact")}
+      badges={@node[:badges] || []}
     />
     <.bt_badge
       :if={!@node[:avatar] && tree_project_doc_badge?(@node)}
@@ -869,7 +886,7 @@ defmodule Bds.Components.CatalogUi do
     <span :if={!@node[:avatar] && @node[:secondary_label]} class="bt-tree__secondary">
       {@node.secondary_label}
     </span>
-    <span :if={@node[:badges] != []} class="bt-tree__badges">
+    <span :if={!@node[:avatar] && (@node[:badges] || []) != []} class="bt-tree__badges">
       <.bt_badge
         :for={badge <- @node[:badges] || []}
         variant={Map.get(badge, :variant, "secondary")}

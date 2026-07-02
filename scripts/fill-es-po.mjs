@@ -63,6 +63,8 @@ const es = {
   Holiday: "Festivo",
   Hours: "Horas",
   "Include inactive projects": "Incluir proyectos inactivos",
+  "Show clients without group": "Mostrar clientes sin grupo",
+  "Show projects without client": "Mostrar proyectos sin cliente",
   "Logged hours": "Horas registradas",
   "New": "Nuevo",
   "No entries yet": "Sin entradas aún",
