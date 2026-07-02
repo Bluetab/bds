@@ -1171,19 +1171,18 @@ initBtInteractions();</code></pre>
         block: true,
         html: String.raw`<div class="bt-calendar-day-modal" data-testid="calendar-day-modal" style="position: relative; inset: auto; min-height: 22rem;">
   <div class="bt-calendar-day-modal__panel" style="position: relative;">
-    <div class="bt-calendar-day-modal__shell bt-calendar-day-modal__shell--imputado">
+    <button type="button" class="bt-icon-button bt-calendar-day-modal__nav bt-calendar-day-modal__nav--prev" aria-label="Previous day"><span class="bt-icon" aria-hidden="true">‹</span></button>
+    <div class="bt-calendar-day-modal__shell bt-calendar-day-modal__shell--completado">
       <aside class="bt-calendar-day-modal__aside">
         <div class="bt-calendar-day-modal__aside-top">
           <p class="bt-calendar-day-modal__day-number">12</p>
           <div class="bt-calendar-day-modal__day-meta">
-            <p class="bt-calendar-day-modal__weekday">Thu</p>
-            <p class="bt-calendar-day-modal__month">June 2026</p>
+            <p class="bt-calendar-day-modal__weekday">Thu</p><p class="bt-calendar-day-modal__month">June 2026</p>
           </div>
         </div>
-        <div class="bt-calendar-day-modal__aside-bottom">
+        <div class="bt-calendar-day-modal__aside-bottom bt-calendar-day-modal__aside-bottom--reached">
           <div class="bt-calendar-day-modal__hours"><span class="bt-calendar-day-modal__hours-value">8</span><span class="bt-calendar-day-modal__hours-unit">h</span></div>
           <div class="bt-calendar-day-modal__progress"><div class="bt-calendar-day-modal__progress-fill" style="width: 100%"></div></div>
-          <p class="bt-calendar-day-modal__progress-label">Daily goal reached</p>
         </div>
       </aside>
       <section class="bt-calendar-day-modal__content">
@@ -1226,6 +1225,7 @@ initBtInteractions();</code></pre>
         </div>
       </section>
     </div>
+    <button type="button" class="bt-icon-button bt-calendar-day-modal__nav bt-calendar-day-modal__nav--next" aria-label="Next day"><span class="bt-icon" aria-hidden="true">›</span></button>
   </div>
 </div>`,
       },

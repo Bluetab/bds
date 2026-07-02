@@ -602,17 +602,20 @@ button.bt-calendar-template-card {
   flex-direction: column;
   justify-content: flex-end;
   gap: 0.25rem;
+  min-width: 0;
 }
 
 .bt-calendar-day__projects {
   display: grid;
   gap: 0.125rem;
   width: 100%;
+  min-width: 0;
 }
 
 .bt-calendar-day__project {
   --bt-calendar-project-accent: var(--bt-color-border);
   min-height: 1.25rem;
+  min-width: 0;
   border: 1px solid color-mix(in srgb, var(--bt-color-border), transparent 12%);
   border-inline-start-width: 3px;
   border-inline-start-color: var(--bt-calendar-project-accent);
@@ -623,6 +626,7 @@ button.bt-calendar-template-card {
   align-items: center;
   justify-content: flex-start;
   gap: 0.375rem;
+  overflow: hidden;
 }
 
 .bt-calendar-day__project--imputado {
@@ -760,15 +764,51 @@ button.bt-calendar-template-card {
 .bt-calendar-day-modal__panel {
   position: relative;
   z-index: 1;
-  width: min(48rem, 100%);
+  width: min(52rem, 100%);
   max-height: min(36rem, calc(100dvh - 2rem));
   display: flex;
+  align-items: center;
+  gap: var(--bt-space-2);
   min-height: 0;
+}
+
+.bt-calendar-day-modal__nav {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--bt-calendar-glass-border);
+  background: color-mix(in srgb, var(--bt-color-surface) 88%, transparent);
+  color: var(--bt-color-text-muted);
+  box-shadow: var(--bt-calendar-glass-shadow);
+  backdrop-filter: var(--bt-calendar-glass-backdrop);
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.bt-calendar-day-modal__nav:hover {
+  color: var(--bt-color-text);
+  border-color: var(--bt-color-border-strong);
+  background: var(--bt-color-surface);
+}
+
+.bt-calendar-day-modal__nav:active {
+  transform: scale(0.96);
+}
+
+.bt-calendar-day-modal__nav .bt-icon {
+  font-size: 1.35rem;
+  line-height: 1;
 }
 
 .bt-calendar-day-modal__shell {
   display: grid;
   grid-template-columns: minmax(7rem, 9rem) minmax(0, 1fr);
+  flex: 1;
+  min-width: 0;
   width: 100%;
   min-height: 0;
   border-radius: 1.25rem;
@@ -794,7 +834,12 @@ button.bt-calendar-template-card {
   flex-direction: column;
   justify-content: space-between;
   padding: var(--bt-space-5) var(--bt-space-4);
-  background: color-mix(in srgb, var(--bt-calendar-day-modal-accent, var(--bt-calendar-status-imputado)) 18%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--bt-calendar-day-modal-accent, var(--bt-calendar-status-imputado)) 14%,
+    var(--bt-color-surface-soft)
+  );
+  border-inline-start: 3px solid var(--bt-calendar-day-modal-accent, var(--bt-calendar-status-imputado));
   border-inline-end: 1px solid var(--bt-calendar-glass-border);
 }
 
@@ -804,6 +849,13 @@ button.bt-calendar-template-card {
   font-weight: 900;
   line-height: 1;
   color: var(--bt-color-text);
+}
+
+.bt-calendar-day-modal__day-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem;
 }
 
 .bt-calendar-day-modal__weekday {
@@ -816,7 +868,7 @@ button.bt-calendar-template-card {
 }
 
 .bt-calendar-day-modal__month {
-  margin: 0.125rem 0 0;
+  margin: 0;
   font-size: 0.8rem;
   font-weight: 700;
   color: var(--bt-color-text);
@@ -845,7 +897,7 @@ button.bt-calendar-template-card {
   margin-top: 0.75rem;
   height: 0.35rem;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--bt-color-border) 60%, transparent);
+  background: color-mix(in srgb, var(--bt-color-text-muted) 28%, var(--bt-color-surface));
   overflow: hidden;
 }
 
@@ -856,27 +908,13 @@ button.bt-calendar-template-card {
   transition: width 0.2s ease;
 }
 
-.bt-calendar-day-modal__progress-label {
-  margin: 0.375rem 0 0;
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: var(--bt-color-text-subtle);
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.bt-calendar-day-modal__progress-over-icon {
-  font-size: 0.7rem;
-  font-weight: 900;
-  line-height: 1;
+.bt-calendar-day-modal__aside-bottom--reached .bt-calendar-day-modal__hours-unit {
+  color: var(--bt-calendar-day-modal-accent, var(--bt-calendar-status-imputado));
 }
 
 .bt-calendar-day-modal__aside-bottom--over .bt-calendar-day-modal__hours-value,
 .bt-calendar-day-modal__aside-bottom--over .bt-calendar-day-modal__hours-unit,
-.bt-calendar-day-modal__aside-bottom--over .bt-calendar-day-modal__progress-fill,
-.bt-calendar-day-modal__aside-bottom--over .bt-calendar-day-modal__progress-label,
-.bt-calendar-day-modal__aside-bottom--over .bt-calendar-day-modal__progress-over-icon {
+.bt-calendar-day-modal__aside-bottom--over .bt-calendar-day-modal__progress-fill {
   color: var(--bt-color-error);
 }
 
@@ -1337,6 +1375,7 @@ button.bt-calendar-template-card {
     flex-direction: row;
     align-items: center;
     gap: var(--bt-space-4);
+    border-inline-start-width: 3px;
     border-inline-end: 0;
     border-bottom: 1px solid var(--bt-calendar-glass-border);
   }

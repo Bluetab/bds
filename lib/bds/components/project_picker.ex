@@ -41,6 +41,8 @@ defmodule Bds.Components.ProjectPicker do
   attr :description, :string, default: nil
   attr :label, :string, default: nil
   attr :placeholder, :string, default: "Search projects…"
+  attr :show_clients_without_group, :boolean, default: false
+  attr :show_projects_without_client, :boolean, default: false
   attr :selected_project, :any, default: nil
   attr :bare, :boolean, default: false, doc: "Form field layout without card chrome (e.g. day modal editor)"
 
@@ -59,6 +61,8 @@ defmodule Bds.Components.ProjectPicker do
      |> assign(:display_tree, [])
      |> assign(:expanded_paths, MapSet.new())
      |> assign(:include_ended, false)
+     |> assign(:show_clients_without_group, false)
+     |> assign(:show_projects_without_client, false)
      |> assign(:show_panel, false)
      |> assign(:show_config, false)
      |> assign(:loading, false)
@@ -91,6 +95,8 @@ defmodule Bds.Components.ProjectPicker do
       |> assign_new(:description, fn -> nil end)
       |> assign_new(:placeholder, fn -> gettext("Search projects…") end)
       |> assign_new(:include_inactive_label, fn -> gettext("Include inactive projects") end)
+      |> assign_new(:show_clients_without_group_label, fn -> gettext("Show clients without group") end)
+      |> assign_new(:show_projects_without_client_label, fn -> gettext("Show projects without client") end)
       |> assign_new(:settings_label, fn -> gettext("Settings") end)
       |> assign_new(:collapse_all_label, fn -> gettext("Collapse all") end)
       |> assign_new(:expand_all_label, fn -> gettext("Expand all") end)
@@ -132,23 +138,28 @@ defmodule Bds.Components.ProjectPicker do
 
   def handle_event("project_picker_toggle_ended", _params, socket) do
     include_ended = not socket.assigns.include_ended
-    query = socket.assigns.search_query
-
     socket =
       socket
       |> assign(:include_ended, include_ended)
-      |> keep_panel_open()
-      |> then(fn s ->
-        if tree_mode?(s) do
-          load_tree(s, query)
-        else
-          if String.length(query) >= @min_query_length do
-            load_flat_search(s, query)
-          else
-            s
-          end
-        end
-      end)
+      |> reload_for_filter_change()
+
+    {:noreply, socket}
+  end
+
+  def handle_event("project_picker_toggle_clients_without_group", _params, socket) do
+    socket =
+      socket
+      |> assign(:show_clients_without_group, not socket.assigns.show_clients_without_group)
+      |> reload_for_filter_change()
+
+    {:noreply, socket}
+  end
+
+  def handle_event("project_picker_toggle_projects_without_client", _params, socket) do
+    socket =
+      socket
+      |> assign(:show_projects_without_client, not socket.assigns.show_projects_without_client)
+      |> reload_for_filter_change()
 
     {:noreply, socket}
   end
@@ -363,6 +374,28 @@ defmodule Bds.Components.ProjectPicker do
               />
               <span>{@include_inactive_label}</span>
             </label>
+            <label class="bt-checkbox">
+              <input
+                type="checkbox"
+                name="show_clients_without_group"
+                value="true"
+                checked={@show_clients_without_group}
+                phx-click="project_picker_toggle_clients_without_group"
+                phx-target={@myself}
+              />
+              <span>{@show_clients_without_group_label}</span>
+            </label>
+            <label class="bt-checkbox">
+              <input
+                type="checkbox"
+                name="show_projects_without_client"
+                value="true"
+                checked={@show_projects_without_client}
+                phx-click="project_picker_toggle_projects_without_client"
+                phx-target={@myself}
+              />
+              <span>{@show_projects_without_client_label}</span>
+            </label>
           </div>
         </:panel_footer>
         <:options :if={@tree_mode? and @display_tree != []}>
@@ -420,8 +453,14 @@ defmodule Bds.Components.ProjectPicker do
   end
 
   defp load_tree(socket, query) do
+    picker_opts = [
+      include_ended: socket.assigns.include_ended,
+      show_clients_without_group: socket.assigns.show_clients_without_group,
+      show_projects_without_client: socket.assigns.show_projects_without_client
+    ]
+
     %{display_tree: display_tree, expanded_paths: expanded_paths, projects: projects} =
-      socket.assigns.tree_fn.(query, include_ended: socket.assigns.include_ended)
+      socket.assigns.tree_fn.(query, picker_opts)
 
     socket
     |> assign(:display_tree, display_tree)
@@ -438,7 +477,11 @@ defmodule Bds.Components.ProjectPicker do
 
       String.length(query) >= @min_query_length ->
         projects =
-          socket.assigns.search_fn.(query, include_ended: socket.assigns.include_ended)
+          socket.assigns.search_fn.(query,
+            include_ended: socket.assigns.include_ended,
+            show_clients_without_group: socket.assigns.show_clients_without_group,
+            show_projects_without_client: socket.assigns.show_projects_without_client
+          )
 
         socket
         |> assign(:projects, projects)
@@ -453,6 +496,25 @@ defmodule Bds.Components.ProjectPicker do
     socket
     |> assign(:blur_pending, false)
     |> assign(:show_panel, true)
+  end
+
+  defp reload_for_filter_change(socket) do
+    query = socket.assigns.search_query
+
+    socket
+    |> keep_panel_open()
+    |> then(fn s ->
+      cond do
+        tree_mode?(s) ->
+          load_tree(s, query)
+
+        String.length(query) >= @min_query_length ->
+          load_flat_search(s, query)
+
+        true ->
+          s
+      end
+    end)
   end
 
   defp tree_mode?(socket), do: is_function(socket.assigns[:tree_fn])

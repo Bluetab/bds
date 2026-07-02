@@ -7,10 +7,12 @@
 .bt-button--outline { background: transparent; color: var(--bt-color-primary); box-shadow: inset 0 0 0 1px var(--bt-color-border-strong); }
 .bt-button--ghost { background: transparent; color: var(--bt-color-primary); box-shadow: none; }
 .bt-button--danger { background: var(--bt-color-error); color: #fff; }
-.bt-button--sm { min-height: 2rem; padding-inline: var(--bt-space-3); font-size: var(--bt-font-size-sm); }
+.bt-button--sm { min-height: 2rem; padding-inline: var(--bt-space-3); font-size: var(--bt-font-size-sm); letter-spacing: 0.04em; }
+.bt-button--xs { min-height: 1.625rem; padding-inline: var(--bt-space-2); font-size: var(--bt-font-size-xs); letter-spacing: 0.02em; }
 .bt-button--lg { min-height: 3.25rem; padding-inline: var(--bt-space-5); font-size: var(--bt-font-size-lg); }
 .bt-button[disabled], .bt-icon-button[disabled] { cursor: not-allowed; opacity: .5; transform: none; }
 .bt-icon-button { width: 2.5rem; padding: 0; background: var(--bt-color-surface-soft); color: var(--bt-color-text); border: 1px solid var(--bt-color-border); }
+.bt-icon-button--xs { width: 1.75rem; min-height: 1.75rem; border-radius: var(--bt-radius-md); }
 .bt-icon-button--primary { background: var(--bt-color-primary); color: var(--bt-color-on-primary); border-color: transparent; }
 .bt-fab { width: 3.5rem; min-height: 3.5rem; border-radius: var(--bt-radius-lg); background: var(--bt-color-secondary); color: var(--bt-color-on-secondary); box-shadow: var(--bt-shadow-md); }
 .bt-fab--extended { width: auto; padding-inline: var(--bt-space-4); }

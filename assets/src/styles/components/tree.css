@@ -1,4 +1,5 @@
 .bt-tree {
+  --bt-tree-toggle: 1.5rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -6,8 +7,8 @@
 
 .bt-tree--nested {
   margin-top: var(--bt-space-2);
-  margin-left: var(--bt-space-1);
-  padding-left: var(--bt-space-3);
+  margin-left: calc(-1 * (var(--bt-tree-toggle) / 2 + var(--bt-space-2)) - 2px);
+  padding-left: calc(var(--bt-tree-toggle) / 2);
   border-left: 1px solid var(--bt-color-border);
 }
 
@@ -22,7 +23,7 @@
 
 .bt-tree__row {
   display: grid;
-  grid-template-columns: 1.5rem 1fr;
+  grid-template-columns: var(--bt-tree-toggle) 1fr;
   gap: var(--bt-space-1) var(--bt-space-2);
   align-items: start;
 }

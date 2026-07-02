@@ -37,8 +37,9 @@ defmodule Bds.Components do
   attr :rest, :global
   attr :class, :any
   attr :variant, :string, default: "primary", values: ~w(primary secondary tertiary outline ghost danger)
-  attr :size, :string, default: nil, values: [nil, "sm", "lg"]
+  attr :size, :string, default: nil, values: [nil, "xs", "sm", "lg"]
   attr :type, :string, default: "button"
+  attr :disabled, :boolean, default: false
   attr :href, :string, default: nil
   attr :navigate, :any, default: nil
   attr :patch, :any, default: nil
@@ -49,13 +50,20 @@ defmodule Bds.Components do
 
     if assigns.href || assigns.navigate || assigns.patch do
       ~H"""
-      <.link class={@class} href={@href} navigate={@navigate} patch={@patch} {@rest}>
+      <.link
+        class={@class}
+        href={@href}
+        navigate={@navigate}
+        patch={@patch}
+        aria-disabled={@disabled && "true"}
+        {@rest}
+      >
         {render_slot(@inner_block)}
       </.link>
       """
     else
       ~H"""
-      <button type={@type} class={@class} {@rest}>
+      <button type={@type} class={@class} disabled={@disabled} {@rest}>
         {render_slot(@inner_block)}
       </button>
       """
@@ -706,8 +714,8 @@ defmodule Bds.Components do
             >
               {render_slot(col, @row_item.(row))}
             </td>
-            <td :if={@action != []} class="w-0 font-semibold">
-              <div class="flex gap-4">
+            <td :if={@action != []} class="w-0 whitespace-nowrap">
+              <div class="flex flex-wrap items-center gap-1.5">
                 <%= for action <- @action do %>
                   {render_slot(action, @row_item.(row))}
                 <% end %>
@@ -767,6 +775,7 @@ defmodule Bds.Components do
 
     size_class =
       case Map.get(assigns, :size) do
+        "xs" -> "bt-button--xs"
         "sm" -> "bt-button--sm"
         "lg" -> "bt-button--lg"
         _ -> nil

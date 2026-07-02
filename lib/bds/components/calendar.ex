@@ -627,6 +627,8 @@ defmodule Bds.Components.Calendar do
   )
 
   attr(:on_save, :string, default: nil)
+  attr(:on_prev_day, :string, default: nil)
+  attr(:on_next_day, :string, default: nil)
   attr(:class, :any, default: nil)
   attr(:rest, :global)
 
@@ -636,7 +638,6 @@ defmodule Bds.Components.Calendar do
     progress = min(100.0, total / goal * 100)
     goal_exceeded = total > goal
     goal_reached = total >= goal
-    hours_to_goal = Float.round(max(0.0, goal - total), 1)
 
     weekday_label =
       assigns.weekday_label ||
@@ -653,8 +654,6 @@ defmodule Bds.Components.Calendar do
       |> assign(:progress_pct, Float.round(progress, 1))
       |> assign(:goal_exceeded, goal_exceeded)
       |> assign(:goal_reached, goal_reached)
-      |> assign(:hours_to_goal, hours_to_goal)
-      |> assign(:progress_summary, progress_summary(goal_exceeded, goal_reached, hours_to_goal))
       |> assign(:editing?, !is_nil(assigns.entry_form))
       |> assign(:entry_form_id, "#{assigns.id}-entry-form")
 
@@ -679,6 +678,13 @@ defmodule Bds.Components.Calendar do
         aria-modal="true"
         aria-label={gettext("Day %{day}", day: @date.day)}
       >
+        <.bt_icon_button
+          :if={@on_prev_day}
+          class="bt-calendar-day-modal__nav bt-calendar-day-modal__nav--prev"
+          label={gettext("Previous day")}
+          icon="‹"
+          phx-click={@on_prev_day}
+        />
         <div class={["bt-calendar-day-modal__shell", modal_status_class(@status)]}>
           <aside class="bt-calendar-day-modal__aside">
             <div class="bt-calendar-day-modal__aside-top">
@@ -690,7 +696,8 @@ defmodule Bds.Components.Calendar do
             </div>
             <div class={[
               "bt-calendar-day-modal__aside-bottom",
-              @goal_exceeded && "bt-calendar-day-modal__aside-bottom--over"
+              @goal_exceeded && "bt-calendar-day-modal__aside-bottom--over",
+              @goal_reached && !@goal_exceeded && "bt-calendar-day-modal__aside-bottom--reached"
             ]}>
               <div class="bt-calendar-day-modal__hours">
                 <span class="bt-calendar-day-modal__hours-value">{Float.round(@total_hours * 1.0, 1)}</span>
@@ -699,16 +706,6 @@ defmodule Bds.Components.Calendar do
               <div class="bt-calendar-day-modal__progress" aria-hidden="true">
                 <div class="bt-calendar-day-modal__progress-fill" style={"width: #{@progress_pct}%"} />
               </div>
-              <p class="bt-calendar-day-modal__progress-label">
-                <span
-                  :if={@goal_exceeded}
-                  class="bt-calendar-day-modal__progress-over-icon"
-                  aria-hidden="true"
-                >
-                  ✕
-                </span>
-                {@progress_summary}
-              </p>
             </div>
           </aside>
 
@@ -931,6 +928,13 @@ defmodule Bds.Components.Calendar do
             </div>
           </section>
         </div>
+        <.bt_icon_button
+          :if={@on_next_day}
+          class="bt-calendar-day-modal__nav bt-calendar-day-modal__nav--next"
+          label={gettext("Next day")}
+          icon="›"
+          phx-click={@on_next_day}
+        />
       </div>
     </div>
     """
@@ -1003,10 +1007,6 @@ defmodule Bds.Components.Calendar do
       {gettext("8h"), "8"}
     ]
   end
-
-  defp progress_summary(true, _goal_reached, _hours_to_goal), do: gettext("Daily goal exceeded")
-  defp progress_summary(false, true, _hours_to_goal), do: gettext("Daily goal reached")
-  defp progress_summary(false, false, hours), do: gettext("%{hours}h to reach 8h", hours: hours)
 
   defp calendar_month_names do
     [

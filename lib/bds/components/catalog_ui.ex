@@ -1079,6 +1079,7 @@ defmodule Bds.Components.CatalogUi do
     """
   end
 
+  attr :id, :string, default: nil
   attr :class, :any, default: nil
   attr :compact, :boolean, default: false
   attr :title, :string, default: nil
@@ -1089,7 +1090,7 @@ defmodule Bds.Components.CatalogUi do
 
   def bt_empty(assigns) do
     ~H"""
-    <div class={["bt-empty", @compact && "bt-empty--compact", @class]}>
+    <div id={@id} class={["bt-empty", @compact && "bt-empty--compact", @class]}>
       <div :if={render_slot(@icon) != []} class="bt-empty__icon">{render_slot(@icon)}</div>
       <h3 :if={@title} class="bt-empty__title">{@title}</h3>
       <p :if={@description} class="bt-empty__description">{@description}</p>
