@@ -312,10 +312,12 @@ defmodule Bds.Components.Calendar do
   attr(:today, :boolean, default: false)
   attr(:outside, :boolean, default: false)
   attr(:selectable, :boolean, default: false)
+  attr(:openable, :boolean, default: false)
   attr(:date, :any, default: nil)
   attr(:on_select, :string, default: nil)
   attr(:on_open, :string, default: nil)
   attr(:projects, :list, default: [])
+  attr(:project_layout, :atom, default: :default, values: [:default, :compact])
   attr(:grid_row, :integer, default: nil)
   attr(:grid_col, :integer, default: nil)
   attr(:type, :string, default: "button")
@@ -376,6 +378,33 @@ defmodule Bds.Components.Calendar do
         </div>
         """
 
+      assigns.openable ->
+        date_iso = calendar_day_iso(assigns.date, assigns.day)
+
+        assigns =
+          assigns
+          |> assign(:date_iso, date_iso)
+          |> assign(:day_body, calendar_day_body(assigns))
+
+        ~H"""
+        <button
+          type="button"
+          class={[
+            "bt-calendar-day bt-calendar-day--openable w-full h-full text-left",
+            status_class(@status),
+            @today && "bt-calendar-day--today",
+            @selected && "bt-calendar-day--selected",
+            @class
+          ]}
+          data-calendar-day={@date_iso}
+          phx-click={@on_open}
+          phx-value-date={@date_iso}
+          {@rest}
+        >
+          {@day_body}
+        </button>
+        """
+
       true ->
         assigns = assign(assigns, :day_body, calendar_day_body(assigns))
 
@@ -404,16 +433,23 @@ defmodule Bds.Components.Calendar do
       <%= if @projects != [] do %>
         <div class="bt-calendar-day__projects">
           <%= for project <- Enum.take(@projects, 2) do %>
-            <div class={["bt-calendar-day__project", project_status_class(project)]}>
-              <span
-                :if={project_status(project)}
-                class="bt-calendar-day__project-status"
-                title={project_status_label(project)}
-                aria-label={project_status_label(project)}
-              />
-              <span class="bt-calendar-day__project-name">{project_name(project)}</span>
-              <span class="bt-calendar-day__project-hours">{project_hours(project)}h</span>
-            </div>
+            <%= if @project_layout == :compact do %>
+              <div class={["bt-calendar-day__project bt-calendar-day__project--compact", project_status_class(project)]}>
+                <span class="bt-calendar-day__project-code">{project_code(project)}</span>
+                <span class="bt-calendar-day__project-hours">{project_hours(project)}h</span>
+              </div>
+            <% else %>
+              <div class={["bt-calendar-day__project", project_status_class(project)]}>
+                <span
+                  :if={project_status(project)}
+                  class="bt-calendar-day__project-status"
+                  title={project_status_label(project)}
+                  aria-label={project_status_label(project)}
+                />
+                <span class="bt-calendar-day__project-name">{project_name(project)}</span>
+                <span class="bt-calendar-day__project-hours">{project_hours(project)}h</span>
+              </div>
+            <% end %>
           <% end %>
           <%= if length(@projects) > 2 do %>
             <span class="bt-calendar-day__more">+{length(@projects) - 2} more</span>
@@ -491,6 +527,10 @@ defmodule Bds.Components.Calendar do
   defp project_name(%{name: name}), do: name
   defp project_name(%{"name" => name}), do: name
   defp project_name(name) when is_binary(name), do: name
+
+  defp project_code(%{code: code}) when is_binary(code), do: code
+  defp project_code(%{"code" => code}) when is_binary(code), do: code
+  defp project_code(project), do: project_name(project)
 
   defp project_hours(%{hours: hours}), do: hours
   defp project_hours(%{"hours" => hours}), do: hours
