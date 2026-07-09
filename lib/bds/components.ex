@@ -322,7 +322,7 @@ defmodule Bds.Components do
   end
 
   @doc """
-  Top navbar (`bt-topbar`): Bluetab gradient bar with logo, actions, theme toggle, and user menu.
+  Top navbar (`bt-site-header` / `bt-nav`): floating pill bar with Bluetab gradient accent border.
 
   Pair with `<.bt_navbar_logo_link>`, `<.bt_navbar_theme_toggle>`, `<.bt_navbar_locale_toggle>`,
   and `<.bt_navbar_user_menu>` (with optional `<.bt_navbar_user_menu_prefs>` for language/theme rows).
@@ -331,9 +331,7 @@ defmodule Bds.Components do
 
       <.bt_topbar>
         <:brand>
-          <.bt_navbar_logo_link navigate={~p"/"} logo_src={~p"/images/slash_logo_white.png"}>
-            My App
-          </.bt_navbar_logo_link>
+          <.bt_navbar_logo_link navigate={~p"/"} logo_src={~p"/images/logo-bluetab.svg"} logo_alt="Bluetab" />
         </:brand>
         <:actions>
           <.bt_navbar_theme_toggle />
@@ -345,23 +343,29 @@ defmodule Bds.Components do
   attr :rest, :global
   slot :start
   slot :brand
+  slot :nav
   slot :actions
 
   def bt_topbar(assigns) do
     ~H"""
-    <header class={["bt-topbar", @class]} {@rest}>
-      <div class={[
-        "bt-topbar__inner",
-        @contained && "bt-topbar__inner--contained"
-      ]}>
-        <div class="bt-topbar__start">
-          {render_slot(@start)}
-          {render_slot(@brand)}
+    <header class={["bt-site-header", "bt-topbar", @class]} {@rest}>
+      <nav class="bt-nav" aria-label={gettext("Main")}>
+        <div class={[
+          "bt-nav__inner",
+          @contained && "bt-nav__inner--contained"
+        ]}>
+          <div class="bt-nav__brand">
+            {render_slot(@start)}
+            {render_slot(@brand)}
+          </div>
+          <div :if={@nav != []} class="bt-nav__links">
+            {render_slot(@nav)}
+          </div>
+          <div :if={@actions != []} class="bt-nav__actions">
+            {render_slot(@actions)}
+          </div>
         </div>
-        <div :if={@actions != []} class="bt-topbar__actions">
-          {render_slot(@actions)}
-        </div>
-      </div>
+      </nav>
     </header>
     """
   end
@@ -378,13 +382,13 @@ defmodule Bds.Components do
   attr :patch, :any, default: nil
   attr :logo_src, :string, required: true
   attr :logo_alt, :string, default: ""
-  slot :inner_block, required: true
+  slot :inner_block
 
   def bt_navbar_logo_link(%{navigate: navigate} = assigns) when not is_nil(navigate) do
     ~H"""
     <.link navigate={@navigate} class={["bt-navbar-logo-link", @class]} {@rest}>
       <img src={@logo_src} alt={@logo_alt} class="bt-navbar-logo-img" fetchpriority="high" />
-      {render_slot(@inner_block)}
+      <span :if={@inner_block != []} class="bt-navbar-logo-label">{render_slot(@inner_block)}</span>
     </.link>
     """
   end
@@ -393,7 +397,7 @@ defmodule Bds.Components do
     ~H"""
     <.link patch={@patch} class={["bt-navbar-logo-link", @class]} {@rest}>
       <img src={@logo_src} alt={@logo_alt} class="bt-navbar-logo-img" fetchpriority="high" />
-      {render_slot(@inner_block)}
+      <span :if={@inner_block != []} class="bt-navbar-logo-label">{render_slot(@inner_block)}</span>
     </.link>
     """
   end
@@ -402,7 +406,7 @@ defmodule Bds.Components do
     ~H"""
     <a href={@href || "#"} class={["bt-navbar-logo-link", @class]} {@rest}>
       <img src={@logo_src} alt={@logo_alt} class="bt-navbar-logo-img" fetchpriority="high" />
-      {render_slot(@inner_block)}
+      <span :if={@inner_block != []} class="bt-navbar-logo-label">{render_slot(@inner_block)}</span>
     </a>
     """
   end

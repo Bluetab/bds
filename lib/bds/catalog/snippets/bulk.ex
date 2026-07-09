@@ -484,7 +484,7 @@ defmodule Bds.Catalog.Snippets.Bulk do
       <div class="bt-shell bt-shell--app">
         <.bt_topbar>
           <:brand>
-            <.bt_navbar_logo_link href="#" logo_src="/images/logo.png">App</.bt_navbar_logo_link>
+            <.bt_navbar_logo_link href="#" logo_src="/images/logo-bluetab.svg" logo_alt="Bluetab" />
           </:brand>
           <:actions>
             <.bt_navbar_theme_toggle />
@@ -497,7 +497,7 @@ defmodule Bds.Catalog.Snippets.Bulk do
       <div class="bt-shell bt-shell--app">
         <.bt_topbar>
           <:brand>
-            <.bt_navbar_logo_link href="#" logo_src="/images/logo.png">App</.bt_navbar_logo_link>
+            <.bt_navbar_logo_link href="#" logo_src="/images/logo-bluetab.svg" logo_alt="Bluetab" />
           </:brand>
           <:actions>
             <.bt_navbar_user_menu

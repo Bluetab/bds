@@ -799,9 +799,11 @@ defmodule Bds.Components.Calendar do
                           field={@entry_form[:hours]}
                           type="number"
                           label={gettext("Hours")}
-                          step="0.5"
+                          step="any"
                           min="0.5"
                           max="24"
+                          phx-hook="BtNumberStep"
+                          data-step-increment="0.5"
                           required
                         />
                       </div>

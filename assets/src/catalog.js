@@ -803,17 +803,21 @@ initBtInteractions();</code></pre>
         title: "App shell (no sidebar)",
         block: true,
         html: String.raw`<div class="bt-shell bt-shell--app">
-  <header class="bt-topbar">
-    <div class="bt-topbar__inner">
-      <div class="bt-topbar__start">
-        <a href="#" class="bt-navbar-logo-link" onclick="return false;">App</a>
+  <header class="bt-site-header bt-topbar">
+    <nav class="bt-nav" aria-label="Main">
+      <div class="bt-nav__inner">
+        <div class="bt-nav__brand">
+          <a href="#" class="bt-navbar-logo-link" onclick="return false;">
+            <img src="/images/logo-bluetab.svg" alt="Bluetab" class="bt-navbar-logo-img" />
+          </a>
+        </div>
+        <div class="bt-nav__actions">
+          <button type="button" class="bt-theme-toggle-button" data-theme-toggle aria-label="Tema">
+            <span class="bt-icon" data-theme-icon>◐</span>
+          </button>
+        </div>
       </div>
-      <div class="bt-topbar__actions">
-        <button type="button" class="bt-theme-toggle-button" data-theme-toggle aria-label="Tema">
-          <span class="bt-icon" data-theme-icon>◐</span>
-        </button>
-      </div>
-    </div>
+    </nav>
   </header>
   <main class="bt-main">Contenido principal</main>
 </div>`,
@@ -822,13 +826,16 @@ initBtInteractions();</code></pre>
         title: "App shell with user menu",
         block: true,
         html: String.raw`<div class="bt-shell bt-shell--app">
-  <header class="bt-topbar">
-    <div class="bt-topbar__inner">
-      <div class="bt-topbar__start">
-        <a href="#" class="bt-navbar-logo-link" onclick="return false;">App</a>
-      </div>
-      <div class="bt-topbar__actions">
-        <div class="bt-navbar-user" tabindex="-1">
+  <header class="bt-site-header bt-topbar">
+    <nav class="bt-nav" aria-label="Main">
+      <div class="bt-nav__inner">
+        <div class="bt-nav__brand">
+          <a href="#" class="bt-navbar-logo-link" onclick="return false;">
+            <img src="/images/logo-bluetab.svg" alt="Bluetab" class="bt-navbar-logo-img" />
+          </a>
+        </div>
+        <div class="bt-nav__actions">
+          <div class="bt-navbar-user" tabindex="-1">
           <div class="bt-navbar-user__trigger bt-navbar-user__trigger--compact" role="button" aria-haspopup="menu" tabindex="0">
             <div class="bt-navbar-user__meta">
               <div class="bt-navbar-user__role">Member</div>
@@ -865,7 +872,7 @@ initBtInteractions();</code></pre>
           </div>
         </div>
       </div>
-    </div>
+    </nav>
   </header>
   <main class="bt-main">Main content</main>
 </div>`,

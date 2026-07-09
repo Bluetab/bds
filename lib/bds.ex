@@ -23,7 +23,8 @@ defmodule Bds do
 
   Ash Authentication Phoenix sign-in UI: `Bds.AuthBanner`, `Bds.AuthUi`.
 
-  Form widgets: `Bds.Components.ProjectPicker` (LiveComponent — searchable project id picker).
+  Form widgets: `Bds.Components.ProjectPicker` (LiveComponent — searchable project id picker),
+  `Bds.Components.UserPicker` (LiveComponent — searchable user id picker).
 
   Performance cycle / Gedex workspace: `Bds.Components.Performance` (`bt-performance-*` briefing,
   hours, team, and evaluator cards).

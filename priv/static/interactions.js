@@ -110,12 +110,50 @@ var i = 4, a = 250, o = {
 	clearDismiss() {
 		this.dismissTimer &&= (clearTimeout(this.dismissTimer), null);
 	}
-}, c = "bt-theme", l = (e, t = document) => [...t.querySelectorAll(e)], u = (e = document) => e.querySelector("[data-theme-icon]"), d = (e = document, t = e.documentElement.dataset.theme) => {
-	let n = u(e);
-	n && (n.textContent = t === "dark" ? "☀" : "◐"), l("[data-theme-value]", e).forEach((e) => {
+}, c = (e, t) => {
+	let n = parseFloat(e);
+	return Number.isFinite(n) ? n : t;
+}, l = (e, t = 2) => Math.round(e * 10 ** t) / 10 ** t, u = {
+	mounted() {
+		this.increment = c(this.el.dataset.stepIncrement, .5), this.min = this.el.hasAttribute("min") ? c(this.el.min, null) : null, this.max = this.el.hasAttribute("max") ? c(this.el.max, null) : null, this.typing = !1, this.pasting = !1, this.adjusting = !1, this.previousValue = c(this.el.value, 0), this.el.setAttribute("step", "any"), this.onKeyDown = (e) => {
+			if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+				e.preventDefault(), this.stepBy(e.key === "ArrowUp" ? this.increment : -this.increment);
+				return;
+			}
+			(e.key.length === 1 || e.key === "Backspace" || e.key === "Delete" || e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "Home" || e.key === "End") && (this.typing = !0);
+		}, this.onKeyUp = () => {
+			this.typing = !1, this.previousValue = c(this.el.value, this.previousValue);
+		}, this.onPaste = () => {
+			this.pasting = !0;
+		}, this.onInput = () => {
+			if (this.adjusting) return;
+			if (this.typing || this.pasting) {
+				this.pasting = !1, this.previousValue = c(this.el.value, this.previousValue);
+				return;
+			}
+			let e = c(this.el.value, this.previousValue), t = l(e - this.previousValue, 4);
+			if (Math.abs(Math.abs(t) - 1) < 1e-4) {
+				this.stepBy(t > 0 ? this.increment : -this.increment, !0);
+				return;
+			}
+			this.previousValue = e;
+		}, this.onWheel = (e) => {
+			document.activeElement === this.el && (e.preventDefault(), this.stepBy(e.deltaY < 0 ? this.increment : -this.increment));
+		}, this.el.addEventListener("keydown", this.onKeyDown), this.el.addEventListener("keyup", this.onKeyUp), this.el.addEventListener("paste", this.onPaste), this.el.addEventListener("input", this.onInput), this.el.addEventListener("wheel", this.onWheel, { passive: !1 });
+	},
+	destroyed() {
+		this.el.removeEventListener("keydown", this.onKeyDown), this.el.removeEventListener("keyup", this.onKeyUp), this.el.removeEventListener("paste", this.onPaste), this.el.removeEventListener("input", this.onInput), this.el.removeEventListener("wheel", this.onWheel);
+	},
+	stepBy(e, t = !1) {
+		let n = l((t ? this.previousValue : c(this.el.value, this.previousValue)) + e);
+		this.min != null && n < this.min && (n = this.min), this.max != null && n > this.max && (n = this.max), this.adjusting = !0, this.el.value = String(n), this.previousValue = n, this.adjusting = !1, this.el.dispatchEvent(new Event("input", { bubbles: !0 })), this.el.dispatchEvent(new Event("change", { bubbles: !0 }));
+	}
+}, d = "bt-theme", f = (e, t = document) => [...t.querySelectorAll(e)], p = (e = document) => e.querySelector("[data-theme-icon]"), m = (e = document, t = e.documentElement.dataset.theme) => {
+	let n = p(e);
+	n && (n.textContent = t === "dark" ? "☀" : "◐"), f("[data-theme-value]", e).forEach((e) => {
 		e.textContent = t === "dark" ? e.dataset.dark || "Dark" : e.dataset.light || "Light";
 	});
-}, f = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), p = (e) => {
+}, h = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), g = (e) => {
 	if (e) {
 		if (typeof HTMLDialogElement < "u" && e instanceof HTMLDialogElement) {
 			!e.open && typeof e.showModal == "function" && e.showModal();
@@ -123,7 +161,7 @@ var i = 4, a = 250, o = {
 		}
 		e.setAttribute("open", "");
 	}
-}, m = (e) => {
+}, _ = (e) => {
 	if (e) {
 		if (typeof HTMLDialogElement < "u" && e instanceof HTMLDialogElement) {
 			e.open && typeof e.close == "function" && e.close();
@@ -131,32 +169,32 @@ var i = 4, a = 250, o = {
 		}
 		e.removeAttribute("open");
 	}
-}, h = (e = document, t) => {
-	l("[data-open=\"true\"].bt-menu", e).forEach((e) => {
+}, v = (e = document, t) => {
+	f("[data-open=\"true\"].bt-menu", e).forEach((e) => {
 		e !== t && (e.dataset.open = "false");
 	});
-}, g = (e, t = {}) => {
-	let { root: n = document, storageKey: r = c, persist: i = !0 } = t;
-	n.documentElement.dataset.theme = e, d(n, e), i && localStorage.setItem(r, e);
-}, _ = (e = {}) => {
+}, y = (e, t = {}) => {
+	let { root: n = document, storageKey: r = d, persist: i = !0 } = t;
+	n.documentElement.dataset.theme = e, m(n, e), i && localStorage.setItem(r, e);
+}, b = (e = {}) => {
 	let t = (e.root || document).documentElement.dataset.theme === "dark" ? "light" : "dark";
-	return g(t, e), t;
-}, v = (e = {}) => {
-	let { root: t = document, storageKey: n = c, fallbackTheme: r = "light" } = e, i = localStorage.getItem(n) || r;
-	return g(i, {
+	return y(t, e), t;
+}, x = (e = {}) => {
+	let { root: t = document, storageKey: n = d, fallbackTheme: r = "light" } = e, i = localStorage.getItem(n) || r;
+	return y(i, {
 		...e,
 		root: t,
 		persist: !1
 	}), i;
 };
-function y(e = {}) {
-	let { root: t = document, storageKey: n = c, autoApplyStoredTheme: r = !0 } = e, i = new AbortController(), { signal: a } = i;
-	r ? v({
+function S(e = {}) {
+	let { root: t = document, storageKey: n = d, autoApplyStoredTheme: r = !0 } = e, i = new AbortController(), { signal: a } = i;
+	r ? x({
 		root: t,
 		storageKey: n,
 		fallbackTheme: t.documentElement.dataset.theme || "light"
-	}) : d(t);
-	let o = new MutationObserver(() => d(t));
+	}) : m(t);
+	let o = new MutationObserver(() => m(t));
 	return o.observe(t.documentElement, {
 		attributes: !0,
 		attributeFilter: ["data-theme"]
@@ -164,7 +202,7 @@ function y(e = {}) {
 		e.target.closest(".bt-combobox__panel") && e.preventDefault();
 	}, { signal: a }), t.addEventListener("click", (e) => {
 		if (e.target.closest("[data-theme-toggle]")) {
-			_({
+			b({
 				root: t,
 				storageKey: n
 			});
@@ -172,17 +210,17 @@ function y(e = {}) {
 		}
 		let r = e.target.closest("[data-dialog-open]");
 		if (r) {
-			p(f(r, r.dataset.dialogOpen, t));
+			g(h(r, r.dataset.dialogOpen, t));
 			return;
 		}
 		let i = e.target.closest("[data-dialog-close]");
 		if (i) {
-			m(i.closest(".bt-dialog"));
+			_(i.closest(".bt-dialog"));
 			return;
 		}
 		let a = e.target.closest("[data-overlay-open]");
 		if (a) {
-			f(a, a.dataset.overlayOpen, t)?.setAttribute("open", "");
+			h(a, a.dataset.overlayOpen, t)?.setAttribute("open", "");
 			return;
 		}
 		let o = e.target.closest("[data-overlay-close]");
@@ -192,28 +230,28 @@ function y(e = {}) {
 		}
 		let s = e.target.closest("[data-menu-toggle]");
 		if (s) {
-			let e = f(s, s.dataset.menuToggle, t), n = e?.dataset.open !== "true";
-			h(t, e), e && (e.dataset.open = String(n));
+			let e = h(s, s.dataset.menuToggle, t), n = e?.dataset.open !== "true";
+			v(t, e), e && (e.dataset.open = String(n));
 			return;
 		}
-		e.target.closest(".bt-menu-wrap") || h(t);
+		e.target.closest(".bt-menu-wrap") || v(t);
 		let c = e.target.closest("[data-expansion-toggle]");
 		if (c) {
 			let e = c.closest("[data-expansion]");
 			e.dataset.open = e.dataset.open === "true" ? "false" : "true";
 			return;
 		}
-		let u = e.target.closest("[data-snackbar-open]");
-		if (u) {
-			let e = f(u, u.dataset.snackbarOpen, t);
+		let l = e.target.closest("[data-snackbar-open]");
+		if (l) {
+			let e = h(l, l.dataset.snackbarOpen, t);
 			e && (e.dataset.open = "true", setTimeout(() => {
 				e.dataset.open = "false";
 			}, 3200));
 			return;
 		}
-		let d = e.target.closest("[data-snackbar-close]");
-		if (d) {
-			let e = d.closest(".bt-snackbar");
+		let u = e.target.closest("[data-snackbar-close]");
+		if (u) {
+			let e = u.closest(".bt-snackbar");
 			e && (e.dataset.open = "false");
 			return;
 		}
@@ -225,14 +263,14 @@ function y(e = {}) {
 			t.body.classList.remove("bt-sidebar-open");
 			return;
 		}
-		let g = e.target.closest("[data-tab]");
-		if (g) {
-			let e = g.closest("[data-tabs]");
+		let d = e.target.closest("[data-tab]");
+		if (d) {
+			let e = d.closest("[data-tabs]");
 			if (!e) return;
-			l("[role=\"tab\"]", e).forEach((e) => {
-				e.setAttribute("aria-selected", String(e === g));
-			}), l(".bt-tab-panel", e).forEach((e) => {
-				e.setAttribute("aria-hidden", String(e.id !== g.dataset.tab));
+			f("[role=\"tab\"]", e).forEach((e) => {
+				e.setAttribute("aria-selected", String(e === d));
+			}), f(".bt-tab-panel", e).forEach((e) => {
+				e.setAttribute("aria-hidden", String(e.id !== d.dataset.tab));
 			});
 		}
 	}, { signal: a }), () => {
@@ -240,4 +278,4 @@ function y(e = {}) {
 	};
 }
 //#endregion
-export { o as BtCombobox, s as BtFlash, e as CalendarDaySelection, c as DEFAULT_THEME_STORAGE_KEY, v as applyStoredTheme, y as initBtInteractions, g as setTheme, d as syncThemeLabels, _ as toggleTheme };
+export { o as BtCombobox, s as BtFlash, u as BtNumberStep, e as CalendarDaySelection, d as DEFAULT_THEME_STORAGE_KEY, x as applyStoredTheme, S as initBtInteractions, y as setTheme, m as syncThemeLabels, b as toggleTheme };

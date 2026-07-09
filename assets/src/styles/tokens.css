@@ -22,7 +22,7 @@
   --bt-color-tertiary-soft: #f3ecff;
   --bt-color-on-tertiary: #ffffff;
 
-  /* Brand topbar (fixed light palette — see .bt-topbar in navigation.css; not swapped in dark theme) */
+  /* Brand topbar accent gradient — see .bt-topbar in navigation.css */
 
   /* Semantic */
   --bt-color-success: #008b80;
@@ -86,7 +86,7 @@
 
   /* Layout */
   --bt-sidebar-width: 17.5rem;
-  --bt-topbar-height: 3.375rem;
+  --bt-topbar-height: calc(0.5rem + 4rem + 0.5rem);
   --bt-content-max-width: 76rem;
   --bt-panel-width: min(46rem, 92vw);
 
