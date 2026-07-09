@@ -838,7 +838,6 @@ initBtInteractions();</code></pre>
           <div class="bt-navbar-user" tabindex="-1">
           <div class="bt-navbar-user__trigger bt-navbar-user__trigger--compact" role="button" aria-haspopup="menu" tabindex="0">
             <div class="bt-navbar-user__meta">
-              <div class="bt-navbar-user__role">Member</div>
               <div class="bt-navbar-user__name">Alex Rivera</div>
             </div>
             <div class="bt-navbar-user__avatar-wrap">

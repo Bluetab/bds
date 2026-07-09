@@ -374,6 +374,8 @@ defmodule Bds.Components do
   Logo link for the brand topbar (`bt-navbar-logo-link`).
 
   Pass `navigate` for LiveView navigation or `href` for a plain link.
+  When `logo_src_dark` is set, light and dark theme assets swap via
+  `bt-navbar-logo-img--light` / `--dark` (same pattern as the auth banner).
   """
   attr :class, :any, default: nil
   attr :rest, :global
@@ -381,13 +383,14 @@ defmodule Bds.Components do
   attr :navigate, :any, default: nil
   attr :patch, :any, default: nil
   attr :logo_src, :string, required: true
+  attr :logo_src_dark, :string, default: nil
   attr :logo_alt, :string, default: ""
   slot :inner_block
 
   def bt_navbar_logo_link(%{navigate: navigate} = assigns) when not is_nil(navigate) do
     ~H"""
     <.link navigate={@navigate} class={["bt-navbar-logo-link", @class]} {@rest}>
-      <img src={@logo_src} alt={@logo_alt} class="bt-navbar-logo-img" fetchpriority="high" />
+      <.bt_navbar_logo_imgs logo_src={@logo_src} logo_src_dark={@logo_src_dark} logo_alt={@logo_alt} />
       <span :if={@inner_block != []} class="bt-navbar-logo-label">{render_slot(@inner_block)}</span>
     </.link>
     """
@@ -396,7 +399,7 @@ defmodule Bds.Components do
   def bt_navbar_logo_link(%{patch: patch} = assigns) when not is_nil(patch) do
     ~H"""
     <.link patch={@patch} class={["bt-navbar-logo-link", @class]} {@rest}>
-      <img src={@logo_src} alt={@logo_alt} class="bt-navbar-logo-img" fetchpriority="high" />
+      <.bt_navbar_logo_imgs logo_src={@logo_src} logo_src_dark={@logo_src_dark} logo_alt={@logo_alt} />
       <span :if={@inner_block != []} class="bt-navbar-logo-label">{render_slot(@inner_block)}</span>
     </.link>
     """
@@ -405,9 +408,38 @@ defmodule Bds.Components do
   def bt_navbar_logo_link(assigns) do
     ~H"""
     <a href={@href || "#"} class={["bt-navbar-logo-link", @class]} {@rest}>
-      <img src={@logo_src} alt={@logo_alt} class="bt-navbar-logo-img" fetchpriority="high" />
+      <.bt_navbar_logo_imgs logo_src={@logo_src} logo_src_dark={@logo_src_dark} logo_alt={@logo_alt} />
       <span :if={@inner_block != []} class="bt-navbar-logo-label">{render_slot(@inner_block)}</span>
     </a>
+    """
+  end
+
+  attr :logo_src, :string, required: true
+  attr :logo_src_dark, :string, default: nil
+  attr :logo_alt, :string, default: ""
+
+  defp bt_navbar_logo_imgs(%{logo_src_dark: logo_src_dark} = assigns)
+       when is_binary(logo_src_dark) and logo_src_dark != "" do
+    ~H"""
+    <img
+      src={@logo_src}
+      alt={@logo_alt}
+      class="bt-navbar-logo-img bt-navbar-logo-img--light"
+      fetchpriority="high"
+    />
+    <img
+      src={@logo_src_dark}
+      alt=""
+      aria-hidden="true"
+      class="bt-navbar-logo-img bt-navbar-logo-img--dark"
+      fetchpriority="high"
+    />
+    """
+  end
+
+  defp bt_navbar_logo_imgs(assigns) do
+    ~H"""
+    <img src={@logo_src} alt={@logo_alt} class="bt-navbar-logo-img" fetchpriority="high" />
     """
   end
 
@@ -525,7 +557,6 @@ defmodule Bds.Components do
         tabindex="0"
       >
         <div class="bt-navbar-user__meta">
-          <div class="bt-navbar-user__role">{@role}</div>
           <div class="bt-navbar-user__name">{@name}</div>
         </div>
 

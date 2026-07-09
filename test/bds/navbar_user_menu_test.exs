@@ -52,6 +52,7 @@ defmodule Bds.NavbarUserMenuTest do
     assert html =~ "bt-avatar__name"
     assert html =~ "bt-avatar__email"
     assert html =~ "alex@example.com"
+    refute html =~ "bt-navbar-user__role"
     refute html =~ "bt-navbar-user__dropdown-role"
   end
 end
