@@ -62,8 +62,6 @@ export const CalendarDaySelection = {
         return
       }
 
-      if (!event.shiftKey && !event.metaKey && !event.ctrlKey) return
-
       event.preventDefault()
       event.stopPropagation()
       event.stopImmediatePropagation()

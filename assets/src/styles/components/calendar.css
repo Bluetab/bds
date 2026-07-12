@@ -13,6 +13,7 @@
   --bt-calendar-status-nuevo: #94a3b8;
   --bt-calendar-status-imputado: #56b4e9;
   --bt-calendar-status-completado: var(--bt-color-primary);
+  --bt-calendar-status-invalid: var(--bt-color-error);
   --bt-calendar-status-liberado: #ec4899;
   --bt-calendar-status-aprobado: #10b981;
   --bt-calendar-status-rechazado: #ef4444;
@@ -476,10 +477,15 @@ button.bt-calendar-template-card {
   clip-path: none;
   border-radius: 0.625rem 0.625rem 0 0;
   background: color-mix(in srgb, var(--bt-calendar-day-accent) 52%, var(--bt-calendar-day-bg));
+  pointer-events: none;
 }
 
 .bt-calendar-month-grid__cell--weekend .bt-calendar-day--imputado::before {
   background: color-mix(in srgb, var(--bt-calendar-status-imputado) 48%, var(--bt-calendar-day-bg));
+}
+
+.bt-calendar-month-grid__cell--weekend .bt-calendar-day--invalid::before {
+  background: color-mix(in srgb, var(--bt-calendar-status-invalid) 48%, var(--bt-calendar-day-bg));
 }
 
 .bt-calendar-month-grid__cell--weekend .bt-calendar-day {
@@ -503,6 +509,19 @@ button.bt-calendar-template-card {
   left: 0.2rem;
   right: 0.2rem;
   z-index: 3;
+}
+
+.bt-calendar-month-grid__cell--weekend .bt-calendar-day__open {
+  z-index: 6;
+}
+
+.bt-calendar-month-grid__cell--weekend .bt-calendar-day--selectable:hover .bt-calendar-day__open,
+.bt-calendar-month-grid__cell--weekend .bt-calendar-day--selectable:focus-within .bt-calendar-day__open,
+.bt-calendar-month-grid__cell--weekend .bt-calendar-day__open:focus-visible {
+  top: 2.65rem;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
 }
 
 .bt-calendar-day {
@@ -618,6 +637,15 @@ button.bt-calendar-template-card {
 }
 
 .bt-calendar-day--completado { --bt-calendar-day-accent: var(--bt-calendar-status-completado); }
+.bt-calendar-day--invalid {
+  --bt-calendar-day-accent: var(--bt-calendar-status-invalid);
+  border-top-color: color-mix(in srgb, var(--bt-calendar-status-invalid) 65%, transparent);
+  color: color-mix(in srgb, var(--bt-calendar-status-invalid) 78%, var(--bt-color-text-muted));
+}
+
+.bt-calendar-day--invalid::before {
+  background: color-mix(in srgb, var(--bt-calendar-status-invalid) 40%, transparent);
+}
 .bt-calendar-day--liberado { --bt-calendar-day-accent: var(--bt-calendar-status-liberado); }
 .bt-calendar-day--aprobado { --bt-calendar-day-accent: var(--bt-calendar-status-aprobado); }
 .bt-calendar-day--rechazado { --bt-calendar-day-accent: var(--bt-calendar-status-rechazado); }
@@ -710,6 +738,10 @@ button.bt-calendar-template-card {
   --bt-calendar-project-accent: var(--bt-calendar-status-completado);
 }
 
+.bt-calendar-day__project--invalid {
+  --bt-calendar-project-accent: var(--bt-calendar-status-invalid);
+}
+
 .bt-calendar-day__project--liberado {
   --bt-calendar-project-accent: var(--bt-calendar-status-liberado);
 }
@@ -790,6 +822,7 @@ button.bt-calendar-template-card {
 
 .bt-calendar-day__project--imputado .bt-calendar-day__project-hours,
 .bt-calendar-day__project--completado .bt-calendar-day__project-hours,
+.bt-calendar-day__project--invalid .bt-calendar-day__project-hours,
 .bt-calendar-day__project--liberado .bt-calendar-day__project-hours,
 .bt-calendar-day__project--aprobado .bt-calendar-day__project-hours,
 .bt-calendar-day__project--rechazado .bt-calendar-day__project-hours {
@@ -851,6 +884,7 @@ button.bt-calendar-template-card {
 .bt-calendar-legend__icon--nuevo { --bt-calendar-legend-accent: var(--bt-calendar-status-nuevo); }
 .bt-calendar-legend__icon--imputado { --bt-calendar-legend-accent: var(--bt-calendar-status-imputado); }
 .bt-calendar-legend__icon--completado { --bt-calendar-legend-accent: var(--bt-calendar-status-completado); }
+.bt-calendar-legend__icon--invalid { --bt-calendar-legend-accent: var(--bt-calendar-status-invalid); }
 .bt-calendar-legend__icon--liberado { --bt-calendar-legend-accent: var(--bt-calendar-status-liberado); }
 .bt-calendar-legend__icon--aprobado { --bt-calendar-legend-accent: var(--bt-calendar-status-aprobado); }
 .bt-calendar-legend__icon--rechazado { --bt-calendar-legend-accent: var(--bt-calendar-status-rechazado); }
@@ -939,6 +973,7 @@ button.bt-calendar-template-card {
 .bt-calendar-day-modal__shell--nuevo { --bt-calendar-day-modal-accent: var(--bt-calendar-status-nuevo); }
 .bt-calendar-day-modal__shell--imputado { --bt-calendar-day-modal-accent: var(--bt-calendar-status-imputado); }
 .bt-calendar-day-modal__shell--completado { --bt-calendar-day-modal-accent: var(--bt-calendar-status-completado); }
+.bt-calendar-day-modal__shell--invalid { --bt-calendar-day-modal-accent: var(--bt-calendar-status-invalid); }
 .bt-calendar-day-modal__shell--liberado { --bt-calendar-day-modal-accent: var(--bt-calendar-status-liberado); }
 .bt-calendar-day-modal__shell--aprobado { --bt-calendar-day-modal-accent: var(--bt-calendar-status-aprobado); }
 .bt-calendar-day-modal__shell--rechazado { --bt-calendar-day-modal-accent: var(--bt-calendar-status-rechazado); }
@@ -1366,6 +1401,10 @@ button.bt-calendar-template-card {
   color: var(--bt-calendar-status-completado);
 }
 
+.bt-calendar-day-modal__entry-status--invalid {
+  color: var(--bt-calendar-status-invalid);
+}
+
 .bt-calendar-day-modal__entry-status--liberado {
   color: var(--bt-calendar-status-liberado);
 }
@@ -1447,6 +1486,10 @@ button.bt-calendar-template-card {
 
 .bt-calendar-day-modal__entry-hours--completado {
   color: var(--bt-calendar-status-completado);
+}
+
+.bt-calendar-day-modal__entry-hours--invalid {
+  color: var(--bt-calendar-status-invalid);
 }
 
 .bt-calendar-day-modal__entry-hours--liberado {

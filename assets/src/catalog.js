@@ -991,8 +991,9 @@ initBtInteractions();</code></pre>
         html: String.raw`<div class="bt-stack" style="flex-flow: row wrap; gap: var(--bt-space-2);">
   <button type="button" class="bt-calendar-day bt-calendar-day--nuevo" style="width: 5rem; height: 5rem;"><span class="bt-calendar-day__number">1</span></button>
   <button type="button" class="bt-calendar-day bt-calendar-day--completado" style="width: 5rem; height: 5rem;"><span class="bt-calendar-day__number">2</span></button>
-  <button type="button" class="bt-calendar-day bt-calendar-day--aprobado" style="width: 5rem; height: 5rem;"><span class="bt-calendar-day__number">3</span></button>
-  <button type="button" class="bt-calendar-day bt-calendar-day--festivo" style="width: 5rem; height: 5rem;"><span class="bt-calendar-day__number">4</span></button>
+  <button type="button" class="bt-calendar-day bt-calendar-day--invalid" style="width: 5rem; height: 5rem;"><span class="bt-calendar-day__number">3</span></button>
+  <button type="button" class="bt-calendar-day bt-calendar-day--aprobado" style="width: 5rem; height: 5rem;"><span class="bt-calendar-day__number">4</span></button>
+  <button type="button" class="bt-calendar-day bt-calendar-day--festivo" style="width: 5rem; height: 5rem;"><span class="bt-calendar-day__number">5</span></button>
 </div>`,
       },
     ],
@@ -1227,7 +1228,6 @@ initBtInteractions();</code></pre>
         </div>
         <div class="bt-calendar-day-modal__footer">
           <button type="button" class="bt-button bt-button--ghost bt-button--sm">Close</button>
-          <button type="button" class="bt-button bt-button--primary bt-button--sm">Save draft</button>
         </div>
       </section>
     </div>

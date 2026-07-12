@@ -11,12 +11,13 @@ defmodule Bds.Components.Calendar do
   @entry_input_types ~w(Billable Non-billable Absence)
 
   @statuses ~w(
-    nuevo imputado completado liberado aprobado rechazado festivo vacaciones no-laborable
+    nuevo imputado completado invalid liberado aprobado rechazado festivo vacaciones no-laborable
   )
 
   @status_icons %{
     "imputado" => "◐",
     "completado" => "●",
+    "invalid" => "!",
     "liberado" => "↑",
     "aprobado" => "✓",
     "rechazado" => "✕"
@@ -359,11 +360,9 @@ defmodule Bds.Components.Calendar do
           data-calendar-grid-row={@grid_row}
           data-calendar-grid-col={@grid_col}
           tabindex="0"
-          phx-click={@on_select}
-          phx-value-date={@date_iso}
           {@rest}
         >
-          {@day_body}
+          <span class="bt-calendar-day__number">{@day}</span>
           <button
             :if={@on_open}
             type="button"
@@ -375,6 +374,34 @@ defmodule Bds.Components.Calendar do
           >
             {gettext("Open")}
           </button>
+          <div class="bt-calendar-day__content">
+            <%= if @projects != [] do %>
+              <div class="bt-calendar-day__projects">
+                <%= for project <- Enum.take(@projects, 2) do %>
+                  <%= if @project_layout == :compact do %>
+                    <div class={["bt-calendar-day__project bt-calendar-day__project--compact", project_status_class(project)]}>
+                      <span class="bt-calendar-day__project-code">{project_code(project)}</span>
+                      <span class="bt-calendar-day__project-hours">{project_hours(project)}h</span>
+                    </div>
+                  <% else %>
+                    <div class={["bt-calendar-day__project", project_status_class(project)]}>
+                      <span
+                        :if={project_status(project)}
+                        class="bt-calendar-day__project-status"
+                        title={project_status_label(project)}
+                        aria-label={project_status_label(project)}
+                      />
+                      <span class="bt-calendar-day__project-name">{project_name(project)}</span>
+                      <span class="bt-calendar-day__project-hours">{project_hours(project)}h</span>
+                    </div>
+                  <% end %>
+                <% end %>
+                <span :if={length(@projects) > 2} class="bt-calendar-day__more">
+                  +{length(@projects) - 2} more
+                </span>
+              </div>
+            <% end %>
+          </div>
         </div>
         """
 
@@ -666,7 +693,6 @@ defmodule Bds.Components.Calendar do
     doc: "phx-click event to set hours (phx-value-hours)"
   )
 
-  attr(:on_save, :string, default: nil)
   attr(:on_prev_day, :string, default: nil)
   attr(:on_next_day, :string, default: nil)
   attr(:class, :any, default: nil)
@@ -959,14 +985,6 @@ defmodule Bds.Components.Calendar do
               <button type="button" class="bt-button bt-button--ghost bt-button--sm" phx-click={@on_close}>
                 {gettext("Close")}
               </button>
-              <button
-                :if={!@read_only && @on_save && !@editing?}
-                type="button"
-                class="bt-button bt-button--primary bt-button--sm"
-                phx-click={@on_save}
-              >
-                {gettext("Save draft")}
-              </button>
             </div>
           </section>
         </div>
@@ -1026,6 +1044,7 @@ defmodule Bds.Components.Calendar do
   def calendar_status_label("nuevo"), do: gettext("New")
   def calendar_status_label("imputado"), do: gettext("Draft")
   def calendar_status_label("completado"), do: gettext("Complete")
+  def calendar_status_label("invalid"), do: gettext("Invalid")
   def calendar_status_label("liberado"), do: gettext("Sent")
   def calendar_status_label("aprobado"), do: gettext("Approved")
   def calendar_status_label("rechazado"), do: gettext("Rejected")

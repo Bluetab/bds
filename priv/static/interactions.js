@@ -23,11 +23,11 @@ var e = {
 					e.preventDefault(), e.stopPropagation();
 					return;
 				}
-				!e.shiftKey && !e.metaKey && !e.ctrlKey || (e.preventDefault(), e.stopPropagation(), e.stopImmediatePropagation(), this.pushEvent("day_select", {
+				e.preventDefault(), e.stopPropagation(), e.stopImmediatePropagation(), this.pushEvent("day_select", {
 					date: r.dataset.calendarDay,
 					shift: e.shiftKey,
 					meta: e.metaKey || e.ctrlKey
-				}));
+				});
 			}
 		}, this.el.addEventListener("pointerdown", this.onPointerDown), this.el.addEventListener("pointerover", this.onPointerOver), this.el.addEventListener("click", this.onClickCapture, !0), window.addEventListener("pointerup", this.onPointerUp);
 	},
