@@ -664,6 +664,7 @@ button.bt-calendar-template-card {
 .bt-calendar-day--selected .bt-calendar-day__number {
   background: var(--bt-calendar-brand-orange);
   color: #ffffff;
+  font-weight: 700;
 }
 
 .bt-calendar-day--today {
@@ -686,7 +687,7 @@ button.bt-calendar-template-card {
   align-items: center;
   justify-content: center;
   font-size: 1.25rem;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--bt-calendar-day-number-color);
   background: var(--bt-calendar-day-number-bg);
   transition:
