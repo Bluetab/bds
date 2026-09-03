@@ -318,6 +318,7 @@ defmodule Bds.Components.Calendar do
   attr(:on_select, :string, default: nil)
   attr(:on_open, :string, default: nil)
   attr(:projects, :list, default: [])
+  attr(:template_name, :string, default: nil)
   attr(:project_layout, :atom, default: :default, values: [:default, :compact])
   attr(:grid_row, :integer, default: nil)
   attr(:grid_col, :integer, default: nil)
@@ -375,32 +376,12 @@ defmodule Bds.Components.Calendar do
             {gettext("Open")}
           </button>
           <div class="bt-calendar-day__content">
-            <%= if @projects != [] do %>
-              <div class="bt-calendar-day__projects">
-                <%= for project <- Enum.take(@projects, 2) do %>
-                  <%= if @project_layout == :compact do %>
-                    <div class={["bt-calendar-day__project bt-calendar-day__project--compact", project_status_class(project)]}>
-                      <span class="bt-calendar-day__project-code">{project_code(project)}</span>
-                      <span class="bt-calendar-day__project-hours">{project_hours(project)}h</span>
-                    </div>
-                  <% else %>
-                    <div class={["bt-calendar-day__project", project_status_class(project)]}>
-                      <span
-                        :if={project_status(project)}
-                        class="bt-calendar-day__project-status"
-                        title={project_status_label(project)}
-                        aria-label={project_status_label(project)}
-                      />
-                      <span class="bt-calendar-day__project-name">{project_name(project)}</span>
-                      <span class="bt-calendar-day__project-hours">{project_hours(project)}h</span>
-                    </div>
-                  <% end %>
-                <% end %>
-                <span :if={length(@projects) > 2} class="bt-calendar-day__more">
-                  +{length(@projects) - 2} more
-                </span>
-              </div>
-            <% end %>
+            <.calendar_day_projects
+              status={@status}
+              projects={@projects}
+              template_name={@template_name}
+              project_layout={@project_layout}
+            />
           </div>
         </div>
         """
@@ -457,7 +438,34 @@ defmodule Bds.Components.Calendar do
     ~H"""
     <span class="bt-calendar-day__number">{@day}</span>
     <div class="bt-calendar-day__content">
-      <%= if @projects != [] do %>
+      <.calendar_day_projects
+        status={@status}
+        projects={@projects}
+        template_name={@template_name}
+        project_layout={@project_layout}
+      />
+    </div>
+    """
+  end
+
+  attr(:status, :string, required: true)
+  attr(:projects, :list, default: [])
+  attr(:template_name, :string, default: nil)
+  attr(:project_layout, :atom, default: :default, values: [:default, :compact])
+
+  defp calendar_day_projects(assigns) do
+    ~H"""
+    <%= cond do %>
+      <% is_binary(@template_name) and @template_name != "" -> %>
+        <div class="bt-calendar-day__projects">
+          <div class={[
+            "bt-calendar-day__project bt-calendar-day__project--template",
+            day_status_project_class(@status)
+          ]}>
+            <span class="bt-calendar-day__project-name">{@template_name}</span>
+          </div>
+        </div>
+      <% @projects != [] -> %>
         <div class="bt-calendar-day__projects">
           <%= for project <- Enum.take(@projects, 2) do %>
             <%= if @project_layout == :compact do %>
@@ -478,12 +486,12 @@ defmodule Bds.Components.Calendar do
               </div>
             <% end %>
           <% end %>
-          <%= if length(@projects) > 2 do %>
-            <span class="bt-calendar-day__more">+{length(@projects) - 2} more</span>
-          <% end %>
+          <span :if={length(@projects) > 2} class="bt-calendar-day__more">
+            +{length(@projects) - 2} more
+          </span>
         </div>
-      <% end %>
-    </div>
+      <% true -> %>
+    <% end %>
     """
   end
 
@@ -572,6 +580,10 @@ defmodule Bds.Components.Calendar do
       status when is_binary(status) -> "bt-calendar-day__project--#{normalize_status(status)}"
       _ -> nil
     end
+  end
+
+  defp day_status_project_class(status) when is_binary(status) do
+    "bt-calendar-day__project--#{normalize_status(status)}"
   end
 
   defp project_status_label(project) do
@@ -679,6 +691,7 @@ defmodule Bds.Components.Calendar do
   attr(:entry_form, :any, default: nil)
   attr(:editing_entry_id, :string, default: nil)
   attr(:input_types, :list, default: @entry_input_types)
+  attr(:entry_controls, :any, default: nil)
   slot(:entry_project)
   slot(:footer_actions)
   attr(:on_add_entry, :string, default: nil)
@@ -926,6 +939,11 @@ defmodule Bds.Components.Calendar do
                     <span class={["bt-calendar-day-modal__entry-hours", entry_hours_status_class(entry)]}>
                       {entry[:hours] || entry["hours"]}h
                     </span>
+                    <%= if @entry_controls do %>
+                      <div class="bt-calendar-day-modal__entry-controls">
+                        <%= @entry_controls.(entry) %>
+                      </div>
+                    <% end %>
                     <div
                       :if={!@read_only && @on_edit_entry && !entry_locked?(entry)}
                       class="bt-calendar-day-modal__entry-actions"
