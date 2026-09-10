@@ -715,6 +715,26 @@
   color: color-mix(in oklab, var(--bt-color-text) 82%, transparent);
 }
 
+a.bt-performance-team-card__status-row--link {
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+a.bt-performance-team-card__status-row--link:hover {
+  border-color: color-mix(in oklab, var(--bt-color-primary) 40%, var(--bt-color-border));
+  background: color-mix(in oklab, var(--bt-color-primary) 8%, var(--bt-color-surface));
+  color: var(--bt-color-text);
+}
+
+a.bt-performance-team-card__status-row--link:focus-visible {
+  outline: 2px solid var(--bt-color-primary);
+  outline-offset: 2px;
+}
+
 .bt-performance-team-card__status-label {
   flex-shrink: 0;
 }
@@ -779,6 +799,39 @@
   line-height: 1;
 }
 
+.bt-performance-team-card__avatar-link {
+  display: inline-flex;
+  border-radius: var(--bt-radius-sm, 0.375rem);
+  line-height: 0;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.bt-performance-team-card__avatar-link:hover {
+  opacity: 0.88;
+}
+
+.bt-performance-team-card__avatar-link:focus-visible {
+  outline: 2px solid var(--bt-color-primary);
+  outline-offset: 2px;
+}
+
+a.bt-performance-team-card__name {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a.bt-performance-team-card__name:hover {
+  color: var(--bt-color-primary);
+}
+
+a.bt-performance-team-card__name:focus-visible {
+  outline: 2px solid var(--bt-color-primary);
+  outline-offset: 2px;
+  border-radius: var(--bt-radius-xs, 0.25rem);
+}
+
 .bt-performance-team-card__no-eval {
   display: inline-flex;
   align-items: center;
@@ -789,6 +842,26 @@
   font-size: 0.6875rem;
   font-weight: 600;
   color: color-mix(in oklab, var(--bt-color-text) 78%, transparent);
+}
+
+a.bt-performance-team-card__no-eval--link {
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+a.bt-performance-team-card__no-eval--link:hover {
+  border-color: color-mix(in oklab, var(--bt-color-warning) 55%, transparent);
+  background: color-mix(in oklab, var(--bt-color-warning) 22%, var(--bt-color-surface));
+  color: var(--bt-color-text);
+}
+
+a.bt-performance-team-card__no-eval--link:focus-visible {
+  outline: 2px solid var(--bt-color-primary);
+  outline-offset: 2px;
 }
 
 .bt-performance-team-card__briefing-tags {
