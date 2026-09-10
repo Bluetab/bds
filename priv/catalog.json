@@ -677,7 +677,7 @@
           "title": "Evaluator card",
           "block": true,
           "note": null,
-          "html": "<section class=\"bt-stack\" style=\"gap: var(--bt-space-4);\">\n  <h2 class=\"bt-performance-section-title\">Your evaluator</h2>\n  <article class=\"bt-performance-card bt-performance-evaluator\">\n    <div class=\"bt-performance-evaluator__row\">\n      <img src=\"https://www.gravatar.com/avatar/?d=mp\" alt=\"Morgan Chen\" class=\"bt-performance-evaluator__avatar\" />\n      <div>\n        <p class=\"bt-performance-evaluator__name\">Morgan Chen</p>\n        <p class=\"bt-performance-meta-sub\">morgan.chen@example.com</p>\n      </div>\n    </div>\n  </article>\n</section>"
+          "html": "<section class=\"bt-stack\" style=\"gap: var(--bt-space-4);\">\n  <h2 class=\"bt-performance-section-title\">Your evaluator</h2>\n  <article class=\"bt-performance-card bt-performance-evaluator\">\n    <div class=\"bt-performance-evaluator__row\">\n      <img src=\"https://www.gravatar.com/avatar/?d=mp\" alt=\"Morgan Chen\" class=\"bt-performance-evaluator__avatar\" />\n      <div>\n        <p class=\"bt-performance-evaluator__name\">Morgan Chen</p>\n        <p class=\"bt-performance-meta-sub\">morgan.chen@example.com</p>\n        <p class=\"bt-performance-evaluator__detail\">Client · Acme Corp</p>\n      </div>\n    </div>\n  </article>\n</section>"
         }
       ]
     },

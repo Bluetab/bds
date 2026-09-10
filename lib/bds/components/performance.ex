@@ -27,6 +27,7 @@ defmodule Bds.Components.Performance do
   attr :name, :string, required: true
   attr :email, :string, default: nil
   attr :picture, :string, default: nil
+  attr :detail, :string, default: nil
   attr :rest, :global
 
   def bt_performance_evaluator_card(assigns) do
@@ -45,6 +46,7 @@ defmodule Bds.Components.Performance do
         <div class="min-w-0">
           <p class="bt-performance-evaluator__name truncate">{@name}</p>
           <p :if={@email} class="bt-performance-meta-sub truncate">{@email}</p>
+          <p :if={@detail} class="bt-performance-evaluator__detail truncate">{@detail}</p>
         </div>
       </div>
     </article>

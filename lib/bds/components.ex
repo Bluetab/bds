@@ -257,9 +257,7 @@ defmodule Bds.Components do
     ~H"""
     <div class={["bt-field", @errors != [] && "bt-field--error"]}>
       <label :if={@label} for={@id}>{@label}</label>
-      <textarea id={@id} name={@name} class={@class || "bt-textarea"} {@rest}>
-        {Phoenix.HTML.Form.normalize_value("textarea", @value)}
-      </textarea>
+      <textarea id={@id} name={@name} class={@class || "bt-textarea"} {@rest}>{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
       <.bt_field_help :if={@help}>{@help}</.bt_field_help>
       <.bt_field_error :for={msg <- @errors}>{msg}</.bt_field_error>
     </div>

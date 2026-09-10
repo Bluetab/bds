@@ -960,6 +960,7 @@ defmodule Bds.Catalog.Snippets.Bulk do
         id="catalog-performance-evaluator"
         name="Morgan Chen"
         email="morgan.chen@example.com"
+        detail="Client · Acme Corp"
       />
       """,
       "performance-hours:0" => ~S"""

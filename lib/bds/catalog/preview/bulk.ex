@@ -1012,6 +1012,7 @@ defmodule Bds.Catalog.Preview.Bulk do
         id="catalog-performance-evaluator"
         name="Morgan Chen"
         email="morgan.chen@example.com"
+        detail="Client · Acme Corp"
       />
     </section>
     """

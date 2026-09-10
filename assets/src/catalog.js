@@ -1255,6 +1255,7 @@ initBtInteractions();</code></pre>
       <div>
         <p class="bt-performance-evaluator__name">Morgan Chen</p>
         <p class="bt-performance-meta-sub">morgan.chen@example.com</p>
+        <p class="bt-performance-evaluator__detail">Client · Acme Corp</p>
       </div>
     </div>
   </article>
