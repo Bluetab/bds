@@ -7,8 +7,8 @@
 
 .bt-tree--nested {
   margin-top: var(--bt-space-2);
-  margin-left: calc(-1 * (var(--bt-tree-toggle) / 2 + var(--bt-space-2)) - 2px);
-  padding-left: calc(var(--bt-tree-toggle) / 2);
+  margin-left: calc(var(--bt-tree-toggle) / 2);
+  padding-left: calc(var(--bt-tree-toggle) / 2 + var(--bt-space-2));
   border-left: 1px solid var(--bt-color-border);
 }
 
@@ -26,6 +26,21 @@
   grid-template-columns: var(--bt-tree-toggle) 1fr;
   gap: var(--bt-space-1) var(--bt-space-2);
   align-items: start;
+}
+
+/* Sticky parent trail while scrolling a deep branch (scroll container sets context).
+   Each sticky row is exactly --bt-tree-sticky-step tall so stacked tops sit flush
+   (no overlap, no peek-through gaps). */
+.bt-tree--sticky-parents .bt-tree__item:has(> .bt-tree) > .bt-tree__row {
+  position: sticky;
+  top: calc(var(--bt-tree-depth, 0) * var(--bt-tree-sticky-step, 3.5rem));
+  z-index: calc(40 - var(--bt-tree-depth, 0));
+  box-sizing: border-box;
+  min-height: var(--bt-tree-sticky-step, 3.5rem);
+  align-items: center;
+  background: var(--bt-color-surface);
+  /* Seal 2px above the row so scrolled content can't peek at subpixel gaps. */
+  box-shadow: 0 -2px 0 0 var(--bt-color-surface);
 }
 
 .bt-tree__toggle-col {

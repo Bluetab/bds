@@ -811,6 +811,7 @@ defmodule Bds.Components.CatalogUi do
       |> assign(:selectable?, selectable?)
       |> assign(:linkable?, linkable?)
       |> assign(:href, href)
+      |> assign(:depth, assigns.depth)
       |> assign(:item_class, tree_item_class(node))
       |> assign(:label_row_class, tree_label_row_class(node, selectable? or linkable?))
 
@@ -820,7 +821,9 @@ defmodule Bds.Components.CatalogUi do
       role={if(@depth == 0, do: "treeitem")}
       aria-expanded={to_string(@open?)}
       data-role={@node[:role]}
-    >      <div class="bt-tree__row">
+      style={"--bt-tree-depth: #{@depth}"}
+    >
+      <div class="bt-tree__row">
         <div class="bt-tree__toggle-col">
           <button
             :if={@has_children?}
@@ -859,18 +862,18 @@ defmodule Bds.Components.CatalogUi do
           <div :if={not @section? and not @selectable? and not @linkable?} class={@label_row_class}>
             <.bt_tree_label_content node={@node} />
           </div>
-          <.bt_tree
-            :if={@has_children? and @open?}
-            nodes={@children}
-            expanded={@expanded}
-            toggle_event={@toggle_event}
-            toggle_target={@toggle_target}
-            select_event={@select_event}
-            select_target={@select_target}
-            depth={@depth + 1}
-          />
         </div>
       </div>
+      <.bt_tree
+        :if={@has_children? and @open?}
+        nodes={@children}
+        expanded={@expanded}
+        toggle_event={@toggle_event}
+        toggle_target={@toggle_target}
+        select_event={@select_event}
+        select_target={@select_target}
+        depth={@depth + 1}
+      />
     </li>
     """
   end
