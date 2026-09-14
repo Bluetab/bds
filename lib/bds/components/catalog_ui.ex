@@ -106,6 +106,7 @@ defmodule Bds.Components.CatalogUi do
         "inline" -> "bt-badge bt-badge--inline"
         "inline-success" -> "bt-badge bt-badge--inline bt-badge--success"
         "success" -> "bt-badge bt-badge--success"
+        "warning" -> "bt-badge bt-badge--warning"
         "primary" -> "bt-badge bt-badge--primary"
         "secondary" -> "bt-badge bt-badge--secondary"
         _ -> "bt-badge"
@@ -797,6 +798,8 @@ defmodule Bds.Components.CatalogUi do
     open? = has_children? and MapSet.member?(assigns.expanded, key)
     section? = Map.get(node, :section, false) or Map.get(node, :kind) == :section
     selectable? = Map.get(node, :selectable, false) and not is_nil(assigns[:select_event])
+    href = Map.get(node, :href)
+    linkable? = is_binary(href) and href != "" and not selectable?
 
     assigns =
       assigns
@@ -806,11 +809,18 @@ defmodule Bds.Components.CatalogUi do
       |> assign(:open?, open?)
       |> assign(:section?, section?)
       |> assign(:selectable?, selectable?)
-      |> assign(:label_row_class, tree_label_row_class(node, selectable?))
+      |> assign(:linkable?, linkable?)
+      |> assign(:href, href)
+      |> assign(:item_class, tree_item_class(node))
+      |> assign(:label_row_class, tree_label_row_class(node, selectable? or linkable?))
 
     ~H"""
-    <li class="bt-tree__item" role={if(@depth == 0, do: "treeitem")} aria-expanded={to_string(@open?)}>
-      <div class="bt-tree__row">
+    <li
+      class={@item_class}
+      role={if(@depth == 0, do: "treeitem")}
+      aria-expanded={to_string(@open?)}
+      data-role={@node[:role]}
+    >      <div class="bt-tree__row">
         <div class="bt-tree__toggle-col">
           <button
             :if={@has_children?}
@@ -839,7 +849,14 @@ defmodule Bds.Components.CatalogUi do
           >
             <.bt_tree_label_content node={@node} />
           </button>
-          <div :if={not @section? and not @selectable?} class={@label_row_class}>
+          <.link
+            :if={not @section? and not @selectable? and @linkable?}
+            navigate={@href}
+            class={@label_row_class}
+          >
+            <.bt_tree_label_content node={@node} />
+          </.link>
+          <div :if={not @section? and not @selectable? and not @linkable?} class={@label_row_class}>
             <.bt_tree_label_content node={@node} />
           </div>
           <.bt_tree
@@ -861,32 +878,72 @@ defmodule Bds.Components.CatalogUi do
   attr :node, :map, required: true
 
   defp bt_tree_label_content(assigns) do
+    avatar = assigns.node[:avatar]
+
+    assigns =
+      assigns
+      |> assign(:avatar, avatar)
+      |> assign(
+        :avatar_initials,
+        if(avatar, do: Map.get(avatar, :initials) || avatar_initials(avatar.name), else: nil)
+      )
+      |> assign(:avatar_src, avatar && Map.get(avatar, :src))
+      |> assign(:name_badges, (assigns.node[:badges] || []) ++ [])
+      |> assign(:trailing_badges, assigns.node[:trailing_badges] || [])
+      |> assign(:secondary_label, assigns.node[:secondary_label])
+
     ~H"""
-    <.bt_avatar
-      :if={@node[:avatar]}
-      name={@node.avatar.name}
-      email={Map.get(@node.avatar, :email)}
-      src={Map.get(@node.avatar, :src)}
-      initials={Map.get(@node.avatar, :initials)}
-      compactness={Map.get(@node.avatar, :compactness, "compact")}
-      badges={@node[:badges] || []}
-    />
+    <div :if={@avatar} class="bt-tree__person">
+      <div class="bt-avatar bt-avatar--compact bt-tree__person-avatar">
+        <div class="bt-avatar__media" aria-hidden={is_nil(@avatar_src)}>
+          <img :if={@avatar_src} src={@avatar_src} alt={@avatar.name} class="bt-avatar__image" />
+          <span :if={is_nil(@avatar_src)}>{@avatar_initials}</span>
+        </div>
+      </div>
+      <div class="bt-tree__person-text">
+        <div class="bt-tree__person-name-row">
+          <p class="bt-avatar__name">{@avatar.name}</p>
+          <span :if={@name_badges != []} class="bt-tree__badges">
+            <.bt_badge
+              :for={badge <- @name_badges}
+              variant={Map.get(badge, :variant, "secondary")}
+            >
+              {badge.label}
+            </.bt_badge>
+          </span>
+        </div>
+        <span
+          :if={is_binary(@secondary_label) and @secondary_label != ""}
+          class="bt-tree__secondary"
+        >
+          {@secondary_label}
+        </span>
+      </div>
+      <span :if={@trailing_badges != []} class="bt-tree__badges bt-tree__person-status">
+        <.bt_badge
+          :for={badge <- @trailing_badges}
+          variant={Map.get(badge, :variant, "secondary")}
+        >
+          {badge.label}
+        </.bt_badge>
+      </span>
+    </div>
     <.bt_badge
-      :if={!@node[:avatar] && tree_project_doc_badge?(@node)}
+      :if={!@avatar && tree_project_doc_badge?(@node)}
       variant="inline"
       class="bt-tree__doc-badge"
     >
       {tree_project_doc_label(@node)}
     </.bt_badge>
-    <span :if={!@node[:avatar] && @node[:kind_label]} class="bt-tree__kind">{@node.kind_label}</span>
-    <span :if={!@node[:avatar]} class="bt-tree__name">{@node.name}</span>
-    <span :if={!@node[:avatar] && @node[:doc_num] && !tree_project_doc_badge?(@node)} class="bt-tree__doc">
+    <span :if={!@avatar && @node[:kind_label]} class="bt-tree__kind">{@node.kind_label}</span>
+    <span :if={!@avatar} class="bt-tree__name">{@node.name}</span>
+    <span :if={!@avatar && @node[:doc_num] && !tree_project_doc_badge?(@node)} class="bt-tree__doc">
       P-{@node.doc_num}
     </span>
-    <span :if={!@node[:avatar] && @node[:secondary_label]} class="bt-tree__secondary">
+    <span :if={!@avatar && @node[:secondary_label]} class="bt-tree__secondary">
       {@node.secondary_label}
     </span>
-    <span :if={!@node[:avatar] && (@node[:badges] || []) != []} class="bt-tree__badges">
+    <span :if={!@avatar && (@node[:badges] || []) != []} class="bt-tree__badges">
       <.bt_badge
         :for={badge <- @node[:badges] || []}
         variant={Map.get(badge, :variant, "secondary")}
@@ -894,7 +951,7 @@ defmodule Bds.Components.CatalogUi do
         {badge.label}
       </.bt_badge>
     </span>
-    <span :if={!@node[:avatar] && @node[:meta]} class="bt-tree__meta">· {@node.meta}</span>
+    <span :if={!@avatar && @node[:meta]} class="bt-tree__meta">· {@node.meta}</span>
     """
   end
 
@@ -907,6 +964,17 @@ defmodule Bds.Components.CatalogUi do
       num when not is_nil(num) -> "P-#{num}"
       _ -> "P-—"
     end
+  end
+
+  defp tree_item_class(node) do
+    role = Map.get(node, :role)
+
+    [
+      "bt-tree__item",
+      role == :ancestor && "bt-tree__item--ancestor",
+      role == :self && "bt-tree__item--self",
+      role == :descendant && "bt-tree__item--descendant"
+    ]
   end
 
   defp tree_label_row_class(node, selectable?) do

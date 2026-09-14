@@ -5,3 +5,4 @@
 .bt-badge--primary { background: var(--bt-color-primary); }
 .bt-badge--secondary { background: var(--bt-color-secondary); color: var(--bt-color-on-secondary); }
 .bt-badge--success { background: var(--bt-color-success); }
+.bt-badge--warning { background: var(--bt-color-warning); color: #fff; }
