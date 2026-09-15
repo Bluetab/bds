@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 
-#: lib/bds/components/performance.ex:292
+#: lib/bds/components/performance.ex:294
 #, elixir-autogen, elixir-format
 msgid "Acknowledged"
 msgstr ""
@@ -36,12 +36,12 @@ msgstr ""
 msgid "Approved"
 msgstr ""
 
-#: lib/bds/components/performance.ex:295
+#: lib/bds/components/performance.ex:297
 #, elixir-autogen, elixir-format
 msgid "Awaiting acknowledgement"
 msgstr ""
 
-#: lib/bds/components/catalog_ui.ex:209
+#: lib/bds/components/catalog_ui.ex:210
 #, elixir-autogen, elixir-format
 msgid "Bottom navigation"
 msgstr ""
@@ -56,7 +56,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: lib/bds/components/catalog_ui.ex:1001
+#: lib/bds/components/catalog_ui.ex:1072
 #, elixir-autogen, elixir-format
 msgid "Clear"
 msgstr ""
@@ -87,7 +87,7 @@ msgstr ""
 msgid "Complete"
 msgstr ""
 
-#: lib/bds/components/performance.ex:172
+#: lib/bds/components/performance.ex:174
 #, elixir-autogen, elixir-format
 msgid "Created by %{name}"
 msgstr ""
@@ -97,7 +97,7 @@ msgstr ""
 msgid "Day"
 msgstr ""
 
-#: lib/bds/components/performance.ex:477
+#: lib/bds/components/performance.ex:480
 #, elixir-autogen, elixir-format
 msgid "Delegated by"
 msgstr ""
@@ -112,7 +112,7 @@ msgstr ""
 msgid "Draft"
 msgstr ""
 
-#: lib/bds/components/performance.ex:145
+#: lib/bds/components/performance.ex:147
 #, elixir-autogen, elixir-format
 msgid "Draft · only visible to you"
 msgstr ""
@@ -127,7 +127,7 @@ msgstr ""
 msgid "Edit time entry"
 msgstr ""
 
-#: lib/bds/components/performance.ex:243
+#: lib/bds/components/performance.ex:245
 #, elixir-autogen, elixir-format
 msgid "Evaluated by %{name}"
 msgstr ""
@@ -163,12 +163,12 @@ msgstr ""
 msgid "No projects match your search."
 msgstr ""
 
-#: lib/bds/components/performance.ex:68
+#: lib/bds/components/performance.ex:70
 #, elixir-autogen, elixir-format
 msgid "No reported hours for this scope."
 msgstr ""
 
-#: lib/bds/components/performance.ex:423
+#: lib/bds/components/performance.ex:429
 #, elixir-autogen, elixir-format
 msgid "No reported hours in this period for this person."
 msgstr ""
@@ -178,12 +178,12 @@ msgstr ""
 msgid "Non-working"
 msgstr ""
 
-#: lib/bds/components/performance.ex:187
+#: lib/bds/components/performance.ex:189
 #, elixir-autogen, elixir-format
 msgid "Objectives"
 msgstr ""
 
-#: lib/bds/components/performance.ex:185
+#: lib/bds/components/performance.ex:187
 #, elixir-autogen, elixir-format
 msgid "Objectives and evaluator assessment"
 msgstr ""
@@ -193,18 +193,18 @@ msgstr ""
 msgid "Open day"
 msgstr ""
 
-#: lib/bds/components/catalog_ui.ex:356
+#: lib/bds/components/catalog_ui.ex:357
 #, elixir-autogen, elixir-format
 msgid "Open menu"
 msgstr ""
 
-#: lib/bds/components/performance.ex:246
+#: lib/bds/components/performance.ex:248
 #, elixir-autogen, elixir-format
 msgid "Overall assessment"
 msgstr ""
 
-#: lib/bds/components/catalog_ui.ex:452
-#: lib/bds/components/catalog_ui.ex:1166
+#: lib/bds/components/catalog_ui.ex:453
+#: lib/bds/components/catalog_ui.ex:1237
 #, elixir-autogen, elixir-format
 msgid "Progress"
 msgstr ""
@@ -215,7 +215,7 @@ msgstr ""
 msgid "Project"
 msgstr ""
 
-#: lib/bds/components/performance.ex:271
+#: lib/bds/components/performance.ex:273
 #, elixir-autogen, elixir-format
 msgid "Recommendations"
 msgstr ""
@@ -240,14 +240,14 @@ msgstr ""
 msgid "Search projects…"
 msgstr ""
 
-#: lib/bds/components/catalog_ui.ex:1023
+#: lib/bds/components/catalog_ui.ex:1094
 #: lib/bds/components/project_picker.ex:103
 #: lib/bds/components/user_picker.ex:92
 #, elixir-autogen, elixir-format
 msgid "Searching…"
 msgstr ""
 
-#: lib/bds/components/catalog_ui.ex:587
+#: lib/bds/components/catalog_ui.ex:588
 #, elixir-autogen, elixir-format
 msgid "Segmented control"
 msgstr ""
@@ -262,22 +262,22 @@ msgstr ""
 msgid "Sent"
 msgstr ""
 
-#: lib/bds/components/performance.ex:119
+#: lib/bds/components/performance.ex:121
 #, elixir-autogen, elixir-format
 msgid "Show %{count} more clients"
 msgstr ""
 
-#: lib/bds/components/performance.ex:117
+#: lib/bds/components/performance.ex:119
 #, elixir-autogen, elixir-format
 msgid "Show fewer clients"
 msgstr ""
 
-#: lib/bds/components/performance.ex:263
+#: lib/bds/components/performance.ex:265
 #, elixir-autogen, elixir-format
 msgid "Strengths"
 msgstr ""
 
-#: lib/bds/components/performance.ex:260
+#: lib/bds/components/performance.ex:262
 #, elixir-autogen, elixir-format
 msgid "Strengths, weaknesses, recommendations"
 msgstr ""
@@ -292,13 +292,13 @@ msgstr ""
 msgid "This day cannot be edited."
 msgstr ""
 
-#: lib/bds/components/catalog_ui.ex:823
+#: lib/bds/components/catalog_ui.ex:836
 #, elixir-autogen, elixir-format
 msgid "Toggle branch"
 msgstr ""
 
-#: lib/bds/components.ex:454
-#: lib/bds/components.ex:689
+#: lib/bds/components.ex:452
+#: lib/bds/components.ex:687
 #, elixir-autogen, elixir-format
 msgid "Toggle theme"
 msgstr ""
@@ -313,7 +313,7 @@ msgstr ""
 msgid "Update entry"
 msgstr ""
 
-#: lib/bds/components.ex:549
+#: lib/bds/components.ex:547
 #: lib/bds/components/user_picker.ex:85
 #, elixir-autogen, elixir-format
 msgid "User"
@@ -324,13 +324,13 @@ msgstr ""
 msgid "Vacation"
 msgstr ""
 
-#: lib/bds/components/performance.ex:267
+#: lib/bds/components/performance.ex:269
 #, elixir-autogen, elixir-format
 msgid "Weaknesses"
 msgstr ""
 
-#: lib/bds/components.ex:487
-#: lib/bds/components.ex:656
+#: lib/bds/components.ex:485
+#: lib/bds/components.ex:654
 #, elixir-autogen, elixir-format
 msgid "Toggle language"
 msgstr ""
@@ -481,18 +481,18 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: lib/bds/components/performance.ex:724
+#: lib/bds/components/performance.ex:748
 #, elixir-autogen, elixir-format
 msgid "%{percent}%"
 msgstr ""
 
-#: lib/bds/components/performance.ex:709
-#: lib/bds/components/performance.ex:716
+#: lib/bds/components/performance.ex:733
+#: lib/bds/components/performance.ex:740
 #, elixir-autogen, elixir-format
 msgid "Above expected"
 msgstr ""
 
-#: lib/bds/components/performance.ex:289
+#: lib/bds/components/performance.ex:291
 #, elixir-autogen, elixir-format
 msgid "Acknowledged %{date}"
 msgstr ""
@@ -507,8 +507,8 @@ msgstr ""
 msgid "Add a note (optional)"
 msgstr ""
 
-#: lib/bds/components/performance.ex:711
-#: lib/bds/components/performance.ex:718
+#: lib/bds/components/performance.ex:735
+#: lib/bds/components/performance.ex:742
 #, elixir-autogen, elixir-format
 msgid "Below expected"
 msgstr ""
@@ -519,14 +519,14 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: lib/bds/components/performance.ex:708
-#: lib/bds/components/performance.ex:715
+#: lib/bds/components/performance.ex:732
+#: lib/bds/components/performance.ex:739
 #, elixir-autogen, elixir-format
 msgid "Exceptional"
 msgstr ""
 
-#: lib/bds/components/performance.ex:710
-#: lib/bds/components/performance.ex:717
+#: lib/bds/components/performance.ex:734
+#: lib/bds/components/performance.ex:741
 #, elixir-autogen, elixir-format
 msgid "Expected"
 msgstr ""
@@ -542,31 +542,30 @@ msgstr ""
 msgid "Rejection reason"
 msgstr ""
 
-#: lib/bds/components/performance.ex:696
-#: lib/bds/components/performance.ex:702
+#: lib/bds/components/performance.ex:720
+#: lib/bds/components/performance.ex:726
 #, elixir-autogen, elixir-format
 msgid "Fully achieved"
 msgstr ""
 
-#: lib/bds/components/performance.ex:694
-#: lib/bds/components/performance.ex:700
+#: lib/bds/components/performance.ex:718
+#: lib/bds/components/performance.ex:724
 #, elixir-autogen, elixir-format
 msgid "Not achieved"
 msgstr ""
 
-#: lib/bds/components/performance.ex:695
-#: lib/bds/components/performance.ex:701
+#: lib/bds/components/performance.ex:719
+#: lib/bds/components/performance.ex:725
 #, elixir-autogen, elixir-format
 msgid "Partially achieved"
 msgstr ""
 
-#: lib/bds/components/performance.ex:530
+#: lib/bds/components/performance.ex:529
 #, elixir-autogen, elixir-format
 msgid "No briefing yet"
 msgstr ""
 
-#: lib/bds/components/performance.ex:489
-#: lib/bds/components/performance.ex:495
+#: lib/bds/components/performance.ex:491
 #, elixir-autogen, elixir-format
 msgid "Briefing"
 msgstr ""
@@ -576,13 +575,12 @@ msgstr ""
 msgid "Evaluation"
 msgstr ""
 
-#: lib/bds/components/performance.ex:520
 #: lib/bds/components/performance.ex:524
 #, elixir-autogen, elixir-format
 msgid "No evaluation yet"
 msgstr ""
 
-#: lib/bds/components/performance.ex:341
+#: lib/bds/components/performance.ex:343
 #, elixir-autogen, elixir-format
 msgid "People"
 msgstr ""
@@ -604,12 +602,12 @@ msgid_plural "%{count} expenses"
 msgstr[0] ""
 msgstr[1] ""
 
-#: lib/bds/components/catalog_ui.ex:1079
+#: lib/bds/components/catalog_ui.ex:1150
 #, elixir-autogen, elixir-format
 msgid "Breadcrumb"
 msgstr ""
 
-#: lib/bds/components/catalog_ui.ex:1225
+#: lib/bds/components/catalog_ui.ex:1296
 #, elixir-autogen, elixir-format
 msgid "Close dialog"
 msgstr ""
@@ -635,32 +633,32 @@ msgstr ""
 msgid "Rejected liquidación"
 msgstr ""
 
-#: lib/bds/components.ex:681
+#: lib/bds/components.ex:679
 #, elixir-autogen, elixir-format
 msgid "Dark"
 msgstr ""
 
-#: lib/bds/components.ex:646
+#: lib/bds/components.ex:644
 #, elixir-autogen, elixir-format
 msgid "Language"
 msgstr ""
 
-#: lib/bds/components.ex:680
+#: lib/bds/components.ex:678
 #, elixir-autogen, elixir-format
 msgid "Light"
 msgstr ""
 
-#: lib/bds/components.ex:624
+#: lib/bds/components.ex:622
 #, elixir-autogen, elixir-format
 msgid "Preferences"
 msgstr ""
 
-#: lib/bds/components.ex:679
+#: lib/bds/components.ex:677
 #, elixir-autogen, elixir-format
 msgid "Theme"
 msgstr ""
 
-#: lib/bds/components/catalog_ui.ex:1206
+#: lib/bds/components/catalog_ui.ex:1277
 #, elixir-autogen, elixir-format
 msgid "Step %{number}"
 msgstr ""
@@ -720,12 +718,27 @@ msgstr ""
 msgid "Invalid"
 msgstr ""
 
-#: lib/bds/components.ex:352
+#: lib/bds/components.ex:350
 #, elixir-autogen, elixir-format
 msgid "Main"
 msgstr ""
 
-#: lib/bds/components/performance.ex:487
+#: lib/bds/components/performance.ex:520
 #, elixir-autogen, elixir-format
-msgid "View briefing"
+msgid "Create evaluation"
+msgstr ""
+
+#: lib/bds/components/performance.ex:523
+#, elixir-autogen, elixir-format
+msgid "No evaluation yet - Create"
+msgstr ""
+
+#: lib/bds/components/performance.ex:489
+#, elixir-autogen, elixir-format
+msgid "Open briefing"
+msgstr ""
+
+#: lib/bds/components/performance.ex:499
+#, elixir-autogen, elixir-format
+msgid "Open evaluation"
 msgstr ""

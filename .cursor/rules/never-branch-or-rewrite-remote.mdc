@@ -1,0 +1,22 @@
+---
+description: Never create a git branch or change remotes when editing this BDS checkout
+alwaysApply: true
+---
+
+# Git: stay on the current branch, keep SSH origin
+
+This is the user's **local working copy** of BDS. Agents must edit files **in place**.
+
+## Forbidden
+
+- Do **not** create, switch to, or check out a new branch (`git checkout -b`, `git switch -c`, cloud/worktree agents, best-of-n runners).
+- Do **not** launch a **cloud** subagent / isolated worktree for BDS (`Task` `environment: cloud`). Use `local` only.
+- Do **not** change git remotes, remote URLs, or rewrite SSH to HTTPS (`git remote set-url`, `git remote add`, insteadOf, credential helpers that swap the URL).
+- Do **not** run `git init`, change `origin`, or touch `.git/config` remotes.
+
+## Required
+
+- Stay on whatever branch is already checked out (usually `main`).
+- `origin` **must remain** SSH: `git@github.com:Bluetab/bds.git`
+- If you find origin on HTTPS (`https://github.com/Bluetab/bds.git`), restore SSH immediately and do not leave it that way.
+- Commit / push only when the user explicitly asks. Never create a PR branch unprompted.

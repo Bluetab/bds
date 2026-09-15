@@ -405,6 +405,7 @@ defmodule Bds.Components.Performance do
   attr :rating_label, :string, default: nil
   attr :profile_navigate, :any, default: nil
   attr :briefing_navigate, :any, default: nil
+  attr :evaluation_navigate, :any, default: nil
   attr :create_evaluation_navigate, :any, default: nil
   attr :rest, :global
   slot :actions
@@ -419,6 +420,9 @@ defmodule Bds.Components.Performance do
     has_evaluation? =
       evaluation_rating_letter != nil or is_binary(assigns.evaluation_date_label)
 
+    show_evaluation_cta? =
+      not has_evaluation? and briefing_allows_evaluation?(assigns.briefing_status)
+
     assigns =
       assigns
       |> assign_new(:no_hours_message, fn ->
@@ -431,6 +435,7 @@ defmodule Bds.Components.Performance do
       |> assign(:evaluation_rating_letter, evaluation_rating_letter)
       |> assign(:evaluation_rating_class, rating_class(evaluation_rating))
       |> assign(:has_evaluation?, has_evaluation?)
+      |> assign(:show_evaluation_cta?, show_evaluation_cta?)
 
     ~H"""
     <article
@@ -439,30 +444,26 @@ defmodule Bds.Components.Performance do
       {@rest}
     >
       <div class="bt-performance-team-card__main">
-        <%= if @profile_navigate do %>
-          <.link navigate={@profile_navigate} class="bt-performance-team-card__avatar-link">
-            <img
-              src={@picture || default_avatar()}
-              alt={@name}
-              class="bt-performance-evaluator__avatar bt-performance-evaluator__avatar--sm"
-            />
-          </.link>
-        <% else %>
+        <.team_card_nav
+          navigate={@profile_navigate}
+          class="bt-performance-team-card__avatar-link"
+          fallback_tag="span"
+        >
           <img
             src={@picture || default_avatar()}
             alt={@name}
             class="bt-performance-evaluator__avatar bt-performance-evaluator__avatar--sm"
           />
-        <% end %>
+        </.team_card_nav>
         <div class="bt-performance-team-card__identity">
           <div class="bt-performance-team-card__name-row">
-            <%= if @profile_navigate do %>
-              <.link navigate={@profile_navigate} class="bt-performance-team-card__name">
-                {@name}
-              </.link>
-            <% else %>
-              <span class="bt-performance-team-card__name">{@name}</span>
-            <% end %>
+            <.team_card_nav
+              navigate={@profile_navigate}
+              class="bt-performance-team-card__name"
+              fallback_tag="span"
+            >
+              {@name}
+            </.team_card_nav>
             <span :if={@category} class="bt-performance-chip bt-performance-chip--category">
               {@category}
             </span>
@@ -482,24 +483,21 @@ defmodule Bds.Components.Performance do
       </div>
       <div class="bt-performance-team-card__aside">
         <div :if={@briefing_date_label} class="bt-performance-team-card__status-panel">
-          <%= if @briefing_navigate do %>
-            <.link
-              navigate={@briefing_navigate}
-              class="bt-performance-team-card__status-row bt-performance-team-card__status-row--link"
-              aria-label={gettext("View briefing")}
-            >
-              <span class="bt-performance-team-card__status-label">{gettext("Briefing")}</span>
-              <span class="bt-performance-team-card__status-date">{@briefing_date_label}</span>
-              <span class={["bt-performance-status-mark", @briefing_mark_class]}>{@briefing_mark}</span>
-            </.link>
-          <% else %>
-            <div class="bt-performance-team-card__status-row">
-              <span class="bt-performance-team-card__status-label">{gettext("Briefing")}</span>
-              <span class="bt-performance-team-card__status-date">{@briefing_date_label}</span>
-              <span class={["bt-performance-status-mark", @briefing_mark_class]}>{@briefing_mark}</span>
-            </div>
-          <% end %>
-          <div :if={@has_evaluation?} class="bt-performance-team-card__status-row">
+          <.team_card_nav
+            navigate={@briefing_navigate}
+            class="bt-performance-team-card__status-row"
+            aria-label={@briefing_navigate && gettext("Open briefing")}
+          >
+            <span class="bt-performance-team-card__status-label">{gettext("Briefing")}</span>
+            <span class="bt-performance-team-card__status-date">{@briefing_date_label}</span>
+            <span class={["bt-performance-status-mark", @briefing_mark_class]}>{@briefing_mark}</span>
+          </.team_card_nav>
+          <.team_card_nav
+            :if={@has_evaluation?}
+            navigate={@evaluation_navigate}
+            class="bt-performance-team-card__status-row"
+            aria-label={@evaluation_navigate && gettext("Open evaluation")}
+          >
             <span class="bt-performance-team-card__status-leading">
               <span class="bt-performance-team-card__status-label">{gettext("Evaluation")}</span>
               <span
@@ -513,19 +511,18 @@ defmodule Bds.Components.Performance do
               {@evaluation_date_label}
             </span>
             <span class={["bt-performance-status-mark", @evaluation_mark_class]}>{@evaluation_mark}</span>
-          </div>
-          <%= if !@has_evaluation? && @create_evaluation_navigate do %>
-            <.link
-              navigate={@create_evaluation_navigate}
-              class="bt-performance-team-card__no-eval bt-performance-team-card__no-eval--link"
-            >
-              {gettext("No evaluation yet")}
-            </.link>
-          <% else %>
-            <span :if={!@has_evaluation?} class="bt-performance-team-card__no-eval">
-              {gettext("No evaluation yet")}
-            </span>
-          <% end %>
+          </.team_card_nav>
+          <.team_card_nav
+            :if={@show_evaluation_cta?}
+            navigate={@create_evaluation_navigate}
+            class="bt-performance-team-card__no-eval"
+            fallback_tag="span"
+            aria-label={@create_evaluation_navigate && gettext("Create evaluation")}
+          >
+            {if @create_evaluation_navigate,
+              do: gettext("No evaluation yet - Create"),
+              else: gettext("No evaluation yet")}
+          </.team_card_nav>
         </div>
         <div :if={!@briefing_date_label} class="bt-performance-team-card__pending">
           <span class="bt-performance-empty bt-performance-empty--inline">
@@ -538,6 +535,28 @@ defmodule Bds.Components.Performance do
       </div>
     </article>
     """
+  end
+
+  attr :navigate, :any, default: nil
+  attr :class, :any, required: true
+  attr :fallback_tag, :string, default: "div"
+  attr :rest, :global, include: ~w(aria-label)
+  slot :inner_block, required: true
+
+  defp team_card_nav(assigns) do
+    if assigns.navigate do
+      ~H"""
+      <.link navigate={@navigate} class={@class} {@rest}>
+        {render_slot(@inner_block)}
+      </.link>
+      """
+    else
+      ~H"""
+      <.dynamic_tag tag_name={@fallback_tag} class={@class} {@rest}>
+        {render_slot(@inner_block)}
+      </.dynamic_tag>
+      """
+    end
   end
 
   @doc false
@@ -664,6 +683,9 @@ defmodule Bds.Components.Performance do
   end
 
   defp briefing_status_mark(_), do: {"D", "bt-performance-status-mark--draft"}
+
+  defp briefing_allows_evaluation?(status) when status in ["published", "acknowledged"], do: true
+  defp briefing_allows_evaluation?(_), do: false
 
   defp evaluation_status_mark("acknowledged"), do: {"✓", "bt-performance-status-mark--agreed"}
   defp evaluation_status_mark(_), do: {"P", "bt-performance-status-mark--published"}
