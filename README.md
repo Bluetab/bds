@@ -23,10 +23,13 @@ mix assets.build   # rebuild dist + sync priv/static
 mix assets.dev       # catalog at http://localhost:5173/
 ```
 
-## Consumers (e.g. ds_tester)
+## Consumers (e.g. storybook)
+
+Storybook is the Phoenix catalog. Clone it next to this repo and run **one** server — it watches this checkout (see `storybook/README.md`):
 
 ```elixir
 {:bds, path: "../bds"}
+# or: export BDS_PATH=/path/to/bds
 ```
 
 ```css
@@ -38,7 +41,7 @@ mix assets.dev       # catalog at http://localhost:5173/
 import {initBtInteractions} from "bds/interactions"
 ```
 
-In **dev**, point Vite at `bds/assets/src` (see ds_tester `assets/vite.config.js`) so CSS hot-reloads without republishing. In **prod**, use `deps/bds/priv/static` after `mix assets.build` in this repo.
+In **Storybook**, CSS/JS are imported from `assets/src` and live-reload with `mix phx.server`. Other Phoenix apps can keep `deps/bds/priv/static` after `mix assets.build` here, or alias Vite at `assets/src` for the same hot-reload loop.
 
 ```elixir
 config :bds, gettext_backend: MyAppWeb.Gettext
