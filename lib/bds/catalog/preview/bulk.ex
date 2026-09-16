@@ -1056,6 +1056,19 @@ defmodule Bds.Catalog.Preview.Bulk do
           evaluator_comment: "Delivered on schedule with clear client sign-off."
         }
       ]}
+      competencies={[
+        %{
+          name: "Technical knowledge",
+          levels: [%{id: 1, label: "Basic"}, %{id: 2, label: "Intermediate"}, %{id: 3, label: "Advanced"}],
+          selected_idx: 2,
+          selected_label: "Intermediate",
+          expected_idx: 2,
+          expected_label: "Intermediate",
+          vs_expected: :at,
+          comment: "Clear client communication."
+        }
+      ]}
+      competency_category="Consultant"
       evaluation={
         %{
           date_label: "2026-04-22",
@@ -1066,11 +1079,14 @@ defmodule Bds.Catalog.Preview.Bulk do
           strengths: "Clear communication.",
           weaknesses: "Optimistic test estimates.",
           recommendations: "Continue pairing on automation.",
-          ack_state: :acknowledged,
-          ack_date_label: "2026-04-25"
+          ack_state: :pending
         }
       }
-    />
+    >
+      <:evaluation_actions>
+        <.bt_button size="sm">Acknowledge evaluation</.bt_button>
+      </:evaluation_actions>
+    </.bt_performance_briefing_card>
     """
   end
 

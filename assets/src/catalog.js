@@ -1296,7 +1296,7 @@ initBtInteractions();</code></pre>
     group: "Components",
     icon: "📄",
     title: "Performance briefing card",
-    description: "Briefing bonded with evaluation: objectives, ratings, acknowledgement, and assessment blocks.",
+    description: "Briefing bonded with evaluation: objectives, category competencies, ratings, acknowledgement, and assessment blocks.",
     examples: [
       {
         title: "Published with evaluation",
@@ -1319,10 +1319,69 @@ initBtInteractions();</code></pre>
   <div class="bt-performance-card__body">
     <p style="margin:0;font-size:var(--bt-font-size-sm);color:var(--bt-color-text-muted);">Own technical direction for the Northwind FI rollout.</p>
     <div class="bt-performance-evaluation">
-      <div style="display:flex;justify-content:space-between;gap:var(--bt-space-3);flex-wrap:wrap;">
-        <div><div class="bt-performance-meta-row"><span class="bt-icon">✦</span><span class="bt-performance-meta-row__date">2026-04-22</span></div><p class="bt-performance-meta-sub">Evaluated by Morgan Chen</p></div>
-        <span class="bt-performance-rating bt-performance-rating--b">B</span>
+      <div class="bt-performance-evaluation__header">
+        <div class="bt-performance-evaluation__meta">
+          <div class="bt-performance-meta-row">
+            <span class="bt-icon">✦</span>
+            <span class="bt-performance-meta-row__date">2026-04-22</span>
+            <span class="bt-performance-ack bt-performance-ack--pending"><span class="bt-performance-ack__mark" aria-hidden="true">◷</span><span class="bt-performance-ack__label">Awaiting acknowledgement</span></span>
+          </div>
+          <p class="bt-performance-meta-sub">Evaluated by Morgan Chen</p>
+        </div>
+        <div class="bt-performance-evaluation__header-end">
+          <div class="bt-performance-evaluation__actions">
+            <button type="button" class="bt-button bt-button--sm">Acknowledge evaluation</button>
+          </div>
+          <span class="bt-performance-rating bt-performance-rating--b">B</span>
+        </div>
       </div>
+    </div>
+    <div class="bt-performance-objectives-block">
+      <h3 class="bt-performance-section-title bt-performance-section-title--sm">Objectives and evaluator assessment</h3>
+      <div class="bt-performance-objective-list">
+        <details class="bt-performance-objective-row">
+          <summary class="bt-performance-objective-row__summary">
+            <div class="bt-performance-objective-row__leading">
+              <span class="bt-performance-objective-row__index">1</span>
+              <span class="bt-performance-chip bt-performance-chip--category">PX</span>
+              <span class="bt-performance-objective-row__chevron" aria-hidden="true">›</span>
+              <span class="bt-performance-objective-row__title">Blueprint sign-off</span>
+            </div>
+            <div class="bt-performance-objective-row__trailing">
+              <span class="bt-performance-rating bt-performance-rating--compact bt-performance-completion--total">Fully achieved</span>
+              <span class="bt-performance-objective-row__weight">35%</span>
+            </div>
+          </summary>
+          <div class="bt-performance-objective-row__body">
+            <p class="bt-performance-objective__desc">Signed-off solution design.</p>
+            <p class="bt-performance-objective-row__comment">Delivered on schedule with clear client sign-off.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+    <div class="bt-performance-competencies">
+      <div class="bt-performance-competencies__header">
+        <h3 class="bt-performance-section-title bt-performance-section-title--sm">Category competencies</h3>
+        <p class="bt-performance-meta-sub">Expected for Consultant</p>
+      </div>
+      <ul class="bt-performance-competency-list">
+        <li class="bt-performance-competency-row">
+          <div class="bt-performance-competency-row__main">
+            <p class="bt-performance-competency-row__name">Technical knowledge</p>
+            <div class="bt-performance-competency-bar" role="img" aria-label="Evaluated Intermediate. Expected Intermediate.">
+              <span class="bt-performance-competency-bar__seg bt-performance-competency-bar__seg--at"></span>
+              <span class="bt-performance-competency-bar__seg bt-performance-competency-bar__seg--at"><span class="bt-performance-competency-bar__mark" aria-hidden="true"></span></span>
+              <span class="bt-performance-competency-bar__seg"></span>
+            </div>
+            <div class="bt-performance-competency-row__trailing">
+              <span class="bt-performance-competency-row__level">Intermediate</span>
+              <span class="bt-performance-competency-vs bt-performance-competency-vs--at">At expected</span>
+            </div>
+          </div>
+          <p class="bt-performance-objective-row__comment">Clear client communication.</p>
+        </li>
+      </ul>
+      <p class="bt-performance-competencies__legend"><span class="bt-performance-competency-bar__mark" aria-hidden="true"></span><span>Marker is the expected level for this category.</span></p>
     </div>
   </div>
 </article>`,

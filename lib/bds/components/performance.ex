@@ -136,12 +136,15 @@ defmodule Bds.Components.Performance do
   attr :creator_label, :string, required: true
   attr :role_description, :string, required: true
   attr :objectives, :list, default: []
+  attr :competencies, :list, default: []
+  attr :competency_category, :string, default: nil
   attr :evaluation, :map, default: nil
   attr :ack_state, :atom, default: :hidden, values: [:hidden, :pending, :acknowledged]
   attr :default_expanded?, :boolean, default: false
   attr :draft_label, :string, default: nil
   attr :rest, :global
   slot :actions
+  slot :evaluation_actions
 
   def bt_performance_briefing_card(assigns) do
     assigns = assign_new(assigns, :draft_label, fn -> gettext("Draft · only visible to you") end)
@@ -181,6 +184,58 @@ defmodule Bds.Components.Performance do
         <p style="margin: 0; white-space: pre-wrap; font-size: var(--bt-font-size-sm); color: var(--bt-color-text-muted);">
           {@role_description}
         </p>
+        <div :if={@has_evaluation} class="bt-performance-evaluation">
+          <div class="bt-performance-evaluation__header">
+            <div class="bt-performance-evaluation__meta">
+              <div class="bt-performance-meta-row">
+                <.bt_icon>✦</.bt_icon>
+                <span class="bt-performance-meta-row__date">{@evaluation.date_label}</span>
+                <.bt_performance_ack_chip
+                  :if={@evaluation[:ack_state] != :hidden}
+                  state={@evaluation.ack_state}
+                  date_label={@evaluation[:ack_date_label]}
+                />
+              </div>
+              <p class="bt-performance-meta-sub">
+                {gettext("Evaluated by %{name}", name: @evaluation.creator_label)}
+              </p>
+              <p class="bt-performance-kicker bt-performance-kicker--subtle">
+                {gettext("Overall assessment")}
+              </p>
+            </div>
+            <div class="bt-performance-evaluation__header-end">
+              <div :if={render_slot(@evaluation_actions) != []} class="bt-performance-evaluation__actions">
+                {render_slot(@evaluation_actions)}
+              </div>
+              <span class={[
+                "bt-performance-rating bt-performance-rating--overall",
+                rating_class(@evaluation.rating)
+              ]}>
+                {@evaluation.rating_label}
+              </span>
+            </div>
+          </div>
+          <p class="bt-performance-evaluation__rationale">
+            {@evaluation.rationale || "—"}
+          </p>
+          <details class="bt-performance-objectives bt-performance-objectives--nested" open={@default_expanded?}>
+            <summary>{gettext("Strengths, weaknesses, recommendations")}</summary>
+            <div class="bt-performance-evaluation__details">
+              <p :if={@evaluation.strengths}>
+                <strong>{gettext("Strengths")}</strong>
+                <span>{@evaluation.strengths}</span>
+              </p>
+              <p :if={@evaluation.weaknesses}>
+                <strong>{gettext("Weaknesses")}</strong>
+                <span>{@evaluation.weaknesses}</span>
+              </p>
+              <p :if={@evaluation.recommendations}>
+                <strong>{gettext("Recommendations")}</strong>
+                <span>{@evaluation.recommendations}</span>
+              </p>
+            </div>
+          </details>
+        </div>
         <div :if={@objectives != []} class="bt-performance-objectives-block">
           <h3 class="bt-performance-section-title bt-performance-section-title--sm">
             <%= if @has_evaluation do %>
@@ -229,52 +284,62 @@ defmodule Bds.Components.Performance do
             </details>
           </div>
         </div>
-        <div :if={@has_evaluation} class="bt-performance-evaluation">
-          <div class="bt-performance-evaluation__header">
-            <div class="bt-performance-evaluation__meta">
-              <div class="bt-performance-meta-row">
-                <.bt_icon>✦</.bt_icon>
-                <span class="bt-performance-meta-row__date">{@evaluation.date_label}</span>
-                <.bt_performance_ack_chip
-                  :if={@evaluation[:ack_state] != :hidden}
-                  state={@evaluation.ack_state}
-                  date_label={@evaluation[:ack_date_label]}
-                />
-              </div>
-              <p class="bt-performance-meta-sub">
-                {gettext("Evaluated by %{name}", name: @evaluation.creator_label)}
-              </p>
-              <p class="bt-performance-kicker bt-performance-kicker--subtle">
-                {gettext("Overall assessment")}
-              </p>
-            </div>
-            <span class={[
-              "bt-performance-rating bt-performance-rating--overall",
-              rating_class(@evaluation.rating)
-            ]}>
-              {@evaluation.rating_label}
-            </span>
+        <div :if={@competencies != []} class="bt-performance-competencies">
+          <div class="bt-performance-competencies__header">
+            <h3 class="bt-performance-section-title bt-performance-section-title--sm">
+              {gettext("Category competencies")}
+            </h3>
+            <p :if={@competency_category} class="bt-performance-meta-sub">
+              {gettext("Expected for %{category}", category: @competency_category)}
+            </p>
           </div>
-          <p class="bt-performance-evaluation__rationale">
-            {@evaluation.rationale || "—"}
+          <ul class="bt-performance-competency-list">
+            <li
+              :for={row <- @competencies}
+              id={row[:dom_id]}
+              class="bt-performance-competency-row"
+            >
+              <div class="bt-performance-competency-row__main">
+                <p class="bt-performance-competency-row__name" title={row.name}>{row.name}</p>
+                <div
+                  :if={row.levels != []}
+                  class="bt-performance-competency-bar"
+                  role="img"
+                  aria-label={competency_bar_aria(row)}
+                >
+                  <span
+                    :for={{level, idx} <- Enum.with_index(row.levels, 1)}
+                    class={competency_segment_class(idx, row)}
+                    title={competency_segment_title(level, idx, row)}
+                  >
+                    <span
+                      :if={idx == row.expected_idx}
+                      class="bt-performance-competency-bar__mark"
+                      aria-hidden="true"
+                    />
+                  </span>
+                </div>
+                <div class="bt-performance-competency-row__trailing">
+                  <span class="bt-performance-competency-row__level">
+                    {competency_level_label(row)}
+                  </span>
+                  <span
+                    :if={vs_label = competency_vs_label(row.vs_expected)}
+                    class={["bt-performance-competency-vs", competency_vs_class(row.vs_expected)]}
+                  >
+                    {vs_label}
+                  </span>
+                </div>
+              </div>
+              <p :if={present_text?(row[:comment])} class="bt-performance-objective-row__comment">
+                {row.comment}
+              </p>
+            </li>
+          </ul>
+          <p class="bt-performance-competencies__legend">
+            <span class="bt-performance-competency-bar__mark" aria-hidden="true" />
+            <span>{gettext("Marker is the expected level for this category.")}</span>
           </p>
-          <details class="bt-performance-objectives bt-performance-objectives--nested" open={@default_expanded?}>
-            <summary>{gettext("Strengths, weaknesses, recommendations")}</summary>
-            <div class="bt-performance-evaluation__details">
-              <p :if={@evaluation.strengths}>
-                <strong>{gettext("Strengths")}</strong>
-                <span>{@evaluation.strengths}</span>
-              </p>
-              <p :if={@evaluation.weaknesses}>
-                <strong>{gettext("Weaknesses")}</strong>
-                <span>{@evaluation.weaknesses}</span>
-              </p>
-              <p :if={@evaluation.recommendations}>
-                <strong>{gettext("Recommendations")}</strong>
-                <span>{@evaluation.recommendations}</span>
-              </p>
-            </div>
-          </details>
         </div>
       </div>
     </article>
@@ -668,6 +733,79 @@ defmodule Bds.Components.Performance do
     do: :acknowledged
 
   def evaluation_ack_state(_), do: :pending
+
+  defp competency_level_label(%{selected_idx: idx, selected_label: label})
+       when is_integer(idx) and idx > 0 and is_binary(label) and label != "",
+       do: label
+
+  defp competency_level_label(%{expected_label: label}) when is_binary(label) and label != "",
+    do: label
+
+  defp competency_level_label(_), do: gettext("Not rated")
+
+  defp competency_bar_aria(row) do
+    expected = row.expected_label || gettext("—")
+
+    if (row[:selected_idx] || 0) > 0 do
+      gettext("Evaluated %{evaluated}. Expected %{expected}.",
+        evaluated: row.selected_label || gettext("Not rated"),
+        expected: expected
+      )
+    else
+      gettext("Expected %{expected}.", expected: expected)
+    end
+  end
+
+  defp competency_segment_title(level, idx, row) do
+    parts = [level.label]
+
+    parts =
+      if idx == row.selected_idx do
+        parts ++ [gettext("evaluated")]
+      else
+        parts
+      end
+
+    parts =
+      if idx == row.expected_idx do
+        parts ++ [gettext("expected")]
+      else
+        parts
+      end
+
+    Enum.join(parts, " · ")
+  end
+
+  defp competency_segment_class(idx, row) do
+    selected_idx = row[:selected_idx] || 0
+    expected_idx = row[:expected_idx] || 0
+    filled? = selected_idx > 0 and idx <= selected_idx
+    expected? = idx == expected_idx
+
+    [
+      "bt-performance-competency-bar__seg",
+      filled? && competency_vs_fill_class(row[:vs_expected]),
+      expected? && not filled? && "bt-performance-competency-bar__seg--expected"
+    ]
+  end
+
+  defp competency_vs_label(:at), do: gettext("At expected")
+  defp competency_vs_label(:below), do: gettext("Below expected")
+  defp competency_vs_label(:above), do: gettext("Above expected")
+  defp competency_vs_label(_), do: nil
+
+  defp competency_vs_class(:at), do: "bt-performance-competency-vs--at"
+  defp competency_vs_class(:below), do: "bt-performance-competency-vs--below"
+  defp competency_vs_class(:above), do: "bt-performance-competency-vs--above"
+  defp competency_vs_class(_), do: nil
+
+  defp competency_vs_fill_class(:at), do: "bt-performance-competency-bar__seg--at"
+  defp competency_vs_fill_class(:below), do: "bt-performance-competency-bar__seg--below"
+  defp competency_vs_fill_class(:above), do: "bt-performance-competency-bar__seg--above"
+  defp competency_vs_fill_class(_), do: "bt-performance-competency-bar__seg--filled"
+
+  defp present_text?(value) when is_binary(value), do: String.trim(value) != ""
+  defp present_text?(_), do: false
 
   defp briefing_status_mark("acknowledged"), do: {"✓", "bt-performance-status-mark--agreed"}
 

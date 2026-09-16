@@ -245,6 +245,166 @@
   font-weight: 500;
 }
 
+.bt-performance-competencies {
+  display: grid;
+  gap: var(--bt-space-2);
+}
+
+.bt-performance-competencies__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--bt-space-2);
+}
+
+.bt-performance-competency-list {
+  display: grid;
+  gap: var(--bt-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bt-performance-competency-row {
+  display: grid;
+  gap: var(--bt-space-2);
+  padding: var(--bt-space-2) var(--bt-space-3);
+  border: 1px solid var(--bt-color-border);
+  border-radius: var(--bt-radius-md);
+  background: color-mix(in oklab, var(--bt-color-surface-soft) 35%, var(--bt-color-surface));
+}
+
+.bt-performance-competency-row__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: var(--bt-space-2);
+}
+
+@media (min-width: 40rem) {
+  .bt-performance-competency-row__main {
+    grid-template-columns: minmax(0, 9.75rem) minmax(0, 1fr) auto;
+    gap: var(--bt-space-3);
+  }
+}
+
+.bt-performance-competency-row > .bt-performance-objective-row__comment {
+  margin-top: 0;
+}
+
+.bt-performance-competency-row__name {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--bt-font-size-sm);
+  font-weight: 600;
+  color: var(--bt-color-text);
+}
+
+.bt-performance-competency-bar {
+  display: flex;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.bt-performance-competency-bar__seg {
+  position: relative;
+  height: 0.5rem;
+  flex: 1;
+  min-width: 0;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--bt-color-border) 55%, transparent);
+}
+
+.bt-performance-competency-bar__seg--filled {
+  background: color-mix(in oklab, var(--bt-color-primary) 75%, var(--bt-color-border));
+}
+
+.bt-performance-competency-bar__seg--at {
+  background: var(--bt-color-primary);
+}
+
+.bt-performance-competency-bar__seg--below {
+  background: var(--bt-color-warning);
+}
+
+.bt-performance-competency-bar__seg--above {
+  background: var(--bt-color-success);
+}
+
+.bt-performance-competency-bar__seg--expected {
+  background: color-mix(in oklab, var(--bt-color-primary) 22%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--bt-color-primary) 40%, transparent);
+}
+
+.bt-performance-competency-bar__mark {
+  position: absolute;
+  top: -0.25rem;
+  left: 50%;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background: var(--bt-color-primary);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--bt-color-primary) 35%, transparent);
+  transform: translateX(-50%);
+}
+
+.bt-performance-competency-row__trailing {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--bt-space-2);
+}
+
+.bt-performance-competency-row__level {
+  font-size: var(--bt-font-size-xs);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--bt-color-text);
+}
+
+.bt-performance-competency-vs {
+  border-radius: var(--bt-radius-pill);
+  padding: 0.125rem 0.375rem;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.bt-performance-competency-vs--at {
+  background: color-mix(in oklab, var(--bt-color-primary) 12%, transparent);
+  color: var(--bt-color-primary);
+}
+
+.bt-performance-competency-vs--below {
+  background: color-mix(in oklab, var(--bt-color-warning) 18%, transparent);
+  color: var(--bt-color-warning);
+}
+
+.bt-performance-competency-vs--above {
+  background: color-mix(in oklab, var(--bt-color-success) 16%, transparent);
+  color: var(--bt-color-success);
+}
+
+.bt-performance-competencies__legend {
+  display: flex;
+  align-items: center;
+  gap: var(--bt-space-2);
+  margin: 0;
+  font-size: 0.65rem;
+  color: var(--bt-color-text-muted);
+}
+
+.bt-performance-competencies__legend .bt-performance-competency-bar__mark {
+  position: static;
+  transform: none;
+  flex-shrink: 0;
+}
+
 .bt-performance-objectives-block {
   display: grid;
   gap: var(--bt-space-2);
@@ -422,6 +582,21 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--bt-space-3);
+}
+
+.bt-performance-evaluation__header-end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--bt-space-3);
+}
+
+.bt-performance-evaluation__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bt-space-2);
 }
 
 .bt-performance-evaluation__meta {

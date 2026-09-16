@@ -5,7 +5,7 @@ msgstr ""
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/bds/components/performance.ex:294
+#: lib/bds/components/performance.ex:359
 #, elixir-autogen, elixir-format
 msgid "Acknowledged"
 msgstr "Reconocido"
@@ -35,7 +35,7 @@ msgstr "Aplicar plantilla %{name}"
 msgid "Approved"
 msgstr "Aprobado"
 
-#: lib/bds/components/performance.ex:297
+#: lib/bds/components/performance.ex:362
 #, elixir-autogen, elixir-format
 msgid "Awaiting acknowledgement"
 msgstr "Pendiente de reconocimiento"
@@ -86,7 +86,7 @@ msgstr "Cerrar panel de plantillas"
 msgid "Complete"
 msgstr "Completo"
 
-#: lib/bds/components/performance.ex:174
+#: lib/bds/components/performance.ex:177
 #, elixir-autogen, elixir-format
 msgid "Created by %{name}"
 msgstr "Creado por %{name}"
@@ -96,7 +96,7 @@ msgstr "Creado por %{name}"
 msgid "Day"
 msgstr "Día"
 
-#: lib/bds/components/performance.ex:480
+#: lib/bds/components/performance.ex:545
 #, elixir-autogen, elixir-format
 msgid "Delegated by"
 msgstr "Delegado por"
@@ -111,7 +111,7 @@ msgstr "Delete entry"
 msgid "Draft"
 msgstr "Borrador"
 
-#: lib/bds/components/performance.ex:147
+#: lib/bds/components/performance.ex:150
 #, elixir-autogen, elixir-format
 msgid "Draft · only visible to you"
 msgstr "Borrador · solo visible para ti"
@@ -126,7 +126,7 @@ msgstr "Editar entrada"
 msgid "Edit time entry"
 msgstr "Editar imputación"
 
-#: lib/bds/components/performance.ex:245
+#: lib/bds/components/performance.ex:200
 #, elixir-autogen, elixir-format
 msgid "Evaluated by %{name}"
 msgstr "Evaluado por %{name}"
@@ -167,7 +167,7 @@ msgstr "Ningún proyecto coincide con tu búsqueda."
 msgid "No reported hours for this scope."
 msgstr "Sin horas reportadas en este ámbito."
 
-#: lib/bds/components/performance.ex:429
+#: lib/bds/components/performance.ex:494
 #, elixir-autogen, elixir-format
 msgid "No reported hours in this period for this person."
 msgstr "Sin horas reportadas en este periodo para esta persona."
@@ -177,12 +177,12 @@ msgstr "Sin horas reportadas en este periodo para esta persona."
 msgid "Non-working"
 msgstr "No laborable"
 
-#: lib/bds/components/performance.ex:189
+#: lib/bds/components/performance.ex:244
 #, elixir-autogen, elixir-format
 msgid "Objectives"
 msgstr "Objetivos"
 
-#: lib/bds/components/performance.ex:187
+#: lib/bds/components/performance.ex:242
 #, elixir-autogen, elixir-format
 msgid "Objectives and evaluator assessment"
 msgstr "Objetivos y evaluación del evaluador"
@@ -197,7 +197,7 @@ msgstr "Abrir día"
 msgid "Open menu"
 msgstr "Abrir menú"
 
-#: lib/bds/components/performance.ex:248
+#: lib/bds/components/performance.ex:203
 #, elixir-autogen, elixir-format
 msgid "Overall assessment"
 msgstr "Evaluación global"
@@ -214,7 +214,7 @@ msgstr "Progreso"
 msgid "Project"
 msgstr "Proyecto"
 
-#: lib/bds/components/performance.ex:273
+#: lib/bds/components/performance.ex:233
 #, elixir-autogen, elixir-format
 msgid "Recommendations"
 msgstr "Recomendaciones"
@@ -271,12 +271,12 @@ msgstr "Mostrar %{count} clientes más"
 msgid "Show fewer clients"
 msgstr "Mostrar menos clientes"
 
-#: lib/bds/components/performance.ex:265
+#: lib/bds/components/performance.ex:225
 #, elixir-autogen, elixir-format
 msgid "Strengths"
 msgstr "Fortalezas"
 
-#: lib/bds/components/performance.ex:262
+#: lib/bds/components/performance.ex:222
 #, elixir-autogen, elixir-format
 msgid "Strengths, weaknesses, recommendations"
 msgstr "Fortalezas, debilidades y recomendaciones"
@@ -323,7 +323,7 @@ msgstr "Usuario"
 msgid "Vacation"
 msgstr "Vacaciones"
 
-#: lib/bds/components/performance.ex:269
+#: lib/bds/components/performance.ex:229
 #, elixir-autogen, elixir-format
 msgid "Weaknesses"
 msgstr "Debilidades"
@@ -480,18 +480,19 @@ msgstr "Expandir todo"
 msgid "Settings"
 msgstr "Configuración"
 
-#: lib/bds/components/performance.ex:748
+#: lib/bds/components/performance.ex:886
 #, elixir-autogen, elixir-format
 msgid "%{percent}%"
 msgstr "%{percent}%"
 
-#: lib/bds/components/performance.ex:733
-#: lib/bds/components/performance.ex:740
+#: lib/bds/components/performance.ex:794
+#: lib/bds/components/performance.ex:871
+#: lib/bds/components/performance.ex:878
 #, elixir-autogen, elixir-format
 msgid "Above expected"
 msgstr "Por encima de lo esperado"
 
-#: lib/bds/components/performance.ex:291
+#: lib/bds/components/performance.ex:356
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Acknowledged %{date}"
 msgstr "Reconocido %{date}"
@@ -506,8 +507,9 @@ msgstr "Add a comment"
 msgid "Add a note (optional)"
 msgstr "Add a note (optional)"
 
-#: lib/bds/components/performance.ex:735
-#: lib/bds/components/performance.ex:742
+#: lib/bds/components/performance.ex:793
+#: lib/bds/components/performance.ex:873
+#: lib/bds/components/performance.ex:880
 #, elixir-autogen, elixir-format
 msgid "Below expected"
 msgstr "Por debajo de lo esperado"
@@ -518,14 +520,14 @@ msgstr "Por debajo de lo esperado"
 msgid "Comment"
 msgstr "Comment"
 
-#: lib/bds/components/performance.ex:732
-#: lib/bds/components/performance.ex:739
+#: lib/bds/components/performance.ex:870
+#: lib/bds/components/performance.ex:877
 #, elixir-autogen, elixir-format
 msgid "Exceptional"
 msgstr "Excepcional"
 
-#: lib/bds/components/performance.ex:734
-#: lib/bds/components/performance.ex:741
+#: lib/bds/components/performance.ex:872
+#: lib/bds/components/performance.ex:879
 #, elixir-autogen, elixir-format
 msgid "Expected"
 msgstr "Lo esperado"
@@ -541,45 +543,45 @@ msgstr "Reason & comment"
 msgid "Rejection reason"
 msgstr "Rejection reason"
 
-#: lib/bds/components/performance.ex:720
-#: lib/bds/components/performance.ex:726
+#: lib/bds/components/performance.ex:858
+#: lib/bds/components/performance.ex:864
 #, elixir-autogen, elixir-format
 msgid "Fully achieved"
 msgstr "Totalmente cumplido"
 
-#: lib/bds/components/performance.ex:718
-#: lib/bds/components/performance.ex:724
+#: lib/bds/components/performance.ex:856
+#: lib/bds/components/performance.ex:862
 #, elixir-autogen, elixir-format
 msgid "Not achieved"
 msgstr "No cumplido"
 
-#: lib/bds/components/performance.ex:719
-#: lib/bds/components/performance.ex:725
+#: lib/bds/components/performance.ex:857
+#: lib/bds/components/performance.ex:863
 #, elixir-autogen, elixir-format
 msgid "Partially achieved"
 msgstr "Parcialmente cumplido"
 
-#: lib/bds/components/performance.ex:529
+#: lib/bds/components/performance.ex:594
 #, elixir-autogen, elixir-format
 msgid "No briefing yet"
 msgstr "Aún no hay briefing"
 
-#: lib/bds/components/performance.ex:491
+#: lib/bds/components/performance.ex:556
 #, elixir-autogen, elixir-format
 msgid "Briefing"
 msgstr "Briefing"
 
-#: lib/bds/components/performance.ex:502
+#: lib/bds/components/performance.ex:567
 #, elixir-autogen, elixir-format
 msgid "Evaluation"
 msgstr "Evaluación"
 
-#: lib/bds/components/performance.ex:524
+#: lib/bds/components/performance.ex:589
 #, elixir-autogen, elixir-format
 msgid "No evaluation yet"
 msgstr "Aún no hay evaluación"
 
-#: lib/bds/components/performance.ex:343
+#: lib/bds/components/performance.ex:408
 #, elixir-autogen, elixir-format
 msgid "People"
 msgstr "Personas"
@@ -722,22 +724,732 @@ msgstr ""
 msgid "Main"
 msgstr ""
 
-#: lib/bds/components/performance.ex:520
+#: lib/bds/components/performance.ex:585
 #, elixir-autogen, elixir-format
 msgid "Create evaluation"
 msgstr "Crear evaluación"
 
-#: lib/bds/components/performance.ex:523
+#: lib/bds/components/performance.ex:588
 #, elixir-autogen, elixir-format
 msgid "No evaluation yet - Create"
 msgstr "Aún no hay evaluación - Crear"
 
-#: lib/bds/components/performance.ex:489
+#: lib/bds/components/performance.ex:554
 #, elixir-autogen, elixir-format
 msgid "Open briefing"
 msgstr "Abrir briefing"
 
-#: lib/bds/components/performance.ex:499
+#: lib/bds/components/performance.ex:564
 #, elixir-autogen, elixir-format
 msgid "Open evaluation"
 msgstr "Abrir evaluación"
+
+#: lib/bds/components/performance.ex:792
+#, elixir-autogen, elixir-format
+msgid "At expected"
+msgstr "En lo esperado"
+
+#: lib/bds/components/performance.ex:290
+#, elixir-autogen, elixir-format
+msgid "Category competencies"
+msgstr "Competencias de categoría"
+
+#: lib/bds/components/performance.ex:750
+#, elixir-autogen, elixir-format
+msgid "Evaluated %{evaluated}. Expected %{expected}."
+msgstr "Evaluado %{evaluated}. Esperado %{expected}."
+
+#: lib/bds/components/performance.ex:755
+#, elixir-autogen, elixir-format
+msgid "Expected %{expected}."
+msgstr "Esperado %{expected}."
+
+#: lib/bds/components/performance.ex:293
+#, elixir-autogen, elixir-format
+msgid "Expected for %{category}"
+msgstr "Esperado para %{category}"
+
+#: lib/bds/components/performance.ex:341
+#, elixir-autogen, elixir-format
+msgid "Marker is the expected level for this category."
+msgstr "El marcador es el nivel esperado para esta categoría."
+
+#: lib/bds/components/performance.ex:744
+#: lib/bds/components/performance.ex:751
+#, elixir-autogen, elixir-format
+msgid "Not rated"
+msgstr "Sin calificar"
+
+#: lib/bds/components/performance.ex:764
+#, elixir-autogen, elixir-format
+msgid "evaluated"
+msgstr "evaluado"
+
+#: lib/bds/components/performance.ex:771
+#, elixir-autogen, elixir-format
+msgid "expected"
+msgstr "esperado"
+
+#: lib/bds/components/performance.ex:747
+#, elixir-autogen, elixir-format
+msgid "—"
+msgstr "—"
+msgid "Acciones principales, secundarias, terciarias, de icono y FAB."
+msgstr "Acciones principales, secundarias, terciarias, de icono y FAB."
+
+msgid "Acordeones para mostrar u ocultar información progresivamente."
+msgstr "Acordeones para mostrar u ocultar información progresivamente."
+
+msgid "Alert dialog"
+msgstr "Alert dialog"
+
+msgid "App bars"
+msgstr "App bars"
+
+msgid "App shell (no sidebar)"
+msgstr "App shell (no sidebar)"
+
+msgid "App shell with user menu"
+msgstr "App shell with user menu"
+
+msgid "Auto grid"
+msgstr "Auto grid"
+
+msgid "Avatar media"
+msgstr "Avatar media"
+
+msgid "Avatars"
+msgstr "Avatars"
+
+msgid "Ayuda contextual breve al pasar el cursor o enfocar."
+msgstr "Ayuda contextual breve al pasar el cursor o enfocar."
+
+msgid "Backdrop + panel shell for Phoenix LiveView dialogs (`bt-modal`)."
+msgstr "Backdrop + panel shell for Phoenix LiveView dialogs (`bt-modal`)."
+
+msgid "Badge dot"
+msgstr "Badge dot"
+
+msgid "Badge with number"
+msgstr "Badge with number"
+
+msgid "Badges"
+msgstr "Badges"
+
+msgid "Barras superiores e inferiores para navegación, acciones contextuales y estado de una pantalla."
+msgstr "Barras superiores e inferiores para navegación, acciones contextuales y estado de una pantalla."
+
+msgid "Base HTML, CSS y JavaScript para crear un Design System Bluetab propio."
+msgstr "Base HTML, CSS y JavaScript para crear un Design System Bluetab propio."
+
+msgid "Base palette editable from CSS tokens."
+msgstr "Base palette editable from CSS tokens."
+
+msgid "Basic checkbox"
+msgstr "Basic checkbox"
+
+msgid "Basic dialog"
+msgstr "Basic dialog"
+
+msgid "Basic select"
+msgstr "Basic select"
+
+msgid "Basic shell"
+msgstr "Basic shell"
+
+msgid "Basic slider"
+msgstr "Basic slider"
+
+msgid "Basic switch"
+msgstr "Basic switch"
+
+msgid "Basic textarea"
+msgstr "Basic textarea"
+
+msgid "Bloques estructurales para agrupar contenido y controlar densidad."
+msgstr "Bloques estructurales para agrupar contenido y controlar densidad."
+
+msgid "Bottom navigation bar"
+msgstr "Bottom navigation bar"
+
+msgid "Brand colors"
+msgstr "Brand colors"
+
+msgid "Briefing bonded with evaluation: objectives, category competencies, ratings, acknowledgement, and assessment blocks."
+msgstr "Briefing bonded with evaluation: objectives, category competencies, ratings, acknowledgement, and assessment blocks."
+
+msgid "Button sizes"
+msgstr "Button sizes"
+
+msgid "Buttons"
+msgstr "Botones"
+
+msgid "Calendar day"
+msgstr "Calendar day"
+
+msgid "Calendar day modal"
+msgstr "Calendar day modal"
+
+msgid "Calendar legend"
+msgstr "Calendar legend"
+
+msgid "Calendar shell"
+msgstr "Calendar shell"
+
+msgid "Calendar template"
+msgstr "Calendar template"
+
+msgid "Calendar toolbar"
+msgstr "Calendar toolbar"
+
+msgid "Calendar weekdays"
+msgstr "Calendar weekdays"
+
+msgid "Capas superpuestas para paneles, drawers o estados bloqueantes."
+msgstr "Capas superpuestas para paneles, drawers o estados bloqueantes."
+
+msgid "Cards"
+msgstr "Tarjetas"
+
+msgid "Cards in bt-example-grid"
+msgstr "Cards in bt-example-grid"
+
+msgid "Centered placeholder when a list or panel has no items."
+msgstr "Centered placeholder when a list or panel has no items."
+
+msgid "Checkboxes"
+msgstr "Checkboxes"
+
+msgid "Chips"
+msgstr "Chips"
+
+msgid "Circular progress"
+msgstr "Circular progress"
+
+msgid "Code"
+msgstr "Code"
+
+msgid "Colors"
+msgstr "Colors"
+
+msgid "Column direction"
+msgstr "Column direction"
+
+msgid "Combobox"
+msgstr "Combobox"
+
+msgid "Common buttons"
+msgstr "Common buttons"
+
+msgid "Common chips"
+msgstr "Common chips"
+
+msgid "Compact"
+msgstr "Compact"
+
+msgid "Compact container"
+msgstr "Compact container"
+
+msgid "Compact reported-hours panel with expandable client groups and project rows."
+msgstr "Compact reported-hours panel with expandable client groups and project rows."
+
+msgid "Components"
+msgstr "Componentes"
+
+msgid "Composed Tempo-style month view: templates sidebar, toolbar, weekday row, grid, and legend."
+msgstr "Composed Tempo-style month view: templates sidebar, toolbar, weekday row, grid, and legend."
+
+msgid "Containers"
+msgstr "Containers"
+
+msgid "Contenedores de contenido con variantes elevadas, rellenas, con media y acciones."
+msgstr "Contenedores de contenido con variantes elevadas, rellenas, con media y acciones."
+
+msgid "Context menu"
+msgstr "Context menu"
+
+msgid "Context menus opened from a button."
+msgstr "Context menus opened from a button."
+
+msgid "Control para seleccionar valores dentro de un rango."
+msgstr "Control para seleccionar valores dentro de un rango."
+
+msgid "Código inline en prosa y bloques multilínea. No mezclar clases."
+msgstr "Código inline en prosa y bloques multilínea. No mezclar clases."
+
+msgid "Dashboard layout"
+msgstr "Dashboard layout"
+
+msgid "Data table"
+msgstr "Data table"
+
+msgid "Default container"
+msgstr "Default container"
+
+msgid "Dialogs"
+msgstr "Dialogs"
+
+msgid "Directions"
+msgstr "Directions"
+
+msgid "Disabled checkbox"
+msgstr "Disabled checkbox"
+
+msgid "Dividers"
+msgstr "Dividers"
+
+msgid "Draft briefing"
+msgstr "Draft briefing"
+
+msgid "Draft day with entries"
+msgstr "Draft day with entries"
+
+msgid "Drawer visual"
+msgstr "Drawer visual"
+
+msgid "Elevated card"
+msgstr "Elevated card"
+
+msgid "Empty state"
+msgstr "Empty state"
+
+msgid "Etiquetas compactas para filtros, selección, metadatos o acciones rápidas."
+msgstr "Etiquetas compactas para filtros, selección, metadatos o acciones rápidas."
+
+msgid "Evaluator card"
+msgstr "Evaluator card"
+
+msgid "Evaluator identity card for Me and user profile workspaces."
+msgstr "Evaluator identity card for Me and user profile workspaces."
+
+msgid "Evaluator team row with project hours, briefing status, and optional delegation."
+msgstr "Evaluator team row with project hours, briefing status, and optional delegation."
+
+msgid "Expandable hierarchical lists for org structures, reporting lines, and nested navigation."
+msgstr "Expandable hierarchical lists for org structures, reporting lines, and nested navigation."
+
+msgid "Expanded"
+msgstr "Expanded"
+
+msgid "Expansion panel"
+msgstr "Expansion panel"
+
+msgid "Expansions"
+msgstr "Expansions"
+
+msgid "Expense gasto card"
+msgstr "Expense gasto card"
+
+msgid "Expense liquidación card"
+msgstr "Expense liquidación card"
+
+msgid "Eyebrow and muted text"
+msgstr "Eyebrow and muted text"
+
+msgid "Feedback"
+msgstr "Feedback"
+
+msgid "Field with icon"
+msgstr "Field with icon"
+
+msgid "Fields / Inputs"
+msgstr "Fields / Inputs"
+
+msgid "Filled / Primary cards"
+msgstr "Filled / Primary cards"
+
+msgid "Footer legend for timesheet day statuses and counts."
+msgstr "Footer legend for timesheet day statuses and counts."
+
+msgid "Formas y radios reutilizables."
+msgstr "Formas y radios reutilizables."
+
+msgid "Forms"
+msgstr "Formularios"
+
+msgid "Foundations"
+msgstr "Fundamentos"
+
+msgid "Gasto row inside a liquidación detail with amount and actions."
+msgstr "Gasto row inside a liquidación detail with amount and actions."
+
+msgid "Get started"
+msgstr "Comenzar"
+
+msgid "Glass day editor opened from a calendar cell — hours summary, entries list, and actions."
+msgstr "Glass day editor opened from a calendar cell — hours summary, entries list, and actions."
+
+msgid "Grid"
+msgstr "Grid"
+
+msgid "Headings"
+msgstr "Headings"
+
+msgid "Helpers"
+msgstr "Helpers"
+
+msgid "Hierarchical navigation trail for nested workspaces."
+msgstr "Hierarchical navigation trail for nested workspaces."
+
+msgid "Home"
+msgstr "Inicio"
+
+msgid "Horizontal divider"
+msgstr "Horizontal divider"
+
+msgid "Hours panel"
+msgstr "Hours panel"
+
+msgid "Icon buttons"
+msgstr "Icon buttons"
+
+msgid "Icon inside button"
+msgstr "Icon inside button"
+
+msgid "Iconos inline"
+msgstr "Iconos inline"
+
+msgid "Icons"
+msgstr "Icons"
+
+msgid "Identidad de persona con foto o iniciales. Compact muestra nombre; expanded añade email."
+msgstr "Identidad de persona con foto o iniciales. Compact muestra nombre; expanded añade email."
+
+msgid "Imputed day with projects"
+msgstr "Imputed day with projects"
+
+msgid "In progress"
+msgstr "In progress"
+
+msgid "Indicadores de progreso lineales y circulares."
+msgstr "Indicadores de progreso lineales y circulares."
+
+msgid "Indicadores numéricos o visuales para notificaciones, estados y elementos pendientes."
+msgstr "Indicadores numéricos o visuales para notificaciones, estados y elementos pendientes."
+
+msgid "Inline badge"
+msgstr "Inline badge"
+
+msgid "Inline in prose"
+msgstr "Inline in prose"
+
+msgid "Inline loading indicator for async SAP operations."
+msgstr "Inline loading indicator for async SAP operations."
+
+msgid "Layout"
+msgstr "Layout"
+
+msgid "Legend"
+msgstr "Legend"
+
+msgid "Linear progress"
+msgstr "Linear progress"
+
+msgid "Liquidación wizard"
+msgstr "Liquidación wizard"
+
+msgid "List"
+msgstr "List"
+
+msgid "List row for Spend liquidaciones with workflow track and project meta."
+msgstr "List row for Spend liquidaciones with workflow track and project meta."
+
+msgid "Listados verticales con avatar, contenido y acciones."
+msgstr "Listados verticales con avatar, contenido y acciones."
+
+msgid "Lists"
+msgstr "Lists"
+
+msgid "LiveView modal"
+msgstr "LiveView modal"
+
+msgid "Loading"
+msgstr "Loading"
+
+msgid "Main layout"
+msgstr "Main layout"
+
+msgid "Main shell, topbar, sidebar, and content areas."
+msgstr "Main shell, topbar, sidebar, and content areas."
+
+msgid "Media"
+msgstr "Media"
+
+msgid "Media placeholder"
+msgstr "Media placeholder"
+
+msgid "Menus"
+msgstr "Menus"
+
+msgid "Month grid day card with status accent, day number, and optional project lines."
+msgstr "Month grid day card with status accent, day number, and optional project lines."
+
+msgid "Month navigation and calendar controls above the weekday row."
+msgstr "Month navigation and calendar controls above the weekday row."
+
+msgid "Month view (static)"
+msgstr "Month view (static)"
+
+msgid "Multiline block"
+msgstr "Multiline block"
+
+msgid "Multiline text input."
+msgstr "Multiline text input."
+
+msgid "Navigation"
+msgstr "Navigation"
+
+msgid "New liquidación modal"
+msgstr "New liquidación modal"
+
+msgid "No liquidaciones"
+msgstr "No liquidaciones"
+
+msgid "Open with results"
+msgstr "Open with results"
+
+msgid "Org-style tree"
+msgstr "Org-style tree"
+
+msgid "Organización de contenido por pestañas dentro de una misma vista."
+msgstr "Organización de contenido por pestañas dentro de una misma vista."
+
+msgid "Outlined card"
+msgstr "Outlined card"
+
+msgid "Overlay"
+msgstr "Overlay"
+
+msgid "Overlays"
+msgstr "Overlays"
+
+msgid "Page link"
+msgstr "Page link"
+
+msgid "Page sections"
+msgstr "Page sections"
+
+msgid "Pages"
+msgstr "Pages"
+
+msgid "Performance briefing card"
+msgstr "Performance briefing card"
+
+msgid "Performance evaluator"
+msgstr "Performance evaluator"
+
+msgid "Performance reported hours"
+msgstr "Performance reported hours"
+
+msgid "Performance team card"
+msgstr "Performance team card"
+
+msgid "Primary app bar"
+msgstr "Primary app bar"
+
+msgid "Primary application and documentation layout."
+msgstr "Primary application and documentation layout."
+
+msgid "Published with evaluation"
+msgstr "Published with evaluation"
+
+msgid "Radio buttons"
+msgstr "Radio buttons"
+
+msgid "Radio group"
+msgstr "Radio group"
+
+msgid "Radius and elevation helpers"
+msgstr "Radius and elevation helpers"
+
+msgid "Recommended structure"
+msgstr "Recommended structure"
+
+msgid "Responsive images, video, or placeholders."
+msgstr "Responsive images, video, or placeholders."
+
+msgid "Responsive tables for product and docs data."
+msgstr "Responsive tables for product and docs data."
+
+msgid "Reverse direction"
+msgstr "Reverse direction"
+
+msgid "Row direction"
+msgstr "Row direction"
+
+msgid "Sample Bluetab button"
+msgstr "Sample Bluetab button"
+
+msgid "Searchable select with async results panel, loading state, and option variants."
+msgstr "Searchable select with async results panel, loading state, and option variants."
+
+msgid "Section header"
+msgstr "Section header"
+
+msgid "Segmented buttons"
+msgstr "Segmented buttons"
+
+msgid "Selección múltiple en formularios, filtros y configuraciones."
+msgstr "Selección múltiple en formularios, filtros y configuraciones."
+
+msgid "Select con ayuda"
+msgstr "Select con ayuda"
+
+msgid "Selectores nativos estilizados para formularios."
+msgstr "Selectores nativos estilizados para formularios."
+
+msgid "Selects"
+msgstr "Selects"
+
+msgid "Semantic colors"
+msgstr "Semantic colors"
+
+msgid "Separadores horizontales y verticales para organizar contenido."
+msgstr "Separadores horizontales y verticales para organizar contenido."
+
+msgid "Shapes"
+msgstr "Shapes"
+
+msgid "Sidebar nav links"
+msgstr "Sidebar nav links"
+
+msgid "Sidebar, active links, and bottom navigation."
+msgstr "Sidebar, active links, and bottom navigation."
+
+msgid "Simple SPA inner-page pattern."
+msgstr "Simple SPA inner-page pattern."
+
+msgid "Single selection among multiple options."
+msgstr "Single selection among multiple options."
+
+msgid "Sistema de rejilla CSS para distribuir contenido de forma responsive."
+msgstr "Sistema de rejilla CSS para distribuir contenido de forma responsive."
+
+msgid "Sistema simple de iconos basado en texto/SVG para que puedas cambiarlo por la librería corporativa."
+msgstr "Sistema simple de iconos basado en texto/SVG para que puedas cambiarlo por la librería corporativa."
+
+msgid "Sizes"
+msgstr "Sizes"
+
+msgid "Slider con label"
+msgstr "Slider con label"
+
+msgid "Sliders"
+msgstr "Sliders"
+
+msgid "Snackbar"
+msgstr "Snackbar"
+
+msgid "Snackbars"
+msgstr "Snackbars"
+
+msgid "Spend liquidación trail"
+msgstr "Spend liquidación trail"
+
+msgid "Spinner"
+msgstr "Spinner"
+
+msgid "Stack / Inline"
+msgstr "Stack / Inline"
+
+msgid "Status chips"
+msgstr "Status chips"
+
+msgid "Status variants"
+msgstr "Status variants"
+
+msgid "Stepper"
+msgstr "Stepper"
+
+msgid "Switch off"
+msgstr "Switch off"
+
+msgid "Switches"
+msgstr "Switches"
+
+msgid "Tables"
+msgstr "Tables"
+
+msgid "Tabs"
+msgstr "Tabs"
+
+msgid "Taxi receipt"
+msgstr "Taxi receipt"
+
+msgid "Team member with briefing"
+msgstr "Team member with briefing"
+
+msgid "Template card"
+msgstr "Template card"
+
+msgid "Template shortcut card for the timesheet sidebar."
+msgstr "Template shortcut card for the timesheet sidebar."
+
+msgid "Temporary messages to confirm an action."
+msgstr "Temporary messages to confirm an action."
+
+msgid "Text fields"
+msgstr "Text fields"
+
+msgid "Text fields, help text, and error states."
+msgstr "Text fields, help text, and error states."
+
+msgid "Textarea"
+msgstr "Textarea"
+
+msgid "Textarea con ayuda"
+msgstr "Textarea con ayuda"
+
+msgid "Three columns"
+msgstr "Three columns"
+
+msgid "Toggle binary options on or off."
+msgstr "Toggle binary options on or off."
+
+msgid "Toolbar"
+msgstr "Toolbar"
+
+msgid "Tooltip en texto"
+msgstr "Tooltip en texto"
+
+msgid "Tooltip on button"
+msgstr "Tooltip on button"
+
+msgid "Tooltips"
+msgstr "Tooltips"
+
+msgid "Top app bar"
+msgstr "Top app bar"
+
+msgid "Tree"
+msgstr "Tree"
+
+msgid "Typography"
+msgstr "Typography"
+
+msgid "Typography scale driven by CSS tokens."
+msgstr "Typography scale driven by CSS tokens."
+
+msgid "Utilidades para controlar dirección, orden y alineación de elementos."
+msgstr "Utilidades para controlar dirección, orden y alineación de elementos."
+
+msgid "Utility classes for quick layout composition."
+msgstr "Utility classes for quick layout composition."
+
+msgid "Ventanas modales para confirmaciones, mensajes críticos o acciones bloqueantes."
+msgstr "Ventanas modales para confirmaciones, mensajes críticos o acciones bloqueantes."
+
+msgid "Vertical divider"
+msgstr "Vertical divider"
+
+msgid "Weekday header row aligned to the month grid columns."
+msgstr "Weekday header row aligned to the month grid columns."
+
+msgid "Weekdays with weekends"
+msgstr "Weekdays with weekends"
+
+msgid "With image"
+msgstr "With image"
+
+msgid "Wizard progress indicator for multi-step flows."
+msgstr "Wizard progress indicator for multi-step flows."
