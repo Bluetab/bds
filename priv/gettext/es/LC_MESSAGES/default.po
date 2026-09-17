@@ -1453,3 +1453,10 @@ msgstr "With image"
 
 msgid "Wizard progress indicator for multi-step flows."
 msgstr "Wizard progress indicator for multi-step flows."
+
+#: lib/bds/components/performance.ex:189
+#: lib/bds/components/performance.ex:223
+#, elixir-autogen, elixir-format
+msgid "Disagreement comment"
+msgstr "Comentario de desacuerdo"
+

@@ -716,6 +716,12 @@
           "block": false,
           "note": null,
           "html": "<article class=\"bt-performance-card bt-performance-card--draft\" data-briefing-status=\"draft\">\n  <header class=\"bt-performance-card__header\">\n    <p class=\"bt-performance-kicker\">Draft · only visible to you</p>\n    <div class=\"bt-performance-meta-row\"><span class=\"bt-icon\">📄</span><span class=\"bt-performance-meta-row__date\">2026-05-12</span></div>\n  </header>\n  <div class=\"bt-performance-card__body\"><p style=\"margin:0;font-size:var(--bt-font-size-sm);\">Lead delivery on the Acme platform migration.</p></div>\n</article>"
+        },
+        {
+          "title": "Not accepted (disagreement)",
+          "block": false,
+          "note": null,
+          "html": "<div style=\"display:grid;gap:var(--bt-space-2)\">\n  <div class=\"bt-performance-meta-row\">\n  <span class=\"bt-icon\">📄</span>\n  <span class=\"bt-performance-meta-row__date\">2026-04-08</span>\n  <span class=\"bt-performance-ack bt-performance-ack--disagreed\" title=\"Objectives do not match the role scope we agreed.\"><span class=\"bt-performance-ack__mark\" aria-hidden=\"true\">✕</span><span class=\"bt-performance-ack__label\">Not accepted</span></span>\n</div>\n  <p class=\"bt-performance-ack-comment\"><span class=\"bt-performance-ack-comment__label\">Disagreement comment</span><span class=\"bt-performance-ack-comment__body\">Objectives do not match the role scope we agreed.</span></p>\n</div>"
         }
       ]
     },

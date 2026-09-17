@@ -139,7 +139,10 @@ defmodule Bds.Components.Performance do
   attr :competencies, :list, default: []
   attr :competency_category, :string, default: nil
   attr :evaluation, :map, default: nil
-  attr :ack_state, :atom, default: :hidden, values: [:hidden, :pending, :acknowledged]
+  attr :ack_state, :atom,
+    default: :hidden,
+    values: [:hidden, :pending, :acknowledged, :disagreed]
+  attr :ack_comment, :string, default: nil
   attr :default_expanded?, :boolean, default: false
   attr :draft_label, :string, default: nil
   attr :rest, :global
@@ -172,9 +175,20 @@ defmodule Bds.Components.Performance do
             <span :if={@show_period_chip? && @period_name} class="bt-performance-chip">
               {@period_name}
             </span>
-            <.bt_performance_ack_chip :if={@ack_state != :hidden} state={@ack_state} />
+            <.bt_performance_ack_chip
+              :if={@ack_state != :hidden}
+              state={@ack_state}
+              comment={@ack_comment}
+            />
           </div>
           <p class="bt-performance-meta-sub">{gettext("Created by %{name}", name: @creator_label)}</p>
+          <p
+            :if={@ack_state == :disagreed && present_text?(@ack_comment)}
+            class="bt-performance-ack-comment"
+          >
+            <span class="bt-performance-ack-comment__label">{gettext("Disagreement comment")}</span>
+            <span class="bt-performance-ack-comment__body">{@ack_comment}</span>
+          </p>
         </div>
         <div :if={render_slot(@actions) != []} class="bt-performance-actions">
           {render_slot(@actions)}
@@ -194,10 +208,20 @@ defmodule Bds.Components.Performance do
                   :if={@evaluation[:ack_state] != :hidden}
                   state={@evaluation.ack_state}
                   date_label={@evaluation[:ack_date_label]}
+                  comment={@evaluation[:ack_comment]}
                 />
               </div>
               <p class="bt-performance-meta-sub">
                 {gettext("Evaluated by %{name}", name: @evaluation.creator_label)}
+              </p>
+              <p
+                :if={
+                  @evaluation[:ack_state] == :disagreed && present_text?(@evaluation[:ack_comment])
+                }
+                class="bt-performance-ack-comment"
+              >
+                <span class="bt-performance-ack-comment__label">{gettext("Disagreement comment")}</span>
+                <span class="bt-performance-ack-comment__body">{@evaluation.ack_comment}</span>
               </p>
               <p class="bt-performance-kicker bt-performance-kicker--subtle">
                 {gettext("Overall assessment")}
@@ -346,8 +370,9 @@ defmodule Bds.Components.Performance do
     """
   end
 
-  attr :state, :atom, required: true, values: [:pending, :acknowledged]
+  attr :state, :atom, required: true, values: [:pending, :acknowledged, :disagreed]
   attr :date_label, :string, default: nil
+  attr :comment, :string, default: nil
 
   def bt_performance_ack_chip(assigns) do
     label =
@@ -358,24 +383,48 @@ defmodule Bds.Components.Performance do
         {:acknowledged, _} ->
           gettext("Acknowledged")
 
+        {:disagreed, date} when is_binary(date) and date != "" ->
+          gettext("Not accepted %{date}", date: date)
+
+        {:disagreed, _} ->
+          gettext("Not accepted")
+
         _ ->
           gettext("Awaiting acknowledgement")
       end
 
-    assigns = assign(assigns, :label, label)
+    mark =
+      case assigns.state do
+        :acknowledged -> "✓"
+        :disagreed -> "✕"
+        _ -> "◷"
+      end
+
+    title =
+      case assigns.comment do
+        comment when is_binary(comment) ->
+          case String.trim(comment) do
+            "" -> label
+            trimmed -> trimmed
+          end
+
+        _ ->
+          label
+      end
+
+    assigns = assign(assigns, label: label, mark: mark, title: title)
 
     ~H"""
     <span
       class={[
         "bt-performance-ack",
         @state == :acknowledged && "bt-performance-ack--done",
+        @state == :disagreed && "bt-performance-ack--disagreed",
         @state == :pending && "bt-performance-ack--pending"
       ]}
-      title={@label}
+      title={@title}
     >
-      <span class="bt-performance-ack__mark" aria-hidden="true">
-        {if @state == :acknowledged, do: "✓", else: "◷"}
-      </span>
+      <span class="bt-performance-ack__mark" aria-hidden="true">{@mark}</span>
       <span class="bt-performance-ack__label">{@label}</span>
     </span>
     """
@@ -463,9 +512,11 @@ defmodule Bds.Components.Performance do
   attr :show_delegator?, :boolean, default: false
   attr :briefing_date_label, :string, default: nil
   attr :briefing_status, :string, default: nil
+  attr :briefing_ack_state, :atom, default: nil
   attr :evaluation_date_label, :string, default: nil
   attr :evaluation_rating, :string, default: nil
   attr :evaluation_status, :string, default: nil
+  attr :evaluation_ack_state, :atom, default: nil
   attr :rating, :string, default: nil
   attr :rating_label, :string, default: nil
   attr :profile_navigate, :any, default: nil
@@ -477,8 +528,11 @@ defmodule Bds.Components.Performance do
 
   def bt_performance_team_card(assigns) do
     evaluation_rating = assigns.evaluation_rating || assigns.rating
-    {briefing_mark, briefing_mark_class} = briefing_status_mark(assigns.briefing_status)
-    {evaluation_mark, evaluation_mark_class} = evaluation_status_mark(assigns.evaluation_status)
+    {briefing_mark, briefing_mark_class} =
+      briefing_status_mark(assigns.briefing_status, assigns.briefing_ack_state)
+
+    {evaluation_mark, evaluation_mark_class} =
+      evaluation_status_mark(assigns.evaluation_status, assigns.evaluation_ack_state)
 
     evaluation_rating_letter = rating_letter(evaluation_rating)
 
@@ -704,7 +758,8 @@ defmodule Bds.Components.Performance do
       weaknesses: Map.get(eval, :weaknesses),
       recommendations: Map.get(eval, :recommendations),
       ack_state: Map.get(eval, :ack_state) || evaluation_ack_state(eval),
-      ack_date_label: Map.get(eval, :ack_date_label)
+      ack_date_label: Map.get(eval, :ack_date_label),
+      ack_comment: Map.get(eval, :ack_comment)
     }
   end
 
@@ -807,26 +862,35 @@ defmodule Bds.Components.Performance do
   defp present_text?(value) when is_binary(value), do: String.trim(value) != ""
   defp present_text?(_), do: false
 
-  defp briefing_status_mark("acknowledged"), do: {"✓", "bt-performance-status-mark--agreed"}
+  defp briefing_status_mark(_status, :disagreed),
+    do: {"✕", "bt-performance-status-mark--disagreed"}
 
-  defp briefing_status_mark(status) when status in ["published", "draft", "created"] do
+  defp briefing_status_mark("acknowledged", _),
+    do: {"✓", "bt-performance-status-mark--agreed"}
+
+  defp briefing_status_mark(status, _ack_state) when status in ["published", "draft", "created"] do
     case status do
       "published" -> {"P", "bt-performance-status-mark--published"}
       _ -> {"D", "bt-performance-status-mark--draft"}
     end
   end
 
-  defp briefing_status_mark(status) when is_binary(status) do
-    briefing_status_mark(String.downcase(String.trim(status)))
+  defp briefing_status_mark(status, ack_state) when is_binary(status) do
+    briefing_status_mark(String.downcase(String.trim(status)), ack_state)
   end
 
-  defp briefing_status_mark(_), do: {"D", "bt-performance-status-mark--draft"}
+  defp briefing_status_mark(_, _), do: {"D", "bt-performance-status-mark--draft"}
 
   defp briefing_allows_evaluation?(status) when status in ["published", "acknowledged"], do: true
   defp briefing_allows_evaluation?(_), do: false
 
-  defp evaluation_status_mark("acknowledged"), do: {"✓", "bt-performance-status-mark--agreed"}
-  defp evaluation_status_mark(_), do: {"P", "bt-performance-status-mark--published"}
+  defp evaluation_status_mark(_status, :disagreed),
+    do: {"✕", "bt-performance-status-mark--disagreed"}
+
+  defp evaluation_status_mark("acknowledged", _),
+    do: {"✓", "bt-performance-status-mark--agreed"}
+
+  defp evaluation_status_mark(_, _), do: {"P", "bt-performance-status-mark--published"}
 
   defp rating_class(nil), do: nil
   defp rating_class(rating) when is_binary(rating), do: Map.get(@rating_classes, String.downcase(rating))

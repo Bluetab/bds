@@ -1103,6 +1103,27 @@ defmodule Bds.Catalog.Preview.Bulk do
     """
   end
 
+  def render("performance-briefing-card", 2, assigns) do
+    ~H"""
+    <div style="display: grid; gap: var(--bt-space-2)">
+      <div class="bt-performance-meta-row">
+        <.bt_icon>📄</.bt_icon>
+        <span class="bt-performance-meta-row__date">2026-04-08</span>
+        <.bt_performance_ack_chip
+          state={:disagreed}
+          comment="Objectives do not match the role scope we agreed."
+        />
+      </div>
+      <p class="bt-performance-ack-comment">
+        <span class="bt-performance-ack-comment__label">Disagreement comment</span>
+        <span class="bt-performance-ack-comment__body">
+          Objectives do not match the role scope we agreed.
+        </span>
+      </p>
+    </div>
+    """
+  end
+
   def render("performance-team-card", 0, assigns) do
     ~H"""
     <.bt_performance_team_card

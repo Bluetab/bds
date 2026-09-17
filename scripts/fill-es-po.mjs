@@ -29,6 +29,7 @@ const es = {
   "Close templates panel": "Cerrar panel de plantillas",
   Complete: "Completo",
   "Created by %{name}": "Creado por %{name}",
+  "Disagreement comment": "Comentario de desacuerdo",
   Briefing: "Briefing",
   "Create evaluation": "Crear evaluación",
   Evaluation: "Evaluación",

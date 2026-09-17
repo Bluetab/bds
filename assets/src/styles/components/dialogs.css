@@ -222,9 +222,11 @@ html[data-theme="dark"] .bt-overlay__surface::before {
   margin: 0;
   padding: 0;
   border: none;
-  background: var(--bt-glass-overlay-bg);
-  backdrop-filter: var(--bt-glass-overlay-backdrop);
-  -webkit-backdrop-filter: var(--bt-glass-overlay-backdrop);
+  /* Solid-enough scrim so the dimming is obvious even if blur is unsupported */
+  background: rgba(15, 23, 42, 0.55);
+  /* Keep both prefixes — Tailwind/LightningCSS may drop one during minify */
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
+  backdrop-filter: blur(16px) saturate(130%);
   cursor: pointer;
 }
 

@@ -1396,6 +1396,17 @@ initBtInteractions();</code></pre>
   <div class="bt-performance-card__body"><p style="margin:0;font-size:var(--bt-font-size-sm);">Lead delivery on the Acme platform migration.</p></div>
 </article>`,
       },
+      {
+        title: "Not accepted (disagreement)",
+        html: String.raw`<div style="display:grid;gap:var(--bt-space-2)">
+  <div class="bt-performance-meta-row">
+  <span class="bt-icon">📄</span>
+  <span class="bt-performance-meta-row__date">2026-04-08</span>
+  <span class="bt-performance-ack bt-performance-ack--disagreed" title="Objectives do not match the role scope we agreed."><span class="bt-performance-ack__mark" aria-hidden="true">✕</span><span class="bt-performance-ack__label">Not accepted</span></span>
+</div>
+  <p class="bt-performance-ack-comment"><span class="bt-performance-ack-comment__label">Disagreement comment</span><span class="bt-performance-ack-comment__body">Objectives do not match the role scope we agreed.</span></p>
+</div>`,
+      },
     ],
   },
   {

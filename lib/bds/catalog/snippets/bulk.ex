@@ -1035,6 +1035,24 @@ defmodule Bds.Catalog.Snippets.Bulk do
         ack_state={:hidden}
       />
       """,
+      "performance-briefing-card:2" => ~S"""
+      <div style="display: grid; gap: var(--bt-space-2)">
+        <div class="bt-performance-meta-row">
+          <.bt_icon>📄</.bt_icon>
+          <span class="bt-performance-meta-row__date">2026-04-08</span>
+          <.bt_performance_ack_chip
+            state={:disagreed}
+            comment="Objectives do not match the role scope we agreed."
+          />
+        </div>
+        <p class="bt-performance-ack-comment">
+          <span class="bt-performance-ack-comment__label">{gettext("Disagreement comment")}</span>
+          <span class="bt-performance-ack-comment__body">
+            Objectives do not match the role scope we agreed.
+          </span>
+        </p>
+      </div>
+      """,
       "performance-team-card:0" => ~S"""
       <.bt_performance_team_card
         id="catalog-performance-team"

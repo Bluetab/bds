@@ -117,6 +117,34 @@
   color: var(--bt-color-success);
 }
 
+.bt-performance-ack--disagreed {
+  border-color: color-mix(in oklab, var(--bt-color-error) 40%, transparent);
+  background: var(--bt-color-error-soft);
+  color: var(--bt-color-error);
+}
+
+.bt-performance-ack-comment {
+  margin: 0;
+  padding: var(--bt-space-2) var(--bt-space-3);
+  border-radius: var(--bt-radius-md);
+  border: 1px solid color-mix(in oklab, var(--bt-color-error) 25%, transparent);
+  background: color-mix(in oklab, var(--bt-color-error-soft) 70%, var(--bt-color-surface));
+  font-size: var(--bt-font-size-sm);
+  color: var(--bt-color-text);
+}
+
+.bt-performance-ack-comment__label {
+  display: block;
+  font-weight: 600;
+  color: var(--bt-color-error);
+}
+
+.bt-performance-ack-comment__body {
+  display: block;
+  margin-top: var(--bt-space-1);
+  white-space: pre-wrap;
+}
+
 .bt-performance-panel {
   overflow: hidden;
   background: var(--bt-color-surface);
@@ -998,6 +1026,12 @@ a.bt-performance-team-card__status-row:focus-visible {
   border-color: color-mix(in oklab, var(--bt-color-success) 70%, transparent);
   background: var(--bt-color-success);
   color: var(--bt-color-success-contrast, #fff);
+}
+
+.bt-performance-status-mark--disagreed {
+  border-color: color-mix(in oklab, var(--bt-color-error) 70%, transparent);
+  background: var(--bt-color-error);
+  color: var(--bt-color-error-contrast, #fff);
 }
 
 .bt-performance-rating-mark {
