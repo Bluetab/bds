@@ -706,6 +706,16 @@ defmodule Bds.Components.Calendar do
     doc: "phx-click event to set hours (phx-value-hours)"
   )
 
+  attr(:hours_min, :any,
+    default: "0.5",
+    doc: "HTML min for the hours input. Pass nil to leave hours unconstrained."
+  )
+
+  attr(:hours_max, :any,
+    default: "24",
+    doc: "HTML max for the hours input. Pass nil to leave hours unconstrained."
+  )
+
   attr(:on_prev_day, :string, default: nil)
   attr(:on_next_day, :string, default: nil)
   attr(:class, :any, default: nil)
@@ -839,8 +849,8 @@ defmodule Bds.Components.Calendar do
                           type="number"
                           label={gettext("Hours")}
                           step="any"
-                          min="0.5"
-                          max="24"
+                          min={@hours_min}
+                          max={@hours_max}
                           phx-hook="BtNumberStep"
                           data-step-increment="0.5"
                           required

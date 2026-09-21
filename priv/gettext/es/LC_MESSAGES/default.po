@@ -500,12 +500,12 @@ msgstr "Reconocido %{date}"
 #: lib/bds/components/calendar.ex:879
 #, elixir-autogen, elixir-format
 msgid "Add a comment"
-msgstr "Add a comment"
+msgstr "Añadir un comentario"
 
 #: lib/bds/components/calendar.ex:885
 #, elixir-autogen, elixir-format
 msgid "Add a note (optional)"
-msgstr "Add a note (optional)"
+msgstr "Añadir una nota (opcional)"
 
 #: lib/bds/components/performance.ex:793
 #: lib/bds/components/performance.ex:873
@@ -518,7 +518,7 @@ msgstr "Por debajo de lo esperado"
 #: lib/bds/components/calendar.ex:990
 #, elixir-autogen, elixir-format
 msgid "Comment"
-msgstr "Comment"
+msgstr "Comentario"
 
 #: lib/bds/components/performance.ex:870
 #: lib/bds/components/performance.ex:877
@@ -535,13 +535,13 @@ msgstr "Lo esperado"
 #: lib/bds/components/calendar.ex:650
 #, elixir-autogen, elixir-format
 msgid "Reason & comment"
-msgstr "Reason & comment"
+msgstr "Motivo y comentario"
 
 #: lib/bds/components/calendar.ex:651
 #: lib/bds/components/calendar.ex:983
 #, elixir-autogen, elixir-format
 msgid "Rejection reason"
-msgstr "Rejection reason"
+msgstr "Motivo de rechazo"
 
 #: lib/bds/components/performance.ex:858
 #: lib/bds/components/performance.ex:864
