@@ -7,6 +7,10 @@ alwaysApply: true
 
 This is the user's **local working copy** of BDS. Agents must edit files **in place**.
 
+Hard enforcement: Cursor `beforeShellExecution` hooks in
+`~/.cursor/hooks.json`, this repo's `.cursor/hooks.json`, and Gedex's
+`.cursor/hooks.json` deny branch creation / remote rewrites for BDS.
+
 ## Forbidden
 
 - Do **not** create, switch to, or check out a new branch (`git checkout -b`, `git switch -c`, cloud/worktree agents, best-of-n runners).

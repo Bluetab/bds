@@ -17,6 +17,10 @@
   color: var(--bt-color-text);
 }
 
+.bt-tree__label-row--branch {
+  cursor: pointer;
+}
+
 .bt-tree__item + .bt-tree__item {
   margin-top: var(--bt-space-2);
 }

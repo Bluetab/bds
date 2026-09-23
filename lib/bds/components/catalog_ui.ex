@@ -859,7 +859,19 @@ defmodule Bds.Components.CatalogUi do
           >
             <.bt_tree_label_content node={@node} />
           </.link>
-          <div :if={not @section? and not @selectable? and not @linkable?} class={@label_row_class}>
+          <div
+            :if={not @section? and not @selectable? and not @linkable? and not @has_children?}
+            class={@label_row_class}
+          >
+            <.bt_tree_label_content node={@node} />
+          </div>
+          <div
+            :if={not @section? and not @selectable? and not @linkable? and @has_children?}
+            class={[@label_row_class, "bt-tree__label-row--branch"]}
+            phx-click={@toggle_event}
+            phx-target={@toggle_target}
+            phx-value-key={@key}
+          >
             <.bt_tree_label_content node={@node} />
           </div>
         </div>

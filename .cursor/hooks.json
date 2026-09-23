@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/hooks/block-bds-remote-and-branch.py",
+        "matcher": "\\bgit\\b|https://github\\.com/Bluetab/bds",
+        "failClosed": true
+      }
+    ]
+  }
+}
