@@ -797,6 +797,7 @@ defmodule Bds.Catalog.Snippets.Bulk do
             kind_label: "BU",
             name: "Technology",
             meta: "Alex Rivera",
+            meta_self: true,
             children: [
               %{
                 key: "cluster:10",

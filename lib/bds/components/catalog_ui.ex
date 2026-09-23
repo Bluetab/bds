@@ -954,7 +954,12 @@ defmodule Bds.Components.CatalogUi do
         {badge.label}
       </.bt_badge>
     </span>
-    <span :if={!@avatar && @node[:meta]} class="bt-tree__meta">· {@node.meta}</span>
+    <span
+      :if={!@avatar && @node[:meta]}
+      class={["bt-tree__meta", @node[:meta_self] && "bt-tree__meta--self"]}
+    >
+      · {@node.meta}
+    </span>
     """
   end
 

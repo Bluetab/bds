@@ -912,7 +912,7 @@ initBtInteractions();</code></pre>
         <div class="bt-tree__label-row">
           <span class="bt-tree__kind">BU</span>
           <span class="bt-tree__name">Technology</span>
-          <span class="bt-tree__meta">· Alex Rivera</span>
+          <span class="bt-tree__meta bt-tree__meta--self">· Alex Rivera</span>
         </div>
         <ul class="bt-tree bt-tree--nested" role="tree">
           <li class="bt-tree__item" role="treeitem" aria-expanded="true">

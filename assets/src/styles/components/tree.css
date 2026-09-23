@@ -276,6 +276,11 @@ a.bt-tree__label-row--selectable {
   color: var(--bt-color-text-muted);
 }
 
+.bt-tree__meta--self {
+  font-weight: 650;
+  color: var(--bt-color-primary);
+}
+
 .bt-tree__secondary {
   font-size: var(--bt-font-size-sm);
   font-weight: 500;

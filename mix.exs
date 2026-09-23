@@ -1,7 +1,7 @@
 defmodule Bds.MixProject do
   use Mix.Project
 
-  @version "26.9.21"
+  @version "26.9.23"
   @source_url "https://github.com/bluetab/bds"
 
   def project do
