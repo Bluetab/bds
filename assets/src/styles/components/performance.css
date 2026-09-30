@@ -102,7 +102,7 @@
 }
 
 .bt-performance-ack__mark {
-  font-size: 0.85em;
+  font-size: 1.2em;
   opacity: 0.92;
 }
 
@@ -496,7 +496,7 @@
 }
 
 .bt-performance-objective-row__chevron {
-  font-size: 0.75rem;
+  font-size: 1rem;
   line-height: 1;
   color: var(--bt-color-text-subtle);
   transition: transform var(--bt-duration-fast) var(--bt-ease);
@@ -836,7 +836,7 @@
 }
 
 .bt-performance-toolbar-pill__arrow {
-  font-size: 0.5625rem;
+  font-size: 1rem;
   line-height: 1;
 }
 
@@ -853,9 +853,9 @@
 }
 
 .bt-performance-meta-row--compact .bt-icon {
-  width: auto;
-  height: auto;
-  font-size: 0.75rem;
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
 }
 
 .bt-performance-team-card__identity {
@@ -1008,6 +1008,11 @@ a.bt-performance-team-card__status-row:focus-visible {
   font-size: 0.6875rem;
   font-weight: 800;
   line-height: 1;
+}
+
+.bt-performance-status-mark.bt-symbol {
+  font-size: 0.875rem;
+  font-weight: 400;
 }
 
 .bt-performance-status-mark--published {

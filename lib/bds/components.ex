@@ -119,7 +119,7 @@ defmodule Bds.Components do
         <%= if @close != [] do %>
           {render_slot(@close)}
         <% else %>
-          <span class="bt-icon">×</span>
+          <span class="bt-icon" aria-hidden="true">close</span>
         <% end %>
       </button>
     </div>
@@ -461,7 +461,7 @@ defmodule Bds.Components do
         title={@label}
         {@rest}
       >
-        <span class="bt-icon" data-theme-icon aria-hidden="true">◐</span>
+        <span class="bt-icon" data-theme-icon aria-hidden="true">dark_mode</span>
       </button>
     </div>
     """
@@ -565,7 +565,7 @@ defmodule Bds.Components do
           class="bt-navbar-user__avatar-wrap"
         />
 
-        <span class="bt-navbar-user__chevron" aria-hidden="true">▾</span>
+        <span class="bt-navbar-user__chevron bt-symbol" aria-hidden="true">expand_more</span>
       </div>
 
       <div class="bt-navbar-user__dropdown" role="menu">

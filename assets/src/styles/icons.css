@@ -1,0 +1,36 @@
+/*
+  ICONS — Material Symbols Rounded (Apache-2.0, self-hosted)
+  ------------------------------------------------------------------
+  Write the Material Symbols ligature name as text:
+    <span class="bt-icon" aria-hidden="true">search</span>
+  Catalog: https://fonts.google.com/icons?icon.style=Rounded
+
+  .bt-icon   — fixed-size icon box (buttons, nav, app bars).
+  .bt-symbol — inline icon that follows the surrounding font size.
+  --filled   — filled variant (status marks, selected states).
+*/
+@import '@material-symbols/font-400/rounded.css';
+
+.bt-icon,
+.bt-symbol {
+  font-family: "Material Symbols Rounded";
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  overflow: hidden;
+  user-select: none;
+  font-feature-settings: "liga";
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.bt-symbol { display: inline-block; flex-shrink: 0; width: 1em; height: 1em; font-size: 1.25em; vertical-align: -0.25em; }
+
+.bt-icon--filled,
+.bt-symbol--filled { font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24; }

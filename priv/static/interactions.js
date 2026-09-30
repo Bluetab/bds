@@ -150,7 +150,7 @@ var i = 4, a = 250, o = {
 	}
 }, d = "bt-theme", f = (e, t = document) => [...t.querySelectorAll(e)], p = (e = document) => e.querySelector("[data-theme-icon]"), m = (e = document, t = e.documentElement.dataset.theme) => {
 	let n = p(e);
-	n && (n.textContent = t === "dark" ? "☀" : "◐"), f("[data-theme-value]", e).forEach((e) => {
+	n && (n.textContent = t === "dark" ? "light_mode" : "dark_mode"), f("[data-theme-value]", e).forEach((e) => {
 		e.textContent = t === "dark" ? e.dataset.dark || "Dark" : e.dataset.light || "Light";
 	});
 }, h = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), g = (e) => {

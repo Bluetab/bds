@@ -21,7 +21,13 @@ const es = {
   "Toggle theme": "Cambiar tema",
   "Change language": "Cambiar idioma",
   Spanish: "Español",
+  "Google Material Symbols Rounded icon font. Write the ligature name (snake_case, from fonts.google.com/icons) as the text of a .bt-icon span, or .bt-symbol for inline text; add --filled for the filled variant.":
+    "Fuente de iconos Google Material Symbols Rounded. Escribe el nombre de la ligadura (snake_case, de fonts.google.com/icons) como texto de un span .bt-icon, o .bt-symbol para texto en línea; añade --filled para la variante rellena.",
+  "Material Symbols": "Material Symbols",
+  "Filled variant": "Variante rellena",
   English: "Inglés",
+  "Base palette editable from CSS tokens. Each color family has 10 steps: level 60 is the Bluetab master, 10–50 are tints toward white and 70–100 are shades toward black.":
+    "Paleta base editable desde tokens CSS. Cada familia de color tiene 10 niveles: el 60 es el color master de Bluetab, del 10 al 50 son tintes hacia blanco y del 70 al 100 son sombras hacia negro.",
 };
 
 function collectMsgids(payload) {

@@ -422,7 +422,7 @@ defmodule Bds.Components.CatalogUi do
     <div class="bt-expansion" data-expansion data-open={to_string(@open)}>
       <button class="bt-expansion__button" type="button" data-expansion-toggle>
         <span>{@title}</span>
-        <span class="bt-expansion__icon">⌄</span>
+        <span class="bt-expansion__icon bt-symbol" aria-hidden="true">expand_more</span>
       </button>
       <div class="bt-expansion__content">
         {render_slot(@inner_block)}
@@ -608,6 +608,33 @@ defmodule Bds.Components.CatalogUi do
     <div class="bt-color-swatch">
       <div class="bt-color-swatch__color" style={"--swatch: #{@swatch}"}></div>
       <div class="bt-color-swatch__text">{@label}</div>
+    </div>
+    """
+  end
+
+  attr :family, :string, required: true, doc: "Color family id, e.g. `bluetab-blue`."
+  attr :class, :any, default: nil
+
+  def bt_color_scale(assigns) do
+    assigns = assign(assigns, :color_family, Bds.Catalog.color_family!(assigns.family))
+
+    ~H"""
+    <div class={["bt-color-scale", @class]} role="list" aria-label={@color_family["name"]}>
+      <div
+        :for={step <- @color_family["steps"]}
+        class={[
+          "bt-color-scale__step",
+          "bt-color-scale__step--on-#{step["tone"]}",
+          step["master"] && "bt-color-scale__step--master"
+        ]}
+        role="listitem"
+        style={"--swatch: var(#{step["token"]})"}
+      >
+        <span class="bt-color-scale__level">{step["level"]}</span>
+        <span class="bt-color-scale__data">
+          <b>{step["hex"]}</b>RGB {step["rgb"]}<br />CMYK {step["cmyk"]}<br />{step["spot"]}
+        </span>
+      </div>
     </div>
     """
   end
@@ -835,7 +862,7 @@ defmodule Bds.Components.CatalogUi do
             aria-expanded={to_string(@open?)}
             aria-label={gettext("Toggle branch")}
           >
-            <span class={["bt-tree__chevron", @open? && "bt-tree__chevron--open"]}>›</span>
+            <span class={["bt-tree__chevron bt-symbol", @open? && "bt-tree__chevron--open"]} aria-hidden="true">chevron_right</span>
           </button>
           <span :if={not @has_children?} class="bt-tree__toggle-spacer" aria-hidden="true" />
         </div>
@@ -1090,7 +1117,7 @@ defmodule Bds.Components.CatalogUi do
               phx-target={@target}
               phx-click={@clear_event}
             >
-              ×
+              <span class="bt-symbol" aria-hidden="true">close</span>
             </button>
           </div>
         </div>
@@ -1260,7 +1287,11 @@ defmodule Bds.Components.CatalogUi do
             aria-current={if index == @current, do: "step", else: false}
             aria-label={step_aria_label(step, index, @labeled?)}
           >
-            {step_content(step, index, @current, @labeled?)}
+            <%= if @labeled? and index < @current do %>
+              <span class="bt-stepper__check bt-symbol" aria-hidden="true">check</span>
+            <% else %>
+              {step_content(step, index, @current, @labeled?)}
+            <% end %>
           </span>
         <% end %>
       </div>
@@ -1283,7 +1314,6 @@ defmodule Bds.Components.CatalogUi do
   defp step_content(step, index, current, labeled?) when labeled? do
     cond do
       index == current -> step
-      index < current -> "✓"
       true -> Integer.to_string(index)
     end
   end
@@ -1340,7 +1370,7 @@ defmodule Bds.Components.CatalogUi do
             phx-click={@close_event}
             aria-label={@close_label}
           >
-            <span class="bt-icon" aria-hidden="true">×</span>
+            <span class="bt-icon" aria-hidden="true">close</span>
           </button>
         </header>
         <div class="bt-modal__body">{render_slot(@inner_block)}</div>

@@ -44,6 +44,10 @@
   cursor: pointer;
 }
 
+.bt-combobox__clear .bt-symbol {
+  font-size: 1rem;
+}
+
 .bt-combobox__clear:hover {
   color: var(--bt-color-text);
   background: var(--bt-color-surface-muted);

@@ -95,7 +95,7 @@ defmodule Bds.Components.Performance do
                 class="bt-performance-hours-toggle"
               >
                 <.bt_icon class={if @expanded?.(group.key), do: "opacity-70", else: "opacity-70"}>
-                  {if @expanded?.(group.key), do: "▾", else: "▸"}
+                  {if @expanded?.(group.key), do: "expand_more", else: "chevron_right"}
                 </.bt_icon>
                 <span>{group.label}</span>
               </button>
@@ -170,7 +170,7 @@ defmodule Bds.Components.Performance do
         <div class="min-w-0" style="display: grid; gap: var(--bt-space-2);">
           <p :if={@status == "draft"} class="bt-performance-kicker">{@draft_label}</p>
           <div class="bt-performance-meta-row">
-            <.bt_icon>📄</.bt_icon>
+            <.bt_icon>description</.bt_icon>
             <span class="bt-performance-meta-row__date">{@date_label}</span>
             <span :if={@show_period_chip? && @period_name} class="bt-performance-chip">
               {@period_name}
@@ -202,7 +202,7 @@ defmodule Bds.Components.Performance do
           <div class="bt-performance-evaluation__header">
             <div class="bt-performance-evaluation__meta">
               <div class="bt-performance-meta-row">
-                <.bt_icon>✦</.bt_icon>
+                <.bt_icon>auto_awesome</.bt_icon>
                 <span class="bt-performance-meta-row__date">{@evaluation.date_label}</span>
                 <.bt_performance_ack_chip
                   :if={@evaluation[:ack_state] != :hidden}
@@ -280,7 +280,7 @@ defmodule Bds.Components.Performance do
                   <span :if={obj[:category]} class="bt-performance-chip bt-performance-chip--category">
                     {obj.category}
                   </span>
-                  <span class="bt-performance-objective-row__chevron" aria-hidden="true">›</span>
+                  <span class="bt-performance-objective-row__chevron bt-symbol" aria-hidden="true">chevron_right</span>
                   <span class="bt-performance-objective-row__title">{obj.title}</span>
                 </div>
                 <div class="bt-performance-objective-row__trailing">
@@ -395,9 +395,9 @@ defmodule Bds.Components.Performance do
 
     mark =
       case assigns.state do
-        :acknowledged -> "✓"
-        :disagreed -> "✕"
-        _ -> "◷"
+        :acknowledged -> "check_circle"
+        :disagreed -> "cancel"
+        _ -> "schedule"
       end
 
     title =
@@ -424,7 +424,7 @@ defmodule Bds.Components.Performance do
       ]}
       title={@title}
     >
-      <span class="bt-performance-ack__mark" aria-hidden="true">{@mark}</span>
+      <span class={["bt-performance-ack__mark bt-symbol", @state in [:acknowledged, :disagreed] && "bt-symbol--filled"]} aria-hidden="true">{@mark}</span>
       <span class="bt-performance-ack__label">{@label}</span>
     </span>
     """
@@ -480,9 +480,7 @@ defmodule Bds.Components.Performance do
       {@rest}
     >
       <span>{@label}</span>
-      <span :if={@arrow} class="bt-performance-toolbar-pill__arrow" aria-hidden="true">
-        {@arrow}
-      </span>
+      <span :if={@arrow} class="bt-performance-toolbar-pill__arrow bt-symbol" aria-hidden="true">{@arrow}</span>
     </button>
     """
   end
@@ -863,10 +861,10 @@ defmodule Bds.Components.Performance do
   defp present_text?(_), do: false
 
   defp briefing_status_mark(_status, :disagreed),
-    do: {"✕", "bt-performance-status-mark--disagreed"}
+    do: {"close", "bt-performance-status-mark--disagreed bt-symbol"}
 
   defp briefing_status_mark("acknowledged", _),
-    do: {"✓", "bt-performance-status-mark--agreed"}
+    do: {"check", "bt-performance-status-mark--agreed bt-symbol"}
 
   defp briefing_status_mark(status, _ack_state) when status in ["published", "draft", "created"] do
     case status do
@@ -885,10 +883,10 @@ defmodule Bds.Components.Performance do
   defp briefing_allows_evaluation?(_), do: false
 
   defp evaluation_status_mark(_status, :disagreed),
-    do: {"✕", "bt-performance-status-mark--disagreed"}
+    do: {"close", "bt-performance-status-mark--disagreed bt-symbol"}
 
   defp evaluation_status_mark("acknowledged", _),
-    do: {"✓", "bt-performance-status-mark--agreed"}
+    do: {"check", "bt-performance-status-mark--agreed bt-symbol"}
 
   defp evaluation_status_mark(_, _), do: {"P", "bt-performance-status-mark--published"}
 

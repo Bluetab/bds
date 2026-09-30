@@ -46,6 +46,27 @@ defmodule Bds.CatalogTest do
     assert component["title"] == "Botones"
   end
 
+  test "color_families/0 exposes 10-step scales with level 60 as master" do
+    families = Catalog.color_families()
+
+    assert length(families) == 14
+
+    for family <- families do
+      assert Enum.map(family["steps"], & &1["level"]) == Enum.to_list(10..100//10)
+      assert [%{"level" => 60, "hex" => master}] = Enum.filter(family["steps"], & &1["master"])
+      assert master == family["master"]
+    end
+
+    assert Catalog.color_family!("bluetab-blue")["master"] == "#212492"
+    assert_raise ArgumentError, fn -> Catalog.color_family!("unknown") end
+  end
+
+  test "colors examples render one scale per family" do
+    assert Catalog.example_heex("colors:2") =~ ~s(<.bt_color_scale family="bluetab-blue")
+    assert Catalog.example_html("colors:2") =~ "--bt-palette-bluetab-blue-60"
+    assert length(Catalog.get!("colors")["examples"]) == 2 + length(Catalog.color_families())
+  end
+
   test "highlight_html/1 escapes and highlights tags" do
     highlighted = Catalog.highlight_html("<button class=\"bt-button\">")
     rendered = Phoenix.HTML.safe_to_string(highlighted)

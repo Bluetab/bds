@@ -83,6 +83,10 @@
   cursor: pointer;
 }
 
+.bt-user-picker__clear .bt-symbol {
+  font-size: 1rem;
+}
+
 .bt-user-picker__clear:hover {
   color: var(--bt-color-text);
   background: var(--bt-color-surface-muted);

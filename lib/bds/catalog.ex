@@ -17,8 +17,10 @@ defmodule Bds.Catalog do
   @group_order @catalog["group_order"]
   @tokens_snippet @catalog["tokens_snippet"]
   @components @catalog["components"]
+  @color_families @catalog["color_families"]
 
   @component_ids Map.new(@components, fn component -> {component["id"], component} end)
+  @color_family_ids Map.new(@color_families, fn family -> {family["id"], family} end)
 
   @doc "Navigation group order for the catalog sidebar."
   @spec group_order() :: [String.t()]
@@ -31,6 +33,24 @@ defmodule Bds.Catalog do
   @doc "CSS tokens snippet shown in the doc panel."
   @spec tokens_snippet() :: String.t()
   def tokens_snippet, do: @tokens_snippet
+
+  @doc """
+  Color families shown on the Colors page, in display order.
+
+  Each family has 10 steps (levels 10–100); level 60 is the Bluetab master color.
+  Step `token` names the CSS custom property defined in `tokens.css`.
+  """
+  @spec color_families() :: [map()]
+  def color_families, do: @color_families
+
+  @doc "Returns the color family with `id` (e.g. `\"bluetab-blue\"`), raising if unknown."
+  @spec color_family!(String.t()) :: map()
+  def color_family!(id) when is_binary(id) do
+    case Map.fetch(@color_family_ids, id) do
+      {:ok, family} -> family
+      :error -> raise ArgumentError, "unknown color family #{inspect(id)}"
+    end
+  end
 
   @doc "Default component id when none is selected."
   @spec default_id() :: String.t()

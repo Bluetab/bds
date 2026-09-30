@@ -45,6 +45,7 @@
   "author": "",
   "license": "UNLICENSED",
   "devDependencies": {
+    "@material-symbols/font-400": "^0.47.5",
     "vite": "^8.0.10"
   }
 }

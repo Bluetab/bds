@@ -1,3 +1,5 @@
+import { COLOR_FAMILIES, colorScaleHtml, paletteTokensCss } from "./color-families.js";
+
 export const snippets = {
   tokens: String.raw`:root {
   /* Brand */
@@ -25,6 +27,9 @@ export const snippets = {
   --bt-color-error-soft: #fdeceb;
   --bt-color-info: #0065ff;
   --bt-color-info-soft: #e8f2ff;
+
+  /* Color families (level 60 = Bluetab master) */
+${paletteTokensCss()}
 
   /* Neutral / surfaces */
   --bt-color-background: #f2f2f2;
@@ -114,7 +119,7 @@ export const COMPONENTS = [
   {
     id: "get-started",
     group: "Home",
-    icon: "<>",
+    icon: "rocket_launch",
     title: "Get started",
     description:
       "Base HTML, CSS y JavaScript para crear un Design System Bluetab propio.",
@@ -149,7 +154,7 @@ src/main.js</pre>
   {
     id: "app-bars",
     group: "Components",
-    icon: "▣",
+    icon: "toolbar",
     title: "App bars",
     description:
       "Barras superiores e inferiores para navegación, acciones contextuales y estado de una pantalla.",
@@ -157,17 +162,17 @@ src/main.js</pre>
       {
         title: "Top app bar",
         html: String.raw`<header class="bt-appbar">
-  <button class="bt-icon-button" aria-label="Menú"><span class="bt-icon">☰</span></button>
+  <button class="bt-icon-button" aria-label="Menú"><span class="bt-icon">menu</span></button>
   <strong>Proyecto Bluetab</strong>
   <span class="bt-spacer"></span>
-  <button class="bt-icon-button" aria-label="Buscar"><span class="bt-icon">⌕</span></button>
-  <button class="bt-icon-button" aria-label="Usuario"><span class="bt-icon">◎</span></button>
+  <button class="bt-icon-button" aria-label="Buscar"><span class="bt-icon">search</span></button>
+  <button class="bt-icon-button" aria-label="Usuario"><span class="bt-icon">person</span></button>
 </header>`,
       },
       {
         title: "Primary app bar",
         html: String.raw`<header class="bt-appbar bt-appbar--primary">
-  <button class="bt-icon-button bt-icon-button--primary" aria-label="Volver"><span class="bt-icon">←</span></button>
+  <button class="bt-icon-button bt-icon-button--primary" aria-label="Volver"><span class="bt-icon">arrow_back</span></button>
   <strong>Analytics Dashboard</strong>
   <span class="bt-spacer"></span>
   <button class="bt-button bt-button--secondary">Publicar</button>
@@ -177,10 +182,10 @@ src/main.js</pre>
         title: "Bottom navigation bar",
         block: true,
         html: String.raw`<nav class="bt-bottom-nav" aria-label="Navegación inferior">
-  <a href="#" aria-current="page"><span class="bt-icon">⌂</span><span>Home</span></a>
-  <a href="#"><span class="bt-icon">▦</span><span>Apps</span></a>
-  <a href="#"><span class="bt-icon">☷</span><span>Datos</span></a>
-  <a href="#"><span class="bt-icon">⚙</span><span>Ajustes</span></a>
+  <a href="#" aria-current="page"><span class="bt-icon">home</span><span>Home</span></a>
+  <a href="#"><span class="bt-icon">apps</span><span>Apps</span></a>
+  <a href="#"><span class="bt-icon">database</span><span>Datos</span></a>
+  <a href="#"><span class="bt-icon">settings</span><span>Ajustes</span></a>
 </nav>`,
       },
     ],
@@ -188,7 +193,7 @@ src/main.js</pre>
   {
     id: "avatars",
     group: "Components",
-    icon: "◎",
+    icon: "account_circle",
     title: "Avatars",
     description:
       "Identidad de persona con foto o iniciales. Compact muestra nombre; expanded añade email.",
@@ -242,7 +247,7 @@ src/main.js</pre>
   {
     id: "badges",
     group: "Components",
-    icon: "◈",
+    icon: "new_releases",
     title: "Badges",
     description:
       "Indicadores numéricos o visuales para notificaciones, estados y elementos pendientes.",
@@ -250,14 +255,14 @@ src/main.js</pre>
       {
         title: "Badge dot",
         html: String.raw`<span class="bt-badge-wrap">
-  <span class="bt-icon">⌂</span>
+  <span class="bt-icon">home</span>
   <span class="bt-badge bt-badge--dot"></span>
 </span>`,
       },
       {
         title: "Badge with number",
         html: String.raw`<span class="bt-badge-wrap">
-  <span class="bt-icon">⌂</span>
+  <span class="bt-icon">home</span>
   <span class="bt-badge">10</span>
 </span>`,
       },
@@ -277,7 +282,7 @@ src/main.js</pre>
   {
     id: "buttons",
     group: "Components",
-    icon: "▣",
+    icon: "smart_button",
     title: "Buttons",
     description:
       "Acciones principales, secundarias, terciarias, de icono y FAB.",
@@ -298,10 +303,10 @@ src/main.js</pre>
       },
       {
         title: "Icon buttons",
-        html: String.raw`<button class="bt-icon-button" aria-label="Buscar"><span class="bt-icon">⌕</span></button>
-<button class="bt-icon-button bt-icon-button--primary" aria-label="Guardar"><span class="bt-icon">✓</span></button>
-<button class="bt-fab" aria-label="Crear"><span class="bt-icon">＋</span></button>
-<button class="bt-fab bt-fab--extended"><span class="bt-icon">＋</span><span>Crear</span></button>`,
+        html: String.raw`<button class="bt-icon-button" aria-label="Buscar"><span class="bt-icon">search</span></button>
+<button class="bt-icon-button bt-icon-button--primary" aria-label="Guardar"><span class="bt-icon">check</span></button>
+<button class="bt-fab" aria-label="Crear"><span class="bt-icon">add</span></button>
+<button class="bt-fab bt-fab--extended"><span class="bt-icon">add</span><span>Crear</span></button>`,
       },
       {
         title: "Segmented buttons",
@@ -316,7 +321,7 @@ src/main.js</pre>
   {
     id: "cards",
     group: "Components",
-    icon: "▧",
+    icon: "style",
     title: "Cards",
     description:
       "Contenedores de contenido con variantes elevadas, rellenas, con media y acciones.",
@@ -359,7 +364,7 @@ src/main.js</pre>
   {
     id: "checkboxes",
     group: "Forms",
-    icon: "☑",
+    icon: "check_box",
     title: "Checkboxes",
     description:
       "Selección múltiple en formularios, filtros y configuraciones.",
@@ -391,7 +396,7 @@ src/main.js</pre>
   {
     id: "chips",
     group: "Components",
-    icon: "◌",
+    icon: "label",
     title: "Chips",
     description:
       "Etiquetas compactas para filtros, selección, metadatos o acciones rápidas.",
@@ -401,7 +406,7 @@ src/main.js</pre>
         html: String.raw`<span class="bt-chip">Data</span>
 <span class="bt-chip bt-chip--selected">Selected</span>
 <span class="bt-chip bt-chip--outline">Outline</span>
-<button class="bt-chip"><span class="bt-icon">＋</span> Añadir filtro</button>`,
+<button class="bt-chip"><span class="bt-icon">add</span> Añadir filtro</button>`,
       },
       {
         title: "Status chips",
@@ -415,7 +420,7 @@ src/main.js</pre>
   {
     id: "code",
     group: "Foundations",
-    icon: "{}",
+    icon: "code",
     title: "Code",
     description:
       "Código inline en prosa y bloques multilínea. No mezclar clases.",
@@ -452,9 +457,10 @@ initBtInteractions();</code></pre>
   {
     id: "colors",
     group: "Foundations",
-    icon: "◍",
+    icon: "palette",
     title: "Colors",
-    description: "Base palette editable from CSS tokens.",
+    description:
+      "Base palette editable from CSS tokens. Each color family has 10 steps: level 60 is the Bluetab master, 10–50 are tints toward white and 70–100 are shades toward black.",
     examples: [
       {
         title: "Brand colors",
@@ -476,12 +482,18 @@ initBtInteractions();</code></pre>
   <span class="bt-status bt-status--info">Info</span>
 </div>`,
       },
+      ...COLOR_FAMILIES.map((family) => ({
+        title: family.name,
+        block: true,
+        note: `${family.pantone} · master ${family.master}`,
+        html: colorScaleHtml(family),
+      })),
     ],
   },
   {
     id: "containers",
     group: "Layout",
-    icon: "▤",
+    icon: "crop_free",
     title: "Containers",
     description:
       "Bloques estructurales para agrupar contenido y controlar densidad.",
@@ -506,7 +518,7 @@ initBtInteractions();</code></pre>
   {
     id: "dialogs",
     group: "Components",
-    icon: "□",
+    icon: "web_asset",
     title: "Dialogs",
     description:
       "Ventanas modales para confirmaciones, mensajes críticos o acciones bloqueantes.",
@@ -544,7 +556,7 @@ initBtInteractions();</code></pre>
   {
     id: "directions",
     group: "Layout",
-    icon: "↔",
+    icon: "swap_horiz",
     title: "Directions",
     description:
       "Utilidades para controlar dirección, orden y alineación de elementos.",
@@ -578,7 +590,7 @@ initBtInteractions();</code></pre>
   {
     id: "dividers",
     group: "Layout",
-    icon: "─",
+    icon: "horizontal_rule",
     title: "Dividers",
     description:
       "Separadores horizontales y verticales para organizar contenido.",
@@ -605,7 +617,7 @@ initBtInteractions();</code></pre>
   {
     id: "expansions",
     group: "Components",
-    icon: "⌄",
+    icon: "unfold_more",
     title: "Expansions",
     description:
       "Acordeones para mostrar u ocultar información progresivamente.",
@@ -616,7 +628,7 @@ initBtInteractions();</code></pre>
         html: String.raw`<div class="bt-expansion" data-expansion>
   <button class="bt-expansion__button" type="button" data-expansion-toggle>
     <span>¿Qué incluye este componente?</span>
-    <span class="bt-expansion__icon">⌄</span>
+    <span class="bt-expansion__icon bt-symbol" aria-hidden="true">expand_more</span>
   </button>
   <div class="bt-expansion__content">
     <p>Contenido expandible, útil para documentación, FAQs o datos secundarios.</p>
@@ -628,7 +640,7 @@ initBtInteractions();</code></pre>
   {
     id: "combobox",
     group: "Forms",
-    icon: "⌕",
+    icon: "manage_search",
     title: "Combobox",
     description:
       "Searchable select with async results panel, loading state, and option variants.",
@@ -680,7 +692,7 @@ initBtInteractions();</code></pre>
   {
     id: "fields",
     group: "Forms",
-    icon: "▭",
+    icon: "input",
     title: "Fields / Inputs",
     description: "Text fields, help text, and error states.",
     examples: [
@@ -709,7 +721,7 @@ initBtInteractions();</code></pre>
   {
     id: "grid",
     group: "Layout",
-    icon: "▦",
+    icon: "grid_view",
     title: "Grid",
     description:
       "Sistema de rejilla CSS para distribuir contenido de forma responsive.",
@@ -737,7 +749,7 @@ initBtInteractions();</code></pre>
   {
     id: "helpers",
     group: "Foundations",
-    icon: "+",
+    icon: "build",
     title: "Helpers",
     description: "Utility classes for quick layout composition.",
     examples: [
@@ -762,32 +774,43 @@ initBtInteractions();</code></pre>
   {
     id: "icons",
     group: "Foundations",
-    icon: "◎",
+    icon: "interests",
     title: "Icons",
     description:
-      "Sistema simple de iconos basado en texto/SVG para que puedas cambiarlo por la librería corporativa.",
+      "Google Material Symbols Rounded icon font. Write the ligature name (snake_case, from fonts.google.com/icons) as the text of a .bt-icon span, or .bt-symbol for inline text; add --filled for the filled variant.",
     examples: [
       {
-        title: "Iconos inline",
-        html: String.raw`<span class="bt-icon">⌂</span>
-<span class="bt-icon">⌕</span>
-<span class="bt-icon">⚙</span>
-<span class="bt-icon">✓</span>
-<span class="bt-icon">×</span>`,
+        title: "Material Symbols",
+        html: String.raw`<span class="bt-icon" aria-hidden="true">home</span>
+<span class="bt-icon" aria-hidden="true">search</span>
+<span class="bt-icon" aria-hidden="true">settings</span>
+<span class="bt-icon" aria-hidden="true">check</span>
+<span class="bt-icon" aria-hidden="true">close</span>
+<span class="bt-icon" aria-hidden="true">notifications</span>
+<span class="bt-icon" aria-hidden="true">calendar_month</span>`,
       },
       {
         title: "Icon inside button",
         html: String.raw`<button class="bt-button">
-  <span class="bt-icon">✓</span>
-  <span>Validar</span>
+  <span class="bt-icon" aria-hidden="true">check</span>
+  <span>Validate</span>
 </button>`,
+      },
+      {
+        title: "Filled variant",
+        html: String.raw`<span class="bt-icon" aria-hidden="true">favorite</span>
+<span class="bt-icon bt-icon--filled" aria-hidden="true">favorite</span>
+<span class="bt-icon" aria-hidden="true">star</span>
+<span class="bt-icon bt-icon--filled" aria-hidden="true">star</span>
+<span class="bt-icon" aria-hidden="true">check_circle</span>
+<span class="bt-icon bt-icon--filled" aria-hidden="true">check_circle</span>`,
       },
     ],
   },
   {
     id: "layout",
     group: "Layout",
-    icon: "▥",
+    icon: "dashboard",
     title: "Layout",
     description: "Main shell, topbar, sidebar, and content areas.",
     examples: [
@@ -813,7 +836,7 @@ initBtInteractions();</code></pre>
         </div>
         <div class="bt-nav__actions">
           <button type="button" class="bt-theme-toggle-button" data-theme-toggle aria-label="Tema">
-            <span class="bt-icon" data-theme-icon>◐</span>
+            <span class="bt-icon" aria-hidden="true" data-theme-icon>dark_mode</span>
           </button>
         </div>
       </div>
@@ -844,7 +867,7 @@ initBtInteractions();</code></pre>
               <div class="bt-navbar-user__avatar bt-navbar-user__avatar--initials" aria-hidden="true">AR</div>
               <span class="bt-navbar-user__status" aria-hidden="true"></span>
             </div>
-            <span class="bt-navbar-user__chevron" aria-hidden="true">▾</span>
+            <span class="bt-navbar-user__chevron bt-symbol" aria-hidden="true">expand_more</span>
           </div>
           <div class="bt-navbar-user__dropdown" role="menu">
             <div class="bt-navbar-user__dropdown-header">
@@ -892,7 +915,7 @@ initBtInteractions();</code></pre>
   {
     id: "tree",
     group: "Components",
-    icon: "⎇",
+    icon: "account_tree",
     title: "Tree",
     description:
       "Expandable hierarchical lists for org structures, reporting lines, and nested navigation.",
@@ -905,7 +928,7 @@ initBtInteractions();</code></pre>
     <div class="bt-tree__row">
       <div class="bt-tree__toggle-col">
         <button type="button" class="bt-tree__toggle" aria-expanded="true" aria-label="Toggle branch">
-          <span class="bt-tree__chevron bt-tree__chevron--open">›</span>
+          <span class="bt-tree__chevron bt-symbol bt-tree__chevron--open" aria-hidden="true">chevron_right</span>
         </button>
       </div>
       <div class="bt-tree__body">
@@ -919,7 +942,7 @@ initBtInteractions();</code></pre>
             <div class="bt-tree__row">
               <div class="bt-tree__toggle-col">
                 <button type="button" class="bt-tree__toggle" aria-expanded="true" aria-label="Toggle branch">
-                  <span class="bt-tree__chevron bt-tree__chevron--open">›</span>
+                  <span class="bt-tree__chevron bt-symbol bt-tree__chevron--open" aria-hidden="true">chevron_right</span>
                 </button>
               </div>
               <div class="bt-tree__body">
@@ -961,7 +984,7 @@ initBtInteractions();</code></pre>
   {
     id: "calendar-day",
     group: "Components",
-    icon: "▦",
+    icon: "today",
     title: "Calendar day",
     description:
       "Month grid day card with status accent, day number, and optional project lines.",
@@ -1001,7 +1024,7 @@ initBtInteractions();</code></pre>
   {
     id: "calendar-toolbar",
     group: "Components",
-    icon: "▦",
+    icon: "calendar_month",
     title: "Calendar toolbar",
     description: "Month navigation and calendar controls above the weekday row.",
     examples: [
@@ -1010,13 +1033,13 @@ initBtInteractions();</code></pre>
         block: true,
         html: String.raw`<div class="bt-calendar-toolbar">
   <div class="bt-calendar-toolbar__row">
-    <div><button type="button" class="bt-icon-button" aria-label="Templates"><span class="bt-icon">▥</span></button></div>
+    <div><button type="button" class="bt-icon-button" aria-label="Templates"><span class="bt-icon">list_alt</span></button></div>
     <div style="display: flex; align-items: center; gap: 0.5rem;">
-      <button type="button" class="bt-icon-button" aria-label="Previous">‹</button>
+      <button type="button" class="bt-icon-button" aria-label="Previous"><span class="bt-icon" aria-hidden="true">chevron_left</span></button>
       <span class="bt-calendar-toolbar__month">June 2026</span>
-      <button type="button" class="bt-icon-button" aria-label="Next">›</button>
+      <button type="button" class="bt-icon-button" aria-label="Next"><span class="bt-icon" aria-hidden="true">chevron_right</span></button>
     </div>
-    <div style="display: flex; justify-content: flex-end;"><button type="button" class="bt-icon-button" aria-label="Today">◎</button></div>
+    <div style="display: flex; justify-content: flex-end;"><button type="button" class="bt-icon-button" aria-label="Today"><span class="bt-icon" aria-hidden="true">today</span></button></div>
   </div>
 </div>`,
       },
@@ -1025,7 +1048,7 @@ initBtInteractions();</code></pre>
   {
     id: "calendar-weekdays",
     group: "Components",
-    icon: "▦",
+    icon: "view_week",
     title: "Calendar weekdays",
     description: "Weekday header row aligned to the month grid columns.",
     examples: [
@@ -1049,7 +1072,7 @@ initBtInteractions();</code></pre>
   {
     id: "calendar-legend",
     group: "Components",
-    icon: "▦",
+    icon: "legend_toggle",
     title: "Calendar legend",
     description: "Footer legend for timesheet day statuses and counts.",
     examples: [
@@ -1059,17 +1082,17 @@ initBtInteractions();</code></pre>
         html: String.raw`<footer class="bt-calendar-legend" aria-label="Calendar status legend">
   <ul class="bt-calendar-legend__list" role="list">
     <li class="bt-calendar-legend__item">
-      <span class="bt-calendar-legend__icon bt-calendar-legend__icon--imputado">◐</span>
+      <span class="bt-calendar-legend__icon bt-calendar-legend__icon--imputado"><span class="bt-symbol" aria-hidden="true">pending</span></span>
       <span>Draft</span>
       <span class="font-semibold tabular-nums">6</span>
     </li>
     <li class="bt-calendar-legend__item">
-      <span class="bt-calendar-legend__icon bt-calendar-legend__icon--completado">●</span>
+      <span class="bt-calendar-legend__icon bt-calendar-legend__icon--completado"><span class="bt-symbol" aria-hidden="true">check_circle</span></span>
       <span>Complete</span>
       <span class="font-semibold tabular-nums">5</span>
     </li>
     <li class="bt-calendar-legend__item">
-      <span class="bt-calendar-legend__icon bt-calendar-legend__icon--aprobado">✓</span>
+      <span class="bt-calendar-legend__icon bt-calendar-legend__icon--aprobado"><span class="bt-symbol" aria-hidden="true">verified</span></span>
       <span>Approved</span>
       <span class="font-semibold tabular-nums">2</span>
     </li>
@@ -1081,7 +1104,7 @@ initBtInteractions();</code></pre>
   {
     id: "calendar-template",
     group: "Components",
-    icon: "▦",
+    icon: "event_repeat",
     title: "Calendar template",
     description: "Template shortcut card for the timesheet sidebar.",
     examples: [
@@ -1107,7 +1130,7 @@ initBtInteractions();</code></pre>
   {
     id: "calendar-shell",
     group: "Components",
-    icon: "▦",
+    icon: "calendar_view_month",
     title: "Calendar shell",
     description:
       "Composed Tempo-style month view: templates sidebar, toolbar, weekday row, grid, and legend.",
@@ -1119,7 +1142,7 @@ initBtInteractions();</code></pre>
   <div class="bt-calendar-shell__toolbar">
     <div class="bt-calendar-toolbar">
       <div class="bt-calendar-toolbar__row">
-        <div><button type="button" class="bt-icon-button"><span class="bt-icon">▥</span></button></div>
+        <div><button type="button" class="bt-icon-button"><span class="bt-icon">list_alt</span></button></div>
         <div><span class="bt-calendar-toolbar__month">June 2026</span></div>
         <div></div>
       </div>
@@ -1156,8 +1179,8 @@ initBtInteractions();</code></pre>
     </div>
     <footer class="bt-calendar-legend">
       <ul class="bt-calendar-legend__list">
-        <li class="bt-calendar-legend__item"><span class="bt-calendar-legend__icon bt-calendar-legend__icon--imputado">◐</span><span>Draft</span><span>6</span></li>
-        <li class="bt-calendar-legend__item"><span class="bt-calendar-legend__icon bt-calendar-legend__icon--aprobado">✓</span><span>Approved</span><span>2</span></li>
+        <li class="bt-calendar-legend__item"><span class="bt-calendar-legend__icon bt-calendar-legend__icon--imputado"><span class="bt-symbol" aria-hidden="true">pending</span></span><span>Draft</span><span>6</span></li>
+        <li class="bt-calendar-legend__item"><span class="bt-calendar-legend__icon bt-calendar-legend__icon--aprobado"><span class="bt-symbol" aria-hidden="true">verified</span></span><span>Approved</span><span>2</span></li>
       </ul>
     </footer>
   </div>
@@ -1169,7 +1192,7 @@ initBtInteractions();</code></pre>
   {
     id: "calendar-day-modal",
     group: "Components",
-    icon: "▣",
+    icon: "edit_calendar",
     title: "Calendar day modal",
     description: "Glass day editor opened from a calendar cell — hours summary, entries list, and actions.",
     examples: [
@@ -1178,7 +1201,7 @@ initBtInteractions();</code></pre>
         block: true,
         html: String.raw`<div class="bt-calendar-day-modal" data-testid="calendar-day-modal" style="position: relative; inset: auto; min-height: 22rem;">
   <div class="bt-calendar-day-modal__panel" style="position: relative;">
-    <button type="button" class="bt-icon-button bt-calendar-day-modal__nav bt-calendar-day-modal__nav--prev" aria-label="Previous day"><span class="bt-icon" aria-hidden="true">‹</span></button>
+    <button type="button" class="bt-icon-button bt-calendar-day-modal__nav bt-calendar-day-modal__nav--prev" aria-label="Previous day"><span class="bt-icon" aria-hidden="true">chevron_left</span></button>
     <div class="bt-calendar-day-modal__shell bt-calendar-day-modal__shell--completado">
       <aside class="bt-calendar-day-modal__aside">
         <div class="bt-calendar-day-modal__aside-top">
@@ -1195,13 +1218,13 @@ initBtInteractions();</code></pre>
       <section class="bt-calendar-day-modal__content">
         <div class="bt-calendar-day-modal__entries">
           <div class="bt-calendar-day-modal__entries-top">
-            <button type="button" class="bt-calendar-day-modal__add bt-button bt-button--secondary bt-button--sm"><span class="bt-icon" aria-hidden="true">+</span> New</button>
+            <button type="button" class="bt-calendar-day-modal__add bt-button bt-button--secondary bt-button--sm"><span class="bt-icon" aria-hidden="true">add</span> New</button>
           </div>
           <article class="bt-calendar-day-modal__entry">
             <div class="bt-calendar-day-modal__entry-main">
               <div class="bt-calendar-day-modal__entry-heading">
                 <p class="bt-calendar-day-modal__entry-project">Proyecto A</p>
-                <span class="bt-calendar-day-modal__entry-status bt-calendar-day-modal__entry-status--aprobado"><span class="bt-calendar-day-modal__entry-status-icon" aria-hidden="true">✓</span> Approved</span>
+                <span class="bt-calendar-day-modal__entry-status bt-calendar-day-modal__entry-status--aprobado"><span class="bt-calendar-day-modal__entry-status-icon bt-symbol bt-symbol--filled" aria-hidden="true">verified</span> Approved</span>
               </div>
               <p class="bt-calendar-day-modal__entry-type">Development</p>
             </div>
@@ -1215,7 +1238,7 @@ initBtInteractions();</code></pre>
             <div class="bt-calendar-day-modal__entry-main">
               <div class="bt-calendar-day-modal__entry-heading">
                 <p class="bt-calendar-day-modal__entry-project">Proyecto B</p>
-                <span class="bt-calendar-day-modal__entry-status bt-calendar-day-modal__entry-status--liberado"><span class="bt-calendar-day-modal__entry-status-icon" aria-hidden="true">↑</span> Sent</span>
+                <span class="bt-calendar-day-modal__entry-status bt-calendar-day-modal__entry-status--liberado"><span class="bt-calendar-day-modal__entry-status-icon bt-symbol" aria-hidden="true">send</span> Sent</span>
               </div>
               <p class="bt-calendar-day-modal__entry-type">Development</p>
             </div>
@@ -1231,7 +1254,7 @@ initBtInteractions();</code></pre>
         </div>
       </section>
     </div>
-    <button type="button" class="bt-icon-button bt-calendar-day-modal__nav bt-calendar-day-modal__nav--next" aria-label="Next day"><span class="bt-icon" aria-hidden="true">›</span></button>
+    <button type="button" class="bt-icon-button bt-calendar-day-modal__nav bt-calendar-day-modal__nav--next" aria-label="Next day"><span class="bt-icon" aria-hidden="true">chevron_right</span></button>
   </div>
 </div>`,
       },
@@ -1240,7 +1263,7 @@ initBtInteractions();</code></pre>
   {
     id: "performance-evaluator",
     group: "Components",
-    icon: "◎",
+    icon: "person_check",
     title: "Performance evaluator",
     description: "Evaluator identity card for Me and user profile workspaces.",
     examples: [
@@ -1266,7 +1289,7 @@ initBtInteractions();</code></pre>
   {
     id: "performance-hours",
     group: "Components",
-    icon: "◷",
+    icon: "schedule",
     title: "Performance reported hours",
     description: "Compact reported-hours panel with expandable client groups and project rows.",
     examples: [
@@ -1278,11 +1301,11 @@ initBtInteractions();</code></pre>
   <div class="bt-performance-panel">
     <div class="bt-performance-panel__inner">
       <div class="bt-performance-hours-row">
-        <button type="button" class="bt-performance-hours-toggle"><span class="bt-icon">▸</span><span>Acme Corp · Digital</span></button>
+        <button type="button" class="bt-performance-hours-toggle"><span class="bt-icon">chevron_right</span><span>Acme Corp · Digital</span></button>
         <span class="bt-performance-hours-pill">128.5h</span>
       </div>
       <div class="bt-performance-hours-row">
-        <button type="button" class="bt-performance-hours-toggle"><span class="bt-icon">▸</span><span>Northwind · SAP</span></button>
+        <button type="button" class="bt-performance-hours-toggle"><span class="bt-icon">chevron_right</span><span>Northwind · SAP</span></button>
         <span class="bt-performance-hours-pill">44h</span>
       </div>
     </div>
@@ -1294,7 +1317,7 @@ initBtInteractions();</code></pre>
   {
     id: "performance-briefing-card",
     group: "Components",
-    icon: "📄",
+    icon: "description",
     title: "Performance briefing card",
     description: "Briefing bonded with evaluation: objectives, category competencies, ratings, acknowledgement, and assessment blocks.",
     examples: [
@@ -1305,10 +1328,10 @@ initBtInteractions();</code></pre>
   <header class="bt-performance-card__header">
     <div style="display: grid; gap: var(--bt-space-2);">
       <div class="bt-performance-meta-row">
-        <span class="bt-icon">📄</span>
+        <span class="bt-icon">description</span>
         <span class="bt-performance-meta-row__date">2026-04-08</span>
         <span class="bt-performance-chip">H1 2026</span>
-        <span class="bt-performance-ack bt-performance-ack--done"><span class="bt-performance-ack__mark" aria-hidden="true">✓</span><span class="bt-performance-ack__label">Acknowledged</span></span>
+        <span class="bt-performance-ack bt-performance-ack--done"><span class="bt-performance-ack__mark bt-symbol bt-symbol--filled" aria-hidden="true">check_circle</span><span class="bt-performance-ack__label">Acknowledged</span></span>
       </div>
       <p class="bt-performance-meta-sub">Created by Morgan Chen</p>
     </div>
@@ -1322,9 +1345,9 @@ initBtInteractions();</code></pre>
       <div class="bt-performance-evaluation__header">
         <div class="bt-performance-evaluation__meta">
           <div class="bt-performance-meta-row">
-            <span class="bt-icon">✦</span>
+            <span class="bt-icon">auto_awesome</span>
             <span class="bt-performance-meta-row__date">2026-04-22</span>
-            <span class="bt-performance-ack bt-performance-ack--pending"><span class="bt-performance-ack__mark" aria-hidden="true">◷</span><span class="bt-performance-ack__label">Awaiting acknowledgement</span></span>
+            <span class="bt-performance-ack bt-performance-ack--pending"><span class="bt-performance-ack__mark bt-symbol" aria-hidden="true">schedule</span><span class="bt-performance-ack__label">Awaiting acknowledgement</span></span>
           </div>
           <p class="bt-performance-meta-sub">Evaluated by Morgan Chen</p>
         </div>
@@ -1344,7 +1367,7 @@ initBtInteractions();</code></pre>
             <div class="bt-performance-objective-row__leading">
               <span class="bt-performance-objective-row__index">1</span>
               <span class="bt-performance-chip bt-performance-chip--category">PX</span>
-              <span class="bt-performance-objective-row__chevron" aria-hidden="true">›</span>
+              <span class="bt-performance-objective-row__chevron bt-symbol" aria-hidden="true">chevron_right</span>
               <span class="bt-performance-objective-row__title">Blueprint sign-off</span>
             </div>
             <div class="bt-performance-objective-row__trailing">
@@ -1391,7 +1414,7 @@ initBtInteractions();</code></pre>
         html: String.raw`<article class="bt-performance-card bt-performance-card--draft" data-briefing-status="draft">
   <header class="bt-performance-card__header">
     <p class="bt-performance-kicker">Draft · only visible to you</p>
-    <div class="bt-performance-meta-row"><span class="bt-icon">📄</span><span class="bt-performance-meta-row__date">2026-05-12</span></div>
+    <div class="bt-performance-meta-row"><span class="bt-icon">description</span><span class="bt-performance-meta-row__date">2026-05-12</span></div>
   </header>
   <div class="bt-performance-card__body"><p style="margin:0;font-size:var(--bt-font-size-sm);">Lead delivery on the Acme platform migration.</p></div>
 </article>`,
@@ -1400,9 +1423,9 @@ initBtInteractions();</code></pre>
         title: "Not accepted (disagreement)",
         html: String.raw`<div style="display:grid;gap:var(--bt-space-2)">
   <div class="bt-performance-meta-row">
-  <span class="bt-icon">📄</span>
+  <span class="bt-icon">description</span>
   <span class="bt-performance-meta-row__date">2026-04-08</span>
-  <span class="bt-performance-ack bt-performance-ack--disagreed" title="Objectives do not match the role scope we agreed."><span class="bt-performance-ack__mark" aria-hidden="true">✕</span><span class="bt-performance-ack__label">Not accepted</span></span>
+  <span class="bt-performance-ack bt-performance-ack--disagreed" title="Objectives do not match the role scope we agreed."><span class="bt-performance-ack__mark bt-symbol bt-symbol--filled" aria-hidden="true">cancel</span><span class="bt-performance-ack__label">Not accepted</span></span>
 </div>
   <p class="bt-performance-ack-comment"><span class="bt-performance-ack-comment__label">Disagreement comment</span><span class="bt-performance-ack-comment__body">Objectives do not match the role scope we agreed.</span></p>
 </div>`,
@@ -1412,7 +1435,7 @@ initBtInteractions();</code></pre>
   {
     id: "performance-team-card",
     group: "Components",
-    icon: "👥",
+    icon: "groups",
     title: "Performance team card",
     description: "Evaluator team row with project hours, briefing status, and optional delegation.",
     examples: [
@@ -1436,7 +1459,7 @@ initBtInteractions();</code></pre>
   <div class="bt-performance-team-card__aside">
     <div class="bt-performance-team-card__briefing">
       <div class="bt-performance-meta-row bt-performance-meta-row--compact">
-        <span class="bt-icon">📄</span>
+        <span class="bt-icon">description</span>
         <span class="bt-performance-meta-row__date">Briefing on 2026-04-01</span>
       </div>
       <div class="bt-performance-team-card__briefing-tags">
@@ -1452,7 +1475,7 @@ initBtInteractions();</code></pre>
   {
     id: "lists",
     group: "Components",
-    icon: "☷",
+    icon: "list",
     title: "Lists",
     description: "Listados verticales con avatar, contenido y acciones.",
     examples: [
@@ -1466,7 +1489,7 @@ initBtInteractions();</code></pre>
       <p class="bt-list-item__title">Bluetab Design System</p>
       <p class="bt-list-item__subtitle">Componente de listado</p>
     </div>
-    <button class="bt-icon-button" aria-label="Más"><span class="bt-icon">⋯</span></button>
+    <button class="bt-icon-button" aria-label="Más"><span class="bt-icon">more_horiz</span></button>
   </div>
   <div class="bt-list-item">
     <div class="bt-list-item__avatar">D</div>
@@ -1482,7 +1505,7 @@ initBtInteractions();</code></pre>
   {
     id: "main-layout",
     group: "Layout",
-    icon: "▨",
+    icon: "space_dashboard",
     title: "Main layout",
     description: "Primary application and documentation layout.",
     examples: [
@@ -1505,7 +1528,7 @@ initBtInteractions();</code></pre>
   {
     id: "media",
     group: "Components",
-    icon: "◫",
+    icon: "perm_media",
     title: "Media",
     description: "Responsive images, video, or placeholders.",
     examples: [
@@ -1527,7 +1550,7 @@ initBtInteractions();</code></pre>
   {
     id: "menus",
     group: "Components",
-    icon: "⋮",
+    icon: "more_vert",
     title: "Menus",
     description: "Context menus opened from a button.",
     examples: [
@@ -1547,7 +1570,7 @@ initBtInteractions();</code></pre>
   {
     id: "navigation",
     group: "Components",
-    icon: "☰",
+    icon: "menu",
     title: "Navigation",
     description: "Sidebar, active links, and bottom navigation.",
     examples: [
@@ -1555,18 +1578,18 @@ initBtInteractions();</code></pre>
         title: "Sidebar nav links",
         block: true,
         html: String.raw`<nav class="bt-sidebar__nav" style="width: 16rem;">
-  <a class="bt-nav-link" aria-current="page" href="#"><span class="bt-icon">⌂</span> Inicio</a>
-  <a class="bt-nav-link" href="#"><span class="bt-icon">▣</span> Componentes</a>
-  <a class="bt-nav-link" href="#"><span class="bt-icon">⚙</span> Ajustes</a>
+  <a class="bt-nav-link" aria-current="page" href="#"><span class="bt-icon">home</span> Inicio</a>
+  <a class="bt-nav-link" href="#"><span class="bt-icon">widgets</span> Componentes</a>
+  <a class="bt-nav-link" href="#"><span class="bt-icon">settings</span> Ajustes</a>
 </nav>`,
       },
       {
         title: "Bottom navigation",
         block: true,
         html: String.raw`<nav class="bt-bottom-nav">
-  <a href="#" aria-current="page"><span class="bt-icon">⌂</span><span>Home</span></a>
-  <a href="#"><span class="bt-icon">⌕</span><span>Search</span></a>
-  <a href="#"><span class="bt-icon">◎</span><span>Profile</span></a>
+  <a href="#" aria-current="page"><span class="bt-icon">home</span><span>Home</span></a>
+  <a href="#"><span class="bt-icon">search</span><span>Search</span></a>
+  <a href="#"><span class="bt-icon">person</span><span>Profile</span></a>
 </nav>`,
       },
     ],
@@ -1574,7 +1597,7 @@ initBtInteractions();</code></pre>
   {
     id: "overlays",
     group: "Components",
-    icon: "▩",
+    icon: "layers",
     title: "Overlays",
     description:
       "Capas superpuestas para paneles, drawers o estados bloqueantes.",
@@ -1605,7 +1628,7 @@ initBtInteractions();</code></pre>
   {
     id: "pages",
     group: "Layout",
-    icon: "□",
+    icon: "pages",
     title: "Pages",
     description: "Simple SPA inner-page pattern.",
     examples: [
@@ -1622,7 +1645,7 @@ initBtInteractions();</code></pre>
       {
         title: "Page link",
         html: String.raw`<a class="bt-nav-link" href="#components" aria-current="page">
-  <span class="bt-icon">▣</span>
+  <span class="bt-icon">widgets</span>
   Componentes
 </a>`,
       },
@@ -1631,7 +1654,7 @@ initBtInteractions();</code></pre>
   {
     id: "progress",
     group: "Feedback",
-    icon: "◔",
+    icon: "donut_large",
     title: "Progress",
     description: "Indicadores de progreso lineales y circulares.",
     examples: [
@@ -1650,7 +1673,7 @@ initBtInteractions();</code></pre>
   {
     id: "radio",
     group: "Forms",
-    icon: "◉",
+    icon: "radio_button_checked",
     title: "Radio buttons",
     description: "Single selection among multiple options.",
     examples: [
@@ -1674,7 +1697,7 @@ initBtInteractions();</code></pre>
   {
     id: "selects",
     group: "Forms",
-    icon: "⌄",
+    icon: "arrow_drop_down_circle",
     title: "Selects",
     description: "Selectores nativos estilizados para formularios.",
     examples: [
@@ -1706,7 +1729,7 @@ initBtInteractions();</code></pre>
   {
     id: "shapes",
     group: "Foundations",
-    icon: "◯",
+    icon: "category",
     title: "Shapes",
     description: "Formas y radios reutilizables.",
     examples: [
@@ -1721,7 +1744,7 @@ initBtInteractions();</code></pre>
   {
     id: "sliders",
     group: "Forms",
-    icon: "━",
+    icon: "tune",
     title: "Sliders",
     description: "Control para seleccionar valores dentro de un rango.",
     examples: [
@@ -1742,7 +1765,7 @@ initBtInteractions();</code></pre>
   {
     id: "snackbars",
     group: "Feedback",
-    icon: "▤",
+    icon: "call_to_action",
     title: "Snackbars",
     description: "Temporary messages to confirm an action.",
     examples: [
@@ -1759,7 +1782,7 @@ initBtInteractions();</code></pre>
   {
     id: "switches",
     group: "Forms",
-    icon: "◐",
+    icon: "toggle_on",
     title: "Switches",
     description: "Toggle binary options on or off.",
     examples: [
@@ -1784,7 +1807,7 @@ initBtInteractions();</code></pre>
   {
     id: "tables",
     group: "Components",
-    icon: "▦",
+    icon: "table_chart",
     title: "Tables",
     description: "Responsive tables for product and docs data.",
     examples: [
@@ -1809,7 +1832,7 @@ initBtInteractions();</code></pre>
   {
     id: "tabs",
     group: "Components",
-    icon: "☰",
+    icon: "tab",
     title: "Tabs",
     description:
       "Organización de contenido por pestañas dentro de una misma vista.",
@@ -1833,7 +1856,7 @@ initBtInteractions();</code></pre>
   {
     id: "textarea",
     group: "Forms",
-    icon: "▤",
+    icon: "notes",
     title: "Textarea",
     description: "Multiline text input.",
     examples: [
@@ -1857,14 +1880,14 @@ initBtInteractions();</code></pre>
   {
     id: "tooltips",
     group: "Feedback",
-    icon: "?",
+    icon: "help",
     title: "Tooltips",
     description: "Ayuda contextual breve al pasar el cursor o enfocar.",
     examples: [
       {
         title: "Tooltip on button",
         html: String.raw`<span class="bt-tooltip" data-tooltip="Crear nuevo elemento">
-  <button class="bt-icon-button" aria-label="Crear"><span class="bt-icon">＋</span></button>
+  <button class="bt-icon-button" aria-label="Crear"><span class="bt-icon">add</span></button>
 </span>`,
       },
       {
@@ -1878,7 +1901,7 @@ initBtInteractions();</code></pre>
   {
     id: "breadcrumb",
     group: "Components",
-    icon: "›",
+    icon: "keyboard_double_arrow_right",
     title: "Breadcrumb",
     description: "Hierarchical navigation trail for nested workspaces.",
     examples: [
@@ -1895,7 +1918,7 @@ initBtInteractions();</code></pre>
   {
     id: "empty-state",
     group: "Feedback",
-    icon: "○",
+    icon: "inbox",
     title: "Empty state",
     description: "Centered placeholder when a list or panel has no items.",
     examples: [
@@ -1903,7 +1926,7 @@ initBtInteractions();</code></pre>
         title: "No liquidaciones",
         block: true,
         html: String.raw`<div class="bt-empty">
-  <div class="bt-empty__icon" aria-hidden="true">◎</div>
+  <div class="bt-empty__icon" aria-hidden="true"><span class="bt-icon">inbox</span></div>
   <h3 class="bt-empty__title">No liquidaciones in this view</h3>
   <p class="bt-empty__description">Create a new liquidación or sync with SAP to refresh the list.</p>
   <div class="bt-empty__actions">
@@ -1917,7 +1940,7 @@ initBtInteractions();</code></pre>
   {
     id: "stepper",
     group: "Components",
-    icon: "①",
+    icon: "format_list_numbered",
     title: "Stepper",
     description: "Wizard progress indicator for multi-step flows.",
     examples: [
@@ -1925,7 +1948,7 @@ initBtInteractions();</code></pre>
         title: "Liquidación wizard",
         html: String.raw`<div>
   <div class="bt-stepper bt-stepper--labeled" role="list" aria-label="Progress">
-    <span class="bt-stepper__step bt-stepper__step--complete" role="listitem" aria-label="Project">✓</span>
+    <span class="bt-stepper__step bt-stepper__step--complete" role="listitem" aria-label="Project"><span class="bt-stepper__check bt-symbol" aria-hidden="true">check</span></span>
     <span class="bt-stepper__connector" aria-hidden="true"></span>
     <span class="bt-stepper__step bt-stepper__step--active bt-stepper__step--badge" role="listitem" aria-current="step" aria-label="Details">Details</span>
     <span class="bt-stepper__connector" aria-hidden="true"></span>
@@ -1938,7 +1961,7 @@ initBtInteractions();</code></pre>
   {
     id: "liveview-modal",
     group: "Feedback",
-    icon: "▢",
+    icon: "select_window",
     title: "LiveView modal",
     description: "Backdrop + panel shell for Phoenix LiveView dialogs (`bt-modal`).",
     examples: [
@@ -1950,7 +1973,7 @@ initBtInteractions();</code></pre>
   <div class="bt-modal__panel bt-modal__panel--lg" role="dialog" aria-modal="true">
     <header class="bt-modal__header">
       <div><h2 class="bt-modal__title">New liquidación</h2><p class="bt-modal__subtitle">Complete the expense liquidación details.</p></div>
-      <button type="button" class="bt-icon-button" aria-label="Close dialog"><span class="bt-icon">×</span></button>
+      <button type="button" class="bt-icon-button" aria-label="Close dialog"><span class="bt-icon">close</span></button>
     </header>
     <div class="bt-modal__body"><p class="bt-muted">Wizard body content goes here.</p></div>
     <footer class="bt-modal__footer">
@@ -1965,7 +1988,7 @@ initBtInteractions();</code></pre>
   {
     id: "spinner",
     group: "Feedback",
-    icon: "◌",
+    icon: "progress_activity",
     title: "Spinner",
     description: "Inline loading indicator for async SAP operations.",
     examples: [
@@ -1982,7 +2005,7 @@ initBtInteractions();</code></pre>
   {
     id: "expense-liquidacion-card",
     group: "Components",
-    icon: "₪",
+    icon: "account_balance_wallet",
     title: "Expense liquidación card",
     description: "List row for Spend liquidaciones with workflow track and project meta.",
     examples: [
@@ -2002,7 +2025,7 @@ initBtInteractions();</code></pre>
   </div>
   <p class="bt-expense-liquidacion-card__concept">Client workshop travel</p>
   <div class="bt-expense-liquidacion-card__meta">
-    <div class="bt-expense-liquidacion-card__project"><span class="bt-icon">📁</span><span>Northwind rollout</span></div>
+    <div class="bt-expense-liquidacion-card__project"><span class="bt-icon">folder</span><span>Northwind rollout</span></div>
     <span>3 expenses</span>
   </div>
 </article>`,
@@ -2012,7 +2035,7 @@ initBtInteractions();</code></pre>
   {
     id: "expense-gasto-card",
     group: "Components",
-    icon: "🧾",
+    icon: "receipt_long",
     title: "Expense gasto card",
     description: "Gasto row inside a liquidación detail with amount and actions.",
     examples: [
@@ -2037,7 +2060,7 @@ initBtInteractions();</code></pre>
   {
     id: "typography",
     group: "Foundations",
-    icon: "T",
+    icon: "format_size",
     title: "Typography",
     description: "Typography scale driven by CSS tokens.",
     examples: [

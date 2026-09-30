@@ -1,7 +1,7 @@
 //#region src/lib/interactions.js
 var e = "bt-theme", t = (e, t = document) => [...t.querySelectorAll(e)], n = (e = document) => e.querySelector("[data-theme-icon]"), r = (e = document, r = e.documentElement.dataset.theme) => {
 	let i = n(e);
-	i && (i.textContent = r === "dark" ? "☀" : "◐"), t("[data-theme-value]", e).forEach((e) => {
+	i && (i.textContent = r === "dark" ? "light_mode" : "dark_mode"), t("[data-theme-value]", e).forEach((e) => {
 		e.textContent = r === "dark" ? e.dataset.dark || "Dark" : e.dataset.light || "Light";
 	});
 }, i = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), a = (e) => {

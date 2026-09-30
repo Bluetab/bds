@@ -15,13 +15,16 @@ defmodule Bds.Components.Calendar do
   )
 
   @status_icons %{
-    "imputado" => "◐",
-    "completado" => "●",
-    "invalid" => "!",
-    "liberado" => "↑",
-    "aprobado" => "✓",
-    "rechazado" => "✕"
+    "imputado" => "pending",
+    "completado" => "check_circle",
+    "invalid" => "error",
+    "liberado" => "send",
+    "aprobado" => "verified",
+    "rechazado" => "cancel"
   }
+
+  # Statuses whose Material Symbol renders in its filled variant (solid marks).
+  @filled_status_icons ~w(completado invalid aprobado rechazado)
 
   attr(:id, :string, default: nil)
   attr(:class, :any, default: nil)
@@ -107,7 +110,7 @@ defmodule Bds.Components.Calendar do
           class="bt-calendar-templates__close bt-icon-button"
           aria-label={gettext("Close panel")}
         >
-          <span class="bt-icon">←</span>
+          <span class="bt-icon" aria-hidden="true">arrow_back</span>
         </button>
         <span class="truncate">{@title}</span>
         <button
@@ -118,7 +121,7 @@ defmodule Bds.Components.Calendar do
           aria-label={@help_label}
           title={@help_label}
         >
-          <span class="bt-icon" aria-hidden="true">?</span>
+          <span class="bt-icon" aria-hidden="true">help</span>
         </button>
       </div>
       <div :if={render_slot(@actions) != []} class="shrink-0 px-4 py-2 border-b border-[var(--bt-color-border)] flex items-center justify-between">
@@ -525,7 +528,9 @@ defmodule Bds.Components.Calendar do
       <ul class="bt-calendar-legend__list" role="list">
         <li :for={item <- @items} class="bt-calendar-legend__item">
           <span class={["bt-calendar-legend__icon", legend_icon_class(item)]}>
-            <span aria-hidden="true">{item[:icon] || item["icon"]}</span>
+            <span class={["bt-symbol", legend_icon_filled?(item) && "bt-symbol--filled"]} aria-hidden="true">
+              {item[:icon] || item["icon"]}
+            </span>
           </span>
           <span>{legend_item_label(item)}</span>
           <span class="font-semibold tabular-nums">{item[:count] || item["count"]}</span>
@@ -557,6 +562,11 @@ defmodule Bds.Components.Calendar do
       |> String.replace("_", "-")
 
     "bt-calendar-legend__icon--#{status}"
+  end
+
+  defp legend_icon_filled?(item) do
+    status = item[:status] || item["status"] || item[:css] || item["css"]
+    is_binary(status) and normalize_status(status) in @filled_status_icons
   end
 
   defp project_name(%{name: name}), do: name
@@ -617,6 +627,13 @@ defmodule Bds.Components.Calendar do
   defp entry_status_icon(entry) do
     entry_status(entry)
     |> then(&Map.get(@status_icons, &1, ""))
+  end
+
+  defp entry_status_icon_filled?(entry) do
+    case entry_status(entry) do
+      status when is_binary(status) -> normalize_status(status) in @filled_status_icons
+      _ -> false
+    end
   end
 
   defp entry_comments(entry), do: entry_note_value(entry, :comments, "comments")
@@ -771,7 +788,7 @@ defmodule Bds.Components.Calendar do
           :if={@on_prev_day}
           class="bt-calendar-day-modal__nav bt-calendar-day-modal__nav--prev"
           label={gettext("Previous day")}
-          icon="‹"
+          icon="chevron_left"
           phx-click={@on_prev_day}
         />
         <div class={["bt-calendar-day-modal__shell", modal_status_class(@status)]}>
@@ -809,7 +826,7 @@ defmodule Bds.Components.Calendar do
                   class="bt-calendar-day-modal__add bt-button bt-button--secondary bt-button--sm"
                   phx-click={@on_add_entry}
                 >
-                  <span class="bt-icon" aria-hidden="true">+</span> {gettext("New")}
+                  <span class="bt-icon" aria-hidden="true">add</span> {gettext("New")}
                 </button>
               </div>
               <.form
@@ -938,7 +955,13 @@ defmodule Bds.Components.Calendar do
                           :if={entry_status(entry)}
                           class={["bt-calendar-day-modal__entry-status", entry_status_class(entry)]}
                         >
-                          <span class="bt-calendar-day-modal__entry-status-icon" aria-hidden="true">
+                          <span
+                            class={[
+                              "bt-calendar-day-modal__entry-status-icon bt-symbol",
+                              entry_status_icon_filled?(entry) && "bt-symbol--filled"
+                            ]}
+                            aria-hidden="true"
+                          >
                             {entry_status_icon(entry)}
                           </span>
                           {entry_status_label(entry)}
@@ -1020,7 +1043,7 @@ defmodule Bds.Components.Calendar do
           :if={@on_next_day}
           class="bt-calendar-day-modal__nav bt-calendar-day-modal__nav--next"
           label={gettext("Next day")}
-          icon="›"
+          icon="chevron_right"
           phx-click={@on_next_day}
         />
       </div>
@@ -1120,39 +1143,16 @@ defmodule Bds.Components.Calendar do
   attr(:class, :any, default: nil)
 
   def calendar_day_modal_icon(assigns) do
+    assigns = assign(assigns, :symbol, calendar_day_modal_symbol(assigns.name))
+
     ~H"""
-    <svg
-      class={["bt-calendar-day-modal__entry-icon", @class]}
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-      aria-hidden="true"
-    >
-      <%= case @name do %>
-        <% "pencil" -> %>
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-          />
-        <% "trash" -> %>
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-          />
-        <% "chat" -> %>
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
-          />
-      <% end %>
-    </svg>
+    <span class={["bt-calendar-day-modal__entry-icon bt-symbol", @class]} aria-hidden="true">{@symbol}</span>
     """
   end
+
+  defp calendar_day_modal_symbol("pencil"), do: "edit"
+  defp calendar_day_modal_symbol("trash"), do: "delete"
+  defp calendar_day_modal_symbol("chat"), do: "chat"
 
   defp entry_id(%{id: id}), do: id
   defp entry_id(%{"id" => id}), do: id

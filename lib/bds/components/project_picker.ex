@@ -357,7 +357,7 @@ defmodule Bds.Components.ProjectPicker do
               phx-click="project_picker_toggle_config"
               phx-target={@myself}
             >
-              <span class="bt-icon" aria-hidden="true">⚙</span>
+              <span class="bt-icon" aria-hidden="true">settings</span>
             </button>
           </div>
           <div :if={@show_config} class="bt-project-picker__config">
@@ -443,7 +443,7 @@ defmodule Bds.Components.ProjectPicker do
           phx-click="project_picker_clear"
           phx-target={@myself}
         >
-          ×
+          <span class="bt-symbol" aria-hidden="true">close</span>
         </button>
       </div>
     </div>

@@ -303,7 +303,7 @@ defmodule Bds.Components.UserPicker do
               phx-click="user_picker_toggle_config"
               phx-target={@myself}
             >
-              <span class="bt-icon" aria-hidden="true">⚙</span>
+              <span class="bt-icon" aria-hidden="true">settings</span>
             </button>
           </div>
           <div :if={@show_config} class="bt-user-picker__config">
@@ -364,7 +364,7 @@ defmodule Bds.Components.UserPicker do
             phx-target={@myself}
             phx-value-user_id={user_id(user)}
           >
-            ×
+            <span class="bt-symbol" aria-hidden="true">close</span>
           </button>
         </div>
       </div>
@@ -384,7 +384,7 @@ defmodule Bds.Components.UserPicker do
           phx-click="user_picker_clear"
           phx-target={@myself}
         >
-          ×
+          <span class="bt-symbol" aria-hidden="true">close</span>
         </button>
       </div>
     </div>

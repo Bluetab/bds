@@ -48,11 +48,11 @@ defmodule Bds.Catalog.Preview.Bulk do
   def render("app-bars", 0, assigns) do
     ~H"""
     <.bt_appbar>
-      <.bt_icon_button label="Menu" icon="☰" />
+      <.bt_icon_button label="Menu" icon="menu" />
       <strong>Bluetab Project</strong>
       <.bt_spacer />
-      <.bt_icon_button label="Search" icon="⌕" />
-      <.bt_icon_button label="User" icon="◎" />
+      <.bt_icon_button label="Search" icon="search" />
+      <.bt_icon_button label="User" icon="person" />
     </.bt_appbar>
     """
   end
@@ -60,7 +60,7 @@ defmodule Bds.Catalog.Preview.Bulk do
   def render("app-bars", 1, assigns) do
     ~H"""
     <.bt_appbar variant="primary">
-      <.bt_icon_button variant="primary" label="Back" icon="←" />
+      <.bt_icon_button variant="primary" label="Back" icon="arrow_back" />
       <strong>Analytics Dashboard</strong>
       <.bt_spacer />
       <.bt_button variant="secondary">Publish</.bt_button>
@@ -71,10 +71,10 @@ defmodule Bds.Catalog.Preview.Bulk do
   def render("app-bars", 2, assigns) do
     ~H"""
     <.bt_bottom_nav label="Bottom navigation">
-      <:item icon="⌂" label="Home" current />
-      <:item icon="▦" label="Apps" />
-      <:item icon="☷" label="Data" />
-      <:item icon="⚙" label="Settings" />
+      <:item icon="home" label="Home" current />
+      <:item icon="apps" label="Apps" />
+      <:item icon="database" label="Data" />
+      <:item icon="settings" label="Settings" />
     </.bt_bottom_nav>
     """
   end
@@ -118,7 +118,7 @@ defmodule Bds.Catalog.Preview.Bulk do
   def render("badges", 0, assigns) do
     ~H"""
     <.bt_badge_wrap>
-      <.bt_icon>⌂</.bt_icon>
+      <.bt_icon>home</.bt_icon>
       <.bt_badge variant="dot" />
     </.bt_badge_wrap>
     """
@@ -127,7 +127,7 @@ defmodule Bds.Catalog.Preview.Bulk do
   def render("badges", 1, assigns) do
     ~H"""
     <.bt_badge_wrap>
-      <.bt_icon>⌂</.bt_icon>
+      <.bt_icon>home</.bt_icon>
       <.bt_badge>10</.bt_badge>
     </.bt_badge_wrap>
     """
@@ -164,10 +164,10 @@ defmodule Bds.Catalog.Preview.Bulk do
 
   def render("buttons", 2, assigns) do
     ~H"""
-    <.bt_icon_button label="Search" icon="⌕" />
-    <.bt_icon_button variant="primary" label="Save" icon="✓" />
-    <.bt_fab label="Create"><.bt_icon>＋</.bt_icon></.bt_fab>
-    <.bt_fab extended label="Create"><.bt_icon>＋</.bt_icon> Create</.bt_fab>
+    <.bt_icon_button label="Search" icon="search" />
+    <.bt_icon_button variant="primary" label="Save" icon="check" />
+    <.bt_fab label="Create"><.bt_icon>add</.bt_icon></.bt_fab>
+    <.bt_fab extended label="Create"><.bt_icon>add</.bt_icon> Create</.bt_fab>
     """
   end
 
@@ -235,7 +235,7 @@ defmodule Bds.Catalog.Preview.Bulk do
     <.bt_chip>Data</.bt_chip>
     <.bt_chip variant="selected">Selected</.bt_chip>
     <.bt_chip variant="outline">Outline</.bt_chip>
-    <.bt_chip tag="button"><.bt_icon>＋</.bt_icon> Add filter</.bt_chip>
+    <.bt_chip tag="button"><.bt_icon>add</.bt_icon> Add filter</.bt_chip>
     """
   end
 
@@ -295,6 +295,20 @@ defmodule Bds.Catalog.Preview.Bulk do
       <.bt_status variant="info">Info</.bt_status>
     </div>
     """
+  end
+
+  def render("colors", index, assigns) when index >= 2 do
+    case Enum.at(Bds.Catalog.color_families(), index - 2) do
+      nil ->
+        nil
+
+      family ->
+        assigns = assign(assigns, :family_id, family["id"])
+
+        ~H"""
+        <.bt_color_scale family={@family_id} />
+        """
+    end
   end
 
   def render("containers", 0, assigns) do
@@ -460,20 +474,33 @@ defmodule Bds.Catalog.Preview.Bulk do
 
   def render("icons", 0, assigns) do
     ~H"""
-    <.bt_icon>⌂</.bt_icon>
-    <.bt_icon>⌕</.bt_icon>
-    <.bt_icon>⚙</.bt_icon>
-    <.bt_icon>✓</.bt_icon>
-    <.bt_icon>×</.bt_icon>
+    <.bt_icon>home</.bt_icon>
+    <.bt_icon>search</.bt_icon>
+    <.bt_icon>settings</.bt_icon>
+    <.bt_icon>check</.bt_icon>
+    <.bt_icon>close</.bt_icon>
+    <.bt_icon>notifications</.bt_icon>
+    <.bt_icon>calendar_month</.bt_icon>
     """
   end
 
   def render("icons", 1, assigns) do
     ~H"""
     <.bt_button>
-      <.bt_icon>✓</.bt_icon>
+      <.bt_icon>check</.bt_icon>
       Validate
     </.bt_button>
+    """
+  end
+
+  def render("icons", 2, assigns) do
+    ~H"""
+    <.bt_icon>favorite</.bt_icon>
+    <.bt_icon class="bt-icon--filled">favorite</.bt_icon>
+    <.bt_icon>star</.bt_icon>
+    <.bt_icon class="bt-icon--filled">star</.bt_icon>
+    <.bt_icon>check_circle</.bt_icon>
+    <.bt_icon class="bt-icon--filled">check_circle</.bt_icon>
     """
   end
 
@@ -548,7 +575,7 @@ defmodule Bds.Catalog.Preview.Bulk do
     <.bt_list_group>
       <div class="bt-list-item">
         <.bt_list_item initials="B" title="Bluetab Design System" subtitle="List component" />
-        <.bt_icon_button label="More" icon="⋯" />
+        <.bt_icon_button label="More" icon="more_horiz" />
       </div>
       <.bt_list_item initials="D" title="Data Product" subtitle="Secondary item" />
     </.bt_list_group>
@@ -600,9 +627,9 @@ defmodule Bds.Catalog.Preview.Bulk do
   def render("navigation", 0, assigns) do
     ~H"""
     <nav class="bt-sidebar__nav" style="width: 16rem;">
-      <.bt_nav_link icon="⌂" current>Home</.bt_nav_link>
-      <.bt_nav_link icon="▣">Components</.bt_nav_link>
-      <.bt_nav_link icon="⚙">Settings</.bt_nav_link>
+      <.bt_nav_link icon="home" current>Home</.bt_nav_link>
+      <.bt_nav_link icon="widgets">Components</.bt_nav_link>
+      <.bt_nav_link icon="settings">Settings</.bt_nav_link>
     </nav>
     """
   end
@@ -610,9 +637,9 @@ defmodule Bds.Catalog.Preview.Bulk do
   def render("navigation", 1, assigns) do
     ~H"""
     <.bt_bottom_nav>
-      <:item icon="⌂" label="Home" current />
-      <:item icon="⌕" label="Search" />
-      <:item icon="◎" label="Profile" />
+      <:item icon="home" label="Home" current />
+      <:item icon="search" label="Search" />
+      <:item icon="person" label="Profile" />
     </.bt_bottom_nav>
     """
   end
@@ -647,7 +674,7 @@ defmodule Bds.Catalog.Preview.Bulk do
 
   def render("pages", 1, assigns) do
     ~H"""
-    <.bt_nav_link href="#components" icon="▣" current>Components</.bt_nav_link>
+    <.bt_nav_link href="#components" icon="widgets" current>Components</.bt_nav_link>
     """
   end
 
@@ -786,7 +813,7 @@ defmodule Bds.Catalog.Preview.Bulk do
   def render("tooltips", 0, assigns) do
     ~H"""
     <.bt_tooltip text="Create new item">
-      <.bt_icon_button label="Create" icon="＋" />
+      <.bt_icon_button label="Create" icon="add" />
     </.bt_tooltip>
     """
   end
@@ -898,12 +925,12 @@ defmodule Bds.Catalog.Preview.Bulk do
   def render("calendar-toolbar", 0, assigns) do
     ~H"""
     <.bt_calendar_toolbar month_label="June 2026">
-      <:left><.bt_icon_button label="Templates" icon="▥" /></:left>
+      <:left><.bt_icon_button label="Templates" icon="list_alt" /></:left>
       <:center>
-        <.bt_icon_button label="Previous" icon="‹" />
-        <.bt_icon_button label="Next" icon="›" />
+        <.bt_icon_button label="Previous" icon="chevron_left" />
+        <.bt_icon_button label="Next" icon="chevron_right" />
       </:center>
-      <:right><.bt_icon_button label="Today" icon="◎" /></:right>
+      <:right><.bt_icon_button label="Today" icon="today" /></:right>
     </.bt_calendar_toolbar>
     """
   end
@@ -921,9 +948,9 @@ defmodule Bds.Catalog.Preview.Bulk do
     ~H"""
     <.bt_calendar_legend
       items={[
-        %{status: "imputado", icon: "◐", count: 6},
-        %{status: "completado", icon: "●", count: 5},
-        %{status: "aprobado", icon: "✓", count: 2}
+        %{status: "imputado", icon: "pending", count: 6},
+        %{status: "completado", icon: "check_circle", count: 5},
+        %{status: "aprobado", icon: "verified", count: 2}
       ]}
     />
     """
@@ -996,8 +1023,8 @@ defmodule Bds.Catalog.Preview.Bulk do
       <:legend>
         <.bt_calendar_legend
           items={[
-            %{status: "imputado", icon: "◐", count: 6},
-            %{status: "aprobado", icon: "✓", count: 2}
+            %{status: "imputado", icon: "pending", count: 6},
+            %{status: "aprobado", icon: "verified", count: 2}
           ]}
         />
       </:legend>
@@ -1108,7 +1135,7 @@ defmodule Bds.Catalog.Preview.Bulk do
     ~H"""
     <div style="display: grid; gap: var(--bt-space-2)">
       <div class="bt-performance-meta-row">
-        <.bt_icon>📄</.bt_icon>
+        <.bt_icon>description</.bt_icon>
         <span class="bt-performance-meta-row__date">2026-04-08</span>
         <.bt_performance_ack_chip
           state={:disagreed}
@@ -1178,6 +1205,7 @@ defmodule Bds.Catalog.Preview.Bulk do
   def render("empty-state", 0, assigns) do
     ~H"""
     <.bt_empty title="No liquidaciones in this view" description="Create a new liquidación or sync with SAP.">
+      <:icon><.bt_icon>inbox</.bt_icon></:icon>
       <:actions>
         <.bt_button variant="primary">New liquidación</.bt_button>
         <.bt_button variant="outline">Sync</.bt_button>

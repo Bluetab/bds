@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
 const assetsDir = join(scriptsDir, "..");
-const catalogPath = join(assetsDir, "src/catalog.js");
+const catalogPaths = [join(assetsDir, "src/catalog.js"), join(assetsDir, "src/color-families.js")];
 const exportScript = join(scriptsDir, "export-catalog.mjs");
 
 let timer = null;
@@ -34,9 +34,11 @@ const exportCatalog = () => {
 };
 
 exportCatalog();
-watch(catalogPath, { persistent: true }, () => {
-  clearTimeout(timer);
-  timer = setTimeout(exportCatalog, 120);
-});
+for (const catalogPath of catalogPaths) {
+  watch(catalogPath, { persistent: true }, () => {
+    clearTimeout(timer);
+    timer = setTimeout(exportCatalog, 120);
+  });
+}
 
-console.log(`Watching ${catalogPath}`);
+console.log(`Watching ${catalogPaths.join(", ")}`);

@@ -2,6 +2,7 @@ import { writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { COMPONENTS, GROUP_ORDER, snippets } from "../src/catalog.js";
+import { COLOR_FAMILIES } from "../src/color-families.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const outPath = join(__dirname, "../../priv/catalog.json");
@@ -9,6 +10,7 @@ const outPath = join(__dirname, "../../priv/catalog.json");
 const payload = {
   group_order: GROUP_ORDER,
   tokens_snippet: snippets.tokens,
+  color_families: COLOR_FAMILIES,
   components: COMPONENTS.map((component) => ({
     id: component.id,
     group: component.group,

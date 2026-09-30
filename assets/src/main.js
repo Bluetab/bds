@@ -46,7 +46,7 @@ function renderNav() {
           (
             component,
           ) => `<a class="bt-nav-link" href="#${component.id}" data-nav-link="${component.id}">
-        <span class="bt-icon">${component.icon}</span>
+        <span class="bt-icon" aria-hidden="true">${component.icon}</span>
         <span>${component.title}</span>
       </a>`,
         )
@@ -66,7 +66,7 @@ function renderComponent(component) {
           ${example.note ? `<p class="bt-muted">${example.note}</p>` : ""}
         </div>
         <button class="bt-icon-button" type="button" data-copy-example="${component.id}:${index}" aria-label="Copiar código de ${example.title}">
-          <span class="bt-icon">&lt;&gt;</span>
+          <span class="bt-icon" aria-hidden="true">code</span>
         </button>
       </div>
       <div class="bt-example__preview ${example.block ? "bt-example__preview--block" : ""}">${example.html}</div>
@@ -79,7 +79,7 @@ function renderComponent(component) {
 
       <p class="bt-eyebrow">${component.group}</p>
       <div class="bt-section__header">
-        <h1 class="bt-section__title">${component.title} <button class="bt-icon-button" type="button" data-open-panel="${component.id}" aria-label="Ver código de ${component.title}"><span class="bt-icon">&lt;&gt;</span></button></h1>
+        <h1 class="bt-section__title">${component.title} <button class="bt-icon-button" type="button" data-open-panel="${component.id}" aria-label="Ver código de ${component.title}"><span class="bt-icon" aria-hidden="true">code</span></button></h1>
         <button class="bt-button bt-button--secondary" type="button" data-open-panel="${component.id}">Documentación</button>
       </div>
       <p class="bt-lead">${component.description}</p>

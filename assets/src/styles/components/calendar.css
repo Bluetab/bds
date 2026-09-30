@@ -893,6 +893,10 @@ button.bt-calendar-template-card {
   font-weight: 900;
 }
 
+.bt-calendar-legend__icon .bt-symbol {
+  font-size: 0.875rem;
+}
+
 .bt-calendar-legend__icon--nuevo { --bt-calendar-legend-accent: var(--bt-calendar-status-nuevo); }
 .bt-calendar-legend__icon--imputado { --bt-calendar-legend-accent: var(--bt-calendar-status-imputado); }
 .bt-calendar-legend__icon--completado { --bt-calendar-legend-accent: var(--bt-calendar-status-completado); }
@@ -1121,8 +1125,9 @@ button.bt-calendar-template-card {
 }
 
 .bt-calendar-day-modal__add .bt-icon {
-  font-size: inherit;
-  transform: translateY(-1px);
+  width: 1.125rem;
+  height: 1.125rem;
+  font-size: 1.125rem;
 }
 
 .bt-calendar-day-modal__editor {
@@ -1276,9 +1281,20 @@ button.bt-calendar-template-card {
 }
 
 .bt-calendar-day-modal__entry-note-summary::after {
-  content: "▸";
-  font-size: 0.6rem;
+  content: "chevron_right";
+  display: inline-block;
+  font-family: "Material Symbols Rounded";
+  font-feature-settings: "liga";
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 20;
+  font-size: 1rem;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
   line-height: 1;
+  -webkit-font-smoothing: antialiased;
   transition: transform 0.15s ease;
 }
 
@@ -1349,9 +1365,20 @@ button.bt-calendar-template-card {
 }
 
 .bt-calendar-day-modal__editor-comments-summary::after {
-  content: "▸";
-  font-size: 0.6rem;
+  content: "chevron_right";
+  display: inline-block;
+  font-family: "Material Symbols Rounded";
+  font-feature-settings: "liga";
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 20;
+  font-size: 1rem;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
   line-height: 1;
+  -webkit-font-smoothing: antialiased;
   transition: transform 0.15s ease;
 }
 
@@ -1401,7 +1428,7 @@ button.bt-calendar-template-card {
 }
 
 .bt-calendar-day-modal__entry-status-icon {
-  font-size: 0.58rem;
+  font-size: 0.8rem;
   line-height: 1;
 }
 
@@ -1482,6 +1509,10 @@ button.bt-calendar-template-card {
   max-height: 0.875rem;
   display: block;
   flex: 0 0 auto;
+}
+
+.bt-calendar-day-modal__entry-icon {
+  font-size: 0.875rem;
 }
 
 .bt-calendar-day-modal__entry-project {

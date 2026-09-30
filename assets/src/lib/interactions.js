@@ -6,7 +6,7 @@ const getThemeIcon = (root = document) => root.querySelector('[data-theme-icon]'
 
 const syncThemeLabels = (root = document, theme = root.documentElement.dataset.theme) => {
   const icon = getThemeIcon(root);
-  if (icon) icon.textContent = theme === 'dark' ? '☀' : '◐';
+  if (icon) icon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
 
   toArray('[data-theme-value]', root).forEach((el) => {
     const dark = theme === 'dark';

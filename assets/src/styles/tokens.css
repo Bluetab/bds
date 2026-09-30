@@ -34,6 +34,175 @@
   --bt-color-info: #0065ff;
   --bt-color-info-soft: #e8f2ff;
 
+  /* Color families — generated from src/color-families.js (level 60 = Bluetab master) */
+  /* Bluetab Blue · PANTONE 2746 C */
+  --bt-palette-bluetab-blue-10: #e9e9f4;
+  --bt-palette-bluetab-blue-20: #c8c8e4;
+  --bt-palette-bluetab-blue-30: #a6a7d3;
+  --bt-palette-bluetab-blue-40: #7a7cbe;
+  --bt-palette-bluetab-blue-50: #4d50a8;
+  --bt-palette-bluetab-blue-60: #212492;
+  --bt-palette-bluetab-blue-70: #1c1f7c;
+  --bt-palette-bluetab-blue-80: #171966;
+  --bt-palette-bluetab-blue-90: #101249;
+  --bt-palette-bluetab-blue-100: #0a0b2c;
+
+  /* Bluetab Orange · PANTONE 166 C */
+  --bt-palette-bluetab-orange-10: #fceee6;
+  --bt-palette-bluetab-orange-20: #f7d4c1;
+  --bt-palette-bluetab-orange-30: #f3ba9b;
+  --bt-palette-bluetab-orange-40: #ec976a;
+  --bt-palette-bluetab-orange-50: #e67538;
+  --bt-palette-bluetab-orange-60: #e05206;
+  --bt-palette-bluetab-orange-70: #be4605;
+  --bt-palette-bluetab-orange-80: #9d3904;
+  --bt-palette-bluetab-orange-90: #702903;
+  --bt-palette-bluetab-orange-100: #431902;
+
+  /* Purple · PANTONE 268 C */
+  --bt-palette-purple-10: #eee9f1;
+  --bt-palette-purple-20: #d4c9dc;
+  --bt-palette-purple-30: #bba8c8;
+  --bt-palette-purple-40: #987dac;
+  --bt-palette-purple-50: #765191;
+  --bt-palette-purple-60: #542675;
+  --bt-palette-purple-70: #472063;
+  --bt-palette-purple-80: #3b1b52;
+  --bt-palette-purple-90: #2a133a;
+  --bt-palette-purple-100: #190b23;
+
+  /* Deep Purple · PANTONE 7680 C */
+  --bt-palette-deep-purple-10: #eae9f2;
+  --bt-palette-deep-purple-20: #ccc9df;
+  --bt-palette-deep-purple-30: #ada9cb;
+  --bt-palette-deep-purple-40: #837db2;
+  --bt-palette-deep-purple-50: #5a5298;
+  --bt-palette-deep-purple-60: #31277e;
+  --bt-palette-deep-purple-70: #2a216b;
+  --bt-palette-deep-purple-80: #221b58;
+  --bt-palette-deep-purple-90: #18143f;
+  --bt-palette-deep-purple-100: #0f0c26;
+
+  /* Royal Blue · PANTONE 2726 C */
+  --bt-palette-royal-blue-10: #ebebfb;
+  --bt-palette-royal-blue-20: #cccef6;
+  --bt-palette-royal-blue-30: #adb0f0;
+  --bt-palette-royal-blue-40: #8588e9;
+  --bt-palette-royal-blue-50: #5c61e1;
+  --bt-palette-royal-blue-60: #3339da;
+  --bt-palette-royal-blue-70: #2b30b9;
+  --bt-palette-royal-blue-80: #242899;
+  --bt-palette-royal-blue-90: #1a1c6d;
+  --bt-palette-royal-blue-100: #0f1141;
+
+  /* Soft Blue · PANTONE 2725 C */
+  --bt-palette-soft-blue-10: #eeeef6;
+  --bt-palette-soft-blue-20: #d5d6e7;
+  --bt-palette-soft-blue-30: #bcbdd9;
+  --bt-palette-soft-blue-40: #9a9bc6;
+  --bt-palette-soft-blue-50: #797ab3;
+  --bt-palette-soft-blue-60: #5759a0;
+  --bt-palette-soft-blue-70: #4a4c88;
+  --bt-palette-soft-blue-80: #3d3e70;
+  --bt-palette-soft-blue-90: #2c2c50;
+  --bt-palette-soft-blue-100: #1a1b30;
+
+  /* Periwinkle · PANTONE 272 C */
+  --bt-palette-periwinkle-10: #f1f2fb;
+  --bt-palette-periwinkle-20: #dddef6;
+  --bt-palette-periwinkle-30: #c8c9f0;
+  --bt-palette-periwinkle-40: #adafe9;
+  --bt-palette-periwinkle-50: #9194e1;
+  --bt-palette-periwinkle-60: #7679da;
+  --bt-palette-periwinkle-70: #6467b9;
+  --bt-palette-periwinkle-80: #535599;
+  --bt-palette-periwinkle-90: #3b3c6d;
+  --bt-palette-periwinkle-100: #232441;
+
+  /* Electric Blue · PANTONE 2727 C */
+  --bt-palette-electric-blue-10: #e6f0ff;
+  --bt-palette-electric-blue-20: #bfd8ff;
+  --bt-palette-electric-blue-30: #99c1ff;
+  --bt-palette-electric-blue-40: #66a3ff;
+  --bt-palette-electric-blue-50: #3384ff;
+  --bt-palette-electric-blue-60: #0065ff;
+  --bt-palette-electric-blue-70: #0056d9;
+  --bt-palette-electric-blue-80: #0047b2;
+  --bt-palette-electric-blue-90: #003280;
+  --bt-palette-electric-blue-100: #001e4d;
+
+  /* Navy · PANTONE 273 C */
+  --bt-palette-navy-10: #e8e8ef;
+  --bt-palette-navy-20: #c5c5d7;
+  --bt-palette-navy-30: #a2a3bf;
+  --bt-palette-navy-40: #73749e;
+  --bt-palette-navy-50: #45467e;
+  --bt-palette-navy-60: #16185e;
+  --bt-palette-navy-70: #131450;
+  --bt-palette-navy-80: #0f1142;
+  --bt-palette-navy-90: #0b0c2f;
+  --bt-palette-navy-100: #07071c;
+
+  /* Red · PANTONE 186 C */
+  --bt-palette-red-10: #f9e8eb;
+  --bt-palette-red-20: #f0c6cd;
+  --bt-palette-red-30: #e7a3af;
+  --bt-palette-red-40: #da7687;
+  --bt-palette-red-50: #ce485f;
+  --bt-palette-red-60: #c21a37;
+  --bt-palette-red-70: #a5162f;
+  --bt-palette-red-80: #881226;
+  --bt-palette-red-90: #610d1c;
+  --bt-palette-red-100: #3a0811;
+
+  /* Warm Red · PANTONE 179 C */
+  --bt-palette-warm-red-10: #fdebea;
+  --bt-palette-warm-red-20: #f9cec9;
+  --bt-palette-warm-red-30: #f5b1a9;
+  --bt-palette-warm-red-40: #f1897e;
+  --bt-palette-warm-red-50: #ec6253;
+  --bt-palette-warm-red-60: #e73b28;
+  --bt-palette-warm-red-70: #c43222;
+  --bt-palette-warm-red-80: #a2291c;
+  --bt-palette-warm-red-90: #741e14;
+  --bt-palette-warm-red-100: #45120c;
+
+  /* Amber · PANTONE 144 C */
+  --bt-palette-amber-10: #fdf4e6;
+  --bt-palette-amber-20: #f9e2c1;
+  --bt-palette-amber-30: #f5d19c;
+  --bt-palette-amber-40: #f1ba6a;
+  --bt-palette-amber-50: #eca339;
+  --bt-palette-amber-60: #e78c07;
+  --bt-palette-amber-70: #c47706;
+  --bt-palette-amber-80: #a26205;
+  --bt-palette-amber-90: #744604;
+  --bt-palette-amber-100: #452a02;
+
+  /* Teal · PANTONE 7717 C */
+  --bt-palette-teal-10: #e6f3f2;
+  --bt-palette-teal-20: #bfe2df;
+  --bt-palette-teal-30: #99d1cc;
+  --bt-palette-teal-40: #66b9b3;
+  --bt-palette-teal-50: #33a299;
+  --bt-palette-teal-60: #008b80;
+  --bt-palette-teal-70: #00766d;
+  --bt-palette-teal-80: #00615a;
+  --bt-palette-teal-90: #004640;
+  --bt-palette-teal-100: #002a26;
+
+  /* Neutral Black · Neutral Black C */
+  --bt-palette-neutral-black-10: #e9e9ea;
+  --bt-palette-neutral-black-20: #c7c8ca;
+  --bt-palette-neutral-black-30: #a5a7ab;
+  --bt-palette-neutral-black-40: #797a81;
+  --bt-palette-neutral-black-50: #4c4e57;
+  --bt-palette-neutral-black-60: #1f222d;
+  --bt-palette-neutral-black-70: #1a1d26;
+  --bt-palette-neutral-black-80: #16181f;
+  --bt-palette-neutral-black-90: #101116;
+  --bt-palette-neutral-black-100: #090a0e;
+
   /* Neutral / surfaces */
   --bt-color-background: #f2f2f2;
   --bt-color-surface: #ffffff;
