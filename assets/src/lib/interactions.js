@@ -1,3 +1,5 @@
+import { afterDialogClose, afterDialogOpen, installA11y, rememberOpener } from './a11y.js';
+
 const DEFAULT_THEME_STORAGE_KEY = 'bt-theme';
 
 const toArray = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -45,10 +47,25 @@ const closeDialog = (dialog) => {
   dialog.removeAttribute('open');
 };
 
+const setMenuState = (menu, open, root = document) => {
+  menu.dataset.open = String(open);
+  toArray(`[data-menu-toggle="${CSS.escape(menu.id)}"]`, root).forEach((toggle) => {
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+};
+
 const closeMenus = (root = document, except) => {
   toArray('[data-open="true"].bt-menu', root).forEach((menu) => {
-    if (menu !== except) menu.dataset.open = 'false';
+    if (menu !== except) setMenuState(menu, false, root);
   });
+};
+
+// Closes a dialog or overlay and returns focus to the control that opened it
+const closeModalLike = (el) => {
+  if (!el) return;
+  if (el.classList.contains('bt-overlay')) el.removeAttribute('open');
+  else closeDialog(el);
+  afterDialogClose(el);
 };
 
 const setTheme = (theme, options = {}) => {
@@ -120,26 +137,34 @@ function initBtInteractions(options = {}) {
     const dialogOpen = event.target.closest('[data-dialog-open]');
     if (dialogOpen) {
       const target = findLocalTarget(dialogOpen, dialogOpen.dataset.dialogOpen, root);
-      openDialog(target);
+      if (target) {
+        rememberOpener(target, dialogOpen);
+        openDialog(target);
+        afterDialogOpen(target);
+      }
       return;
     }
 
     const dialogClose = event.target.closest('[data-dialog-close]');
     if (dialogClose) {
-      closeDialog(dialogClose.closest('.bt-dialog'));
+      closeModalLike(dialogClose.closest('.bt-dialog'));
       return;
     }
 
     const overlayOpen = event.target.closest('[data-overlay-open]');
     if (overlayOpen) {
       const target = findLocalTarget(overlayOpen, overlayOpen.dataset.overlayOpen, root);
-      target?.setAttribute('open', '');
+      if (target) {
+        rememberOpener(target, overlayOpen);
+        target.setAttribute('open', '');
+        afterDialogOpen(target);
+      }
       return;
     }
 
     const overlayClose = event.target.closest('[data-overlay-close]');
     if (overlayClose) {
-      overlayClose.closest('.bt-overlay')?.removeAttribute('open');
+      closeModalLike(overlayClose.closest('.bt-overlay'));
       return;
     }
 
@@ -148,8 +173,16 @@ function initBtInteractions(options = {}) {
       const menu = findLocalTarget(menuToggle, menuToggle.dataset.menuToggle, root);
       const next = menu?.dataset.open !== 'true';
       closeMenus(root, menu);
-      if (menu) menu.dataset.open = String(next);
+      if (menu) setMenuState(menu, next, root);
       return;
+    }
+
+    // Choosing a menu item closes the menu and returns focus to its button
+    const menuItem = event.target.closest('.bt-menu [role="menuitem"]');
+    if (menuItem) {
+      const menu = menuItem.closest('.bt-menu');
+      setMenuState(menu, false, root);
+      root.querySelector(`[data-menu-toggle="${CSS.escape(menu.id)}"]`)?.focus();
     }
 
     if (!event.target.closest('.bt-menu-wrap')) closeMenus(root);
@@ -207,9 +240,12 @@ function initBtInteractions(options = {}) {
     }
   }, { signal });
 
+  const uninstallA11y = installA11y(root, { signal, closeDialog: closeModalLike });
+
   return () => {
     controller.abort();
     themeObserver.disconnect();
+    uninstallA11y();
   };
 }
 

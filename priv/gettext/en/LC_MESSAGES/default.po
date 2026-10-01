@@ -812,3 +812,189 @@ msgstr "Not accepted (disagreement)"
 #, elixir-autogen, elixir-format
 msgid "Disagreement comment"
 msgstr "Disagreement comment"
+
+msgid "AA large"
+msgstr ""
+
+msgid "Fails"
+msgstr ""
+
+msgid "Body text"
+msgstr ""
+
+msgid "Paragraphs, labels, table cells"
+msgstr ""
+
+msgid "Body text on background"
+msgstr ""
+
+msgid "Page canvas"
+msgstr ""
+
+msgid "Muted text"
+msgstr ""
+
+msgid "Descriptions, secondary copy"
+msgstr ""
+
+msgid "Muted text on soft surface"
+msgstr ""
+
+msgid "Sidebar, cards"
+msgstr ""
+
+msgid "Subtle text"
+msgstr ""
+
+msgid "Help text, captions, group titles"
+msgstr ""
+
+msgid "Subtle text on background"
+msgstr ""
+
+msgid "Metadata on canvas"
+msgstr ""
+
+msgid "Primary link"
+msgstr ""
+
+msgid "Links, ghost/outline buttons"
+msgstr ""
+
+msgid "Primary button"
+msgstr ""
+
+msgid "bt-button--primary, active nav link"
+msgstr ""
+
+msgid "Primary on soft"
+msgstr ""
+
+msgid "Selected chips, tinted cards"
+msgstr ""
+
+msgid "Secondary button"
+msgstr ""
+
+msgid "bt-button--secondary, FAB"
+msgstr ""
+
+msgid "Secondary as text"
+msgstr ""
+
+msgid "Eyebrows (bt-eyebrow)"
+msgstr ""
+
+msgid "Tertiary button"
+msgstr ""
+
+msgid "bt-button--tertiary"
+msgstr ""
+
+msgid "Success on soft"
+msgstr ""
+
+msgid "Success badges, callouts"
+msgstr ""
+
+msgid "Warning on soft"
+msgstr ""
+
+msgid "Warning badges, callouts"
+msgstr ""
+
+msgid "Error on soft"
+msgstr ""
+
+msgid "Error badges, callouts"
+msgstr ""
+
+msgid "Info on soft"
+msgstr ""
+
+msgid "Info badges, callouts"
+msgstr ""
+
+msgid "Error text"
+msgstr ""
+
+msgid "Field validation messages"
+msgstr ""
+
+msgid "White on success"
+msgstr ""
+
+msgid "Solid success badge"
+msgstr ""
+
+msgid "White on warning"
+msgstr ""
+
+msgid "Solid warning badge"
+msgstr ""
+
+msgid "White on error"
+msgstr ""
+
+msgid "Danger button"
+msgstr ""
+
+msgid "Primary heading"
+msgstr ""
+
+msgid "Headings ≥ 24px or ≥ 18.66px bold"
+msgstr ""
+
+msgid "Secondary heading"
+msgstr ""
+
+msgid "Display text"
+msgstr ""
+
+msgid "Input border"
+msgstr ""
+
+msgid "Text fields, selects, checkboxes"
+msgstr ""
+
+msgid "Divider / card border"
+msgstr ""
+
+msgid "Decorative — exempt if not needed to identify a control"
+msgstr ""
+
+msgid "Focus ring (secondary)"
+msgstr ""
+
+msgid ":focus-visible outline (solid)"
+msgstr ""
+
+msgid "Focus ring (primary)"
+msgstr ""
+
+msgid "Input focus border"
+msgstr ""
+
+msgid "Primary button vs. page"
+msgstr ""
+
+msgid "Button boundary against the canvas"
+msgstr ""
+
+msgid "Icon (muted)"
+msgstr ""
+
+msgid "Meaningful icons"
+msgstr ""
+
+msgid "Loading"
+msgstr ""
+
+msgid "Expand or collapse %{name}"
+msgstr ""
+
+msgid "User menu: %{name}"
+msgstr ""
+
+msgid "User menu"
+msgstr ""

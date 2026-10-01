@@ -553,12 +553,10 @@ defmodule Bds.Catalog.Snippets.Bulk do
   defp lists do
     %{
       "lists:0" => ~S"""
-      <%!-- bt_list_item has no actions slot; icon button composed in row --%>
-      <.bt_list_group>
-        <div class="bt-list-item">
-          <.bt_list_item initials="B" title="Bluetab Design System" subtitle="List component" />
-          <.bt_icon_button label="More" icon="more_horiz" />
-        </div>
+            <.bt_list_group>
+        <.bt_list_item initials="B" title="Bluetab Design System" subtitle="List component">
+          <:actions><.bt_icon_button label="More" icon="more_horiz" /></:actions>
+        </.bt_list_item>
         <.bt_list_item initials="D" title="Data Product" subtitle="Secondary item" />
       </.bt_list_group>
       """
@@ -635,7 +633,7 @@ defmodule Bds.Catalog.Snippets.Bulk do
     %{
       "overlays:0" => ~S"""
       <.bt_button data-overlay-open="overlay-basic">Open overlay</.bt_button>
-      <.bt_overlay id="overlay-basic">
+      <.bt_overlay id="overlay-basic" label="Overlay">
         <h3>Overlay</h3>
         <p>Useful for panels and temporary content.</p>
         <.bt_button data-overlay-close>Close</.bt_button>
@@ -721,7 +719,7 @@ defmodule Bds.Catalog.Snippets.Bulk do
   defp sliders do
     %{
       "sliders:0" => ~S"""
-      <.bt_slider name="percent" value={64} aria-label="Percentage" />
+      <.bt_slider id="percent-slider" name="percent" label="Percentage" hide_label value={64} />
       """,
       "sliders:1" => ~S"""
       <.bt_slider id="quality-slider" name="quality" label="Quality" value={80} help="Drag to adjust the value." />
@@ -786,7 +784,7 @@ defmodule Bds.Catalog.Snippets.Bulk do
   defp combobox do
     %{
       "combobox:0" => ~S"""
-      <.bt_combobox name="project_search" label="Project" value="portal" open placeholder="Search by name or ID…">
+      <.bt_combobox id="combobox-open" name="project_search" label="Project" value="portal" open placeholder="Search by name or ID…">
         <:options>
           <.bt_combobox_option selected>
             <span class="bt-combobox__option-title">1042</span>
@@ -800,7 +798,7 @@ defmodule Bds.Catalog.Snippets.Bulk do
       </.bt_combobox>
       """,
       "combobox:1" => ~S"""
-      <.bt_combobox name="project_search" label="Project" value="data" open loading />
+      <.bt_combobox id="combobox-loading" name="project_search" label="Project" value="data" open loading />
       """
     }
   end

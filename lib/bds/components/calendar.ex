@@ -364,6 +364,9 @@ defmodule Bds.Components.Calendar do
           data-calendar-grid-row={@grid_row}
           data-calendar-grid-col={@grid_col}
           tabindex="0"
+          role="checkbox"
+          aria-checked={to_string(@selected)}
+          aria-label={calendar_day_aria_label(@date_iso, @status)}
           {@rest}
         >
           <span class="bt-calendar-day__number">{@day}</span>
@@ -501,6 +504,20 @@ defmodule Bds.Components.Calendar do
   defp calendar_day_iso(%Date{} = date, _day), do: Date.to_iso8601(date)
   defp calendar_day_iso(iso, _day) when is_binary(iso), do: iso
   defp calendar_day_iso(_, day), do: to_string(day)
+
+  # "3 June 2026 · Draft" — the status is otherwise only shown by color.
+  defp calendar_day_aria_label(iso, status) do
+    date_text =
+      case Date.from_iso8601(iso) do
+        {:ok, date} -> "#{date.day} #{calendar_month_name(date.month)} #{date.year}"
+        _ -> iso
+      end
+
+    case status && calendar_status_label(status) do
+      label when is_binary(label) and label != "" -> "#{date_text} · #{label}"
+      _ -> date_text
+    end
+  end
 
   attr(:items, :list, required: true)
   attr(:id, :string, default: nil)

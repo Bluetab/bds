@@ -573,10 +573,9 @@ defmodule Bds.Catalog.Preview.Bulk do
   def render("lists", 0, assigns) do
     ~H"""
     <.bt_list_group>
-      <div class="bt-list-item">
-        <.bt_list_item initials="B" title="Bluetab Design System" subtitle="List component" />
-        <.bt_icon_button label="More" icon="more_horiz" />
-      </div>
+      <.bt_list_item initials="B" title="Bluetab Design System" subtitle="List component">
+        <:actions><.bt_icon_button label="More" icon="more_horiz" /></:actions>
+      </.bt_list_item>
       <.bt_list_item initials="D" title="Data Product" subtitle="Secondary item" />
     </.bt_list_group>
     """
@@ -647,7 +646,7 @@ defmodule Bds.Catalog.Preview.Bulk do
   def render("overlays", 0, assigns) do
     ~H"""
     <.bt_button data-overlay-open="overlay-basic">Open overlay</.bt_button>
-    <.bt_overlay id="overlay-basic">
+    <.bt_overlay id="overlay-basic" label="Overlay">
       <h3>Overlay</h3>
       <p>Useful for panels and temporary content.</p>
       <.bt_button data-overlay-close>Close</.bt_button>
@@ -731,7 +730,7 @@ defmodule Bds.Catalog.Preview.Bulk do
 
   def render("sliders", 0, assigns) do
     ~H"""
-    <.bt_slider name="percent" value={64} aria-label="Percentage" />
+    <.bt_slider id="percent-slider" name="percent" label="Percentage" hide_label value={64} />
     """
   end
 
@@ -828,7 +827,7 @@ defmodule Bds.Catalog.Preview.Bulk do
 
   def render("combobox", 0, assigns) do
     ~H"""
-    <.bt_combobox name="project_search" label="Project" value="portal" open placeholder="Search by name or ID…">
+    <.bt_combobox id="combobox-open" name="project_search" label="Project" value="portal" open placeholder="Search by name or ID…">
       <:options>
         <.bt_combobox_option selected>
           <span class="bt-combobox__option-title">1042</span>
@@ -850,7 +849,7 @@ defmodule Bds.Catalog.Preview.Bulk do
 
   def render("combobox", 1, assigns) do
     ~H"""
-    <.bt_combobox name="project_search" label="Project" value="data" open loading />
+    <.bt_combobox id="combobox-loading" name="project_search" label="Project" value="data" open loading />
     """
   end
 
@@ -968,6 +967,7 @@ defmodule Bds.Catalog.Preview.Bulk do
   def render("calendar-day-modal", 0, assigns) do
     ~H"""
     <.bt_calendar_day_modal
+      id="calendar-day-modal-demo"
       show
       date={~D[2026-06-12]}
       status="imputado"

@@ -14,20 +14,44 @@ defmodule Bds.Components.CatalogUi do
     "lg" => "bt-button bt-button--lg"
   }
 
+  # Shared size scale for every sized component. "md" is the default and adds no
+  # modifier class; other sizes add `<base>--<size>`. Heights come from the
+  # --bt-control-height-* tokens so products rescale every control at once.
+  @sizes ~w(xs sm md lg)
+
+  @doc false
+  def size_class(_base, "md"), do: nil
+  def size_class(_base, nil), do: nil
+  def size_class(base, size) when size in @sizes, do: "#{base}--#{size}"
+
   attr :class, :any, default: nil
+  attr :size, :string, default: nil, values: [nil | @sizes], doc: "Font size step; nil inherits."
+
+  attr :label, :string,
+    default: nil,
+    doc: "Set only when the icon conveys meaning on its own; it becomes role=img + aria-label."
+
+  attr :rest, :global
   slot :inner_block, required: true
 
   def bt_icon(assigns) do
     ~H"""
-    <span class={["bt-icon", @class]} aria-hidden="true">{render_slot(@inner_block)}</span>
+    <span
+      class={["bt-icon", size_class("bt-icon", @size), @class]}
+      aria-hidden={if(@label, do: nil, else: "true")}
+      role={@label && "img"}
+      aria-label={@label}
+      {@rest}
+    >{render_slot(@inner_block)}</span>
     """
   end
 
   attr :class, :any, default: nil
   attr :variant, :string, default: "default", values: ~w(default primary)
-  attr :label, :string, required: true
+  attr :size, :string, default: "md", values: @sizes
+  attr :label, :string, required: true, doc: "Accessible name (also shown as tooltip via title)."
   attr :icon, :string, default: nil
-  attr :rest, :global
+  attr :rest, :global, include: ~w(disabled type form name value)
   slot :inner_block, required: false
 
   def bt_icon_button(assigns) do
@@ -36,10 +60,11 @@ defmodule Bds.Components.CatalogUi do
         do: "bt-icon-button bt-icon-button--primary",
         else: "bt-icon-button"
 
-    assigns = assign(assigns, :class, [variant_class, assigns.class])
+    assigns =
+      assign(assigns, :class, [variant_class, size_class("bt-icon-button", assigns.size), assigns.class])
 
     ~H"""
-    <button type="button" class={@class} aria-label={@label} {@rest}>
+    <button type="button" class={@class} aria-label={@label} title={@label} {@rest}>
       <span :if={@icon} class="bt-icon" aria-hidden="true">{@icon}</span>
       {render_slot(@inner_block)}
     </button>
@@ -49,7 +74,7 @@ defmodule Bds.Components.CatalogUi do
   attr :class, :any, default: nil
   attr :extended, :boolean, default: false
   attr :label, :string, required: true
-  attr :rest, :global
+  attr :rest, :global, include: ~w(disabled type form name value)
   slot :inner_block, required: true
 
   def bt_fab(assigns) do
@@ -57,7 +82,7 @@ defmodule Bds.Components.CatalogUi do
     <button
       type="button"
       class={["bt-fab", @extended && "bt-fab--extended", @class]}
-      aria-label={@label}
+      aria-label={if(@extended, do: nil, else: @label)}
       {@rest}
     >
       {render_slot(@inner_block)}
@@ -66,8 +91,15 @@ defmodule Bds.Components.CatalogUi do
   end
 
   attr :class, :any, default: nil
-  attr :variant, :string, default: "default"
+  attr :variant, :string, default: "default", values: ~w(default elevated filled primary third half)
   attr :span, :string, default: nil
+
+  attr :title_tag, :string,
+    default: "h3",
+    values: ~w(h2 h3 h4 h5 h6 p),
+    doc: "Heading level for the title, so cards fit the page outline."
+
+  attr :rest, :global
   slot :inner_block
   slot :title
   slot :actions
@@ -86,9 +118,11 @@ defmodule Bds.Components.CatalogUi do
     assigns = assign(assigns, :class, [variant_class, assigns.class])
 
     ~H"""
-    <article class={@class}>
-      <div :if={@span} class="bt-card__media"></div>
-      <h3 :if={@title != []}>{render_slot(@title)}</h3>
+    <article class={@class} {@rest}>
+      <div :if={@span} class="bt-card__media" aria-hidden="true"></div>
+      <.dynamic_tag :if={@title != []} tag_name={@title_tag} class="bt-card__title">
+        {render_slot(@title)}
+      </.dynamic_tag>
       <div :if={@inner_block != []}>{render_slot(@inner_block)}</div>
       <div :if={@actions != []} class="bt-card__actions">{render_slot(@actions)}</div>
     </article>
@@ -96,7 +130,18 @@ defmodule Bds.Components.CatalogUi do
   end
 
   attr :class, :any, default: nil
-  attr :variant, :string, default: "default"
+
+  attr :variant, :string,
+    default: "default",
+    values: ~w(default dot inline inline-success success warning primary secondary)
+
+  attr :size, :string, default: "md", values: ~w(sm md lg)
+
+  attr :label, :string,
+    default: nil,
+    doc: "Screen-reader text. Required for `dot` badges and bare counts (\"3\" → \"3 unread\")."
+
+  attr :rest, :global
   slot :inner_block
 
   def bt_badge(assigns) do
@@ -112,25 +157,34 @@ defmodule Bds.Components.CatalogUi do
         _ -> "bt-badge"
       end
 
-    assigns = assign(assigns, :class, [variant_class, assigns.class])
+    assigns =
+      assign(assigns, :class, [variant_class, size_class("bt-badge", assigns.size), assigns.class])
 
     ~H"""
-    <span class={@class}>{render_slot(@inner_block)}</span>
+    <span class={@class} {@rest}>
+      <span aria-hidden={@label && "true"}>{render_slot(@inner_block)}</span><span
+        :if={@label}
+        class="bt-sr-only"
+      >{@label}</span>
+    </span>
     """
   end
 
+  attr :class, :any, default: nil
+  attr :rest, :global
   slot :inner_block, required: true
 
   def bt_badge_wrap(assigns) do
     ~H"""
-    <span class="bt-badge-wrap">{render_slot(@inner_block)}</span>
+    <span class={["bt-badge-wrap", @class]} {@rest}>{render_slot(@inner_block)}</span>
     """
   end
 
   attr :class, :any, default: nil
   attr :variant, :string, default: "default", values: ~w(default selected outline)
+  attr :size, :string, default: "md", values: ~w(sm md lg)
   attr :tag, :string, default: "span", values: ~w(span button)
-  attr :rest, :global
+  attr :rest, :global, include: ~w(disabled type name value)
   slot :inner_block, required: true
 
   def bt_chip(assigns) do
@@ -141,13 +195,21 @@ defmodule Bds.Components.CatalogUi do
         _ -> "bt-chip"
       end
 
-    assigns = assign(assigns, :class, [variant_class, assigns.class])
+    assigns =
+      assign(assigns, :class, [variant_class, size_class("bt-chip", assigns.size), assigns.class])
 
+    # A button chip is a toggle: expose its selected state (not only its color).
     ~H"""
-    <button :if={@tag == "button"} type="button" class={@class} {@rest}>
+    <button
+      :if={@tag == "button"}
+      type="button"
+      class={@class}
+      aria-pressed={to_string(@variant == "selected")}
+      {@rest}
+    >
       {render_slot(@inner_block)}
     </button>
-    <span :if={@tag == "span"} class={@class}>{render_slot(@inner_block)}</span>
+    <span :if={@tag == "span"} class={@class} {@rest}>{render_slot(@inner_block)}</span>
     """
   end
 
@@ -213,7 +275,7 @@ defmodule Bds.Components.CatalogUi do
     <nav class="bt-bottom-nav" aria-label={@label} {@rest}>
       <a
         :for={item <- @item}
-        href={item.href || "#"}
+        href={item[:href] || "#"}
         aria-current={if(Map.get(item, :current, false), do: "page", else: false)}
       >
         <span class="bt-icon" aria-hidden="true">{item.icon}</span>
@@ -226,15 +288,19 @@ defmodule Bds.Components.CatalogUi do
   attr :id, :string, default: nil
   attr :name, :string, required: true
   attr :label, :string, required: true
+  attr :hide_label, :boolean, default: false, doc: "Keep the label for screen readers only."
   attr :checked, :boolean, default: false
   attr :disabled, :boolean, default: false
+  attr :size, :string, default: "md", values: ~w(sm md lg)
+  attr :class, :any, default: nil
   attr :rest, :global
 
   def bt_switch(assigns) do
     ~H"""
-    <label class="bt-switch">
+    <label class={["bt-switch", size_class("bt-switch", @size), @class]}>
       <input
         type="checkbox"
+        role="switch"
         id={@id}
         name={@name}
         checked={@checked}
@@ -242,7 +308,7 @@ defmodule Bds.Components.CatalogUi do
         {@rest}
       />
       <span class="bt-switch__track" aria-hidden="true"></span>
-      <span>{@label}</span>
+      <span class={@hide_label && "bt-sr-only"}>{@label}</span>
     </label>
     """
   end
@@ -252,11 +318,12 @@ defmodule Bds.Components.CatalogUi do
   attr :label, :string, required: true
   attr :checked, :boolean, default: false
   attr :disabled, :boolean, default: false
+  attr :class, :any, default: nil
   attr :rest, :global
 
   def bt_radio(assigns) do
     ~H"""
-    <label class="bt-radio">
+    <label class={["bt-radio", @class]}>
       <input
         type="radio"
         id={@id}
@@ -270,19 +337,41 @@ defmodule Bds.Components.CatalogUi do
     """
   end
 
-  attr :id, :string, default: nil
+  @doc """
+  Groups radios (or checkboxes) with a `<fieldset>`/`<legend>` so the group
+  name is announced (WCAG 1.3.1).
+  """
+  attr :legend, :string, required: true
+  attr :hide_legend, :boolean, default: false
+  attr :class, :any, default: nil
+  attr :rest, :global
+  slot :inner_block, required: true
+
+  def bt_fieldset(assigns) do
+    ~H"""
+    <fieldset class={["bt-fieldset", @class]} {@rest}>
+      <legend class={["bt-fieldset__legend", @hide_legend && "bt-sr-only"]}>{@legend}</legend>
+      {render_slot(@inner_block)}
+    </fieldset>
+    """
+  end
+
+  attr :id, :string, required: true, doc: "Needed to associate the label and help text."
   attr :name, :string, default: nil
-  attr :label, :string, default: nil
+  attr :label, :string, required: true
+  attr :hide_label, :boolean, default: false
   attr :value, :integer, default: 50
   attr :min, :integer, default: 0
   attr :max, :integer, default: 100
+  attr :step, :integer, default: 1
   attr :help, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global
 
   def bt_slider(assigns) do
     ~H"""
-    <div :if={@label} class="bt-field">
-      <label :if={@label} for={@id}>{@label}</label>
+    <div class={["bt-field", @class]}>
+      <label for={@id} class={@hide_label && "bt-sr-only"}>{@label}</label>
       <input
         type="range"
         id={@id}
@@ -290,44 +379,45 @@ defmodule Bds.Components.CatalogUi do
         class="bt-slider"
         min={@min}
         max={@max}
+        step={@step}
         value={@value}
+        aria-describedby={@help && "#{@id}-help"}
         {@rest}
       />
-      <small :if={@help} class="bt-help">{@help}</small>
+      <small :if={@help} id={"#{@id}-help"} class="bt-help">{@help}</small>
     </div>
-    <input
-      :if={!@label}
-      type="range"
-      id={@id}
-      name={@name}
-      class="bt-slider"
-      min={@min}
-      max={@max}
-      value={@value}
-      {@rest}
-    />
     """
   end
 
   attr :id, :string, required: true
   attr :title, :string, default: nil
-  attr :role, :string, default: "dialog"
+
+  attr :label, :string,
+    default: nil,
+    doc: "Accessible name when there is no visible `title`."
+
+  attr :role, :string, default: "dialog", values: ~w(dialog alertdialog)
   attr :open, :boolean, default: false
+  attr :class, :any, default: nil
+  attr :rest, :global
   slot :inner_block, required: true
   slot :actions
 
   def bt_dialog(assigns) do
     ~H"""
     <div
-      class="bt-dialog"
+      class={["bt-dialog", @class]}
       id={@id}
       role={@role}
       aria-modal="true"
       aria-labelledby={@title && "#{@id}-title"}
+      aria-label={!@title && @label}
+      data-focus-trap
       open={@open}
+      {@rest}
     >
       <div class="bt-dialog__surface">
-        <h3 :if={@title} id={"#{@id}-title"}>{@title}</h3>
+        <h2 :if={@title} id={"#{@id}-title"} class="bt-dialog__title">{@title}</h2>
         {render_slot(@inner_block)}
         <div :if={@actions != []} class="bt-dialog__actions">{render_slot(@actions)}</div>
       </div>
@@ -336,39 +426,80 @@ defmodule Bds.Components.CatalogUi do
   end
 
   attr :id, :string, required: true
+  attr :label, :string, required: true, doc: "Accessible name of the overlay."
   attr :open, :boolean, default: false
+  attr :class, :any, default: nil
+  attr :rest, :global
   slot :inner_block, required: true
 
   def bt_overlay(assigns) do
     ~H"""
-    <div class="bt-overlay" id={@id} role="dialog" aria-modal="true" open={@open}>
+    <div
+      class={["bt-overlay", @class]}
+      id={@id}
+      role="dialog"
+      aria-modal="true"
+      aria-label={@label}
+      data-focus-trap
+      open={@open}
+      {@rest}
+    >
       <div class="bt-overlay__surface">{render_slot(@inner_block)}</div>
     </div>
     """
   end
 
+  @doc """
+  Menu button (APG "menu button" pattern). Keyboard: Enter/Space/↓ open and
+  focus the first item, ↑/↓/Home/End move, Escape closes and returns focus,
+  Tab closes. Wired by `initBtInteractions()`.
+  """
   attr :id, :string, required: true
   attr :toggle_label, :string, default: nil
+  attr :class, :any, default: nil
+  attr :rest, :global
+
   slot :item, required: true do
     attr :label, :string, required: true
+    attr :icon, :string
   end
 
   def bt_menu_wrap(assigns) do
     assigns = assign_new(assigns, :toggle_label, fn -> gettext("Open menu") end)
 
     ~H"""
-    <div class="bt-menu-wrap">
-      <button type="button" class="bt-button bt-button--secondary" data-menu-toggle={@id}>
+    <div class={["bt-menu-wrap", @class]} {@rest}>
+      <button
+        type="button"
+        id={"#{@id}-toggle"}
+        class="bt-button bt-button--secondary"
+        data-menu-toggle={@id}
+        aria-haspopup="menu"
+        aria-expanded="false"
+        aria-controls={@id}
+      >
         {@toggle_label}
+        <span class="bt-icon" aria-hidden="true">expand_more</span>
       </button>
-      <div class="bt-menu" id={@id} role="menu">
-        <button :for={item <- @item} type="button" role="menuitem">{item.label}</button>
+      <div class="bt-menu" id={@id} role="menu" aria-labelledby={"#{@id}-toggle"}>
+        <button :for={item <- @item} type="button" role="menuitem" tabindex="-1">
+          <span :if={item[:icon]} class="bt-icon" aria-hidden="true">{item.icon}</span>
+          {item.label}
+        </button>
       </div>
     </div>
     """
   end
 
+  @doc """
+  Tabs (APG "tabs" pattern, automatic activation). Only the selected tab is in
+  the Tab sequence; ←/→/Home/End move between tabs. Wired by `initBtInteractions()`.
+  """
   attr :id, :string, required: true
+  attr :label, :string, default: nil, doc: "Accessible name of the tab list."
+  attr :class, :any, default: nil
+  attr :rest, :global
+
   slot :tab, required: true do
     attr :id, :string, required: true
     attr :label, :string, required: true
@@ -381,17 +512,21 @@ defmodule Bds.Components.CatalogUi do
   end
 
   def bt_tabs(assigns) do
+    assigns = assign(assigns, :tab_panels, Map.new(assigns.panel, &{&1.tab_id, &1.id}))
+
     ~H"""
-    <div data-tabs id={@id}>
-      <div class="bt-tabs" role="tablist">
+    <div data-tabs id={@id} class={@class} {@rest}>
+      <div class="bt-tabs" role="tablist" aria-label={@label}>
         <button
           :for={tab <- @tab}
           type="button"
           class="bt-tab"
           role="tab"
           id={tab.id}
-          data-tab={tab.id}
-          aria-selected={Map.get(tab, :selected, false)}
+          data-tab={@tab_panels[tab.id]}
+          aria-selected={to_string(Map.get(tab, :selected, false))}
+          aria-controls={@tab_panels[tab.id]}
+          tabindex={if(Map.get(tab, :selected, false), do: "0", else: "-1")}
         >
           {tab.label}
         </button>
@@ -401,7 +536,9 @@ defmodule Bds.Components.CatalogUi do
         class="bt-tab-panel"
         id={panel.id}
         role="tabpanel"
-        aria-hidden={!panel_selected?(@tab, panel.tab_id)}
+        tabindex="0"
+        aria-labelledby={panel.tab_id}
+        aria-hidden={to_string(!panel_selected?(@tab, panel.tab_id))}
       >
         {render_slot(panel)}
       </div>
@@ -413,18 +550,33 @@ defmodule Bds.Components.CatalogUi do
     Enum.any?(tabs, &( &1.id == tab_id && Map.get(&1, :selected, false)))
   end
 
+  @doc "Disclosure (APG pattern): `aria-expanded` and `aria-controls` on the button."
+  attr :id, :string, default: nil
   attr :title, :string, required: true
   attr :open, :boolean, default: false
+  attr :class, :any, default: nil
+  attr :rest, :global
   slot :inner_block
 
   def bt_expansion(assigns) do
+    assigns =
+      assign_new(assigns, :content_id, fn ->
+        "#{assigns.id || "bt-expansion-#{:erlang.phash2(assigns.title)}"}-content"
+      end)
+
     ~H"""
-    <div class="bt-expansion" data-expansion data-open={to_string(@open)}>
-      <button class="bt-expansion__button" type="button" data-expansion-toggle>
+    <div class={["bt-expansion", @class]} id={@id} data-expansion data-open={to_string(@open)} {@rest}>
+      <button
+        class="bt-expansion__button"
+        type="button"
+        data-expansion-toggle
+        aria-expanded={to_string(@open)}
+        aria-controls={@content_id}
+      >
         <span>{@title}</span>
         <span class="bt-expansion__icon bt-symbol" aria-hidden="true">expand_more</span>
       </button>
-      <div class="bt-expansion__content">
+      <div class="bt-expansion__content" id={@content_id}>
         {render_slot(@inner_block)}
       </div>
     </div>
@@ -433,12 +585,26 @@ defmodule Bds.Components.CatalogUi do
 
   attr :id, :string, required: true
   attr :open, :boolean, default: false
+
+  attr :urgent, :boolean,
+    default: false,
+    doc: "Errors that need immediate attention use role=alert instead of status."
+
+  attr :class, :any, default: nil
+  attr :rest, :global
   slot :inner_block, required: true
   slot :actions
 
   def bt_snackbar(assigns) do
     ~H"""
-    <div class="bt-snackbar" id={@id} data-open={to_string(@open)} role="status">
+    <div
+      class={["bt-snackbar", @class]}
+      id={@id}
+      data-open={to_string(@open)}
+      role={if(@urgent, do: "alert", else: "status")}
+      aria-atomic="true"
+      {@rest}
+    >
       {render_slot(@inner_block)}
       <div :if={@actions != []}>{render_slot(@actions)}</div>
     </div>
@@ -446,40 +612,92 @@ defmodule Bds.Components.CatalogUi do
   end
 
   attr :value, :integer, default: 0
+  attr :max, :integer, default: 100
   attr :label, :string, default: nil
+  attr :value_text, :string, default: nil, doc: "Spoken value, e.g. \"3 of 5 steps\"."
+  attr :size, :string, default: "md", values: ~w(sm md lg)
   attr :class, :any, default: nil
+  attr :rest, :global
 
   def bt_progress(assigns) do
-    assigns = assign_new(assigns, :progress_aria_label, fn -> gettext("Progress") end)
+    assigns =
+      assigns
+      |> assign_new(:progress_aria_label, fn -> gettext("Progress") end)
+      |> assign(:percent, progress_percent(assigns.value, assigns.max))
 
     ~H"""
-    <div class={["bt-progress", @class]} aria-label={@label || @progress_aria_label}>
-      <div class="bt-progress__bar" style={"--value: #{@value}%"}></div>
+    <div
+      class={["bt-progress", size_class("bt-progress", @size), @class]}
+      role="progressbar"
+      aria-label={@label || @progress_aria_label}
+      aria-valuemin="0"
+      aria-valuemax={@max}
+      aria-valuenow={@value}
+      aria-valuetext={@value_text}
+      {@rest}
+    >
+      <div class="bt-progress__bar" style={"--value: #{@percent}%"}></div>
     </div>
     """
   end
 
   attr :value, :integer, default: 0
-  attr :label, :string, default: nil
+  attr :max, :integer, default: 100
+  attr :label, :string, default: nil, doc: "Text shown in the center (defaults to the percentage)."
+  attr :aria_label, :string, default: nil
   attr :class, :any, default: nil
+  attr :rest, :global
 
   def bt_progress_circle(assigns) do
+    assigns =
+      assigns
+      |> assign(:percent, progress_percent(assigns.value, assigns.max))
+      |> assign_new(:progress_aria_label, fn -> gettext("Progress") end)
+
     ~H"""
     <div
       class={["bt-progress-circle", @class]}
-      style={"--value: #{@value}%"}
-      data-label={@label || "#{@value}%"}
+      style={"--value: #{@percent}%"}
+      data-label={@label || "#{@percent}%"}
+      role="progressbar"
+      aria-label={@aria_label || @progress_aria_label}
+      aria-valuemin="0"
+      aria-valuemax={@max}
+      aria-valuenow={@value}
+      aria-valuetext={@label}
+      {@rest}
     >
     </div>
     """
   end
 
+  defp progress_percent(_value, total) when total <= 0, do: 0
+  defp progress_percent(value, total), do: (value * 100) |> div(total) |> min(100) |> max(0)
+
+  @doc """
+  Tooltip shown on hover and keyboard focus. The text is linked to the trigger
+  with `aria-describedby`, so screen readers read it too. Escape hides it
+  (WCAG 1.4.13). Keep it short; never put essential information only here.
+  """
+  attr :id, :string, default: nil, doc: "Defaults to a stable id derived from the text."
   attr :text, :string, required: true
+  attr :class, :any, default: nil
+  attr :rest, :global
   slot :inner_block, required: true
 
   def bt_tooltip(assigns) do
+    assigns = assign(assigns, :id, assigns.id || "bt-tooltip-#{:erlang.phash2(assigns.text)}")
+
     ~H"""
-    <span class="bt-tooltip" data-tooltip={@text}>{render_slot(@inner_block)}</span>
+    <span
+      class={["bt-tooltip", @class]}
+      data-tooltip={@text}
+      data-tooltip-describes={"#{@id}-text"}
+      {@rest}
+    >
+      {render_slot(@inner_block)}
+      <span id={"#{@id}-text"} class="bt-sr-only" role="tooltip">{@text}</span>
+    </span>
     """
   end
 
@@ -526,31 +744,43 @@ defmodule Bds.Components.CatalogUi do
   end
 
   attr :variant, :string, default: "default", values: ~w(default compact)
+  attr :tag, :string, default: "div", values: ~w(div section main article aside)
+  attr :class, :any, default: nil
+  attr :rest, :global
   slot :inner_block, required: true
 
+  # Defaults to <div>: a bare <section> without a name is not a landmark and
+  # only adds noise to the outline.
   def bt_container(assigns) do
-    class =
-      if assigns.variant == "compact",
-        do: "bt-container bt-container--compact",
-        else: "bt-container"
-
-    assigns = assign(assigns, :class, class)
-
     ~H"""
-    <section class={@class}>{render_slot(@inner_block)}</section>
+    <.dynamic_tag
+      tag_name={@tag}
+      class={["bt-container", @variant == "compact" && "bt-container--compact", @class]}
+      {@rest}
+    >
+      {render_slot(@inner_block)}
+    </.dynamic_tag>
     """
   end
 
+  attr :id, :string, default: nil
   attr :title, :string, required: true
+  attr :title_tag, :string, default: "h2", values: ~w(h2 h3 h4)
   attr :description, :string, default: nil
+  attr :class, :any, default: nil
+  attr :rest, :global
   slot :actions
   slot :inner_block
 
   def bt_section(assigns) do
+    assigns = assign(assigns, :heading_id, assigns.id && "#{assigns.id}-title")
+
     ~H"""
-    <section class="bt-section">
+    <section id={@id} class={["bt-section", @class]} aria-labelledby={@heading_id} {@rest}>
       <div class="bt-section__header">
-        <h2 class="bt-section__title">{@title}</h2>
+        <.dynamic_tag tag_name={@title_tag} id={@heading_id} class="bt-section__title">
+          {@title}
+        </.dynamic_tag>
         <div :if={@actions != []}>{render_slot(@actions)}</div>
       </div>
       <p :if={@description} class="bt-section__description">{@description}</p>
@@ -579,6 +809,9 @@ defmodule Bds.Components.CatalogUi do
   end
 
   attr :label, :string, default: nil
+  attr :class, :any, default: nil
+  attr :rest, :global
+
   slot :item, required: true do
     attr :label, :string, required: true
     attr :pressed, :boolean
@@ -588,11 +821,11 @@ defmodule Bds.Components.CatalogUi do
     assigns = assign_new(assigns, :label, fn -> gettext("Segmented control") end)
 
     ~H"""
-    <div class="bt-segmented" role="group" aria-label={@label}>
+    <div class={["bt-segmented", @class]} role="group" aria-label={@label} {@rest}>
       <button
         :for={item <- @item}
         type="button"
-        aria-pressed={Map.get(item, :pressed, false)}
+        aria-pressed={to_string(Map.get(item, :pressed, false))}
       >
         {item.label}
       </button>
@@ -602,10 +835,12 @@ defmodule Bds.Components.CatalogUi do
 
   attr :label, :string, required: true
   attr :swatch, :string, required: true
+  attr :class, :any, default: nil
+  attr :rest, :global
 
   def bt_color_swatch(assigns) do
     ~H"""
-    <div class="bt-color-swatch">
+    <div class={["bt-color-swatch", @class]} {@rest}>
       <div class="bt-color-swatch__color" style={"--swatch: #{@swatch}"}></div>
       <div class="bt-color-swatch__text">{@label}</div>
     </div>
@@ -613,13 +848,21 @@ defmodule Bds.Components.CatalogUi do
   end
 
   attr :family, :string, required: true, doc: "Color family id, e.g. `bluetab-blue`."
+  attr :show_contrast, :boolean,
+    default: true,
+    doc: "Show the WCAG contrast ratio of the label color on each swatch."
+
   attr :class, :any, default: nil
+  attr :rest, :global
 
   def bt_color_scale(assigns) do
     assigns = assign(assigns, :color_family, Bds.Catalog.color_family!(assigns.family))
 
+    # The wrapper is a size container: the scale picks 2, 5 or 10 columns from
+    # the space it actually has, not from the viewport width.
     ~H"""
-    <div class={["bt-color-scale", @class]} role="list" aria-label={@color_family["name"]}>
+    <div class={["bt-color-scale-wrap", @class]} {@rest}>
+    <div class="bt-color-scale" role="list" aria-label={@color_family["name"]}>
       <div
         :for={step <- @color_family["steps"]}
         class={[
@@ -630,13 +873,37 @@ defmodule Bds.Components.CatalogUi do
         role="listitem"
         style={"--swatch: var(#{step["token"]})"}
       >
-        <span class="bt-color-scale__level">{step["level"]}</span>
+        <span class="bt-color-scale__head">
+          <span class="bt-color-scale__level">{step["level"]}</span>
+          <span :if={step["master"]} class="bt-color-scale__badge">{gettext("Master")}</span>
+        </span>
         <span class="bt-color-scale__data">
           <b>{step["hex"]}</b>RGB {step["rgb"]}<br />CMYK {step["cmyk"]}<br />{step["spot"]}
         </span>
+        <span :if={@show_contrast} class="bt-color-scale__contrast">
+          {swatch_contrast_label(step)}
+        </span>
       </div>
     </div>
+    </div>
     """
+  end
+
+  # Label text colors used by .bt-color-scale__step--on-{tone} (forms.css)
+  @swatch_text %{"dark" => "#1f222d", "light" => "#ffffff"}
+
+  defp swatch_contrast_label(%{"hex" => hex, "tone" => tone}) do
+    ratio = Bds.Contrast.ratio(Map.get(@swatch_text, tone, "#1f222d"), hex)
+
+    level =
+      cond do
+        Bds.Contrast.passes?(ratio, :text, :aaa) -> "AAA"
+        Bds.Contrast.passes?(ratio, :text, :aa) -> "AA"
+        Bds.Contrast.passes?(ratio, :large_text, :aa) -> gettext("AA large")
+        true -> gettext("Fails")
+      end
+
+    "#{Bds.Contrast.format_ratio(ratio)} · #{level}"
   end
 
   attr :class, :any, default: nil
@@ -645,7 +912,9 @@ defmodule Bds.Components.CatalogUi do
   attr :src, :string, default: nil
   attr :initials, :string, default: nil
   attr :compactness, :string, default: "compact", values: ~w(compact expanded)
+  attr :size, :string, default: "md", values: ~w(sm md lg)
   attr :badges, :list, default: []
+  attr :rest, :global
 
   def bt_avatar(assigns) do
     initials = assigns.initials || avatar_initials(assigns.name)
@@ -656,10 +925,12 @@ defmodule Bds.Components.CatalogUi do
       |> assign(:compactness_class, "bt-avatar--#{assigns.compactness}")
       |> assign(:show_name_badges?, assigns.badges != [])
 
+    # The name is always rendered as text next to the picture, so the picture
+    # is decorative (alt="") and must not repeat it to screen readers.
     ~H"""
-    <div class={["bt-avatar", @compactness_class, @class]}>
-      <div class="bt-avatar__media" aria-hidden={is_nil(@src)}>
-        <img :if={@src} src={@src} alt={@name} class="bt-avatar__image" />
+    <div class={["bt-avatar", @compactness_class, size_class("bt-avatar", @size), @class]} {@rest}>
+      <div class="bt-avatar__media" aria-hidden="true">
+        <img :if={@src} src={@src} alt="" class="bt-avatar__image" />
         <span :if={is_nil(@src)}>{@initials}</span>
       </div>
       <div class="bt-avatar__text">
@@ -688,24 +959,33 @@ defmodule Bds.Components.CatalogUi do
   attr :title, :string, required: true
   attr :subtitle, :string, default: nil
   attr :class, :any, default: nil
+  attr :rest, :global
+  slot :actions, doc: "Trailing controls (e.g. an icon button)."
 
   def bt_list_item(assigns) do
     ~H"""
-    <div class={["bt-list-item", @class]}>
-      <div class="bt-list-item__avatar">{@initials}</div>
+    <li class={["bt-list-item", @class]} {@rest}>
+      <div class="bt-list-item__avatar" aria-hidden="true">{@initials}</div>
       <div class="bt-list-item__content">
         <p class="bt-list-item__title">{@title}</p>
         <p :if={@subtitle} class="bt-list-item__subtitle">{@subtitle}</p>
       </div>
-    </div>
+      <div :if={@actions != []} class="bt-list-item__actions">{render_slot(@actions)}</div>
+    </li>
     """
   end
 
+  # Real list semantics so screen readers announce "list, N items".
+  attr :label, :string, default: nil
+  attr :class, :any, default: nil
+  attr :rest, :global
   slot :inner_block, required: true
 
   def bt_list_group(assigns) do
     ~H"""
-    <div class="bt-list">{render_slot(@inner_block)}</div>
+    <ul class={["bt-list", @class]} role="list" aria-label={@label} {@rest}>
+      {render_slot(@inner_block)}
+    </ul>
     """
   end
 
@@ -792,9 +1072,17 @@ defmodule Bds.Components.CatalogUi do
   attr :depth, :integer, default: 0
   attr :class, :any, default: nil
 
+  # Rendered as nested lists of disclosure buttons rather than role=tree: rows
+  # contain their own buttons and links, which the ARIA tree pattern does not
+  # allow. Arrow-key navigation between rows is added by initBtInteractions().
   def bt_tree(assigns) do
     ~H"""
-    <ul class={["bt-tree", @depth > 0 && "bt-tree--nested", @class]} id={@id} role={if(@depth == 0, do: "tree")}>
+    <ul
+      class={["bt-tree", @depth > 0 && "bt-tree--nested", @class]}
+      id={@id}
+      role="list"
+      data-bt-tree={@depth == 0 || nil}
+    >
       <.bt_tree_node
         :for={node <- @nodes}
         node={node}
@@ -841,13 +1129,13 @@ defmodule Bds.Components.CatalogUi do
       |> assign(:depth, assigns.depth)
       |> assign(:item_class, tree_item_class(node))
       |> assign(:label_row_class, tree_label_row_class(node, selectable? or linkable?))
+      |> assign(:group_id, "bt-tree-group-#{:erlang.phash2(key)}")
 
     ~H"""
     <li
       class={@item_class}
-      role={if(@depth == 0, do: "treeitem")}
-      aria-expanded={to_string(@open?)}
       data-role={@node[:role]}
+      data-tree-key={@key}
       style={"--bt-tree-depth: #{@depth}"}
     >
       <div class="bt-tree__row">
@@ -860,7 +1148,9 @@ defmodule Bds.Components.CatalogUi do
             phx-target={@toggle_target}
             phx-value-key={@key}
             aria-expanded={to_string(@open?)}
-            aria-label={gettext("Toggle branch")}
+            aria-controls={@open? && @group_id}
+            aria-label={gettext("Expand or collapse %{name}", name: @node.name)}
+            data-tree-toggle
           >
             <span class={["bt-tree__chevron bt-symbol", @open? && "bt-tree__chevron--open"]} aria-hidden="true">chevron_right</span>
           </button>
@@ -875,7 +1165,6 @@ defmodule Bds.Components.CatalogUi do
             phx-click={@select_event}
             phx-target={@select_target}
             phx-value-project_id={@node[:project_id]}
-            role="option"
           >
             <.bt_tree_label_content node={@node} />
           </button>
@@ -905,6 +1194,7 @@ defmodule Bds.Components.CatalogUi do
       </div>
       <.bt_tree
         :if={@has_children? and @open?}
+        id={@group_id}
         nodes={@children}
         expanded={@expanded}
         toggle_event={@toggle_event}
@@ -1086,8 +1376,11 @@ defmodule Bds.Components.CatalogUi do
       |> assign(:wrapper_id, wrapper_id)
       |> assign(:input_id, input_id)
       |> assign(:panel_id, "#{input_id}-panel")
+      |> assign(:errors_id, "#{input_id}-errors")
       |> assign(:field_class, ["bt-field", assigns.errors != [] && "bt-field--error"])
 
+    # APG "combobox with listbox popup". ↑/↓ move the active option
+    # (aria-activedescendant), Enter picks it, Escape closes — see a11y.js.
     ~H"""
     <div
       class={["bt-combobox", @open && "bt-combobox--open", @class]}
@@ -1104,6 +1397,15 @@ defmodule Bds.Components.CatalogUi do
             value={@value}
             class="bt-input"
             placeholder={@placeholder}
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded={to_string(@open)}
+            aria-controls={@panel_id}
+            aria-busy={to_string(@loading)}
+            aria-invalid={@errors != [] && "true"}
+            aria-describedby={@errors != [] && @errors_id}
+            autocomplete="off"
+            data-combobox-input
             phx-target={@target}
             {@rest}
           />
@@ -1121,17 +1423,22 @@ defmodule Bds.Components.CatalogUi do
             </button>
           </div>
         </div>
+        <p :if={@errors != []} id={@errors_id} class="bt-field__error">
+          <span class="bt-icon" aria-hidden="true">error</span>
+          {Enum.join(@errors, " ")}
+        </p>
       </div>
       <div
         :if={@open}
         id={@panel_id}
         class="bt-combobox__panel"
         role="listbox"
+        aria-label={@label}
       >
         <div :if={@panel_footer != []} class="bt-combobox__footer">
           {render_slot(@panel_footer)}
         </div>
-        <div :if={@loading} class="bt-combobox__status">
+        <div :if={@loading} class="bt-combobox__status" role="status">
           <%= if @loading_content != [] do %>
             {render_slot(@loading_content)}
           <% else %>
@@ -1144,6 +1451,7 @@ defmodule Bds.Components.CatalogUi do
         <div
           :if={not @loading and @options == [] and @empty != [] and @open}
           class="bt-combobox__status"
+          role="status"
         >
           {render_slot(@empty)}
         </div>
@@ -1152,6 +1460,7 @@ defmodule Bds.Components.CatalogUi do
     """
   end
 
+  attr :id, :string, default: nil, doc: "Needed for aria-activedescendant; a11y.js assigns one if missing."
   attr :selected, :boolean, default: false
   attr :variant, :string, default: "default", values: ~w(default warning)
   attr :rest, :global, include: ~w(phx-click phx-value-id type)
@@ -1170,7 +1479,15 @@ defmodule Bds.Components.CatalogUi do
     assigns = assign(assigns, :class, variant_class)
 
     ~H"""
-    <button type="button" class={@class} role="option" aria-selected={to_string(@selected)} {@rest}>
+    <button
+      type="button"
+      id={@id}
+      class={@class}
+      role="option"
+      aria-selected={to_string(@selected)}
+      tabindex="-1"
+      {@rest}
+    >
       {render_slot(@inner_block)}
     </button>
     """
@@ -1188,15 +1505,19 @@ defmodule Bds.Components.CatalogUi do
   attr :class, :any, default: nil
   attr :items, :list, required: true
   attr :separator, :string, default: "/"
+  attr :label, :string, default: nil
+  attr :rest, :global
 
   def bt_breadcrumb(assigns) do
+    assigns = assign_new(assigns, :nav_label, fn -> assigns.label || gettext("Breadcrumb") end)
+
     ~H"""
-    <nav class={["bt-breadcrumb", @class]} aria-label={gettext("Breadcrumb")}>
-      <%= for {item, index} <- Enum.with_index(@items) do %>
-        <span :if={index > 0} class="bt-breadcrumb__sep" aria-hidden="true">{@separator}</span>
-        <span class="bt-breadcrumb__item">
+    <nav class={["bt-breadcrumb", @class]} aria-label={@nav_label} {@rest}>
+      <ol class="bt-breadcrumb__list" role="list">
+        <li :for={{item, index} <- Enum.with_index(@items)} class="bt-breadcrumb__item">
+          <span :if={index > 0} class="bt-breadcrumb__sep" aria-hidden="true">{@separator}</span>
           <.link
-            :if={item[:href] || item[:navigate] || item[:patch]}
+            :if={!item[:current] && (item[:href] || item[:navigate] || item[:patch])}
             href={item[:href]}
             navigate={item[:navigate]}
             patch={item[:patch]}
@@ -1204,9 +1525,11 @@ defmodule Bds.Components.CatalogUi do
           >
             {item.label}
           </.link>
-          <span :if={item[:current]} class="bt-breadcrumb__current">{item.label}</span>
-        </span>
-      <% end %>
+          <span :if={item[:current]} class="bt-breadcrumb__current" aria-current="page">
+            {item.label}
+          </span>
+        </li>
+      </ol>
     </nav>
     """
   end
@@ -1215,40 +1538,40 @@ defmodule Bds.Components.CatalogUi do
   attr :class, :any, default: nil
   attr :compact, :boolean, default: false
   attr :title, :string, default: nil
+  attr :title_tag, :string, default: "h3", values: ~w(h2 h3 h4 p)
   attr :description, :string, default: nil
+  attr :rest, :global
   slot :icon
   slot :actions
   slot :inner_block
 
+  # Slots are lists: check `!= []`, not `render_slot/1` (which is nil when empty).
   def bt_empty(assigns) do
     ~H"""
-    <div id={@id} class={["bt-empty", @compact && "bt-empty--compact", @class]}>
-      <div :if={render_slot(@icon) != []} class="bt-empty__icon">{render_slot(@icon)}</div>
-      <h3 :if={@title} class="bt-empty__title">{@title}</h3>
+    <div id={@id} class={["bt-empty", @compact && "bt-empty--compact", @class]} {@rest}>
+      <div :if={@icon != []} class="bt-empty__icon" aria-hidden="true">{render_slot(@icon)}</div>
+      <.dynamic_tag :if={@title} tag_name={@title_tag} class="bt-empty__title">{@title}</.dynamic_tag>
       <p :if={@description} class="bt-empty__description">{@description}</p>
-      <div :if={render_slot(@inner_block) != []}>{render_slot(@inner_block)}</div>
-      <div :if={render_slot(@actions) != []} class="bt-empty__actions">{render_slot(@actions)}</div>
+      <div :if={@inner_block != []}>{render_slot(@inner_block)}</div>
+      <div :if={@actions != []} class="bt-empty__actions">{render_slot(@actions)}</div>
     </div>
     """
   end
 
   attr :class, :any, default: nil
   attr :size, :string, default: "md", values: ~w(sm md lg)
-  attr :label, :string, default: nil
+  attr :label, :string, default: nil, doc: "Announced text; defaults to \"Loading\"."
+  attr :rest, :global
 
   def bt_spinner(assigns) do
-    size_class =
-      case assigns.size do
-        "sm" -> "bt-spinner bt-spinner--sm"
-        "lg" -> "bt-spinner bt-spinner--lg"
-        _ -> "bt-spinner"
-      end
-
-    assigns = assign(assigns, :class, [size_class, assigns.class])
+    assigns =
+      assigns
+      |> assign(:class, ["bt-spinner", size_class("bt-spinner", assigns.size), assigns.class])
+      |> assign(:announce, assigns.label || gettext("Loading"))
 
     ~H"""
-    <span class={@class} role="status" aria-live="polite">
-      <span :if={@label} class="sr-only">{@label}</span>
+    <span class={@class} role="status" {@rest}>
+      <span class="bt-sr-only">{@announce}</span>
     </span>
     """
   end
@@ -1339,6 +1662,9 @@ defmodule Bds.Components.CatalogUi do
   slot :footer
   slot :header_actions
 
+  # Focus: moves into the panel on mount, is trapped by focus_wrap, and returns
+  # to the element that was focused before opening when the modal is removed
+  # (a11y.js remembers it via data-focus-return).
   def bt_modal(assigns) do
     assigns = assign_new(assigns, :close_label, fn -> gettext("Close dialog") end)
 
@@ -1348,6 +1674,7 @@ defmodule Bds.Components.CatalogUi do
       class={["bt-modal", @class]}
       phx-key="Escape"
       phx-window-keydown={@close_event}
+      data-focus-return
       {@rest}
     >
       <button
@@ -1355,14 +1682,23 @@ defmodule Bds.Components.CatalogUi do
         class="bt-modal__backdrop"
         phx-click={@close_event}
         aria-label={@close_label}
+        tabindex="-1"
       />
-      <div class={["bt-modal__panel", @large && "bt-modal__panel--lg"]} role="dialog" aria-modal="true">
+      <.focus_wrap
+        id={"#{@id}-panel"}
+        class={["bt-modal__panel", @large && "bt-modal__panel--lg"]}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={"#{@id}-title"}
+        aria-describedby={@subtitle && "#{@id}-subtitle"}
+        phx-mounted={Phoenix.LiveView.JS.focus_first()}
+      >
         <header class="bt-modal__header">
-          <div class="min-w-0">
-            <h2 class="bt-modal__title">{@title}</h2>
-            <p :if={@subtitle} class="bt-modal__subtitle">{@subtitle}</p>
+          <div class="bt-modal__heading">
+            <h2 id={"#{@id}-title"} class="bt-modal__title">{@title}</h2>
+            <p :if={@subtitle} id={"#{@id}-subtitle"} class="bt-modal__subtitle">{@subtitle}</p>
           </div>
-          <div :if={render_slot(@header_actions) != []}>{render_slot(@header_actions)}</div>
+          <div :if={@header_actions != []}>{render_slot(@header_actions)}</div>
           <button
             :if={@show_close}
             type="button"
@@ -1374,8 +1710,8 @@ defmodule Bds.Components.CatalogUi do
           </button>
         </header>
         <div class="bt-modal__body">{render_slot(@inner_block)}</div>
-        <footer :if={render_slot(@footer) != []} class="bt-modal__footer">{render_slot(@footer)}</footer>
-      </div>
+        <footer :if={@footer != []} class="bt-modal__footer">{render_slot(@footer)}</footer>
+      </.focus_wrap>
     </div>
     """
   end

@@ -1514,3 +1514,186 @@ msgstr "Fuente de iconos Google Material Symbols Rounded. Escribe el nombre de l
 
 msgid "Material Symbols"
 msgstr "Material Symbols"
+
+msgid "AA large"
+msgstr "AA grande"
+
+msgid "Fails"
+msgstr "No cumple"
+
+msgid "Body text"
+msgstr "Texto principal"
+
+msgid "Paragraphs, labels, table cells"
+msgstr "Párrafos, etiquetas, celdas de tabla"
+
+msgid "Body text on background"
+msgstr "Texto principal sobre fondo"
+
+msgid "Page canvas"
+msgstr "Lienzo de la página"
+
+msgid "Muted text"
+msgstr "Texto atenuado"
+
+msgid "Descriptions, secondary copy"
+msgstr "Descripciones, texto secundario"
+
+msgid "Muted text on soft surface"
+msgstr "Texto atenuado sobre superficie suave"
+
+msgid "Sidebar, cards"
+msgstr "Barra lateral, tarjetas"
+
+msgid "Subtle text"
+msgstr "Texto sutil"
+
+msgid "Help text, captions, group titles"
+msgstr "Textos de ayuda, pies, títulos de grupo"
+
+msgid "Subtle text on background"
+msgstr "Texto sutil sobre fondo"
+
+msgid "Metadata on canvas"
+msgstr "Metadatos sobre el lienzo"
+
+msgid "Primary link"
+msgstr "Enlace primario"
+
+msgid "Links, ghost/outline buttons"
+msgstr "Enlaces, botones ghost/outline"
+
+msgid "Primary button"
+msgstr "Botón primario"
+
+msgid "bt-button--primary, active nav link"
+msgstr "bt-button--primary, enlace de navegación activo"
+
+msgid "Primary on soft"
+msgstr "Primario sobre suave"
+
+msgid "Selected chips, tinted cards"
+msgstr "Chips seleccionados, tarjetas tintadas"
+
+msgid "Secondary button"
+msgstr "Botón secundario"
+
+msgid "bt-button--secondary, FAB"
+msgstr "bt-button--secondary, FAB"
+
+msgid "Secondary as text"
+msgstr "Secundario como texto"
+
+msgid "Eyebrows (bt-eyebrow)"
+msgstr "Antetítulos (bt-eyebrow)"
+
+msgid "Tertiary button"
+msgstr "Botón terciario"
+
+msgid "bt-button--tertiary"
+msgstr "bt-button--tertiary"
+
+msgid "Success on soft"
+msgstr "Éxito sobre suave"
+
+msgid "Success badges, callouts"
+msgstr "Badges y avisos de éxito"
+
+msgid "Warning on soft"
+msgstr "Aviso sobre suave"
+
+msgid "Warning badges, callouts"
+msgstr "Badges y avisos de advertencia"
+
+msgid "Error on soft"
+msgstr "Error sobre suave"
+
+msgid "Error badges, callouts"
+msgstr "Badges y avisos de error"
+
+msgid "Info on soft"
+msgstr "Info sobre suave"
+
+msgid "Info badges, callouts"
+msgstr "Badges y avisos informativos"
+
+msgid "Error text"
+msgstr "Texto de error"
+
+msgid "Field validation messages"
+msgstr "Mensajes de validación de campos"
+
+msgid "White on success"
+msgstr "Blanco sobre éxito"
+
+msgid "Solid success badge"
+msgstr "Badge de éxito sólido"
+
+msgid "White on warning"
+msgstr "Blanco sobre aviso"
+
+msgid "Solid warning badge"
+msgstr "Badge de aviso sólido"
+
+msgid "White on error"
+msgstr "Blanco sobre error"
+
+msgid "Danger button"
+msgstr "Botón de peligro"
+
+msgid "Primary heading"
+msgstr "Título primario"
+
+msgid "Headings ≥ 24px or ≥ 18.66px bold"
+msgstr "Títulos ≥ 24px o ≥ 18,66px en negrita"
+
+msgid "Secondary heading"
+msgstr "Título secundario"
+
+msgid "Display text"
+msgstr "Texto display"
+
+msgid "Input border"
+msgstr "Borde de campo"
+
+msgid "Text fields, selects, checkboxes"
+msgstr "Campos de texto, selects, casillas"
+
+msgid "Divider / card border"
+msgstr "Separador / borde de tarjeta"
+
+msgid "Decorative — exempt if not needed to identify a control"
+msgstr "Decorativo — exento si no es necesario para identificar un control"
+
+msgid "Focus ring (secondary)"
+msgstr "Anillo de foco (secundario)"
+
+msgid ":focus-visible outline (solid)"
+msgstr "Outline de :focus-visible (sólido)"
+
+msgid "Focus ring (primary)"
+msgstr "Anillo de foco (primario)"
+
+msgid "Input focus border"
+msgstr "Borde de campo enfocado"
+
+msgid "Primary button vs. page"
+msgstr "Botón primario frente a la página"
+
+msgid "Button boundary against the canvas"
+msgstr "Límite del botón frente al lienzo"
+
+msgid "Icon (muted)"
+msgstr "Icono (atenuado)"
+
+msgid "Meaningful icons"
+msgstr "Iconos con significado"
+
+msgid "Expand or collapse %{name}"
+msgstr "Expandir o contraer %{name}"
+
+msgid "User menu: %{name}"
+msgstr "Menú de usuario: %{name}"
+
+msgid "User menu"
+msgstr "Menú de usuario"

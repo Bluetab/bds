@@ -262,6 +262,17 @@
   /* Stacking (topbar 220, user menu 230 — flash above chrome) */
   --bt-z-flash: 240;
 
+  /* Control sizes (xs/sm/md/lg) shared by buttons, inputs, chips… see scale.css */
+  --bt-control-height-xs: 1.75rem;
+  --bt-control-height-sm: 2rem;
+  --bt-control-height-md: 2.5rem;
+  --bt-control-height-lg: 3.25rem;
+
+  /* Focus (WCAG 2.4.7 / 1.4.11). Override per app; see Accessibility › Color in the storybook. */
+  --bt-focus-ring-color: color-mix(in srgb, var(--bt-color-secondary), transparent 40%);
+  --bt-focus-ring-width: 3px;
+  --bt-focus-ring-offset: 3px;
+
   /* Motion */
   --bt-ease: cubic-bezier(.2, .8, .2, 1);
   --bt-ease-emphasis: cubic-bezier(0.22, 1, 0.36, 1);

@@ -386,19 +386,38 @@ html[data-theme="dark"] .bt-navbar-logo-img--dark {
   color: var(--bt-color-text);
   font-size: var(--bt-font-size-sm);
   opacity: 0;
+  visibility: hidden; /* keeps closed items out of the Tab order and the a11y tree */
   pointer-events: none;
   transform: scale(0.95);
   transform-origin: top right;
   transition:
     opacity var(--bt-duration-fast) var(--bt-ease),
-    transform var(--bt-duration-fast) var(--bt-ease);
+    transform var(--bt-duration-fast) var(--bt-ease),
+    visibility 0s linear var(--bt-duration-fast);
 }
 
 .bt-navbar-user:hover .bt-navbar-user__dropdown,
-.bt-navbar-user:focus-within .bt-navbar-user__dropdown {
+.bt-navbar-user:focus-within .bt-navbar-user__dropdown,
+.bt-navbar-user[data-open="true"] .bt-navbar-user__dropdown {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
   transform: scale(1);
+  transition:
+    opacity var(--bt-duration-fast) var(--bt-ease),
+    transform var(--bt-duration-fast) var(--bt-ease);
+}
+
+/* Trigger is a real <button>: its parts are spans. Zero-specificity block
+   default so the existing class rules (flex, grid…) still win. */
+:where(.bt-navbar-user__trigger) :where(.bt-navbar-user__meta, .bt-navbar-user__name, .bt-navbar-user__avatar-wrap, .bt-navbar-user__avatar) { display: block; }
+:where(button.bt-navbar-user__trigger) { font: inherit; color: inherit; background: transparent; text-align: left; }
+
+/* Escape closes the menu even while focus stays on the trigger */
+.bt-navbar-user[data-dismissed="true"] .bt-navbar-user__dropdown {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .bt-navbar-user__dropdown-header {

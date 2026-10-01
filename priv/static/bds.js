@@ -1,10 +1,191 @@
-//#region src/lib/interactions.js
-var e = "bt-theme", t = (e, t = document) => [...t.querySelectorAll(e)], n = (e = document) => e.querySelector("[data-theme-icon]"), r = (e = document, r = e.documentElement.dataset.theme) => {
-	let i = n(e);
-	i && (i.textContent = r === "dark" ? "light_mode" : "dark_mode"), t("[data-theme-value]", e).forEach((e) => {
-		e.textContent = r === "dark" ? e.dataset.dark || "Dark" : e.dataset.light || "Light";
+//#region src/lib/a11y.js
+var e = [
+	"a[href]",
+	"area[href]",
+	"button:not([disabled])",
+	"input:not([disabled]):not([type=\"hidden\"])",
+	"select:not([disabled])",
+	"textarea:not([disabled])",
+	"iframe",
+	"summary",
+	"[tabindex]:not([tabindex=\"-1\"])",
+	"[contenteditable=\"true\"]"
+].join(","), t = (e) => !!(e.offsetWidth || e.offsetHeight || e.getClientRects().length), n = (n) => [...n.querySelectorAll(e)].filter(t), r = (e, t, n) => {
+	switch (e) {
+		case "ArrowRight":
+		case "ArrowDown": return (t + 1) % n;
+		case "ArrowLeft":
+		case "ArrowUp": return (t - 1 + n) % n;
+		case "Home": return 0;
+		case "End": return n - 1;
+		default: return null;
+	}
+}, i = 0, a = (e, t) => (e.id ||= `${t}-${++i}`, e.id), o = (e, { focus: t = !1 } = {}) => {
+	let n = e.closest("[data-tabs]");
+	n && (n.querySelectorAll("[role=\"tab\"]").forEach((t) => {
+		let n = t === e;
+		t.setAttribute("aria-selected", String(n)), t.tabIndex = n ? 0 : -1;
+	}), n.querySelectorAll(".bt-tab-panel").forEach((t) => {
+		t.setAttribute("aria-hidden", String(t.id !== e.dataset.tab));
+	}), t && e.focus());
+}, s = (e) => {
+	let t = e.target.closest("[role=\"tab\"]"), n = t?.closest("[role=\"tablist\"]");
+	if (!n) return !1;
+	let i = [...n.querySelectorAll("[role=\"tab\"]")], a = r(e.key, i.indexOf(t), i.length);
+	return a === null ? !1 : (e.preventDefault(), o(i[a], { focus: !0 }), !0);
+}, c = (e) => [...e.querySelectorAll("[role=\"menuitem\"]")].filter(t), l = (e, t, n) => {
+	e && (e.dataset.open = String(t), n.querySelectorAll(`[data-menu-toggle="${CSS.escape(e.id)}"]`).forEach((e) => {
+		e.setAttribute("aria-expanded", String(t));
+	}));
+}, u = (e, t) => t.querySelector(`[data-menu-toggle="${CSS.escape(e.id)}"]`), d = (e, t) => {
+	let n = e.target.closest("[data-menu-toggle]");
+	if (n && [
+		"ArrowDown",
+		"ArrowUp",
+		"Enter",
+		" "
+	].includes(e.key)) {
+		let r = t.getElementById(n.dataset.menuToggle);
+		if (!r) return !1;
+		e.preventDefault(), l(r, !0, t);
+		let i = c(r);
+		return (e.key === "ArrowUp" ? i[i.length - 1] : i[0])?.focus(), !0;
+	}
+	let i = e.target.closest(".bt-menu[role=\"menu\"]");
+	if (!i) return !1;
+	let a = c(i);
+	if (e.key === "Escape") return e.preventDefault(), l(i, !1, t), u(i, t)?.focus(), !0;
+	if (e.key === "Tab") return l(i, !1, t), !1;
+	let o = r(e.key, a.indexOf(e.target.closest("[role=\"menuitem\"]")), a.length);
+	return o === null ? !1 : (e.preventDefault(), a[o]?.focus(), !0);
+}, f = (e) => [...e.querySelectorAll("[data-focus-trap][open], .bt-modal [role=\"dialog\"]")].filter(t), p = (e) => {
+	let t = e.querySelector("[autofocus]") || n(e)[0] || e;
+	t === e && !e.hasAttribute("tabindex") && (e.tabIndex = -1), t.focus();
+}, m = (e, t) => {
+	if (e.key !== "Tab") return !1;
+	let r = f(t), i = r[r.length - 1];
+	if (!i) return !1;
+	let a = n(i);
+	if (a.length === 0) return e.preventDefault(), !0;
+	let o = a[0], s = a[a.length - 1];
+	return i.contains(document.activeElement) ? e.shiftKey && document.activeElement === o ? (e.preventDefault(), s.focus()) : !e.shiftKey && document.activeElement === s && (e.preventDefault(), o.focus()) : (e.preventDefault(), o.focus()), !0;
+}, h = /* @__PURE__ */ new WeakMap(), g = (e, t) => {
+	t && h.set(e, t);
+}, _ = (e) => setTimeout(() => p(e), 0), v = (e) => {
+	let t = h.get(e);
+	h.delete(e), t?.isConnected && t.focus();
+}, y = (e, n, r) => {
+	if (e.key !== "Escape") return !1;
+	let i = [...n.querySelectorAll("[data-focus-trap][open]")].filter(t), a = i[i.length - 1];
+	return a ? (e.preventDefault(), r(a), !0) : !1;
+}, b = (e) => {
+	let t = e.dataset.tooltipDescribes, r = n(e)[0];
+	if (!t || !r) return;
+	let i = (r.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
+	i.includes(t) || r.setAttribute("aria-describedby", [...i, t].join(" "));
+}, x = (e, n) => {
+	let r = n.getElementById(e.getAttribute("aria-controls"));
+	return r ? [...r.querySelectorAll("[role=\"option\"]")].filter(t) : [];
+}, S = (e, t) => {
+	if (e.closest(".bt-combobox")?.querySelectorAll("[role=\"option\"][data-active]").forEach((e) => e.removeAttribute("data-active")), !t) {
+		e.removeAttribute("aria-activedescendant");
+		return;
+	}
+	t.dataset.active = "true", e.setAttribute("aria-activedescendant", a(t, "bt-option")), t.scrollIntoView({ block: "nearest" });
+}, C = (e, t) => {
+	let n = e.target.closest("[data-combobox-input]");
+	if (!n) return !1;
+	let r = x(n, t), i = n.getAttribute("aria-activedescendant"), a = r.findIndex((e) => e.id === i);
+	return e.key === "ArrowDown" || e.key === "ArrowUp" ? r.length === 0 ? !1 : (e.preventDefault(), S(n, r[e.key === "ArrowDown" ? (a + 1) % r.length : (a - 1 + r.length) % r.length]), !0) : e.key === "Enter" && a >= 0 ? (e.preventDefault(), r[a].click(), S(n, null), !0) : e.key === "Escape" && i ? (e.preventDefault(), S(n, null), !0) : !1;
+}, w = (e) => e.querySelector(".bt-tree__body button, .bt-tree__body a[href]") || e.querySelector("[data-tree-toggle]"), T = (e) => {
+	let n = e.target.closest("[data-bt-tree]");
+	if (!n || ![
+		"ArrowUp",
+		"ArrowDown",
+		"ArrowLeft",
+		"ArrowRight",
+		"Home",
+		"End"
+	].includes(e.key)) return !1;
+	let i = e.target.closest(".bt-tree__row");
+	if (!i) return !1;
+	let a = [...n.querySelectorAll(".bt-tree__row")].filter(t).filter(w), o = i.querySelector("[data-tree-toggle]"), s = o?.getAttribute("aria-expanded") === "true";
+	if (e.key === "ArrowRight") o && !s ? o.click() : o && a[a.indexOf(i) + 1] && w(a[a.indexOf(i) + 1]).focus();
+	else if (e.key === "ArrowLeft") o && s ? o.click() : w(i.closest(".bt-tree--nested")?.closest(".bt-tree__item")?.querySelector(".bt-tree__row") || i)?.focus();
+	else {
+		let t = r(e.key, a.indexOf(i), a.length);
+		if (t === null) return !1;
+		if (e.key === "ArrowDown" && t === 0 || e.key === "ArrowUp" && t === a.length - 1) return e.preventDefault(), !0;
+		w(a[t])?.focus();
+	}
+	return e.preventDefault(), !0;
+}, E = (e) => {
+	let t = e.querySelector("[data-navbar-user-trigger]");
+	if (!t) return;
+	let n = e.dataset.dismissed !== "true" && (e.dataset.open === "true" || e.matches(":hover") || e.matches(":focus-within"));
+	t.setAttribute("aria-expanded", String(n));
+};
+function D(e, { signal: t, closeDialog: n }) {
+	let r = null;
+	e.addEventListener("focusin", (e) => {
+		e.target.closest("[data-focus-trap], .bt-modal") || (r = e.target);
+		let t = e.target.closest(".bt-tooltip");
+		t && b(t);
+		let n = e.target.closest("[data-navbar-user]");
+		n && E(n);
+	}, { signal: t }), e.addEventListener("focusout", (e) => {
+		let t = e.target.closest("[data-navbar-user]");
+		t && !t.contains(e.relatedTarget) && (delete t.dataset.dismissed, t.dataset.open = "false", setTimeout(() => E(t), 0));
+		let n = e.target.closest(".bt-tooltip");
+		n && !n.contains(e.relatedTarget) && delete n.dataset.tooltipHidden;
+	}, { signal: t }), e.addEventListener("mouseover", (e) => {
+		let t = e.target.closest("[data-navbar-user]");
+		t && E(t);
+	}, { signal: t }), e.addEventListener("mouseout", (e) => {
+		let t = e.target.closest("[data-navbar-user]");
+		t && !t.contains(e.relatedTarget) && setTimeout(() => E(t), 0);
+	}, { signal: t }), e.addEventListener("click", (e) => {
+		let t = e.target.closest("[data-navbar-user-trigger]");
+		if (t) {
+			let e = t.closest("[data-navbar-user]");
+			t.getAttribute("aria-expanded") === "true" && e.dataset.dismissed !== "true" ? (e.dataset.dismissed = "true", e.dataset.open = "false") : (delete e.dataset.dismissed, e.dataset.open = "true"), E(e);
+			return;
+		}
+		let n = e.target.closest("[data-expansion-toggle]");
+		if (n) {
+			let e = n.closest("[data-expansion]");
+			n.setAttribute("aria-expanded", String(e?.dataset.open === "true"));
+		}
+		let r = e.target.closest("[role=\"tab\"][data-tab]");
+		r && o(r);
+	}, { signal: t }), e.addEventListener("keydown", (t) => {
+		if (!t.defaultPrevented && !s(t) && !d(t, e) && !C(t, e) && !T(t) && !m(t, e) && !y(t, e, n)) {
+			if (t.key === "Escape") {
+				let e = t.target.closest(".bt-tooltip");
+				e && (e.dataset.tooltipHidden = "true");
+				let n = t.target.closest("[data-navbar-user]");
+				n && (n.dataset.dismissed = "true", n.dataset.open = "false", E(n), n.querySelector("[data-navbar-user-trigger]")?.focus());
+				return;
+			}
+			(t.key === "Enter" || t.key === " ") && t.target.matches("[role=\"button\"]:not(button):not(a):not(input)") && (t.preventDefault(), t.target.click());
+		}
+	}, { signal: t });
+	let i = new MutationObserver((e) => {
+		e.some((e) => [...e.removedNodes].some((e) => e.nodeType === 1 && (e.matches?.("[data-focus-return]") || e.querySelector?.("[data-focus-return]")))) && r?.isConnected && (document.activeElement === document.body || !document.activeElement) && r.focus();
 	});
-}, i = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), a = (e) => {
+	return i.observe(e.body || e, {
+		childList: !0,
+		subtree: !0
+	}), () => i.disconnect();
+}
+//#endregion
+//#region src/lib/interactions.js
+var O = "bt-theme", k = (e, t = document) => [...t.querySelectorAll(e)], A = (e = document) => e.querySelector("[data-theme-icon]"), j = (e = document, t = e.documentElement.dataset.theme) => {
+	let n = A(e);
+	n && (n.textContent = t === "dark" ? "light_mode" : "dark_mode"), k("[data-theme-value]", e).forEach((e) => {
+		e.textContent = t === "dark" ? e.dataset.dark || "Dark" : e.dataset.light || "Light";
+	});
+}, M = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), N = (e) => {
 	if (e) {
 		if (typeof HTMLDialogElement < "u" && e instanceof HTMLDialogElement) {
 			!e.open && typeof e.showModal == "function" && e.showModal();
@@ -12,7 +193,7 @@ var e = "bt-theme", t = (e, t = document) => [...t.querySelectorAll(e)], n = (e 
 		}
 		e.setAttribute("open", "");
 	}
-}, o = (e) => {
+}, P = (e) => {
 	if (e) {
 		if (typeof HTMLDialogElement < "u" && e instanceof HTMLDialogElement) {
 			e.open && typeof e.close == "function" && e.close();
@@ -20,113 +201,131 @@ var e = "bt-theme", t = (e, t = document) => [...t.querySelectorAll(e)], n = (e 
 		}
 		e.removeAttribute("open");
 	}
-}, s = (e = document, n) => {
-	t("[data-open=\"true\"].bt-menu", e).forEach((e) => {
-		e !== n && (e.dataset.open = "false");
+}, F = (e, t, n = document) => {
+	e.dataset.open = String(t), k(`[data-menu-toggle="${CSS.escape(e.id)}"]`, n).forEach((e) => {
+		e.setAttribute("aria-expanded", String(t));
 	});
-}, c = (t, n = {}) => {
-	let { root: i = document, storageKey: a = e, persist: o = !0 } = n;
-	i.documentElement.dataset.theme = t, r(i, t), o && localStorage.setItem(a, t);
-}, l = (e = {}) => {
+}, I = (e = document, t) => {
+	k("[data-open=\"true\"].bt-menu", e).forEach((n) => {
+		n !== t && F(n, !1, e);
+	});
+}, L = (e) => {
+	e && (e.classList.contains("bt-overlay") ? e.removeAttribute("open") : P(e), v(e));
+}, R = (e, t = {}) => {
+	let { root: n = document, storageKey: r = O, persist: i = !0 } = t;
+	n.documentElement.dataset.theme = e, j(n, e), i && localStorage.setItem(r, e);
+}, z = (e = {}) => {
 	let t = (e.root || document).documentElement.dataset.theme === "dark" ? "light" : "dark";
-	return c(t, e), t;
-}, u = (t = {}) => {
-	let { root: n = document, storageKey: r = e, fallbackTheme: i = "light" } = t, a = localStorage.getItem(r) || i;
-	return c(a, {
-		...t,
-		root: n,
+	return R(t, e), t;
+}, B = (e = {}) => {
+	let { root: t = document, storageKey: n = O, fallbackTheme: r = "light" } = e, i = localStorage.getItem(n) || r;
+	return R(i, {
+		...e,
+		root: t,
 		persist: !1
-	}), a;
+	}), i;
 };
-function d(n = {}) {
-	let { root: c = document, storageKey: d = e, autoApplyStoredTheme: f = !0 } = n, p = new AbortController(), { signal: m } = p;
-	f ? u({
-		root: c,
-		storageKey: d,
-		fallbackTheme: c.documentElement.dataset.theme || "light"
-	}) : r(c);
-	let h = new MutationObserver(() => r(c));
-	return h.observe(c.documentElement, {
+function V(e = {}) {
+	let { root: t = document, storageKey: n = O, autoApplyStoredTheme: r = !0 } = e, i = new AbortController(), { signal: a } = i;
+	r ? B({
+		root: t,
+		storageKey: n,
+		fallbackTheme: t.documentElement.dataset.theme || "light"
+	}) : j(t);
+	let o = new MutationObserver(() => j(t));
+	o.observe(t.documentElement, {
 		attributes: !0,
 		attributeFilter: ["data-theme"]
-	}), c.addEventListener("mousedown", (e) => {
+	}), t.addEventListener("mousedown", (e) => {
 		e.target.closest(".bt-combobox__panel") && e.preventDefault();
-	}, { signal: m }), c.addEventListener("click", (e) => {
+	}, { signal: a }), t.addEventListener("click", (e) => {
 		if (e.target.closest("[data-theme-toggle]")) {
-			l({
-				root: c,
-				storageKey: d
+			z({
+				root: t,
+				storageKey: n
 			});
 			return;
 		}
-		let n = e.target.closest("[data-dialog-open]");
-		if (n) {
-			a(i(n, n.dataset.dialogOpen, c));
-			return;
-		}
-		let r = e.target.closest("[data-dialog-close]");
+		let r = e.target.closest("[data-dialog-open]");
 		if (r) {
-			o(r.closest(".bt-dialog"));
+			let e = M(r, r.dataset.dialogOpen, t);
+			e && (g(e, r), N(e), _(e));
 			return;
 		}
-		let u = e.target.closest("[data-overlay-open]");
-		if (u) {
-			i(u, u.dataset.overlayOpen, c)?.setAttribute("open", "");
+		let i = e.target.closest("[data-dialog-close]");
+		if (i) {
+			L(i.closest(".bt-dialog"));
 			return;
 		}
-		let f = e.target.closest("[data-overlay-close]");
-		if (f) {
-			f.closest(".bt-overlay")?.removeAttribute("open");
+		let a = e.target.closest("[data-overlay-open]");
+		if (a) {
+			let e = M(a, a.dataset.overlayOpen, t);
+			e && (g(e, a), e.setAttribute("open", ""), _(e));
 			return;
 		}
-		let p = e.target.closest("[data-menu-toggle]");
-		if (p) {
-			let e = i(p, p.dataset.menuToggle, c), t = e?.dataset.open !== "true";
-			s(c, e), e && (e.dataset.open = String(t));
+		let o = e.target.closest("[data-overlay-close]");
+		if (o) {
+			L(o.closest(".bt-overlay"));
 			return;
 		}
-		e.target.closest(".bt-menu-wrap") || s(c);
-		let m = e.target.closest("[data-expansion-toggle]");
-		if (m) {
-			let e = m.closest("[data-expansion]");
+		let s = e.target.closest("[data-menu-toggle]");
+		if (s) {
+			let e = M(s, s.dataset.menuToggle, t), n = e?.dataset.open !== "true";
+			I(t, e), e && F(e, n, t);
+			return;
+		}
+		let c = e.target.closest(".bt-menu [role=\"menuitem\"]");
+		if (c) {
+			let e = c.closest(".bt-menu");
+			F(e, !1, t), t.querySelector(`[data-menu-toggle="${CSS.escape(e.id)}"]`)?.focus();
+		}
+		e.target.closest(".bt-menu-wrap") || I(t);
+		let l = e.target.closest("[data-expansion-toggle]");
+		if (l) {
+			let e = l.closest("[data-expansion]");
 			e.dataset.open = e.dataset.open === "true" ? "false" : "true";
 			return;
 		}
-		let h = e.target.closest("[data-snackbar-open]");
-		if (h) {
-			let e = i(h, h.dataset.snackbarOpen, c);
+		let u = e.target.closest("[data-snackbar-open]");
+		if (u) {
+			let e = M(u, u.dataset.snackbarOpen, t);
 			e && (e.dataset.open = "true", setTimeout(() => {
 				e.dataset.open = "false";
 			}, 3200));
 			return;
 		}
-		let g = e.target.closest("[data-snackbar-close]");
-		if (g) {
-			let e = g.closest(".bt-snackbar");
+		let d = e.target.closest("[data-snackbar-close]");
+		if (d) {
+			let e = d.closest(".bt-snackbar");
 			e && (e.dataset.open = "false");
 			return;
 		}
 		if (e.target.closest("[data-toggle-sidebar]")) {
-			c.body.classList.toggle("bt-sidebar-open");
+			t.body.classList.toggle("bt-sidebar-open");
 			return;
 		}
-		if (c.body.classList.contains("bt-sidebar-open") && e.target.closest(".bt-sidebar a, .bt-sidebar .bt-nav-link")) {
-			c.body.classList.remove("bt-sidebar-open");
+		if (t.body.classList.contains("bt-sidebar-open") && e.target.closest(".bt-sidebar a, .bt-sidebar .bt-nav-link")) {
+			t.body.classList.remove("bt-sidebar-open");
 			return;
 		}
-		let _ = e.target.closest("[data-tab]");
-		if (_) {
-			let e = _.closest("[data-tabs]");
+		let f = e.target.closest("[data-tab]");
+		if (f) {
+			let e = f.closest("[data-tabs]");
 			if (!e) return;
-			t("[role=\"tab\"]", e).forEach((e) => {
-				e.setAttribute("aria-selected", String(e === _));
-			}), t(".bt-tab-panel", e).forEach((e) => {
-				e.setAttribute("aria-hidden", String(e.id !== _.dataset.tab));
+			k("[role=\"tab\"]", e).forEach((e) => {
+				e.setAttribute("aria-selected", String(e === f));
+			}), k(".bt-tab-panel", e).forEach((e) => {
+				e.setAttribute("aria-hidden", String(e.id !== f.dataset.tab));
 			});
 		}
-	}, { signal: m }), () => {
-		p.abort(), h.disconnect();
+	}, { signal: a });
+	let s = D(t, {
+		signal: a,
+		closeDialog: L
+	});
+	return () => {
+		i.abort(), o.disconnect(), s();
 	};
 }
 //#endregion
-export { e as DEFAULT_THEME_STORAGE_KEY, u as applyStoredTheme, d as initBtInteractions, c as setTheme, l as toggleTheme };
+export { O as DEFAULT_THEME_STORAGE_KEY, B as applyStoredTheme, V as initBtInteractions, R as setTheme, z as toggleTheme };

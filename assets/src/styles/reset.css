@@ -6,5 +6,21 @@ button, input, select, textarea { font: inherit; }
 button { border: 0; }
 img, svg, video { display: block; max-width: 100%; }
 code, pre { font-family: var(--bt-font-mono); }
-:focus-visible { outline: 3px solid color-mix(in srgb, var(--bt-color-secondary), transparent 40%); outline-offset: 3px; }
+:focus-visible { outline: var(--bt-focus-ring-width) solid var(--bt-focus-ring-color); outline-offset: var(--bt-focus-ring-offset); }
 [hidden] { display: none !important; }
+
+/* Respect OS "reduce motion" (WCAG 2.3.3) */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Windows High Contrast / forced colors: keep focus visible with system colors */
+@media (forced-colors: active) {
+  :focus-visible { outline: 3px solid Highlight; }
+}

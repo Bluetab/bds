@@ -172,8 +172,10 @@ defmodule Bds.Components do
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
   attr :class, :any, default: nil, doc: "the input class to use over defaults"
-  attr :error_class, :any, default: nil, doc: "the input error class to use over defaults"
+  attr :error_class, :any, default: nil, doc: "extra class added to the control when it has errors"
   attr :help, :string, default: nil, doc: "optional help text below the control"
+  attr :size, :string, default: "md", values: ~w(sm md lg), doc: "control height step"
+  attr :hide_label, :boolean, default: false, doc: "keep the label for screen readers only"
 
   attr :rest, :global,
     include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
@@ -202,9 +204,11 @@ defmodule Bds.Components do
 
   def bt_input(%{type: "checkbox"} = assigns) do
     assigns =
-      assign_new(assigns, :checked, fn ->
+      assigns
+      |> assign_new(:checked, fn ->
         Phoenix.HTML.Form.normalize_value("checkbox", assigns[:value])
       end)
+      |> assign_field_a11y()
 
     ~H"""
     <div class={["bt-field", @errors != [] && "bt-field--error"]}>
@@ -222,79 +226,139 @@ defmodule Bds.Components do
           name={@name}
           value="true"
           checked={@checked}
-          class={@class}
+          class={[@class, @errors != [] && @error_class]}
+          aria-invalid={@errors != [] && "true"}
+          aria-describedby={@describedby}
           {@rest}
         />
-        {@label}
+        <span class={@hide_label && "bt-sr-only"}>{@label}</span>
       </label>
-      <.bt_field_help :if={@help}>{@help}</.bt_field_help>
-      <.bt_field_error :for={msg <- @errors}>{msg}</.bt_field_error>
+      <.bt_field_help :if={@help} id={@help_id}>{@help}</.bt_field_help>
+      <.bt_field_errors errors={@errors} id={@errors_id} />
     </div>
     """
   end
 
   def bt_input(%{type: "select"} = assigns) do
+    assigns = assign_field_a11y(assigns)
+
     ~H"""
     <div class={["bt-field", @errors != [] && "bt-field--error"]}>
-      <label :if={@label} for={@id}>{@label}</label>
+      <.bt_field_label :if={@label} for={@id} hidden={@hide_label} required={@rest[:required]}>
+        {@label}
+      </.bt_field_label>
       <select
         id={@id}
         name={@name}
-        class={@class || "bt-select"}
+        class={[@class || "bt-select", Bds.Components.CatalogUi.size_class("bt-select", @size), @errors != [] && @error_class]}
         multiple={@multiple}
+        aria-invalid={@errors != [] && "true"}
+        aria-describedby={@describedby}
         {@rest}
       >
         <option :if={@prompt} value="">{@prompt}</option>
         {Phoenix.HTML.Form.options_for_select(@options, @value)}
       </select>
-      <.bt_field_help :if={@help}>{@help}</.bt_field_help>
-      <.bt_field_error :for={msg <- @errors}>{msg}</.bt_field_error>
+      <.bt_field_help :if={@help} id={@help_id}>{@help}</.bt_field_help>
+      <.bt_field_errors errors={@errors} id={@errors_id} />
     </div>
     """
   end
 
   def bt_input(%{type: "textarea"} = assigns) do
+    assigns = assign_field_a11y(assigns)
+
     ~H"""
     <div class={["bt-field", @errors != [] && "bt-field--error"]}>
-      <label :if={@label} for={@id}>{@label}</label>
-      <textarea id={@id} name={@name} class={@class || "bt-textarea"} {@rest}>{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
-      <.bt_field_help :if={@help}>{@help}</.bt_field_help>
-      <.bt_field_error :for={msg <- @errors}>{msg}</.bt_field_error>
+      <.bt_field_label :if={@label} for={@id} hidden={@hide_label} required={@rest[:required]}>
+        {@label}
+      </.bt_field_label>
+      <textarea
+        id={@id}
+        name={@name}
+        class={[@class || "bt-textarea", @errors != [] && @error_class]}
+        aria-invalid={@errors != [] && "true"}
+        aria-describedby={@describedby}
+        {@rest}
+      >{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
+      <.bt_field_help :if={@help} id={@help_id}>{@help}</.bt_field_help>
+      <.bt_field_errors errors={@errors} id={@errors_id} />
     </div>
     """
   end
 
   def bt_input(assigns) do
+    assigns = assign_field_a11y(assigns)
+
     ~H"""
     <div class={["bt-field", @errors != [] && "bt-field--error"]}>
-      <label :if={@label} for={@id}>{@label}</label>
+      <.bt_field_label :if={@label} for={@id} hidden={@hide_label} required={@rest[:required]}>
+        {@label}
+      </.bt_field_label>
       <input
         type={@type}
         name={@name}
         id={@id}
-        class={@class || "bt-input"}
+        class={[@class || "bt-input", Bds.Components.CatalogUi.size_class("bt-input", @size), @errors != [] && @error_class]}
+        aria-invalid={@errors != [] && "true"}
+        aria-describedby={@describedby}
         {@rest}
         value={Phoenix.HTML.Form.normalize_value(@type, @value || "")}
       />
-      <.bt_field_help :if={@help}>{@help}</.bt_field_help>
-      <.bt_field_error :for={msg <- @errors}>{msg}</.bt_field_error>
+      <.bt_field_help :if={@help} id={@help_id}>{@help}</.bt_field_help>
+      <.bt_field_errors errors={@errors} id={@errors_id} />
     </div>
     """
   end
 
+  # Links help and error text to the control (WCAG 1.3.1, 3.3.1). Ids derive
+  # from the control id; without an id the texts are still rendered, unlinked.
+  defp assign_field_a11y(assigns) do
+    id = assigns[:id]
+    help_id = id && assigns[:help] && "#{id}-help"
+    errors_id = id && assigns.errors != [] && "#{id}-errors"
+    describedby = [help_id, errors_id] |> Enum.filter(& &1) |> Enum.join(" ")
+
+    assigns
+    |> assign(:help_id, help_id)
+    |> assign(:errors_id, errors_id || nil)
+    |> assign(:describedby, if(describedby == "", do: nil, else: describedby))
+  end
+
+  attr :for, :string, default: nil
+  attr :hidden, :boolean, default: false
+  attr :required, :any, default: nil
+  slot :inner_block, required: true
+
+  defp bt_field_label(assigns) do
+    ~H"""
+    <label for={@for} class={@hidden && "bt-sr-only"}>
+      {render_slot(@inner_block)}<span :if={@required} class="bt-field__required" aria-hidden="true"> *</span>
+    </label>
+    """
+  end
+
+  attr :id, :string, default: nil
   slot :inner_block, required: true
 
   defp bt_field_help(assigns) do
     ~H"""
-    <span class="bt-help">{render_slot(@inner_block)}</span>
+    <span id={@id} class="bt-help">{render_slot(@inner_block)}</span>
     """
   end
 
-  defp bt_field_error(assigns) do
+  attr :id, :string, default: nil
+  attr :errors, :list, required: true
+
+  # Errors use an icon + text, never color alone (WCAG 1.4.1).
+  defp bt_field_errors(assigns) do
     ~H"""
-    <p class="bt-help bt-row" style="color:var(--bt-color-error);">
-      {render_slot(@inner_block)}
-    </p>
+    <div :if={@errors != []} id={@id} class="bt-field__errors">
+      <p :for={msg <- @errors} class="bt-field__error">
+        <span class="bt-icon" aria-hidden="true">error</span>
+        {msg}
+      </p>
+    </div>
     """
   end
 
@@ -543,20 +607,26 @@ defmodule Bds.Components do
   def bt_navbar_user_menu(assigns) do
     assigns =
       assigns
-      |> assign_new(:id, fn -> "bt-navbar-user-#{System.unique_integer([:positive])}" end)
+      # `id` defaults to nil, so assign_new would keep nil; derive a stable id
+      # (same on the static and connected render) for aria-controls.
+      |> assign(:id, assigns.id || "bt-navbar-user-#{:erlang.phash2(assigns.name)}")
       |> assign_string_default(:role, fn -> gettext("User") end)
 
     ~H"""
-    <div id={@id} class={["bt-navbar-user", @class]} tabindex="-1">
-      <div
+    <%!-- Disclosure (button + panel), not role=menu: the panel holds links,
+         toggles and groups. a11y.js keeps aria-expanded in sync and handles Escape. --%>
+    <div id={@id} class={["bt-navbar-user", @class]} data-navbar-user>
+      <button
+        type="button"
         class="bt-navbar-user__trigger bt-navbar-user__trigger--compact"
-        role="button"
-        aria-haspopup="menu"
-        tabindex="0"
+        aria-expanded="false"
+        aria-controls={"#{@id}-dropdown"}
+        aria-label={gettext("User menu: %{name}", name: @name)}
+        data-navbar-user-trigger
       >
-        <div class="bt-navbar-user__meta">
-          <div class="bt-navbar-user__name">{@name}</div>
-        </div>
+        <span class="bt-navbar-user__meta">
+          <span class="bt-navbar-user__name">{@name}</span>
+        </span>
 
         <.navbar_user_avatar
           name={@name}
@@ -566,9 +636,10 @@ defmodule Bds.Components do
         />
 
         <span class="bt-navbar-user__chevron bt-symbol" aria-hidden="true">expand_more</span>
-      </div>
+      </button>
 
-      <div class="bt-navbar-user__dropdown" role="menu">
+      <div id={"#{@id}-dropdown"} class="bt-navbar-user__dropdown">
+        <h2 class="bt-sr-only">{gettext("User menu")}</h2>
         <div class="bt-navbar-user__dropdown-header">
           <.bt_avatar
             name={@name}
@@ -592,16 +663,16 @@ defmodule Bds.Components do
 
   defp navbar_user_avatar(assigns) do
     ~H"""
-    <div class={@class}>
+    <span class={@class} aria-hidden="true">
       <%= if @avatar_src do %>
-        <img src={@avatar_src} alt={@name} class="bt-navbar-user__avatar" />
+        <img src={@avatar_src} alt="" class="bt-navbar-user__avatar" />
       <% else %>
-        <div class="bt-navbar-user__avatar bt-navbar-user__avatar--initials" aria-hidden="true">
+        <span class="bt-navbar-user__avatar bt-navbar-user__avatar--initials">
           {@initials}
-        </div>
+        </span>
       <% end %>
-      <span :if={@show_status} class="bt-navbar-user__status" aria-hidden="true"></span>
-    </div>
+      <span :if={@show_status} class="bt-navbar-user__status"></span>
+    </span>
     """
   end
 

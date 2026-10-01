@@ -1,0 +1,148 @@
+/*
+  SIZE SCALE + ACCESSIBLE STRUCTURE
+  ------------------------------------------------------------------
+  Every sized component uses the same steps (xs, sm, md, lg) driven by
+  --bt-control-height-* tokens. md is the default and has no modifier class.
+  Change the tokens to rescale every control in a product at once.
+  Minimum target is 24×24px (WCAG 2.5.8); md and lg exceed the 44px
+  recommendation for touch when combined with padding.
+*/
+
+/* Buttons ------------------------------------------------------------------ */
+.bt-button, .bt-icon-button, .bt-fab { min-height: var(--bt-control-height-md); }
+.bt-button--xs { min-height: var(--bt-control-height-xs); }
+.bt-button--sm { min-height: var(--bt-control-height-sm); }
+.bt-button--lg { min-height: var(--bt-control-height-lg); }
+
+.bt-icon-button { width: var(--bt-control-height-md); }
+.bt-icon-button--xs { width: var(--bt-control-height-xs); min-height: var(--bt-control-height-xs); border-radius: var(--bt-radius-md); }
+.bt-icon-button--sm { width: var(--bt-control-height-sm); min-height: var(--bt-control-height-sm); }
+.bt-icon-button--lg { width: var(--bt-control-height-lg); min-height: var(--bt-control-height-lg); }
+.bt-icon-button--xs .bt-icon { font-size: 1rem; }
+.bt-icon-button--lg .bt-icon { font-size: 1.75rem; }
+
+/* Disabled links rendered by bt_button (aria-disabled) */
+.bt-button[aria-disabled="true"] { opacity: .5; pointer-events: none; cursor: not-allowed; }
+
+/* Icons -------------------------------------------------------------------- */
+.bt-icon--xs { font-size: 1rem; }
+.bt-icon--sm { font-size: 1.25rem; }
+.bt-icon--md { font-size: 1.5rem; }
+.bt-icon--lg { font-size: 2rem; }
+
+/* Fields ------------------------------------------------------------------- */
+/* md keeps the original 2.75rem field height from forms.css */
+.bt-input--sm, .bt-select--sm { min-height: var(--bt-control-height-sm); font-size: var(--bt-font-size-sm); }
+.bt-input--lg, .bt-select--lg { min-height: var(--bt-control-height-lg); font-size: var(--bt-font-size-lg); }
+
+.bt-field__required { color: var(--bt-color-text); }
+
+.bt-field__errors { display: grid; gap: var(--bt-space-1); }
+
+/* Error text uses the body color + icon so it meets 4.5:1 in both themes;
+   the error hue is kept for the icon and the border (non-text, 3:1). */
+.bt-field__error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--bt-space-1);
+  margin: 0;
+  color: var(--bt-color-text);
+  font-size: var(--bt-font-size-sm);
+  font-weight: 600;
+}
+.bt-field__error .bt-icon { flex-shrink: 0; color: var(--bt-color-error); font-size: 1.125rem; }
+
+.bt-fieldset { display: grid; gap: var(--bt-space-2); min-width: 0; margin: 0; padding: 0; border: 0; }
+.bt-fieldset__legend { margin-bottom: var(--bt-space-1); padding: 0; color: var(--bt-color-text-muted); font-size: var(--bt-font-size-sm); font-weight: 700; }
+
+/* Chips -------------------------------------------------------------------- */
+.bt-chip--sm { min-height: var(--bt-control-height-xs); padding-inline: var(--bt-space-2); font-size: var(--bt-font-size-xs); }
+.bt-chip--lg { min-height: var(--bt-control-height-md); padding-inline: var(--bt-space-4); font-size: var(--bt-font-size-md); }
+
+/* Badges ------------------------------------------------------------------- */
+.bt-badge--sm { min-width: .9rem; height: .9rem; font-size: .625rem; }
+.bt-badge--lg { min-width: 1.5rem; height: 1.5rem; font-size: var(--bt-font-size-sm); }
+
+/* Switch ------------------------------------------------------------------- */
+.bt-switch--sm .bt-switch__track { width: 2.25rem; height: 1.25rem; }
+.bt-switch--sm .bt-switch__track::after { width: .85rem; height: .85rem; }
+.bt-switch--sm input:checked + .bt-switch__track::after { transform: translateX(1rem); }
+.bt-switch--lg .bt-switch__track { width: 3.75rem; height: 2rem; }
+.bt-switch--lg .bt-switch__track::after { width: 1.5rem; height: 1.5rem; }
+.bt-switch--lg input:checked + .bt-switch__track::after { transform: translateX(1.75rem); }
+/* The native input is visually hidden: show focus on the track instead */
+.bt-switch input:focus-visible + .bt-switch__track { outline: var(--bt-focus-ring-width) solid var(--bt-focus-ring-color); outline-offset: 2px; }
+
+/* Avatar ------------------------------------------------------------------- */
+.bt-avatar--sm .bt-avatar__media { width: 1.75rem; height: 1.75rem; font-size: var(--bt-font-size-xs); }
+.bt-avatar--lg .bt-avatar__media { width: 3.5rem; height: 3.5rem; font-size: var(--bt-font-size-lg); }
+
+/* Progress ----------------------------------------------------------------- */
+.bt-progress--sm { height: .375rem; }
+.bt-progress--lg { height: 1rem; }
+
+/* Spinner sizes already exist in feedback.css (bt-spinner--sm / --lg). */
+
+/* Lists rendered as real <ul>/<ol> ----------------------------------------- */
+ul.bt-list, ol.bt-list { margin: 0; padding: 0; list-style: none; }
+.bt-list-item__actions { display: flex; align-items: center; gap: var(--bt-space-1); }
+
+.bt-breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--bt-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Headings rendered with a configurable level keep one look */
+.bt-card__title { margin: 0; font-size: var(--bt-font-size-lg); }
+.bt-dialog__title { margin: 0 0 var(--bt-space-3); font-size: var(--bt-font-size-lg); }
+.bt-modal__heading { min-width: 0; }
+
+/* Responsive ---------------------------------------------------------------- */
+
+/* Many tabs on a narrow screen scroll instead of widening the page */
+.bt-tabs { overflow-x: auto; scrollbar-width: thin; }
+.bt-tab { flex-shrink: 0; white-space: nowrap; }
+
+/* Topbar: brand and actions never touch; on phones the product label gives
+   way to the logo so the actions (links, user menu) keep their space. */
+.bt-nav__inner, .bt-topbar__inner { column-gap: var(--bt-space-3); }
+@media (max-width: 560px) {
+  .bt-navbar-logo-label { display: none; }
+  .bt-navbar-logo-img { max-width: 7.5rem; }
+  .bt-nav__actions .bt-nav-link, .bt-topbar__actions .bt-nav-link { padding-inline: var(--bt-space-2); }
+}
+
+/* Bottom nav items share the width; each stays ≥ 44px wide on a 320px screen */
+.bt-bottom-nav a { flex: 1 1 0; min-width: 0; }
+.bt-bottom-nav a span:last-child { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Tabs: focus inside the panel region, roving tabindex focus ring */
+.bt-tab:focus-visible { outline-offset: -3px; }
+.bt-tab-panel:focus-visible { outline-offset: 2px; }
+
+/* Menu items reachable with arrows */
+.bt-menu [role="menuitem"]:focus-visible { outline-offset: -3px; }
+
+/* Tooltip: also shown on keyboard focus; Escape hides it (data-tooltip-hidden) */
+.bt-tooltip[data-tooltip-hidden="true"]::after { opacity: 0 !important; }
+
+/* Combobox: active option moved with the arrow keys */
+.bt-combobox__option[data-active="true"] {
+  outline: var(--bt-focus-ring-width) solid var(--bt-focus-ring-color);
+  outline-offset: -3px;
+}
+
+/* Forced colors: keep state visible where it relies on backgrounds */
+@media (forced-colors: active) {
+  .bt-tab[aria-selected="true"],
+  .bt-nav-link[aria-current="page"],
+  .bt-chip--selected,
+  [aria-pressed="true"] { outline: 2px solid CanvasText; outline-offset: -2px; }
+  .bt-switch__track { border: 1px solid CanvasText; }
+  .bt-progress { border: 1px solid CanvasText; }
+}
