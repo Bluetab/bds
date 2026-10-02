@@ -1,0 +1,254 @@
+/*
+  MOTION
+  ------------------------------------------------------------------
+  Transitions and entrance/exit animations for every component, built on the
+  motion tokens in tokens.css (--bt-duration-*, --bt-ease-*).
+
+  Principles
+    · Motion explains a change (where something came from / went to); it is
+      never decoration that delays the user.
+    · Entrances decelerate (ease-entrance), exits accelerate (ease-exit) and
+      are shorter than entrances.
+    · Size of the move ↔ duration: small = fast-02, panels = moderate-02/slow-01.
+    · prefers-reduced-motion: reset.css cuts every duration to ~0, so state
+      changes stay instant and nothing animates.
+
+  Elements toggled with `display` (dialogs, overlays, menus, snackbars) use
+  `transition-behavior: allow-discrete` + `@starting-style`, so they animate
+  in and out without JavaScript. Browsers without support just switch.
+*/
+
+/* Keyframes ----------------------------------------------------------------- */
+
+@keyframes bt-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes bt-fade-out { from { opacity: 1; } to { opacity: 0; } }
+
+@keyframes bt-slide-up-in {
+  from { opacity: 0; transform: translateY(var(--bt-motion-distance-md)); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes bt-scale-in {
+  from { opacity: 0; transform: translateY(var(--bt-motion-distance-sm)) scale(var(--bt-motion-scale-from)); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes bt-scale-out {
+  from { opacity: 1; transform: none; }
+  to { opacity: 0; transform: scale(var(--bt-motion-scale-from)); }
+}
+
+@keyframes bt-slide-in-right {
+  from { opacity: 0; transform: translateX(var(--bt-motion-distance-lg)); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Utilities ------------------------------------------------------------------
+   Apply to any element to animate it when it is inserted (LiveView patches,
+   :if blocks). --bt-motion-delay staggers lists: style="--bt-motion-delay: 60ms".
+   fill-mode is `backwards`, never `both`: a transform kept after the animation
+   would make the element the containing block of any position:fixed child
+   (a modal inside it would stop covering the viewport). */
+
+.bt-motion-fade-in { animation: bt-fade-in var(--bt-duration-moderate-01) var(--bt-ease-entrance) var(--bt-motion-delay, 0ms) backwards; }
+.bt-motion-slide-up { animation: bt-slide-up-in var(--bt-duration-moderate-02) var(--bt-ease-entrance) var(--bt-motion-delay, 0ms) backwards; }
+.bt-motion-scale-in { animation: bt-scale-in var(--bt-duration-moderate-02) var(--bt-ease-expressive-entrance) var(--bt-motion-delay, 0ms) backwards; }
+.bt-motion-slide-in-right { animation: bt-slide-in-right var(--bt-duration-slow-01) var(--bt-ease-expressive-entrance) var(--bt-motion-delay, 0ms) backwards; }
+
+/* Exit classes for Phoenix.LiveView.JS (JS.hide / JS.transition / phx-remove):
+     JS.hide(transition: {"bt-motion-leave", "bt-motion-leave-from", "bt-motion-leave-to"}, time: 150) */
+.bt-motion-leave { transition: opacity var(--bt-duration-moderate-01) var(--bt-ease-exit), transform var(--bt-duration-moderate-01) var(--bt-ease-exit); }
+.bt-motion-leave-from { opacity: 1; transform: none; }
+.bt-motion-leave-to { opacity: 0; transform: scale(var(--bt-motion-scale-from)); }
+.bt-motion-enter { transition: opacity var(--bt-duration-moderate-02) var(--bt-ease-entrance), transform var(--bt-duration-moderate-02) var(--bt-ease-expressive-entrance); }
+.bt-motion-enter-from { opacity: 0; transform: translateY(var(--bt-motion-distance-sm)) scale(var(--bt-motion-scale-from)); }
+.bt-motion-enter-to { opacity: 1; transform: none; }
+
+/* Controls: color/press feedback ---------------------------------------------- */
+
+.bt-button,
+.bt-icon-button,
+.bt-fab,
+.bt-chip,
+.bt-nav-link,
+.bt-tab,
+.bt-segmented button,
+.bt-theme-toggle-button,
+.bt-navbar-menu-item,
+.bt-combobox__option,
+.bt-breadcrumb__link {
+  transition-property: background-color, color, border-color, box-shadow, transform, opacity;
+  transition-duration: var(--bt-duration-fast-02);
+  transition-timing-function: var(--bt-ease-standard);
+}
+
+.bt-button:active:not([disabled]),
+.bt-icon-button:active:not([disabled]),
+.bt-fab:active:not([disabled]),
+.bt-chip:is(button):active { transform: scale(0.97); transition-duration: var(--bt-duration-fast-01); }
+
+.bt-input, .bt-select, .bt-textarea {
+  transition: border-color var(--bt-duration-fast-02) var(--bt-ease-standard),
+              box-shadow var(--bt-duration-fast-02) var(--bt-ease-standard),
+              background-color var(--bt-duration-fast-02) var(--bt-ease-standard);
+}
+
+.bt-switch__track,
+.bt-switch__track::after { transition-duration: var(--bt-duration-moderate-01); transition-timing-function: var(--bt-ease-standard); }
+
+/* Tabs: underline slides in, panel fades in */
+.bt-tab { border-bottom-width: 3px; }
+.bt-tab-panel[aria-hidden="false"] { animation: bt-fade-in var(--bt-duration-moderate-01) var(--bt-ease-entrance); }
+
+/* Progress */
+.bt-progress__bar { transition: width var(--bt-duration-moderate-02) var(--bt-ease-standard); }
+.bt-progress-circle { transition: background var(--bt-duration-moderate-02) var(--bt-ease-standard); }
+
+/* Links and interactive cards lift slightly; static cards don't move */
+a.bt-card,
+button.bt-card {
+  transition: box-shadow var(--bt-duration-moderate-01) var(--bt-ease-standard), transform var(--bt-duration-moderate-01) var(--bt-ease-standard);
+}
+a.bt-card:hover, button.bt-card:hover { transform: translateY(-2px); box-shadow: var(--bt-shadow-md); }
+
+/* Dialog & overlay: fade + scale in/out (display toggled by [open]) ------------- */
+
+.bt-dialog,
+.bt-overlay {
+  opacity: 0;
+  transition:
+    opacity var(--bt-duration-moderate-01) var(--bt-ease-exit),
+    display var(--bt-duration-moderate-01) allow-discrete,
+    overlay var(--bt-duration-moderate-01) allow-discrete;
+}
+
+.bt-dialog[open],
+.bt-overlay[open] {
+  opacity: 1;
+  transition-duration: var(--bt-duration-moderate-02);
+  transition-timing-function: var(--bt-ease-entrance);
+}
+
+.bt-dialog__surface,
+.bt-overlay__surface {
+  animation: none;
+  transform: scale(var(--bt-motion-scale-from));
+  transition: transform var(--bt-duration-moderate-01) var(--bt-ease-exit);
+}
+
+.bt-dialog[open] .bt-dialog__surface,
+.bt-overlay[open] .bt-overlay__surface {
+  transform: none;
+  transition: transform var(--bt-duration-moderate-02) var(--bt-ease-expressive-entrance);
+}
+
+@starting-style {
+  .bt-dialog[open], .bt-overlay[open] { opacity: 0; }
+  .bt-dialog[open] .bt-dialog__surface,
+  .bt-overlay[open] .bt-overlay__surface { transform: translateY(var(--bt-motion-distance-md)) scale(var(--bt-motion-scale-from)); }
+}
+
+/* LiveView modal (mounted with :if; exit via phx-remove in bt_modal) */
+.bt-modal__backdrop { animation: bt-fade-in var(--bt-duration-moderate-02) var(--bt-ease-entrance) both; }
+.bt-modal__panel { animation: bt-scale-in var(--bt-duration-moderate-02) var(--bt-ease-expressive-entrance) both; }
+.bt-modal--leaving .bt-modal__backdrop { animation: bt-fade-out var(--bt-duration-moderate-01) var(--bt-ease-exit) both; }
+.bt-modal--leaving .bt-modal__panel { animation: bt-scale-out var(--bt-duration-moderate-01) var(--bt-ease-exit) both; }
+
+/* Menus: drop down from the trigger */
+.bt-menu {
+  opacity: 0;
+  transform: translateY(calc(-1 * var(--bt-motion-distance-sm)));
+  transform-origin: top right;
+  transition:
+    opacity var(--bt-duration-fast-02) var(--bt-ease-exit),
+    transform var(--bt-duration-fast-02) var(--bt-ease-exit),
+    display var(--bt-duration-fast-02) allow-discrete;
+}
+.bt-menu[data-open="true"] {
+  opacity: 1;
+  transform: none;
+  transition-duration: var(--bt-duration-moderate-01);
+  transition-timing-function: var(--bt-ease-entrance);
+}
+@starting-style {
+  .bt-menu[data-open="true"] { opacity: 0; transform: translateY(calc(-1 * var(--bt-motion-distance-sm))); }
+}
+
+/* Snackbar: rises from the bottom edge */
+.bt-snackbar {
+  opacity: 0;
+  translate: 0 var(--bt-motion-distance-md); /* transform already centres it */
+  transition:
+    opacity var(--bt-duration-moderate-01) var(--bt-ease-exit),
+    translate var(--bt-duration-moderate-01) var(--bt-ease-exit),
+    display var(--bt-duration-moderate-01) allow-discrete;
+}
+.bt-snackbar[data-open="true"] {
+  opacity: 1;
+  translate: 0 0;
+  transition-duration: var(--bt-duration-moderate-02);
+  transition-timing-function: var(--bt-ease-expressive-entrance);
+}
+@starting-style {
+  .bt-snackbar[data-open="true"] { opacity: 0; translate: 0 var(--bt-motion-distance-md); }
+}
+
+/* Doc/side panel backdrop fades with the panel slide */
+.bt-panel-backdrop {
+  opacity: 0;
+  transition: opacity var(--bt-duration-moderate-02) var(--bt-ease-standard), display var(--bt-duration-moderate-02) allow-discrete;
+}
+body.bt-panel-open .bt-panel-backdrop { opacity: 1; }
+@starting-style { body.bt-panel-open .bt-panel-backdrop { opacity: 0; } }
+.bt-doc-panel { transition-duration: var(--bt-duration-slow-01); transition-timing-function: var(--bt-ease-expressive-standard); }
+
+/* Expansion (disclosure): height animates with the 0fr → 1fr grid trick.
+   Collapsed content is visibility:hidden so it leaves the Tab order. */
+.bt-expansion__content:has(> .bt-expansion__inner) {
+  display: grid;
+  grid-template-rows: 0fr;
+  padding: 0;
+  visibility: hidden;
+  transition:
+    grid-template-rows var(--bt-duration-moderate-02) var(--bt-ease-standard),
+    visibility 0s linear var(--bt-duration-moderate-02);
+}
+.bt-expansion[data-open="true"] .bt-expansion__content:has(> .bt-expansion__inner) {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition: grid-template-rows var(--bt-duration-moderate-02) var(--bt-ease-standard), visibility 0s;
+}
+.bt-expansion__inner { min-height: 0; overflow: hidden; }
+.bt-expansion__body { padding: 0 var(--bt-space-4) var(--bt-space-4); }
+.bt-expansion__icon { transition: transform var(--bt-duration-moderate-02) var(--bt-ease-standard); }
+
+/* Tooltips: quicker in than out is noticeable; keep both short */
+.bt-tooltip::after { transition-duration: var(--bt-duration-fast-02); transition-timing-function: var(--bt-ease-entrance); }
+
+/* Tree: rows of a freshly expanded branch slide in */
+.bt-tree--nested > li { animation: bt-slide-up-in var(--bt-duration-moderate-01) var(--bt-ease-entrance) backwards; }
+
+/* Flash / toast messages */
+.bt-flash { animation: bt-slide-up-in var(--bt-duration-moderate-02) var(--bt-ease-expressive-entrance) backwards; }
+
+/* Catalog demo boxes (Components › Motion) ------------------------------------ */
+
+.bt-motion-demo { display: grid; gap: var(--bt-space-3); width: 100%; }
+.bt-motion-demo__row { display: grid; grid-template-columns: minmax(7rem, 9rem) minmax(0, 1fr); align-items: center; gap: var(--bt-space-3); }
+.bt-motion-demo__label { font-size: var(--bt-font-size-sm); }
+.bt-motion-demo__label code { margin-inline-start: 0.35em; font-size: var(--bt-font-size-xs); }
+.bt-motion-demo__track { position: relative; height: 2.25rem; border-radius: var(--bt-radius-pill); background: var(--bt-color-surface-muted); overflow: hidden; }
+.bt-motion-demo__dot {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--bt-color-primary);
+  transition-property: left, transform;
+  transition-duration: var(--demo-duration, var(--bt-duration-moderate-02));
+  transition-timing-function: var(--demo-ease, var(--bt-ease-standard));
+}
+.bt-motion-demo[data-playing="true"] .bt-motion-demo__dot { left: calc(100% - 2rem); }
+.bt-motion-demo__surface { padding: var(--bt-space-4); border: 1px solid var(--bt-color-border); border-radius: var(--bt-radius-lg); background: var(--bt-color-surface); }

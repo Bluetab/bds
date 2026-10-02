@@ -9,10 +9,8 @@
 */
 
 /* Buttons ------------------------------------------------------------------ */
-.bt-button, .bt-icon-button, .bt-fab { min-height: var(--bt-control-height-md); }
-.bt-button--xs { min-height: var(--bt-control-height-xs); }
-.bt-button--sm { min-height: var(--bt-control-height-sm); }
-.bt-button--lg { min-height: var(--bt-control-height-lg); }
+.bt-icon-button, .bt-fab { min-height: var(--bt-control-height-md); }
+/* .bt-button sizes use their own --bt-button-* tokens (buttons.css) */
 
 .bt-icon-button { width: var(--bt-control-height-md); }
 .bt-icon-button--xs { width: var(--bt-control-height-xs); min-height: var(--bt-control-height-xs); border-radius: var(--bt-radius-md); }
@@ -21,8 +19,6 @@
 .bt-icon-button--xs .bt-icon { font-size: 1rem; }
 .bt-icon-button--lg .bt-icon { font-size: 1.75rem; }
 
-/* Disabled links rendered by bt_button (aria-disabled) */
-.bt-button[aria-disabled="true"] { opacity: .5; pointer-events: none; cursor: not-allowed; }
 
 /* Icons -------------------------------------------------------------------- */
 .bt-icon--xs { font-size: 1rem; }
@@ -116,6 +112,9 @@ ul.bt-list, ol.bt-list { margin: 0; padding: 0; list-style: none; }
   .bt-navbar-logo-img { max-width: 7.5rem; }
   .bt-nav__actions .bt-nav-link, .bt-topbar__actions .bt-nav-link { padding-inline: var(--bt-space-2); }
 }
+
+/* Rows of buttons wrap instead of overflowing narrow containers */
+.bt-card__actions, .bt-dir-row, .bt-dir-reverse, .bt-dialog__actions, .bt-modal__footer { flex-wrap: wrap; }
 
 /* Bottom nav items share the width; each stays ≥ 44px wide on a 320px screen */
 .bt-bottom-nav a { flex: 1 1 0; min-width: 0; }

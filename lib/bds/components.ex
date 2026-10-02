@@ -28,16 +28,24 @@ defmodule Bds.Components do
   @doc """
   Renders a design-system button (`bt-button` variants).
 
+  Text is 16px bold with 1.4px tracking; hover and keyboard focus share the
+  elevated state (shadow `--bt-shadow-button`). Icons are optional Material
+  Symbols ligatures and are hidden from screen readers — the label names the
+  button. For icon-only buttons use `bt_icon_button`.
+
   ## Examples
 
       <.bt_button>Save</.bt_button>
-      <.bt_button variant="primary" phx-click="save">Save</.bt_button>
-      <.bt_button navigate={~p"/"}>Home</.bt_button>
+      <.bt_button variant="secondary" icon="accessibility_new">Accessibility</.bt_button>
+      <.bt_button trailing_icon="arrow_forward" navigate={~p"/"}>Continue</.bt_button>
+      <.bt_button disabled>Not available</.bt_button>
   """
   attr :rest, :global
   attr :class, :any
   attr :variant, :string, default: "primary", values: ~w(primary secondary tertiary outline ghost danger)
-  attr :size, :string, default: nil, values: [nil, "xs", "sm", "lg"]
+  attr :size, :string, default: nil, values: [nil, "xs", "sm", "md", "lg"]
+  attr :icon, :string, default: nil, doc: "Leading Material Symbols ligature, e.g. \"add\""
+  attr :trailing_icon, :string, default: nil, doc: "Trailing Material Symbols ligature"
   attr :type, :string, default: "button"
   attr :disabled, :boolean, default: false
   attr :href, :string, default: nil
@@ -56,15 +64,20 @@ defmodule Bds.Components do
         navigate={@navigate}
         patch={@patch}
         aria-disabled={@disabled && "true"}
+        tabindex={@disabled && "-1"}
         {@rest}
       >
+        <span :if={@icon} class="bt-icon" aria-hidden="true">{@icon}</span>
         {render_slot(@inner_block)}
+        <span :if={@trailing_icon} class="bt-icon" aria-hidden="true">{@trailing_icon}</span>
       </.link>
       """
     else
       ~H"""
       <button type={@type} class={@class} disabled={@disabled} {@rest}>
+        <span :if={@icon} class="bt-icon" aria-hidden="true">{@icon}</span>
         {render_slot(@inner_block)}
+        <span :if={@trailing_icon} class="bt-icon" aria-hidden="true">{@trailing_icon}</span>
       </button>
       """
     end

@@ -879,7 +879,7 @@ msgid "Briefing bonded with evaluation: objectives, category competencies, ratin
 msgstr "Briefing bonded with evaluation: objectives, category competencies, ratings, acknowledgement, and assessment blocks."
 
 msgid "Button sizes"
-msgstr "Button sizes"
+msgstr "Tamaños de botón"
 
 msgid "Buttons"
 msgstr "Botones"
@@ -1101,7 +1101,7 @@ msgid "Hours panel"
 msgstr "Hours panel"
 
 msgid "Icon buttons"
-msgstr "Icon buttons"
+msgstr "Botones de icono"
 
 msgid "Icon inside button"
 msgstr "Icon inside button"
@@ -1287,7 +1287,7 @@ msgid "Section header"
 msgstr "Section header"
 
 msgid "Segmented buttons"
-msgstr "Segmented buttons"
+msgstr "Botones segmentados"
 
 msgid "Selección múltiple en formularios, filtros y configuraciones."
 msgstr "Selección múltiple en formularios, filtros y configuraciones."
@@ -1697,3 +1697,75 @@ msgstr "Menú de usuario: %{name}"
 
 msgid "User menu"
 msgstr "Menú de usuario"
+
+msgid "Heavy weight (750)"
+msgstr "Peso intenso (750)"
+
+msgid "Font weight 750 always carries at least 1px of letter-spacing: use .bt-text-heavy or the --bt-font-weight-heavy and --bt-letter-spacing-heavy tokens together."
+msgstr "El peso 750 siempre lleva al menos 1px de letter-spacing: usa .bt-text-heavy o los tokens --bt-font-weight-heavy y --bt-letter-spacing-heavy juntos."
+
+msgid "Motion"
+msgstr "Movimiento"
+
+msgid "Motion explains what changed: where an element comes from and where it goes. BDS uses six duration tokens and productive or expressive easing curves; entrances decelerate, exits accelerate and are shorter, and everything is disabled with prefers-reduced-motion."
+msgstr "El movimiento explica qué ha cambiado: de dónde viene un elemento y adónde va. BDS usa seis tokens de duración y curvas de aceleración productivas o expresivas; las entradas deceleran, las salidas aceleran y son más cortas, y todo se desactiva con prefers-reduced-motion."
+
+msgid "Duration tokens"
+msgstr "Tokens de duración"
+
+msgid "Match the duration to the size and distance of the change: fast for small feedback, moderate for menus and dialogs, slow for panels and page content. Press play to compare."
+msgstr "Ajusta la duración al tamaño y la distancia del cambio: rápida para pequeñas respuestas, moderada para menús y diálogos, lenta para paneles y contenido de página. Pulsa reproducir para compararlas."
+
+msgid "Easing curves"
+msgstr "Curvas de aceleración"
+
+msgid "Productive curves for everyday UI; expressive curves for moments that should be noticed (a dialog opening, a success). Entrance decelerates into place, exit accelerates away, standard moves between two states."
+msgstr "Curvas productivas para la interfaz del día a día; expresivas para momentos que deben notarse (un diálogo que se abre, un éxito). La entrada decelera hasta su sitio, la salida acelera al irse y la estándar se mueve entre dos estados."
+
+msgid "Enter and exit"
+msgstr "Entrada y salida"
+
+msgid "Elements that appear fade and scale or slide in with ease-entrance; when they leave they use ease-exit and a shorter duration. Utility classes: bt-motion-fade-in, bt-motion-slide-up, bt-motion-scale-in, bt-motion-slide-in-right."
+msgstr "Los elementos que aparecen se funden y escalan o se deslizan con ease-entrance; al irse usan ease-exit y una duración más corta. Clases de utilidad: bt-motion-fade-in, bt-motion-slide-up, bt-motion-scale-in, bt-motion-slide-in-right."
+
+msgid "Expand and collapse"
+msgstr "Expandir y contraer"
+
+msgid "Accordions animate their height; dialogs, menus and snackbars animate in and out from CSS alone (@starting-style), so they need no JavaScript."
+msgstr "Los acordeones animan su altura; diálogos, menús y snackbars entran y salen animados solo con CSS (@starting-style), sin JavaScript."
+
+msgid "Reduced motion"
+msgstr "Movimiento reducido"
+
+msgid "When the operating system asks for reduced motion, reset.css cuts every animation and transition to ~0ms: state changes stay instant and nothing moves. Never convey information through motion alone."
+msgstr "Cuando el sistema operativo pide reducir el movimiento, reset.css lleva todas las animaciones y transiciones a ~0 ms: los cambios de estado siguen siendo instantáneos y nada se mueve. Nunca transmitas información solo con movimiento."
+
+msgid "Buttons trigger actions. Text is Titillium 16px bold with 1.4px letter-spacing on a pill shape; an icon is optional and always goes with a visible label. Hover and keyboard focus share the elevated state."
+msgstr "Los botones lanzan acciones. El texto es Titillium 16px en negrita con 1,4px de interletraje sobre forma de píldora; el icono es opcional y siempre acompaña a un texto visible. El hover y el foco de teclado comparten el estado elevado."
+
+msgid "Primary and secondary"
+msgstr "Primario y secundario"
+
+msgid "Primary: --bt-color-primary fill with white text. Secondary: white fill with primary text. Use one primary action per view; the icon is optional and is hidden from screen readers."
+msgstr "Primario: relleno --bt-color-primary con texto blanco. Secundario: relleno blanco con texto primario. Usa una sola acción primaria por vista; el icono es opcional y se oculta a los lectores de pantalla."
+
+msgid "Hover and focus"
+msgstr "Hover y foco"
+
+msgid "The fill (primary) or the text (secondary) turns --bt-color-primary-hover and the button rises with --bt-shadow-button (0 20px 25px -5px, primary at 20%). Keyboard focus shows the same state plus the focus ring."
+msgstr "El relleno (primario) o el texto (secundario) pasa a --bt-color-primary-hover y el botón se eleva con --bt-shadow-button (0 20px 25px -5px, primario al 20 %). El foco de teclado muestra el mismo estado más el anillo de foco."
+
+msgid "Disabled"
+msgstr "Deshabilitado"
+
+msgid "Disabled buttons use their own colors (bluetab-blue-10 fill, bluetab-blue-30 text) instead of opacity, lose the shadow and cannot be focused. WCAG does not require contrast for disabled controls, but explain why an action is unavailable."
+msgstr "Los botones deshabilitados usan sus propios colores (relleno bluetab-blue-10, texto bluetab-blue-30) en lugar de opacidad, pierden la sombra y no reciben el foco. WCAG no exige contraste en controles deshabilitados, pero explica por qué la acción no está disponible."
+
+msgid "Other variants"
+msgstr "Otras variantes"
+
+msgid "lg reproduces the design frame (60px); md is the default for forms, sm and xs for toolbars and tables. Every size keeps the same type, colors and states."
+msgstr "lg reproduce el diseño (60px); md es el tamaño por defecto para formularios, y sm y xs para barras de herramientas y tablas. Todos los tamaños mantienen la misma tipografía, colores y estados."
+
+msgid "Extra small"
+msgstr "Extra pequeño"

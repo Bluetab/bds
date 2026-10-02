@@ -285,19 +285,51 @@ src/main.js</pre>
     icon: "smart_button",
     title: "Buttons",
     description:
-      "Acciones principales, secundarias, terciarias, de icono y FAB.",
+      "Buttons trigger actions. Text is Titillium 16px bold with 1.4px letter-spacing on a pill shape; an icon is optional and always goes with a visible label. Hover and keyboard focus share the elevated state.",
     examples: [
       {
-        title: "Common buttons",
-        html: String.raw`<button class="bt-button">Primary</button>
-<button class="bt-button bt-button--secondary">Secondary</button>
-<button class="bt-button bt-button--tertiary">Tertiary</button>
+        title: "Primary and secondary",
+        note: "Primary: --bt-color-primary fill with white text. Secondary: white fill with primary text. Use one primary action per view; the icon is optional and is hidden from screen readers.",
+        block: true,
+        html: String.raw`<div class="bt-row">
+  <button class="bt-button"><span class="bt-icon" aria-hidden="true">accessibility_new</span>Button Name</button>
+  <button class="bt-button bt-button--secondary"><span class="bt-icon" aria-hidden="true">accessibility_new</span>Button Name</button>
+</div>
+<div class="bt-row">
+  <button class="bt-button">Button Name</button>
+  <button class="bt-button bt-button--secondary">Button Name</button>
+</div>`,
+      },
+      {
+        title: "Hover and focus",
+        note: "The fill (primary) or the text (secondary) turns --bt-color-primary-hover and the button rises with --bt-shadow-button (0 20px 25px -5px, primary at 20%). Keyboard focus shows the same state plus the focus ring.",
+        block: true,
+        html: String.raw`<div class="bt-row">
+  <button class="bt-button" data-demo-state="hover"><span class="bt-icon" aria-hidden="true">accessibility_new</span>Button Name</button>
+  <button class="bt-button bt-button--secondary" data-demo-state="hover"><span class="bt-icon" aria-hidden="true">accessibility_new</span>Button Name</button>
+</div>`,
+      },
+      {
+        title: "Disabled",
+        note: "Disabled buttons use their own colors (bluetab-blue-10 fill, bluetab-blue-30 text) instead of opacity, lose the shadow and cannot be focused. WCAG does not require contrast for disabled controls, but explain why an action is unavailable.",
+        block: true,
+        html: String.raw`<div class="bt-row">
+  <button class="bt-button" disabled><span class="bt-icon" aria-hidden="true">accessibility_new</span>Button Name</button>
+  <button class="bt-button" disabled>Button Name</button>
+</div>`,
+      },
+      {
+        title: "Other variants",
+        html: String.raw`<button class="bt-button bt-button--tertiary">Tertiary</button>
 <button class="bt-button bt-button--outline">Outline</button>
-<button class="bt-button bt-button--ghost">Ghost</button>`,
+<button class="bt-button bt-button--ghost">Ghost</button>
+<button class="bt-button bt-button--danger"><span class="bt-icon" aria-hidden="true">delete</span>Delete</button>`,
       },
       {
         title: "Button sizes",
-        html: String.raw`<button class="bt-button bt-button--sm">Small</button>
+        note: "lg reproduces the design frame (60px); md is the default for forms, sm and xs for toolbars and tables. Every size keeps the same type, colors and states.",
+        html: String.raw`<button class="bt-button bt-button--xs">Extra small</button>
+<button class="bt-button bt-button--sm">Small</button>
 <button class="bt-button">Medium</button>
 <button class="bt-button bt-button--lg">Large</button>`,
       },
@@ -611,6 +643,82 @@ initBtInteractions();</code></pre>
   <span class="bt-divider bt-divider--vertical" aria-hidden="true"></span>
   <span>Fin</span>
 </div>`,
+      },
+    ],
+  },
+  {
+    id: "motion",
+    group: "Components",
+    icon: "animation",
+    title: "Motion",
+    description:
+      "Motion explains what changed: where an element comes from and where it goes. BDS uses six duration tokens and productive or expressive easing curves; entrances decelerate, exits accelerate and are shorter, and everything is disabled with prefers-reduced-motion.",
+    examples: [
+      {
+        title: "Duration tokens",
+        note: "Match the duration to the size and distance of the change: fast for small feedback, moderate for menus and dialogs, slow for panels and page content. Press play to compare.",
+        block: true,
+        html: String.raw`<div class="bt-motion-demo" id="motion-durations" data-playing="false">
+  <div class="bt-motion-demo__row" style="--demo-duration: var(--bt-duration-fast-01)">
+    <span class="bt-motion-demo__label">fast-01 <code>70ms</code></span>
+    <span class="bt-motion-demo__track"><span class="bt-motion-demo__dot"></span></span>
+  </div>
+  <div class="bt-motion-demo__row" style="--demo-duration: var(--bt-duration-moderate-02)">
+    <span class="bt-motion-demo__label">moderate-02 <code>240ms</code></span>
+    <span class="bt-motion-demo__track"><span class="bt-motion-demo__dot"></span></span>
+  </div>
+  <div class="bt-motion-demo__row" style="--demo-duration: var(--bt-duration-slow-02)">
+    <span class="bt-motion-demo__label">slow-02 <code>700ms</code></span>
+    <span class="bt-motion-demo__track"><span class="bt-motion-demo__dot"></span></span>
+  </div>
+</div>`,
+      },
+      {
+        title: "Easing curves",
+        note: "Productive curves for everyday UI; expressive curves for moments that should be noticed (a dialog opening, a success). Entrance decelerates into place, exit accelerates away, standard moves between two states.",
+        block: true,
+        html: String.raw`<div class="bt-motion-demo" id="motion-easings" data-playing="false">
+  <div class="bt-motion-demo__row" style="--demo-duration: var(--bt-duration-slow-01); --demo-ease: var(--bt-ease-standard)">
+    <span class="bt-motion-demo__label">standard</span>
+    <span class="bt-motion-demo__track"><span class="bt-motion-demo__dot"></span></span>
+  </div>
+  <div class="bt-motion-demo__row" style="--demo-duration: var(--bt-duration-slow-01); --demo-ease: var(--bt-ease-expressive-entrance)">
+    <span class="bt-motion-demo__label">expressive-entrance</span>
+    <span class="bt-motion-demo__track"><span class="bt-motion-demo__dot"></span></span>
+  </div>
+</div>`,
+      },
+      {
+        title: "Enter and exit",
+        note: "Elements that appear fade and scale or slide in with ease-entrance; when they leave they use ease-exit and a shorter duration. Utility classes: bt-motion-fade-in, bt-motion-slide-up, bt-motion-scale-in, bt-motion-slide-in-right.",
+        block: true,
+        html: String.raw`<div class="bt-row">
+  <div class="bt-motion-demo__surface bt-motion-fade-in">Fade in</div>
+  <div class="bt-motion-demo__surface bt-motion-slide-up">Slide up</div>
+  <div class="bt-motion-demo__surface bt-motion-scale-in">Scale in</div>
+</div>`,
+      },
+      {
+        title: "Expand and collapse",
+        note: "Accordions animate their height; dialogs, menus and snackbars animate in and out from CSS alone (@starting-style), so they need no JavaScript.",
+        block: true,
+        html: String.raw`<div class="bt-expansion" data-expansion data-open="false">
+  <button class="bt-expansion__button" type="button" data-expansion-toggle aria-expanded="false">
+    <span>Show details</span><span class="bt-expansion__icon bt-symbol" aria-hidden="true">expand_more</span>
+  </button>
+  <div class="bt-expansion__content"><div class="bt-expansion__inner"><div class="bt-expansion__body">The content height animates with the moderate-02 token.</div></div></div>
+</div>`,
+      },
+      {
+        title: "Reduced motion",
+        note: "When the operating system asks for reduced motion, reset.css cuts every animation and transition to ~0ms: state changes stay instant and nothing moves. Never convey information through motion alone.",
+        block: true,
+        html: String.raw`<pre class="bt-code"><code>@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}</code></pre>`,
       },
     ],
   },
@@ -2081,6 +2189,13 @@ initBtInteractions();</code></pre>
         html: String.raw`<p class="bt-eyebrow">Bluetab label</p>
 <h3>Contenido destacado</h3>
 <p class="bt-muted">Texto secundario con menor énfasis visual.</p>`,
+      },
+      {
+        title: "Heavy weight (750)",
+        note: "Font weight 750 always carries at least 1px of letter-spacing: use .bt-text-heavy or the --bt-font-weight-heavy and --bt-letter-spacing-heavy tokens together.",
+        block: true,
+        html: String.raw`<p class="bt-text-heavy">Texto en peso 750 con 1px de tracking</p>
+<p style="font-weight: var(--bt-font-weight-heavy); letter-spacing: max(var(--bt-letter-spacing-heavy), .06em); text-transform: uppercase; font-size: .75rem;">Etiqueta en mayúsculas</p>`,
       },
     ],
   },

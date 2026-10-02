@@ -712,7 +712,7 @@ defmodule Bds.Components.Calendar do
 
   attr(:id, :string, default: "calendar-day-modal")
   attr(:show, :boolean, default: false)
-  attr(:on_close, :string, default: nil)
+  attr(:on_close, :any, default: nil, doc: "Server event name or a Phoenix.LiveView.JS command")
   attr(:date, :any, default: nil)
   attr(:status, :string, default: "nuevo", values: @statuses)
   attr(:weekday_label, :string, default: nil)
@@ -787,6 +787,9 @@ defmodule Bds.Components.Calendar do
       class={["bt-calendar-day-modal", @class]}
       data-testid="calendar-day-modal"
       data-day-status={@status}
+      data-focus-return
+      phx-key={@on_close && "Escape"}
+      phx-window-keydown={@on_close}
       {@rest}
     >
       <button

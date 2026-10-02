@@ -576,8 +576,11 @@ defmodule Bds.Components.CatalogUi do
         <span>{@title}</span>
         <span class="bt-expansion__icon bt-symbol" aria-hidden="true">expand_more</span>
       </button>
+      <%!-- inner/body wrappers let the height animate (motion.css) --%>
       <div class="bt-expansion__content" id={@content_id}>
-        {render_slot(@inner_block)}
+        <div class="bt-expansion__inner">
+          <div class="bt-expansion__body">{render_slot(@inner_block)}</div>
+        </div>
       </div>
     </div>
     """
@@ -1654,7 +1657,10 @@ defmodule Bds.Components.CatalogUi do
   attr :title, :string, required: true
   attr :subtitle, :string, default: nil
   attr :large, :boolean, default: false
-  attr :close_event, :string, required: true
+  attr :close_event, :any,
+    required: true,
+    doc: "Server event name, or a `Phoenix.LiveView.JS` command for client-side modals (e.g. `JS.hide(to: \"#id\")`)."
+
   attr :close_label, :string, default: nil
   attr :show_close, :boolean, default: true
   attr :rest, :global
@@ -1669,11 +1675,14 @@ defmodule Bds.Components.CatalogUi do
     assigns = assign_new(assigns, :close_label, fn -> gettext("Close dialog") end)
 
     ~H"""
+    <%!-- phx-remove plays the exit animation before LiveView removes the
+         modal (see .bt-modal--leaving in motion.css). --%>
     <div
       id={@id}
       class={["bt-modal", @class]}
       phx-key="Escape"
       phx-window-keydown={@close_event}
+      phx-remove={Phoenix.LiveView.JS.transition("bt-modal--leaving", time: 150)}
       data-focus-return
       {@rest}
     >

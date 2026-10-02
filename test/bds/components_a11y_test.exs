@@ -16,6 +16,36 @@ defmodule Bds.ComponentsA11yTest do
     end
   end
 
+  describe "bt_button" do
+    test "renders optional leading and trailing icons hidden from screen readers" do
+      assigns = %{}
+
+      html =
+        rendered_to_string(~H"""
+        <.bt_button icon="accessibility_new" trailing_icon="arrow_forward">Button Name</.bt_button>
+        """)
+
+      assert html =~ ~s(<span class="bt-icon" aria-hidden="true">accessibility_new</span>)
+      assert html =~ ~s(<span class="bt-icon" aria-hidden="true">arrow_forward</span>)
+      assert html =~ "Button Name"
+
+      plain = rendered_to_string(~H|<.bt_button>Button Name</.bt_button>|)
+      refute plain =~ "bt-icon"
+    end
+
+    test "disabled links leave the Tab order" do
+      assigns = %{}
+      html = rendered_to_string(~H|<.bt_button href="/x" disabled>Go</.bt_button>|)
+      assert html =~ ~s(aria-disabled="true")
+      assert html =~ ~s(tabindex="-1")
+    end
+
+    test "md size adds no modifier" do
+      assigns = %{}
+      assert rendered_to_string(~H|<.bt_button size="md">A</.bt_button>|) =~ ~s(class="bt-button")
+    end
+  end
+
   describe "forms" do
     test "bt_input links help and errors and flags invalid" do
       assigns = %{}

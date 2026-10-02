@@ -92,7 +92,9 @@ defmodule Bds.Catalog do
         "group" => localize(component["group"]),
         "examples" =>
           Enum.map(component["examples"] || [], fn example ->
-            Map.update(example, "title", nil, &localize/1)
+            example
+            |> Map.update("title", nil, &localize/1)
+            |> Map.update("note", nil, &localize/1)
           end)
     }
   end

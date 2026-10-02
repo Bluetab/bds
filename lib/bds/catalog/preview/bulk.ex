@@ -8,6 +8,72 @@ defmodule Bds.Catalog.Preview.Bulk do
   import Bds.Components.Expense
   import Bds.Components.CatalogUi
 
+  alias Phoenix.LiveView.JS
+
+  # Client-side open/close for modal demos: the catalog has no server state
+  # for them, so they toggle with JS (with the motion tokens' enter/leave
+  # classes) and give focus back to the trigger on close.
+  defp demo_open(id) do
+    JS.push_focus()
+    |> JS.show(
+      to: "##{id}",
+      display: "flex",
+      transition: {"bt-motion-enter", "bt-motion-enter-from", "bt-motion-enter-to"},
+      time: 240
+    )
+    |> JS.focus_first(to: "##{id}")
+  end
+
+  defp demo_close(id) do
+    JS.hide(
+      to: "##{id}",
+      transition: {"bt-motion-leave", "bt-motion-leave-from", "bt-motion-leave-to"},
+      time: 150
+    )
+    |> JS.pop_focus()
+  end
+
+  @motion_durations [
+    {"fast-01", "70ms", "toggles, color, small opacity changes"},
+    {"fast-02", "110ms", "buttons, chips, hover and press, tooltips"},
+    {"moderate-01", "150ms", "menus, dropdowns, exits"},
+    {"moderate-02", "240ms", "dialogs, accordions, tabs"},
+    {"slow-01", "400ms", "side panels, page content"},
+    {"slow-02", "700ms", "expressive moments only"}
+  ]
+
+  @motion_easings [
+    {"standard", "between two visible states"},
+    {"entrance", "something appears"},
+    {"exit", "something leaves"},
+    {"expressive-standard", "noticeable state change"},
+    {"expressive-entrance", "dialogs, highlights"},
+    {"expressive-exit", "dismissing a highlight"}
+  ]
+
+  defp motion_play(id),
+    do: JS.toggle_attribute({"data-playing", "true", "false"}, to: "##{id}")
+
+  @reduced_motion_css """
+  /* reset.css — applied by BDS, no setup needed */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  """
+
+  defp reduced_motion(assigns) do
+    assigns = assign(assigns, :reduced_motion_css, String.trim(@reduced_motion_css))
+
+    ~H"""
+    <pre class="bt-code"><code>{@reduced_motion_css}</code></pre>
+    """
+  end
+
   @table_rows [
     %{component: "Button", status: "Active", status_variant: "success", usage: "Actions"},
     %{component: "Dialog", status: "Review", status_variant: "warning", usage: "Modals"},
@@ -146,23 +212,58 @@ defmodule Bds.Catalog.Preview.Bulk do
 
   def render("buttons", 0, assigns) do
     ~H"""
-    <.bt_button>Primary</.bt_button>
-    <.bt_button variant="secondary">Secondary</.bt_button>
-    <.bt_button variant="tertiary">Tertiary</.bt_button>
-    <.bt_button variant="outline">Outline</.bt_button>
-    <.bt_button variant="ghost">Ghost</.bt_button>
+    <div class="bt-stack">
+      <div class="bt-row">
+        <.bt_button icon="accessibility_new">Button Name</.bt_button>
+        <.bt_button variant="secondary" icon="accessibility_new">Button Name</.bt_button>
+      </div>
+      <div class="bt-row">
+        <.bt_button>Button Name</.bt_button>
+        <.bt_button variant="secondary">Button Name</.bt_button>
+      </div>
+    </div>
     """
   end
 
   def render("buttons", 1, assigns) do
     ~H"""
-    <.bt_button class="bt-button bt-button--sm">Small</.bt_button>
-    <.bt_button>Medium</.bt_button>
-    <.bt_button class="bt-button bt-button--lg">Large</.bt_button>
+    <div class="bt-row">
+      <.bt_button icon="accessibility_new" data-demo-state="hover">Button Name</.bt_button>
+      <.bt_button variant="secondary" icon="accessibility_new" data-demo-state="hover">
+        Button Name
+      </.bt_button>
+    </div>
     """
   end
 
   def render("buttons", 2, assigns) do
+    ~H"""
+    <div class="bt-row">
+      <.bt_button icon="accessibility_new" disabled>Button Name</.bt_button>
+      <.bt_button disabled>Button Name</.bt_button>
+    </div>
+    """
+  end
+
+  def render("buttons", 3, assigns) do
+    ~H"""
+    <.bt_button variant="tertiary">Tertiary</.bt_button>
+    <.bt_button variant="outline">Outline</.bt_button>
+    <.bt_button variant="ghost">Ghost</.bt_button>
+    <.bt_button variant="danger" icon="delete">Delete</.bt_button>
+    """
+  end
+
+  def render("buttons", 4, assigns) do
+    ~H"""
+    <.bt_button size="xs">Extra small</.bt_button>
+    <.bt_button size="sm">Small</.bt_button>
+    <.bt_button>Medium</.bt_button>
+    <.bt_button size="lg" icon="accessibility_new">Large</.bt_button>
+    """
+  end
+
+  def render("buttons", 5, assigns) do
     ~H"""
     <.bt_icon_button label="Search" icon="search" />
     <.bt_icon_button variant="primary" label="Save" icon="check" />
@@ -171,7 +272,7 @@ defmodule Bds.Catalog.Preview.Bulk do
     """
   end
 
-  def render("buttons", 3, assigns) do
+  def render("buttons", 6, assigns) do
     ~H"""
     <.bt_segmented label="View">
       <:item label="Day" pressed />
@@ -403,6 +504,112 @@ defmodule Bds.Catalog.Preview.Bulk do
     </div>
     """
   end
+
+  # Motion ----------------------------------------------------------------
+
+  def render("motion", 0, assigns) do
+    assigns = assign(assigns, :rows, @motion_durations)
+
+    ~H"""
+    <div class="bt-stack">
+      <.bt_button size="sm" variant="secondary" phx-click={motion_play("motion-durations")}>
+        <span class="bt-icon" aria-hidden="true">play_arrow</span> Play / reset
+      </.bt_button>
+      <div class="bt-motion-demo" id="motion-durations" data-playing="false">
+        <div
+          :for={{name, ms, use} <- @rows}
+          class="bt-motion-demo__row"
+          style={"--demo-duration: var(--bt-duration-#{name})"}
+        >
+          <span class="bt-motion-demo__label">
+            <strong>{name}</strong> <code>{ms}</code><br /><small class="bt-muted">{use}</small>
+          </span>
+          <span class="bt-motion-demo__track" aria-hidden="true"><span class="bt-motion-demo__dot"></span></span>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  def render("motion", 1, assigns) do
+    assigns = assign(assigns, :rows, @motion_easings)
+
+    ~H"""
+    <div class="bt-stack">
+      <.bt_button size="sm" variant="secondary" phx-click={motion_play("motion-easings")}>
+        <span class="bt-icon" aria-hidden="true">play_arrow</span> Play / reset
+      </.bt_button>
+      <div class="bt-motion-demo" id="motion-easings" data-playing="false">
+        <div
+          :for={{name, use} <- @rows}
+          class="bt-motion-demo__row"
+          style={"--demo-duration: var(--bt-duration-slow-01); --demo-ease: var(--bt-ease-#{name})"}
+        >
+          <span class="bt-motion-demo__label">
+            <strong>{name}</strong><br /><small class="bt-muted">{use}</small>
+          </span>
+          <span class="bt-motion-demo__track" aria-hidden="true"><span class="bt-motion-demo__dot"></span></span>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  def render("motion", 2, assigns) do
+    assigns =
+      assign(assigns, :patterns, [
+        {"motion-fade", "Fade", "bt-motion-fade-in"},
+        {"motion-slide", "Slide up", "bt-motion-slide-up"},
+        {"motion-scale", "Scale in", "bt-motion-scale-in"}
+      ])
+
+    ~H"""
+    <div class="bt-row" style="align-items: flex-start">
+      <div :for={{id, label, class} <- @patterns} class="bt-stack" style="min-width: 10rem">
+        <.bt_button
+          size="sm"
+          variant="outline"
+          aria-controls={id}
+          phx-click={
+            JS.toggle(
+              to: "##{id}",
+              in: {"bt-motion-enter", "bt-motion-enter-from", "bt-motion-enter-to"},
+              out: {"bt-motion-leave", "bt-motion-leave-from", "bt-motion-leave-to"},
+              time: 240
+            )
+          }
+        >
+          Toggle {label}
+        </.bt_button>
+        <div id={id} class={["bt-motion-demo__surface", class]}>{label}</div>
+      </div>
+    </div>
+    """
+  end
+
+  def render("motion", 3, assigns) do
+    ~H"""
+    <div class="bt-stack" style="width: 100%">
+      <.bt_expansion id="motion-expansion" title="Show details">
+        <p>The content height animates with the moderate-02 token and the standard curve.</p>
+        <p class="bt-muted">Collapsed content is hidden from the Tab order and screen readers.</p>
+      </.bt_expansion>
+      <div class="bt-row">
+        <.bt_button data-dialog-open="motion-dialog">Open dialog</.bt_button>
+        <.bt_button variant="secondary" data-snackbar-open="motion-snackbar">Show snackbar</.bt_button>
+      </div>
+      <.bt_dialog id="motion-dialog" title="Animated with CSS">
+        <p>Fades and scales in with @starting-style; exits faster with ease-exit.</p>
+        <:actions>
+          <.bt_button data-dialog-close>Close</.bt_button>
+        </:actions>
+      </.bt_dialog>
+      <.bt_snackbar id="motion-snackbar">Saved — rises with the expressive entrance curve.</.bt_snackbar>
+    </div>
+    """
+  end
+
+  def render("motion", 4, assigns), do: reduced_motion(assigns)
 
   def render("expansions", 0, assigns) do
     ~H"""
@@ -966,9 +1173,17 @@ defmodule Bds.Catalog.Preview.Bulk do
 
   def render("calendar-day-modal", 0, assigns) do
     ~H"""
+    <.bt_button
+      data-catalog-modal-open="calendar-day-modal-demo"
+      phx-click={demo_open("calendar-day-modal-demo")}
+    >
+      Open day editor
+    </.bt_button>
     <.bt_calendar_day_modal
       id="calendar-day-modal-demo"
       show
+      on_close={demo_close("calendar-day-modal-demo")}
+      style="display: none"
       date={~D[2026-06-12]}
       status="imputado"
       total_hours={8.0}
@@ -1190,6 +1405,20 @@ defmodule Bds.Catalog.Preview.Bulk do
     """
   end
 
+  def render("typography", 2, assigns) do
+    ~H"""
+    <div class="bt-stack">
+      <p class="bt-text-heavy">Weight 750 with 1px tracking</p>
+      <p
+        class="bt-text-heavy"
+        style="letter-spacing: max(var(--bt-letter-spacing-heavy), .06em); text-transform: uppercase; font-size: .75rem;"
+      >
+        Uppercase label
+      </p>
+    </div>
+    """
+  end
+
   def render("breadcrumb", 0, assigns) do
     ~H"""
     <.bt_breadcrumb
@@ -1222,11 +1451,20 @@ defmodule Bds.Catalog.Preview.Bulk do
 
   def render("liveview-modal", 0, assigns) do
     ~H"""
-    <.bt_modal id="catalog-modal" title="New liquidación" subtitle="Complete the expense liquidación details." close_event="noop">
+    <.bt_button data-catalog-modal-open="catalog-modal" phx-click={demo_open("catalog-modal")}>
+      Open modal
+    </.bt_button>
+    <.bt_modal
+      id="catalog-modal"
+      title="New liquidación"
+      subtitle="Complete the expense liquidación details."
+      close_event={demo_close("catalog-modal")}
+      style="display: none"
+    >
       <p class="bt-muted">Wizard body content goes here.</p>
       <:footer>
-        <.bt_button variant="ghost">Cancel</.bt_button>
-        <.bt_button variant="primary">Continue</.bt_button>
+        <.bt_button variant="ghost" phx-click={demo_close("catalog-modal")}>Cancel</.bt_button>
+        <.bt_button variant="primary" phx-click={demo_close("catalog-modal")}>Continue</.bt_button>
       </:footer>
     </.bt_modal>
     """

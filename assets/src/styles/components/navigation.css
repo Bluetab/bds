@@ -56,7 +56,6 @@ html[data-theme="dark"] .bt-brand__logo--dark {display: block;}
   overflow: visible;
   z-index: 220;
   border-bottom: none;
-  background-color: var(--bt-color-background);
   backdrop-filter: none;
 }
 
@@ -78,10 +77,16 @@ html[data-theme="dark"] .bt-brand__logo--dark {display: block;}
   position: relative;
   z-index: var(--bt-z-nav, 60);
   border: 1px solid color-mix(in srgb, var(--bt-color-border) 84%, transparent);
-  border-bottom: none;
   border-radius: var(--bt-radius-pill);
   box-shadow: var(--bt-shadow-sm);
   background-color: var(--bt-color-surface);
+}
+
+/* Optional brand gradient line under the pill (off by default):
+   <.bt_topbar class="bt-topbar--accent"> */
+.bt-topbar--accent .bt-nav__inner,
+.bt-topbar--accent .bt-topbar__inner {
+  border-bottom: none;
   background-image: var(--bt-brand-bar-gradient);
   background-size: 100% var(--bt-topbar-accent-height, 5px);
   background-position: bottom center;

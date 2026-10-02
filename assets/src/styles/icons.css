@@ -9,7 +9,17 @@
   .bt-symbol — inline icon that follows the surrounding font size.
   --filled   — filled variant (status marks, selected states).
 */
-@import '@material-symbols/font-400/rounded.css';
+/* Font vendored in src/fonts (from @material-symbols/font-400, Apache-2.0)
+   instead of importing the npm package: apps that compile BDS from source
+   (Tailwind in the storybook) cannot resolve bare package imports.
+   `mix bds.sync_assets` copies it to priv/static/fonts for Phoenix apps. */
+@font-face {
+  font-family: "Material Symbols Rounded";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("../fonts/material-symbols-rounded.woff2") format("woff2");
+}
 
 .bt-icon,
 .bt-symbol {

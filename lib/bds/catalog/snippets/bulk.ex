@@ -47,6 +47,7 @@ defmodule Bds.Catalog.Snippets.Bulk do
     |> Map.merge(expense())
     |> Map.merge(tooltips())
     |> Map.merge(typography())
+    |> Map.merge(motion())
   end
 
   defp get_started do
@@ -160,24 +161,45 @@ defmodule Bds.Catalog.Snippets.Bulk do
   defp buttons do
     %{
       "buttons:0" => ~S"""
-      <.bt_button>Primary</.bt_button>
-      <.bt_button variant="secondary">Secondary</.bt_button>
+      <%!-- icon is optional; it is aria-hidden, the text names the button --%>
+      <.bt_button icon="accessibility_new">Button Name</.bt_button>
+      <.bt_button variant="secondary" icon="accessibility_new">Button Name</.bt_button>
+
+      <.bt_button>Button Name</.bt_button>
+      <.bt_button variant="secondary">Button Name</.bt_button>
+      """,
+      "buttons:1" => ~S"""
+      <%!-- Hover and :focus-visible share this state automatically.
+           data-demo-state="hover" only forces it for documentation. --%>
+      <.bt_button icon="accessibility_new" data-demo-state="hover">Button Name</.bt_button>
+      <.bt_button variant="secondary" icon="accessibility_new" data-demo-state="hover">Button Name</.bt_button>
+      """,
+      "buttons:2" => ~S"""
+      <.bt_button icon="accessibility_new" disabled>Button Name</.bt_button>
+      <.bt_button disabled>Button Name</.bt_button>
+      <%!-- links: disabled sets aria-disabled and removes them from the Tab order --%>
+      <.bt_button navigate={~p"/next"} disabled>Next</.bt_button>
+      """,
+      "buttons:3" => ~S"""
       <.bt_button variant="tertiary">Tertiary</.bt_button>
       <.bt_button variant="outline">Outline</.bt_button>
       <.bt_button variant="ghost">Ghost</.bt_button>
+      <.bt_button variant="danger" icon="delete">Delete</.bt_button>
       """,
-      "buttons:1" => ~S"""
-      <.bt_button class="bt-button bt-button--sm">Small</.bt_button>
+      "buttons:4" => ~S"""
+      <.bt_button size="xs">Extra small</.bt_button>
+      <.bt_button size="sm">Small</.bt_button>
       <.bt_button>Medium</.bt_button>
-      <.bt_button class="bt-button bt-button--lg">Large</.bt_button>
+      <.bt_button size="lg" icon="accessibility_new">Large</.bt_button>
+      <.bt_button trailing_icon="arrow_forward">Continue</.bt_button>
       """,
-      "buttons:2" => ~S"""
+      "buttons:5" => ~S"""
       <.bt_icon_button label="Search" icon="search" />
       <.bt_icon_button variant="primary" label="Save" icon="check" />
       <.bt_fab label="Create"><.bt_icon>add</.bt_icon></.bt_fab>
       <.bt_fab extended label="Create"><.bt_icon>add</.bt_icon> Create</.bt_fab>
       """,
-      "buttons:3" => ~S"""
+      "buttons:6" => ~S"""
       <.bt_segmented label="View">
         <:item label="Day" pressed />
         <:item label="Week" />
@@ -1119,6 +1141,10 @@ defmodule Bds.Catalog.Snippets.Bulk do
       <.bt_eyebrow>Bluetab label</.bt_eyebrow>
       <h3>Highlighted content</h3>
       <.bt_muted>Secondary text with lower visual emphasis.</.bt_muted>
+      """,
+      "typography:2" => ~S"""
+      <%!-- weight 750 always with ≥ 1px letter-spacing --%>
+      <p class="bt-text-heavy">Weight 750 with 1px tracking</p>
       """
     }
   end
@@ -1147,7 +1173,14 @@ defmodule Bds.Catalog.Snippets.Bulk do
       <.bt_stepper current={2} steps={["Project", "Details", "Review"]} />
       """,
       "liveview-modal:0" => ~S"""
-      <.bt_modal id="new-liquidacion-modal" title="New liquidación" subtitle="Complete the details." close_event="close_modal">
+      <%!-- close_event: server event, or a JS command such as JS.hide(to: "#id") --%>
+      <.bt_modal
+        :if={@show_modal}
+        id="new-liquidacion-modal"
+        title="New liquidación"
+        subtitle="Complete the details."
+        close_event="close_modal"
+      >
         <p>Wizard body</p>
         <:footer>
           <.bt_button variant="ghost" phx-click="close_modal">Cancel</.bt_button>
@@ -1186,4 +1219,51 @@ defmodule Bds.Catalog.Snippets.Bulk do
       """
     }
   end
+
+  defp motion do
+    %{
+      "motion:0" => ~S"""
+      <%!-- Duration tokens: fast-01 70ms · fast-02 110ms · moderate-01 150ms
+           moderate-02 240ms · slow-01 400ms · slow-02 700ms --%>
+      .my-chip { transition: background-color var(--bt-duration-fast-02) var(--bt-ease-standard); }
+      .my-panel { transition: transform var(--bt-duration-slow-01) var(--bt-ease-expressive-standard); }
+      """,
+      "motion:1" => ~S"""
+      <%!-- Easing: --bt-ease-{standard,entrance,exit} (productive)
+           --bt-ease-expressive-{standard,entrance,exit} --%>
+      .my-menu[data-open="true"] { transition: opacity var(--bt-duration-moderate-01) var(--bt-ease-entrance); }
+      .my-menu { transition: opacity var(--bt-duration-fast-02) var(--bt-ease-exit); }
+      """,
+      "motion:2" => ~S"""
+      <div class="bt-motion-slide-up">Inserted content</div>
+      <div class="bt-motion-scale-in" style="--bt-motion-delay: 60ms">Staggered</div>
+
+      <%!-- Phoenix.LiveView.JS with the BDS enter/leave classes --%>
+      <.bt_button phx-click={
+        JS.toggle(
+          to: "#panel",
+          in: {"bt-motion-enter", "bt-motion-enter-from", "bt-motion-enter-to"},
+          out: {"bt-motion-leave", "bt-motion-leave-from", "bt-motion-leave-to"},
+          time: 240
+        )
+      }>Toggle</.bt_button>
+      """,
+      "motion:3" => ~S"""
+      <%!-- Built in: no extra classes needed --%>
+      <.bt_expansion id="details" title="Show details">Content</.bt_expansion>
+      <.bt_dialog id="confirm" title="Confirm">…</.bt_dialog>
+      <.bt_modal :if={@show} id="edit" title="Edit" close_event="close">…</.bt_modal>
+      """,
+      "motion:4" => ~S"""
+      /* reset.css — applied by BDS, no setup needed */
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+      """
+    }
+  end
+
 end

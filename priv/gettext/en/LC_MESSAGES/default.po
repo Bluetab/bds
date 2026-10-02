@@ -998,3 +998,75 @@ msgstr ""
 
 msgid "User menu"
 msgstr ""
+
+msgid "Heavy weight (750)"
+msgstr ""
+
+msgid "Font weight 750 always carries at least 1px of letter-spacing: use .bt-text-heavy or the --bt-font-weight-heavy and --bt-letter-spacing-heavy tokens together."
+msgstr ""
+
+msgid "Motion"
+msgstr ""
+
+msgid "Motion explains what changed: where an element comes from and where it goes. BDS uses six duration tokens and productive or expressive easing curves; entrances decelerate, exits accelerate and are shorter, and everything is disabled with prefers-reduced-motion."
+msgstr ""
+
+msgid "Duration tokens"
+msgstr ""
+
+msgid "Match the duration to the size and distance of the change: fast for small feedback, moderate for menus and dialogs, slow for panels and page content. Press play to compare."
+msgstr ""
+
+msgid "Easing curves"
+msgstr ""
+
+msgid "Productive curves for everyday UI; expressive curves for moments that should be noticed (a dialog opening, a success). Entrance decelerates into place, exit accelerates away, standard moves between two states."
+msgstr ""
+
+msgid "Enter and exit"
+msgstr ""
+
+msgid "Elements that appear fade and scale or slide in with ease-entrance; when they leave they use ease-exit and a shorter duration. Utility classes: bt-motion-fade-in, bt-motion-slide-up, bt-motion-scale-in, bt-motion-slide-in-right."
+msgstr ""
+
+msgid "Expand and collapse"
+msgstr ""
+
+msgid "Accordions animate their height; dialogs, menus and snackbars animate in and out from CSS alone (@starting-style), so they need no JavaScript."
+msgstr ""
+
+msgid "Reduced motion"
+msgstr ""
+
+msgid "When the operating system asks for reduced motion, reset.css cuts every animation and transition to ~0ms: state changes stay instant and nothing moves. Never convey information through motion alone."
+msgstr ""
+
+msgid "Buttons trigger actions. Text is Titillium 16px bold with 1.4px letter-spacing on a pill shape; an icon is optional and always goes with a visible label. Hover and keyboard focus share the elevated state."
+msgstr ""
+
+msgid "Primary and secondary"
+msgstr ""
+
+msgid "Primary: --bt-color-primary fill with white text. Secondary: white fill with primary text. Use one primary action per view; the icon is optional and is hidden from screen readers."
+msgstr ""
+
+msgid "Hover and focus"
+msgstr ""
+
+msgid "The fill (primary) or the text (secondary) turns --bt-color-primary-hover and the button rises with --bt-shadow-button (0 20px 25px -5px, primary at 20%). Keyboard focus shows the same state plus the focus ring."
+msgstr ""
+
+msgid "Disabled"
+msgstr ""
+
+msgid "Disabled buttons use their own colors (bluetab-blue-10 fill, bluetab-blue-30 text) instead of opacity, lose the shadow and cannot be focused. WCAG does not require contrast for disabled controls, but explain why an action is unavailable."
+msgstr ""
+
+msgid "Other variants"
+msgstr ""
+
+msgid "lg reproduces the design frame (60px); md is the default for forms, sm and xs for toolbars and tables. Every size keeps the same type, colors and states."
+msgstr ""
+
+msgid "Extra small"
+msgstr ""

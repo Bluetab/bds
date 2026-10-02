@@ -229,6 +229,12 @@
   --bt-line-height-tight: 1.08;
   --bt-line-height-base: 1.55;
 
+  /* Heavy weight (750): Titillium closes up at this weight, so it always
+     goes with at least 1px of tracking. Use both tokens together, or
+     .bt-text-heavy; test/bds/typography_rules_test.exs enforces it. */
+  --bt-font-weight-heavy: 750;
+  --bt-letter-spacing-heavy: 1px;
+
   /* Spacing */
   --bt-space-1: 0.25rem;
   --bt-space-2: 0.5rem;
@@ -268,14 +274,64 @@
   --bt-control-height-md: 2.5rem;
   --bt-control-height-lg: 3.25rem;
 
+  /* Buttons (Figma spec). lg reproduces the design frame; md/sm keep the
+     same style at denser sizes for toolbars and tables. */
+  --bt-button-font-size: var(--bt-font-size-md);
+  --bt-button-font-weight: 700;
+  --bt-button-letter-spacing: 1.4px;
+  --bt-button-icon-size: 1.5rem;
+  --bt-button-gap: var(--bt-space-4);
+  --bt-button-height-xs: 1.75rem;
+  --bt-button-height-sm: 2.25rem;
+  --bt-button-height-md: 3rem;
+  --bt-button-height-lg: 3.75rem;
+  --bt-button-padding-xs: var(--bt-space-3);
+  --bt-button-padding-sm: var(--bt-space-4);
+  --bt-button-padding-md: 1.75rem;
+  --bt-button-padding-lg: 2.25rem;
+  --bt-shadow-button: 0 20px 25px -5px rgb(33 36 146 / 0.2);
+  --bt-button-secondary-ring: var(--bt-color-border);
+  --bt-button-disabled-bg: var(--bt-palette-bluetab-blue-10);
+  --bt-button-disabled-fg: var(--bt-palette-bluetab-blue-30);
+
   /* Focus (WCAG 2.4.7 / 1.4.11). Override per app; see Accessibility › Color in the storybook. */
   --bt-focus-ring-color: color-mix(in srgb, var(--bt-color-secondary), transparent 40%);
   --bt-focus-ring-width: 3px;
   --bt-focus-ring-offset: 3px;
 
-  /* Motion */
+  /* Motion — see Components › Motion in the storybook.
+     Durations grow with the distance/size of what moves:
+       fast-01   70ms  micro feedback (toggles, color, opacity of small parts)
+       fast-02  110ms  buttons, chips, hover/press, tooltips
+       moderate-01 150ms  dropdowns, menus, small reveals, exits
+       moderate-02 240ms  dialogs, accordions, tabs, cards
+       slow-01  400ms  side panels, large surfaces, page content
+       slow-02  700ms  expressive moments only (onboarding, empty → filled)
+     Productive curves are for UI work; expressive ones for moments that
+     should be noticed. Entrance = decelerate, exit = accelerate. */
+  --bt-duration-fast-01: 70ms;
+  --bt-duration-fast-02: 110ms;
+  --bt-duration-moderate-01: 150ms;
+  --bt-duration-moderate-02: 240ms;
+  --bt-duration-slow-01: 400ms;
+  --bt-duration-slow-02: 700ms;
+
+  --bt-ease-standard: cubic-bezier(0.2, 0, 0.38, 0.9);
+  --bt-ease-entrance: cubic-bezier(0, 0, 0.38, 0.9);
+  --bt-ease-exit: cubic-bezier(0.2, 0, 1, 0.9);
+  --bt-ease-expressive-standard: cubic-bezier(0.4, 0.14, 0.3, 1);
+  --bt-ease-expressive-entrance: cubic-bezier(0, 0, 0.3, 1);
+  --bt-ease-expressive-exit: cubic-bezier(0.4, 0.14, 1, 1);
+
+  /* Distances for slide/scale patterns */
+  --bt-motion-distance-sm: 0.25rem;
+  --bt-motion-distance-md: 0.75rem;
+  --bt-motion-distance-lg: 2rem;
+  --bt-motion-scale-from: 0.96;
+
+  /* Legacy aliases (kept for existing components) */
   --bt-ease: cubic-bezier(.2, .8, .2, 1);
-  --bt-ease-emphasis: cubic-bezier(0.22, 1, 0.36, 1);
+  --bt-ease-emphasis: var(--bt-ease-expressive-entrance);
   --bt-duration-fast: 140ms;
   --bt-duration-base: 220ms;
 
@@ -306,6 +362,9 @@
 }
 
 html[data-theme="dark"] {
+  --bt-shadow-button: 0 20px 25px -5px rgb(0 0 0 / 0.45);
+  --bt-button-disabled-bg: var(--bt-color-surface-muted);
+  --bt-button-disabled-fg: var(--bt-color-text-subtle);
   --bt-color-primary: #8da2ff;
   --bt-color-primary-hover: #b3c2ff;
   --bt-color-primary-active: #6b82e8;

@@ -12,27 +12,27 @@
 .bt-switch__track::after { content: ""; position: absolute; top: .18rem; left: .18rem; width: 1.15rem; height: 1.15rem; border-radius: 50%; background: var(--bt-color-surface); box-shadow: var(--bt-shadow-xs); transition: transform var(--bt-duration-fast) var(--bt-ease); }
 .bt-switch input:checked + .bt-switch__track { background: var(--bt-color-primary); border-color: var(--bt-color-primary); }
 .bt-switch input:checked + .bt-switch__track::after { transform: translateX(1.35rem); }
-.bt-chip { display: inline-flex; align-items: center; gap: var(--bt-space-1); min-height: 2rem; padding: 0 var(--bt-space-3); border-radius: var(--bt-radius-pill); background: var(--bt-color-surface-soft); color: var(--bt-color-text); border: 1px solid var(--bt-color-border); font-size: var(--bt-font-size-sm); font-weight: 750; }
+.bt-chip { display: inline-flex; align-items: center; gap: var(--bt-space-1); min-height: 2rem; padding: 0 var(--bt-space-3); border-radius: var(--bt-radius-pill); background: var(--bt-color-surface-soft); color: var(--bt-color-text); border: 1px solid var(--bt-color-border); font-size: var(--bt-font-size-sm); font-weight: var(--bt-font-weight-heavy); letter-spacing: var(--bt-letter-spacing-heavy); }
 .bt-chip--selected { background: var(--bt-color-primary); color: var(--bt-color-on-primary); border-color: var(--bt-color-primary); }
 .bt-chip--outline { background: transparent; }
 .bt-slider { width: min(100%, 20rem); accent-color: var(--bt-color-primary); }
 .bt-color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: var(--bt-space-3); width: 100%; }
 .bt-color-swatch { overflow: hidden; border: 1px solid var(--bt-color-border); border-radius: var(--bt-radius-lg); background: var(--bt-color-surface); }
 .bt-color-swatch__color { height: 4rem; background: var(--swatch); }
-.bt-color-swatch__text { padding: var(--bt-space-3); font-size: var(--bt-font-size-sm); font-weight: 750; }
+.bt-color-swatch__text { padding: var(--bt-space-3); font-size: var(--bt-font-size-sm); font-weight: var(--bt-font-weight-heavy); letter-spacing: var(--bt-letter-spacing-heavy); }
 .bt-color-scale { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); width: 100%; overflow: hidden; border: 1px solid var(--bt-color-border); border-radius: var(--bt-radius-lg); background: var(--bt-color-surface); }
 .bt-color-scale__step { position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: var(--bt-space-4); min-height: 10rem; padding: var(--bt-space-3); background: var(--swatch); }
 .bt-color-scale__step--on-dark { color: var(--bt-palette-neutral-black-60); }
 .bt-color-scale__step--on-light { color: #ffffff; }
 .bt-color-scale__step--master { box-shadow: inset 0 0 0 3px currentColor; }
 /* Plain-HTML scales (no badge element) keep the pseudo-element label */
-.bt-color-scale__step--master:not(:has(.bt-color-scale__badge))::after { content: "Master"; position: absolute; top: var(--bt-space-2); right: var(--bt-space-2); padding: 0.125rem var(--bt-space-1); border: 1px solid currentColor; border-radius: var(--bt-radius-xs); font-size: 0.625rem; font-weight: 750; letter-spacing: 0.06em; text-transform: uppercase; }
+.bt-color-scale__step--master:not(:has(.bt-color-scale__badge))::after { content: "Master"; position: absolute; top: var(--bt-space-2); right: var(--bt-space-2); padding: 0.125rem var(--bt-space-1); border: 1px solid currentColor; border-radius: var(--bt-radius-xs); font-size: 0.625rem; font-weight: var(--bt-font-weight-heavy); letter-spacing: max(var(--bt-letter-spacing-heavy), 0.06em); text-transform: uppercase; }
 .bt-color-scale__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--bt-space-1) var(--bt-space-2); }
-.bt-color-scale__badge { padding: 0.125rem var(--bt-space-1); border: 1px solid currentColor; border-radius: var(--bt-radius-xs); font-size: 0.625rem; font-weight: 750; letter-spacing: 0.06em; line-height: 1.2; text-transform: uppercase; }
-.bt-color-scale__level { font-size: var(--bt-font-size-lg); font-weight: 750; line-height: var(--bt-line-height-tight); }
+.bt-color-scale__badge { padding: 0.125rem var(--bt-space-1); border: 1px solid currentColor; border-radius: var(--bt-radius-xs); font-size: 0.625rem; font-weight: var(--bt-font-weight-heavy); letter-spacing: max(var(--bt-letter-spacing-heavy), 0.06em); line-height: 1.2; text-transform: uppercase; }
+.bt-color-scale__level { font-size: var(--bt-font-size-lg); font-weight: var(--bt-font-weight-heavy); letter-spacing: var(--bt-letter-spacing-heavy); line-height: var(--bt-line-height-tight); }
 .bt-color-scale__data { font-size: 0.6875rem; line-height: 1.45; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-.bt-color-scale__data b { display: block; font-size: var(--bt-font-size-xs); font-weight: 750; }
-.bt-color-scale__contrast { font-size: var(--bt-font-size-xs); font-weight: 750; font-variant-numeric: tabular-nums; }
+.bt-color-scale__data b { display: block; font-size: var(--bt-font-size-xs); font-weight: var(--bt-font-weight-heavy); letter-spacing: var(--bt-letter-spacing-heavy); }
+.bt-color-scale__contrast { font-size: var(--bt-font-size-xs); font-weight: var(--bt-font-weight-heavy); letter-spacing: var(--bt-letter-spacing-heavy); font-variant-numeric: tabular-nums; }
 
 /* Columns follow the space the scale gets (container), not the viewport.
    Each step needs ~7rem for "RGB 224 / 82 / 6" without breaking every word. */
