@@ -710,6 +710,7 @@ defmodule Bds.Components.CatalogUi do
   attr :patch, :any, default: nil
   attr :current, :boolean, default: false
   attr :icon, :string, default: nil
+  attr :rest, :global
   slot :inner_block, required: true
 
   def bt_nav_link(assigns) do
@@ -722,7 +723,7 @@ defmodule Bds.Components.CatalogUi do
 
     if assigns.navigate do
       ~H"""
-      <.link navigate={@navigate} class={@nav_link_class} aria-current={@current && "page"}>
+      <.link navigate={@navigate} class={@nav_link_class} aria-current={@current && "page"} {@rest}>
         <span :if={@icon} class="bt-icon" aria-hidden="true">{@icon}</span>
         {render_slot(@inner_block)}
       </.link>
@@ -730,14 +731,14 @@ defmodule Bds.Components.CatalogUi do
     else
       if assigns.patch do
         ~H"""
-        <.link patch={@patch} class={@nav_link_class} aria-current={@current && "page"}>
+        <.link patch={@patch} class={@nav_link_class} aria-current={@current && "page"} {@rest}>
           <span :if={@icon} class="bt-icon" aria-hidden="true">{@icon}</span>
           {render_slot(@inner_block)}
         </.link>
         """
       else
         ~H"""
-        <a href={@href} class={@nav_link_class} aria-current={if(@current, do: "page", else: false)}>
+        <a href={@href} class={@nav_link_class} aria-current={if(@current, do: "page", else: false)} {@rest}>
           <span :if={@icon} class="bt-icon" aria-hidden="true">{@icon}</span>
           {render_slot(@inner_block)}
         </a>

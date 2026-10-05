@@ -23,7 +23,7 @@
   transition: color var(--bt-duration-fast) var(--bt-ease-standard);
 }
 
-.bt-breadcrumb__link:hover {
+.bt-breadcrumb__link:is(:hover, [data-demo-state="hover"]) {
   color: var(--bt-color-text);
 }
 

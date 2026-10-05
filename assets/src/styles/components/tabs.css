@@ -11,4 +11,4 @@
 .bt-expansion[data-open="true"] .bt-expansion__icon { transform: rotate(180deg); }
 .bt-tooltip { position: relative; display: inline-flex; }
 .bt-tooltip::after { content: attr(data-tooltip); position: absolute; left: 50%; bottom: calc(100% + .55rem); transform: translateX(-50%) translateY(4px); opacity: 0; pointer-events: none; white-space: nowrap; padding: var(--bt-space-1) var(--bt-space-2); border-radius: var(--bt-radius-sm); background: var(--bt-color-text); color: var(--bt-color-background); font-size: var(--bt-font-size-xs); transition: opacity var(--bt-duration-fast), transform var(--bt-duration-fast); }
-.bt-tooltip:hover::after, .bt-tooltip:focus-within::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+.bt-tooltip:is(:hover, :focus-within, [data-demo-state="open"])::after { opacity: 1; transform: translateX(-50%) translateY(0); }

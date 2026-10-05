@@ -3,9 +3,14 @@
   ------------------------------------------------------------------
   Cambia este archivo para adaptar todo el Design System sin tocar
   cada componente uno a uno.
+
+  Theme zones: data-theme="light" | "dark" works on <html> and on any
+  element, so a preview or panel can show the other theme. A zone resets
+  the tokens to the BDS defaults of that theme.
 */
 
-:root {
+:root,
+[data-theme="light"] {
   /* Brand */
   --bt-color-primary: #212492;
   --bt-color-primary-hover: #0065ff;
@@ -361,8 +366,10 @@
   --bt-glass-mesh-opacity: 0.32;
 }
 
-html[data-theme="dark"] {
+[data-theme="dark"] {
   --bt-shadow-button: 0 20px 25px -5px rgb(0 0 0 / 0.45);
+  /* derived from themed tokens: re-declared so nested zones recompute them */
+  --bt-button-secondary-ring: var(--bt-color-border);
   --bt-button-disabled-bg: var(--bt-color-surface-muted);
   --bt-button-disabled-fg: var(--bt-color-text-subtle);
   --bt-color-primary: #8da2ff;
@@ -409,8 +416,13 @@ html[data-theme="dark"] {
 
 @media (max-width: 767px) {
   :root,
-  html[data-theme="dark"] {
+  [data-theme] {
     --bt-glass-panel-backdrop: blur(16px) saturate(135%);
     --bt-glass-overlay-backdrop: blur(8px) saturate(125%);
   }
 }
+
+/* Nested zones: text and native controls follow the zone's theme */
+[data-theme]:not(html) { color: var(--bt-color-text); }
+[data-theme="light"]:not(html) { color-scheme: light; }
+[data-theme="dark"]:not(html) { color-scheme: dark; }

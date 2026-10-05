@@ -1,6 +1,8 @@
 /* Timesheet calendar — Tempo-style month grid, day cards, templates, legend */
 
-:root {
+/* Also on light theme zones so the derived colors recompute there (tokens.css) */
+:root,
+[data-theme="light"] {
   --bt-calendar-brand-blue: #2a3879;
   --bt-calendar-brand-orange: #e65e28;
   --bt-calendar-sidebar-width: min(80vw, 16rem);
@@ -269,18 +271,19 @@ button.bt-calendar-template-card {
     box-shadow var(--bt-duration-fast) var(--bt-ease);
 }
 
-.bt-calendar-template-card--clickable:hover {
+/* data-demo-state="hover" | "focus" | "pressed" shows the state statically (catalog demos) */
+.bt-calendar-template-card--clickable:is(:hover, [data-demo-state="hover"]) {
   border-color: color-mix(in srgb, var(--bt-calendar-brand-orange), var(--bt-color-border) 40%);
   background: color-mix(in srgb, var(--bt-calendar-brand-orange) 8%, var(--bt-color-surface));
   box-shadow: var(--bt-shadow-sm);
 }
 
-.bt-calendar-template-card--clickable:focus-visible {
+.bt-calendar-template-card--clickable:is(:focus-visible, [data-demo-state="focus"]) {
   outline: 2px solid var(--bt-color-info);
   outline-offset: 2px;
 }
 
-.bt-calendar-template-card--clickable:active {
+.bt-calendar-template-card--clickable:is(:active, [data-demo-state="pressed"]) {
   background: color-mix(in srgb, var(--bt-calendar-brand-orange) 12%, var(--bt-color-surface));
 }
 
@@ -515,8 +518,8 @@ button.bt-calendar-template-card {
   z-index: 6;
 }
 
-.bt-calendar-month-grid__cell--weekend .bt-calendar-day--selectable:hover .bt-calendar-day__open,
-.bt-calendar-month-grid__cell--weekend .bt-calendar-day--selectable:focus-within .bt-calendar-day__open,
+.bt-calendar-month-grid__cell--weekend .bt-calendar-day--selectable:is(:hover, [data-demo-state="hover"]) .bt-calendar-day__open,
+.bt-calendar-month-grid__cell--weekend .bt-calendar-day--selectable:is(:focus-within, [data-demo-state="focus"]) .bt-calendar-day__open,
 .bt-calendar-month-grid__cell--weekend .bt-calendar-day__open:focus-visible {
   top: 2.65rem;
   left: 50%;
@@ -555,7 +558,8 @@ button.bt-calendar-template-card {
   cursor: pointer;
 }
 
-.bt-calendar-day--openable:hover {
+/* data-demo-state="hover" | "focus" shows the state statically (catalog demos) */
+.bt-calendar-day--openable:is(:hover, [data-demo-state="hover"]) {
   transform: translateY(-1px);
   border-color: color-mix(in srgb, var(--bt-calendar-day-accent), var(--bt-color-border) 55%);
   box-shadow:
@@ -563,7 +567,7 @@ button.bt-calendar-template-card {
     0 6px 16px -10px color-mix(in srgb, var(--bt-calendar-day-accent), transparent 72%);
 }
 
-.bt-calendar-day--selectable:hover {
+.bt-calendar-day--selectable:is(:hover, [data-demo-state="hover"]) {
   transform: translateY(-1px);
   border-color: color-mix(in srgb, var(--bt-calendar-day-accent), var(--bt-color-border) 55%);
   box-shadow:
@@ -586,8 +590,8 @@ button.bt-calendar-template-card {
     transform 140ms ease;
 }
 
-.bt-calendar-day--selectable:hover .bt-calendar-day__open,
-.bt-calendar-day--selectable:focus-within .bt-calendar-day__open,
+.bt-calendar-day--selectable:is(:hover, [data-demo-state="hover"]) .bt-calendar-day__open,
+.bt-calendar-day--selectable:is(:focus-within, [data-demo-state="focus"]) .bt-calendar-day__open,
 .bt-calendar-day__open:focus-visible {
   opacity: 1;
   pointer-events: auto;

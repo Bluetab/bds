@@ -21,7 +21,8 @@ defmodule Bds.Catalog.Preview.Bulk do
       transition: {"bt-motion-enter", "bt-motion-enter-from", "bt-motion-enter-to"},
       time: 240
     )
-    |> JS.focus_first(to: "##{id}")
+    # The dialog panel, not the container: its first child is the backdrop button
+    |> JS.focus_first(to: "##{id} [role=dialog]")
   end
 
   defp demo_close(id) do

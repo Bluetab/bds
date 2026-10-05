@@ -14,6 +14,9 @@
     Tree             ↑/↓ rows, → expand, ← collapse / parent      [data-bt-tree]
     User menu        aria-expanded in sync, Esc closes            [data-navbar-user]
     role=button      Enter/Space activate non-button elements     [role=button]
+
+  Inside [data-demo-static] (documentation previews that pin a state, e.g. an
+  open dialog shown as a picture) dialogs are not modal: no Tab trap, no Esc.
 */
 
 const FOCUSABLE = [
@@ -120,8 +123,10 @@ const onMenuKeydown = (event, root) => {
 
 /* Dialogs with focus trap ------------------------------------------------ */
 
+const liveTrap = (el) => visible(el) && !el.closest('[data-demo-static]');
+
 const openTraps = (root) =>
-  [...root.querySelectorAll('[data-focus-trap][open], .bt-modal [role="dialog"]')].filter(visible);
+  [...root.querySelectorAll('[data-focus-trap][open], .bt-modal [role="dialog"]')].filter(liveTrap);
 
 const focusInto = (container) => {
   const target = container.querySelector('[autofocus]') || focusables(container)[0] || container;
@@ -171,7 +176,7 @@ export const afterDialogClose = (dialog) => {
 
 const onDialogEscape = (event, root, close) => {
   if (event.key !== 'Escape') return false;
-  const traps = [...root.querySelectorAll('[data-focus-trap][open]')].filter(visible);
+  const traps = [...root.querySelectorAll('[data-focus-trap][open]')].filter(liveTrap);
   const trap = traps[traps.length - 1];
   if (!trap) return false;
   event.preventDefault();

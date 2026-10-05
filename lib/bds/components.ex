@@ -879,10 +879,10 @@ defmodule Bds.Components do
   @doc "Multiline code block (`bt-code-block`)."
   def bt_code_block(assigns) do
     ~H"""
+    <%!-- one line: whitespace inside <pre> would render; the slot's own
+         template decides how its braces are read --%>
     <div class="bt-code-block">
-      <pre class={["bt-code", @class]} phx-no-curly-interpolation>
-        <code phx-no-curly-interpolation>{render_slot(@inner_block)}</code>
-      </pre>
+      <pre class={["bt-code", @class]}><code>{render_slot(@inner_block)}</code></pre>
     </div>
     """
   end

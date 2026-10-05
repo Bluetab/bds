@@ -82,10 +82,10 @@
   transition-timing-function: var(--bt-ease-standard);
 }
 
-.bt-button:active:not([disabled]),
-.bt-icon-button:active:not([disabled]),
-.bt-fab:active:not([disabled]),
-.bt-chip:is(button):active { transform: scale(0.97); transition-duration: var(--bt-duration-fast-01); }
+.bt-button:is(:active, [data-demo-state="pressed"]):not([disabled]),
+.bt-icon-button:is(:active, [data-demo-state="pressed"]):not([disabled]),
+.bt-fab:is(:active, [data-demo-state="pressed"]):not([disabled]),
+.bt-chip:is(button):is(:active, [data-demo-state="pressed"]) { transform: scale(0.97); transition-duration: var(--bt-duration-fast-01); }
 
 .bt-input, .bt-select, .bt-textarea {
   transition: border-color var(--bt-duration-fast-02) var(--bt-ease-standard),
@@ -109,7 +109,7 @@ a.bt-card,
 button.bt-card {
   transition: box-shadow var(--bt-duration-moderate-01) var(--bt-ease-standard), transform var(--bt-duration-moderate-01) var(--bt-ease-standard);
 }
-a.bt-card:hover, button.bt-card:hover { transform: translateY(-2px); box-shadow: var(--bt-shadow-md); }
+a.bt-card:is(:hover, [data-demo-state="hover"]), button.bt-card:is(:hover, [data-demo-state="hover"]) { transform: translateY(-2px); box-shadow: var(--bt-shadow-md); }
 
 /* Dialog & overlay: fade + scale in/out (display toggled by [open]) ------------- */
 

@@ -58,46 +58,46 @@ var e = [
 	if (e.key === "Tab") return l(i, !1, t), !1;
 	let o = r(e.key, a.indexOf(e.target.closest("[role=\"menuitem\"]")), a.length);
 	return o === null ? !1 : (e.preventDefault(), a[o]?.focus(), !0);
-}, f = (e) => [...e.querySelectorAll("[data-focus-trap][open], .bt-modal [role=\"dialog\"]")].filter(t), p = (e) => {
+}, f = (e) => t(e) && !e.closest("[data-demo-static]"), p = (e) => [...e.querySelectorAll("[data-focus-trap][open], .bt-modal [role=\"dialog\"]")].filter(f), m = (e) => {
 	let t = e.querySelector("[autofocus]") || n(e)[0] || e;
 	t === e && !e.hasAttribute("tabindex") && (e.tabIndex = -1), t.focus();
-}, m = (e, t) => {
+}, h = (e, t) => {
 	if (e.key !== "Tab") return !1;
-	let r = f(t), i = r[r.length - 1];
+	let r = p(t), i = r[r.length - 1];
 	if (!i) return !1;
 	let a = n(i);
 	if (a.length === 0) return e.preventDefault(), !0;
 	let o = a[0], s = a[a.length - 1];
 	return i.contains(document.activeElement) ? e.shiftKey && document.activeElement === o ? (e.preventDefault(), s.focus()) : !e.shiftKey && document.activeElement === s && (e.preventDefault(), o.focus()) : (e.preventDefault(), o.focus()), !0;
-}, h = /* @__PURE__ */ new WeakMap(), g = (e, t) => {
-	t && h.set(e, t);
-}, _ = (e) => setTimeout(() => p(e), 0), v = (e) => {
-	let t = h.get(e);
-	h.delete(e), t?.isConnected && t.focus();
-}, y = (e, n, r) => {
+}, g = /* @__PURE__ */ new WeakMap(), _ = (e, t) => {
+	t && g.set(e, t);
+}, v = (e) => setTimeout(() => m(e), 0), y = (e) => {
+	let t = g.get(e);
+	g.delete(e), t?.isConnected && t.focus();
+}, b = (e, t, n) => {
 	if (e.key !== "Escape") return !1;
-	let i = [...n.querySelectorAll("[data-focus-trap][open]")].filter(t), a = i[i.length - 1];
-	return a ? (e.preventDefault(), r(a), !0) : !1;
-}, b = (e) => {
+	let r = [...t.querySelectorAll("[data-focus-trap][open]")].filter(f), i = r[r.length - 1];
+	return i ? (e.preventDefault(), n(i), !0) : !1;
+}, x = (e) => {
 	let t = e.dataset.tooltipDescribes, r = n(e)[0];
 	if (!t || !r) return;
 	let i = (r.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
 	i.includes(t) || r.setAttribute("aria-describedby", [...i, t].join(" "));
-}, x = (e, n) => {
+}, S = (e, n) => {
 	let r = n.getElementById(e.getAttribute("aria-controls"));
 	return r ? [...r.querySelectorAll("[role=\"option\"]")].filter(t) : [];
-}, S = (e, t) => {
+}, C = (e, t) => {
 	if (e.closest(".bt-combobox")?.querySelectorAll("[role=\"option\"][data-active]").forEach((e) => e.removeAttribute("data-active")), !t) {
 		e.removeAttribute("aria-activedescendant");
 		return;
 	}
 	t.dataset.active = "true", e.setAttribute("aria-activedescendant", a(t, "bt-option")), t.scrollIntoView({ block: "nearest" });
-}, C = (e, t) => {
+}, w = (e, t) => {
 	let n = e.target.closest("[data-combobox-input]");
 	if (!n) return !1;
-	let r = x(n, t), i = n.getAttribute("aria-activedescendant"), a = r.findIndex((e) => e.id === i);
-	return e.key === "ArrowDown" || e.key === "ArrowUp" ? r.length === 0 ? !1 : (e.preventDefault(), S(n, r[e.key === "ArrowDown" ? (a + 1) % r.length : (a - 1 + r.length) % r.length]), !0) : e.key === "Enter" && a >= 0 ? (e.preventDefault(), r[a].click(), S(n, null), !0) : e.key === "Escape" && i ? (e.preventDefault(), S(n, null), !0) : !1;
-}, w = (e) => e.querySelector(".bt-tree__body button, .bt-tree__body a[href]") || e.querySelector("[data-tree-toggle]"), T = (e) => {
+	let r = S(n, t), i = n.getAttribute("aria-activedescendant"), a = r.findIndex((e) => e.id === i);
+	return e.key === "ArrowDown" || e.key === "ArrowUp" ? r.length === 0 ? !1 : (e.preventDefault(), C(n, r[e.key === "ArrowDown" ? (a + 1) % r.length : (a - 1 + r.length) % r.length]), !0) : e.key === "Enter" && a >= 0 ? (e.preventDefault(), r[a].click(), C(n, null), !0) : e.key === "Escape" && i ? (e.preventDefault(), C(n, null), !0) : !1;
+}, T = (e) => e.querySelector(".bt-tree__body button, .bt-tree__body a[href]") || e.querySelector("[data-tree-toggle]"), E = (e) => {
 	let n = e.target.closest("[data-bt-tree]");
 	if (!n || ![
 		"ArrowUp",
@@ -109,46 +109,46 @@ var e = [
 	].includes(e.key)) return !1;
 	let i = e.target.closest(".bt-tree__row");
 	if (!i) return !1;
-	let a = [...n.querySelectorAll(".bt-tree__row")].filter(t).filter(w), o = i.querySelector("[data-tree-toggle]"), s = o?.getAttribute("aria-expanded") === "true";
-	if (e.key === "ArrowRight") o && !s ? o.click() : o && a[a.indexOf(i) + 1] && w(a[a.indexOf(i) + 1]).focus();
-	else if (e.key === "ArrowLeft") o && s ? o.click() : w(i.closest(".bt-tree--nested")?.closest(".bt-tree__item")?.querySelector(".bt-tree__row") || i)?.focus();
+	let a = [...n.querySelectorAll(".bt-tree__row")].filter(t).filter(T), o = i.querySelector("[data-tree-toggle]"), s = o?.getAttribute("aria-expanded") === "true";
+	if (e.key === "ArrowRight") o && !s ? o.click() : o && a[a.indexOf(i) + 1] && T(a[a.indexOf(i) + 1]).focus();
+	else if (e.key === "ArrowLeft") o && s ? o.click() : T(i.closest(".bt-tree--nested")?.closest(".bt-tree__item")?.querySelector(".bt-tree__row") || i)?.focus();
 	else {
 		let t = r(e.key, a.indexOf(i), a.length);
 		if (t === null) return !1;
 		if (e.key === "ArrowDown" && t === 0 || e.key === "ArrowUp" && t === a.length - 1) return e.preventDefault(), !0;
-		w(a[t])?.focus();
+		T(a[t])?.focus();
 	}
 	return e.preventDefault(), !0;
-}, E = (e) => {
+}, D = (e) => {
 	let t = e.querySelector("[data-navbar-user-trigger]");
 	if (!t) return;
 	let n = e.dataset.dismissed !== "true" && (e.dataset.open === "true" || e.matches(":hover") || e.matches(":focus-within"));
 	t.setAttribute("aria-expanded", String(n));
 };
-function D(e, { signal: t, closeDialog: n }) {
+function O(e, { signal: t, closeDialog: n }) {
 	let r = null;
 	e.addEventListener("focusin", (e) => {
 		e.target.closest("[data-focus-trap], .bt-modal") || (r = e.target);
 		let t = e.target.closest(".bt-tooltip");
-		t && b(t);
+		t && x(t);
 		let n = e.target.closest("[data-navbar-user]");
-		n && E(n);
+		n && D(n);
 	}, { signal: t }), e.addEventListener("focusout", (e) => {
 		let t = e.target.closest("[data-navbar-user]");
-		t && !t.contains(e.relatedTarget) && (delete t.dataset.dismissed, t.dataset.open = "false", setTimeout(() => E(t), 0));
+		t && !t.contains(e.relatedTarget) && (delete t.dataset.dismissed, t.dataset.open = "false", setTimeout(() => D(t), 0));
 		let n = e.target.closest(".bt-tooltip");
 		n && !n.contains(e.relatedTarget) && delete n.dataset.tooltipHidden;
 	}, { signal: t }), e.addEventListener("mouseover", (e) => {
 		let t = e.target.closest("[data-navbar-user]");
-		t && E(t);
+		t && D(t);
 	}, { signal: t }), e.addEventListener("mouseout", (e) => {
 		let t = e.target.closest("[data-navbar-user]");
-		t && !t.contains(e.relatedTarget) && setTimeout(() => E(t), 0);
+		t && !t.contains(e.relatedTarget) && setTimeout(() => D(t), 0);
 	}, { signal: t }), e.addEventListener("click", (e) => {
 		let t = e.target.closest("[data-navbar-user-trigger]");
 		if (t) {
 			let e = t.closest("[data-navbar-user]");
-			t.getAttribute("aria-expanded") === "true" && e.dataset.dismissed !== "true" ? (e.dataset.dismissed = "true", e.dataset.open = "false") : (delete e.dataset.dismissed, e.dataset.open = "true"), E(e);
+			t.getAttribute("aria-expanded") === "true" && e.dataset.dismissed !== "true" ? (e.dataset.dismissed = "true", e.dataset.open = "false") : (delete e.dataset.dismissed, e.dataset.open = "true"), D(e);
 			return;
 		}
 		let n = e.target.closest("[data-expansion-toggle]");
@@ -159,12 +159,12 @@ function D(e, { signal: t, closeDialog: n }) {
 		let r = e.target.closest("[role=\"tab\"][data-tab]");
 		r && o(r);
 	}, { signal: t }), e.addEventListener("keydown", (t) => {
-		if (!t.defaultPrevented && !s(t) && !d(t, e) && !C(t, e) && !T(t) && !m(t, e) && !y(t, e, n)) {
+		if (!t.defaultPrevented && !s(t) && !d(t, e) && !w(t, e) && !E(t) && !h(t, e) && !b(t, e, n)) {
 			if (t.key === "Escape") {
 				let e = t.target.closest(".bt-tooltip");
 				e && (e.dataset.tooltipHidden = "true");
 				let n = t.target.closest("[data-navbar-user]");
-				n && (n.dataset.dismissed = "true", n.dataset.open = "false", E(n), n.querySelector("[data-navbar-user-trigger]")?.focus());
+				n && (n.dataset.dismissed = "true", n.dataset.open = "false", D(n), n.querySelector("[data-navbar-user-trigger]")?.focus());
 				return;
 			}
 			(t.key === "Enter" || t.key === " ") && t.target.matches("[role=\"button\"]:not(button):not(a):not(input)") && (t.preventDefault(), t.target.click());
@@ -180,12 +180,12 @@ function D(e, { signal: t, closeDialog: n }) {
 }
 //#endregion
 //#region src/lib/interactions.js
-var O = "bt-theme", k = (e, t = document) => [...t.querySelectorAll(e)], A = (e = document) => e.querySelector("[data-theme-icon]"), j = (e = document, t = e.documentElement.dataset.theme) => {
-	let n = A(e);
-	n && (n.textContent = t === "dark" ? "light_mode" : "dark_mode"), k("[data-theme-value]", e).forEach((e) => {
+var k = "bt-theme", A = (e, t = document) => [...t.querySelectorAll(e)], j = (e = document) => e.querySelector("[data-theme-icon]"), M = (e = document, t = e.documentElement.dataset.theme) => {
+	let n = j(e);
+	n && (n.textContent = t === "dark" ? "light_mode" : "dark_mode"), A("[data-theme-value]", e).forEach((e) => {
 		e.textContent = t === "dark" ? e.dataset.dark || "Dark" : e.dataset.light || "Light";
 	});
-}, M = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), N = (e) => {
+}, N = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), P = (e) => {
 	if (e) {
 		if (typeof HTMLDialogElement < "u" && e instanceof HTMLDialogElement) {
 			!e.open && typeof e.showModal == "function" && e.showModal();
@@ -193,7 +193,7 @@ var O = "bt-theme", k = (e, t = document) => [...t.querySelectorAll(e)], A = (e 
 		}
 		e.setAttribute("open", "");
 	}
-}, P = (e) => {
+}, F = (e) => {
 	if (e) {
 		if (typeof HTMLDialogElement < "u" && e instanceof HTMLDialogElement) {
 			e.open && typeof e.close == "function" && e.close();
@@ -201,38 +201,38 @@ var O = "bt-theme", k = (e, t = document) => [...t.querySelectorAll(e)], A = (e 
 		}
 		e.removeAttribute("open");
 	}
-}, F = (e, t, n = document) => {
-	e.dataset.open = String(t), k(`[data-menu-toggle="${CSS.escape(e.id)}"]`, n).forEach((e) => {
+}, I = (e, t, n = document) => {
+	e.dataset.open = String(t), A(`[data-menu-toggle="${CSS.escape(e.id)}"]`, n).forEach((e) => {
 		e.setAttribute("aria-expanded", String(t));
 	});
-}, I = (e = document, t) => {
-	k("[data-open=\"true\"].bt-menu", e).forEach((n) => {
-		n !== t && F(n, !1, e);
+}, L = (e = document, t) => {
+	A("[data-open=\"true\"].bt-menu", e).forEach((n) => {
+		n !== t && I(n, !1, e);
 	});
-}, L = (e) => {
-	e && (e.classList.contains("bt-overlay") ? e.removeAttribute("open") : P(e), v(e));
-}, R = (e, t = {}) => {
-	let { root: n = document, storageKey: r = O, persist: i = !0 } = t;
-	n.documentElement.dataset.theme = e, j(n, e), i && localStorage.setItem(r, e);
-}, z = (e = {}) => {
-	let t = (e.root || document).documentElement.dataset.theme === "dark" ? "light" : "dark";
-	return R(t, e), t;
+}, R = (e) => {
+	e && (e.classList.contains("bt-overlay") ? e.removeAttribute("open") : F(e), y(e));
+}, z = (e, t = {}) => {
+	let { root: n = document, storageKey: r = k, persist: i = !0 } = t;
+	n.documentElement.dataset.theme = e, M(n, e), i && localStorage.setItem(r, e);
 }, B = (e = {}) => {
-	let { root: t = document, storageKey: n = O, fallbackTheme: r = "light" } = e, i = localStorage.getItem(n) || r;
-	return R(i, {
+	let t = (e.root || document).documentElement.dataset.theme === "dark" ? "light" : "dark";
+	return z(t, e), t;
+}, V = (e = {}) => {
+	let { root: t = document, storageKey: n = k, fallbackTheme: r = "light" } = e, i = localStorage.getItem(n) || r;
+	return z(i, {
 		...e,
 		root: t,
 		persist: !1
 	}), i;
 };
-function V(e = {}) {
-	let { root: t = document, storageKey: n = O, autoApplyStoredTheme: r = !0 } = e, i = new AbortController(), { signal: a } = i;
-	r ? B({
+function H(e = {}) {
+	let { root: t = document, storageKey: n = k, autoApplyStoredTheme: r = !0 } = e, i = new AbortController(), { signal: a } = i;
+	r ? V({
 		root: t,
 		storageKey: n,
 		fallbackTheme: t.documentElement.dataset.theme || "light"
-	}) : j(t);
-	let o = new MutationObserver(() => j(t));
+	}) : M(t);
+	let o = new MutationObserver(() => M(t));
 	o.observe(t.documentElement, {
 		attributes: !0,
 		attributeFilter: ["data-theme"]
@@ -240,7 +240,7 @@ function V(e = {}) {
 		e.target.closest(".bt-combobox__panel") && e.preventDefault();
 	}, { signal: a }), t.addEventListener("click", (e) => {
 		if (e.target.closest("[data-theme-toggle]")) {
-			z({
+			B({
 				root: t,
 				storageKey: n
 			});
@@ -248,38 +248,38 @@ function V(e = {}) {
 		}
 		let r = e.target.closest("[data-dialog-open]");
 		if (r) {
-			let e = M(r, r.dataset.dialogOpen, t);
-			e && (g(e, r), N(e), _(e));
+			let e = N(r, r.dataset.dialogOpen, t);
+			e && (_(e, r), P(e), v(e));
 			return;
 		}
 		let i = e.target.closest("[data-dialog-close]");
 		if (i) {
-			L(i.closest(".bt-dialog"));
+			R(i.closest(".bt-dialog"));
 			return;
 		}
 		let a = e.target.closest("[data-overlay-open]");
 		if (a) {
-			let e = M(a, a.dataset.overlayOpen, t);
-			e && (g(e, a), e.setAttribute("open", ""), _(e));
+			let e = N(a, a.dataset.overlayOpen, t);
+			e && (_(e, a), e.setAttribute("open", ""), v(e));
 			return;
 		}
 		let o = e.target.closest("[data-overlay-close]");
 		if (o) {
-			L(o.closest(".bt-overlay"));
+			R(o.closest(".bt-overlay"));
 			return;
 		}
 		let s = e.target.closest("[data-menu-toggle]");
 		if (s) {
-			let e = M(s, s.dataset.menuToggle, t), n = e?.dataset.open !== "true";
-			I(t, e), e && F(e, n, t);
+			let e = N(s, s.dataset.menuToggle, t), n = e?.dataset.open !== "true";
+			L(t, e), e && I(e, n, t);
 			return;
 		}
 		let c = e.target.closest(".bt-menu [role=\"menuitem\"]");
 		if (c) {
 			let e = c.closest(".bt-menu");
-			F(e, !1, t), t.querySelector(`[data-menu-toggle="${CSS.escape(e.id)}"]`)?.focus();
+			I(e, !1, t), t.querySelector(`[data-menu-toggle="${CSS.escape(e.id)}"]`)?.focus();
 		}
-		e.target.closest(".bt-menu-wrap") || I(t);
+		e.target.closest(".bt-menu-wrap") || L(t);
 		let l = e.target.closest("[data-expansion-toggle]");
 		if (l) {
 			let e = l.closest("[data-expansion]");
@@ -288,7 +288,7 @@ function V(e = {}) {
 		}
 		let u = e.target.closest("[data-snackbar-open]");
 		if (u) {
-			let e = M(u, u.dataset.snackbarOpen, t);
+			let e = N(u, u.dataset.snackbarOpen, t);
 			e && (e.dataset.open = "true", setTimeout(() => {
 				e.dataset.open = "false";
 			}, 3200));
@@ -312,20 +312,20 @@ function V(e = {}) {
 		if (f) {
 			let e = f.closest("[data-tabs]");
 			if (!e) return;
-			k("[role=\"tab\"]", e).forEach((e) => {
+			A("[role=\"tab\"]", e).forEach((e) => {
 				e.setAttribute("aria-selected", String(e === f));
-			}), k(".bt-tab-panel", e).forEach((e) => {
+			}), A(".bt-tab-panel", e).forEach((e) => {
 				e.setAttribute("aria-hidden", String(e.id !== f.dataset.tab));
 			});
 		}
 	}, { signal: a });
-	let s = D(t, {
+	let s = O(t, {
 		signal: a,
-		closeDialog: L
+		closeDialog: R
 	});
 	return () => {
 		i.abort(), o.disconnect(), s();
 	};
 }
 //#endregion
-export { O as DEFAULT_THEME_STORAGE_KEY, B as applyStoredTheme, V as initBtInteractions, R as setTheme, z as toggleTheme };
+export { k as DEFAULT_THEME_STORAGE_KEY, V as applyStoredTheme, H as initBtInteractions, z as setTheme, B as toggleTheme };

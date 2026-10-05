@@ -5,7 +5,7 @@ defmodule Bds.Tokens do
 
   Only solid hex values are exposed; tokens defined with `color-mix()`, `rgba()`
   or other variables are skipped. Dark values inherit light ones unless
-  `html[data-theme="dark"]` overrides them.
+  the `[data-theme="dark"]` block overrides them.
   """
 
   alias Bds.Contrast
@@ -29,8 +29,10 @@ defmodule Bds.Tokens do
   end
 
   css = if File.exists?(@css_path), do: File.read!(@css_path), else: ""
-  light = parse_block.(css, ":root")
-  dark_overrides = parse_block.(css, ~S|html\[data-theme=["']?dark["']?\]|)
+  # `:root` / `html[data-theme="dark"]`, or the theme-zone selectors
+  # `:root, [data-theme="light"]` / `[data-theme="dark"]` (tokens.css)
+  light = parse_block.(css, ~S|:root(?:\s*,\s*\[data-theme=["']?light["']?\])?|)
+  dark_overrides = parse_block.(css, ~S|(?:html)?\[data-theme=["']?dark["']?\]|)
 
   @light light
   @dark Map.merge(light, dark_overrides)

@@ -2,7 +2,7 @@
 .bt-field label, .bt-label { color: var(--bt-color-text-muted); font-size: var(--bt-font-size-sm); font-weight: 700; }
 .bt-input, .bt-select, .bt-textarea { width: 100%; min-height: 2.75rem; padding: 0 var(--bt-space-3); border: 1px solid var(--bt-color-border-strong); border-radius: var(--bt-radius-md); background: var(--bt-color-surface); color: var(--bt-color-text); outline: 0; transition: border var(--bt-duration-fast), box-shadow var(--bt-duration-fast), background var(--bt-duration-fast); }
 .bt-textarea { min-height: 7rem; padding-block: var(--bt-space-3); resize: vertical; }
-.bt-input:focus, .bt-select:focus, .bt-textarea:focus { border-color: var(--bt-color-primary); box-shadow: 0 0 0 4px color-mix(in srgb, var(--bt-color-primary), transparent 84%); }
+.bt-input:is(:focus, [data-demo-state="focus"]), .bt-select:is(:focus, [data-demo-state="focus"]), .bt-textarea:is(:focus, [data-demo-state="focus"]) { border-color: var(--bt-color-primary); box-shadow: 0 0 0 4px color-mix(in srgb, var(--bt-color-primary), transparent 84%); }
 .bt-field--error .bt-input, .bt-field--error .bt-select, .bt-field--error .bt-textarea { border-color: var(--bt-color-error); }
 .bt-help { color: var(--bt-color-text-subtle); font-size: var(--bt-font-size-xs); }
 .bt-checkbox, .bt-radio, .bt-switch { display: inline-flex; align-items: center; gap: var(--bt-space-2); color: var(--bt-color-text); font-weight: 650; cursor: pointer; }
