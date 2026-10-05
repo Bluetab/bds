@@ -39,8 +39,9 @@
 .bt-button .bt-symbol { width: var(--bt-button-icon-size); height: var(--bt-button-icon-size); font-size: var(--bt-button-icon-size); vertical-align: 0; letter-spacing: 0; }
 
 /* Hover and keyboard focus share the elevated state; focus also keeps the ring */
-/* data-demo-state="hover" shows the state statically (catalog, visual tests) */
-.bt-button:is(:hover, :focus-visible, [data-demo-state="hover"]):not([disabled], [aria-disabled="true"]) {
+/* data-demo-state="hover" | "focus" | "pressed" shows the state statically
+   (catalog demos, visual tests); pressed also scales down, see motion.css */
+.bt-button:is(:hover, :focus-visible, [data-demo-state="hover"], [data-demo-state="focus"], [data-demo-state="pressed"]):not([disabled], [aria-disabled="true"]) {
   background: var(--bt-button-bg-hover);
   color: var(--bt-button-fg-hover);
   box-shadow: var(--bt-shadow-button), inset 0 0 0 1px var(--bt-button-ring);
@@ -59,7 +60,7 @@
 .bt-button--tertiary { --bt-button-bg: var(--bt-color-secondary-soft); --bt-button-fg: var(--bt-color-secondary-hover); --bt-button-bg-hover: var(--bt-color-secondary-soft); --bt-button-fg-hover: var(--bt-color-primary-hover); }
 .bt-button--outline { --bt-button-bg: transparent; --bt-button-fg: var(--bt-color-primary); --bt-button-bg-hover: var(--bt-color-surface); --bt-button-fg-hover: var(--bt-color-primary-hover); --bt-button-ring: var(--bt-color-border-strong); }
 .bt-button--ghost { --bt-button-bg: transparent; --bt-button-fg: var(--bt-color-primary); --bt-button-bg-hover: var(--bt-color-primary-soft); --bt-button-fg-hover: var(--bt-color-primary-hover); }
-.bt-button--ghost:is(:hover, :focus-visible, [data-demo-state="hover"]):not([disabled], [aria-disabled="true"]) { box-shadow: none; }
+.bt-button--ghost:is(:hover, :focus-visible, [data-demo-state="hover"], [data-demo-state="focus"], [data-demo-state="pressed"]):not([disabled], [aria-disabled="true"]) { box-shadow: none; }
 .bt-button--danger { --bt-button-bg: var(--bt-color-error); --bt-button-fg: #fff; --bt-button-bg-hover: var(--bt-palette-red-70); --bt-button-fg-hover: #fff; }
 
 /* Disabled: explicit colors from the spec, no hover/shadow/press */

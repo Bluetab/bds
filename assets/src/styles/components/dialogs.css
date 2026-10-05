@@ -177,7 +177,8 @@ html[data-theme="dark"] .bt-overlay__surface::before {
   box-shadow: var(--bt-shadow-md);
 }
 
-.bt-menu[data-open="true"] {
+.bt-menu[data-open="true"],
+.bt-menu-wrap[data-demo-state="open"] .bt-menu {
   display: grid;
 }
 

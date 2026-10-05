@@ -67,7 +67,7 @@
 .bt-switch--lg .bt-switch__track::after { width: 1.5rem; height: 1.5rem; }
 .bt-switch--lg input:checked + .bt-switch__track::after { transform: translateX(1.75rem); }
 /* The native input is visually hidden: show focus on the track instead */
-.bt-switch input:focus-visible + .bt-switch__track { outline: var(--bt-focus-ring-width) solid var(--bt-focus-ring-color); outline-offset: 2px; }
+.bt-switch input:is(:focus-visible, [data-demo-state="focus"]) + .bt-switch__track { outline: var(--bt-focus-ring-width) solid var(--bt-focus-ring-color); outline-offset: 2px; }
 
 /* Avatar ------------------------------------------------------------------- */
 .bt-avatar--sm .bt-avatar__media { width: 1.75rem; height: 1.75rem; font-size: var(--bt-font-size-xs); }

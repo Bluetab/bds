@@ -109,7 +109,8 @@ a.bt-expense-liquidacion-card {
   -webkit-tap-highlight-color: transparent;
 }
 
-.bt-expense-liquidacion-card:hover {
+/* data-demo-state="hover" shows the state statically (live demos) */
+.bt-expense-liquidacion-card:is(:hover, [data-demo-state="hover"]) {
   transform: translateY(-1px);
   border-color: color-mix(in srgb, var(--bt-color-primary) 45%, var(--bt-color-border));
   box-shadow: var(--bt-shadow-sm);
@@ -130,7 +131,7 @@ a.bt-expense-liquidacion-card {
   color: var(--bt-color-text);
 }
 
-.bt-expense-liquidacion-card:hover .bt-expense-liquidacion-card__concept {
+.bt-expense-liquidacion-card:is(:hover, [data-demo-state="hover"]) .bt-expense-liquidacion-card__concept {
   color: var(--bt-color-primary);
 }
 

@@ -9,7 +9,7 @@
 .bt-sidebar__group { margin-bottom: var(--bt-space-4); }
 .bt-sidebar__group-title { display: block; padding-inline: var(--bt-space-3); margin-bottom: var(--bt-space-1); color: var(--bt-color-text-subtle); font-size: var(--bt-font-size-xs); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .bt-nav-link { display: flex; align-items: center; gap: var(--bt-space-3); min-height: 2.75rem; padding: 0 var(--bt-space-3); border-radius: var(--bt-radius-pill); color: var(--bt-color-text-muted); font-weight: 650; transition: background var(--bt-duration-fast), color var(--bt-duration-fast), transform var(--bt-duration-fast); }
-.bt-nav-link:hover { color: var(--bt-color-text); background: var(--bt-color-surface-soft); transform: translateX(2px); }
+.bt-nav-link:is(:hover, [data-demo-state="hover"]) { color: var(--bt-color-text); background: var(--bt-color-surface-soft); transform: translateX(2px); }
 .bt-nav-link[aria-current="page"] { color: var(--bt-color-on-primary); background: var(--bt-color-primary); box-shadow: var(--bt-shadow-xs); }
 .bt-nav-link.is-hidden { display: none; }
 .bt-icon { display: inline-grid; place-items: center; width: 1.25em; height: 1.25em; font-size: var(--bt-font-size-xl) }
