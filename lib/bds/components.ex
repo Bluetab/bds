@@ -419,6 +419,10 @@ defmodule Bds.Components do
   slot :start
   slot :brand
   slot :nav
+
+  slot :context,
+    doc: "contextual status (e.g. an impersonation badge) shown between nav and actions on all viewports"
+
   slot :actions
 
   def bt_topbar(assigns) do
@@ -435,6 +439,9 @@ defmodule Bds.Components do
           </div>
           <div :if={@nav != []} class="bt-nav__links">
             {render_slot(@nav)}
+          </div>
+          <div :if={@context != []} class="bt-nav__context">
+            {render_slot(@context)}
           </div>
           <div :if={@actions != []} class="bt-nav__actions">
             {render_slot(@actions)}

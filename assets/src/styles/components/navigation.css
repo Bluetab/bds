@@ -121,6 +121,17 @@ html[data-theme="dark"] .bt-brand__logo--dark {display: block;}
   .bt-nav__links { display: flex; }
 }
 
+.bt-nav__context {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--bt-space-2);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.bt-nav__links + .bt-nav__context { flex: 0 1 auto; }
+
 .bt-nav__actions,
 .bt-topbar .bt-topbar__actions {
   display: flex;
