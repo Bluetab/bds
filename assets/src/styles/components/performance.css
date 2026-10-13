@@ -202,11 +202,16 @@
   border: 1px solid var(--bt-color-border);
   border-radius: var(--bt-radius-md);
   overflow: hidden;
+  /* Rows share these tracks via subgrid so the `auto` hours column (e.g. "5 h" vs "1000 h")
+     doesn't shift the name/owner columns row by row. */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
 }
 
 .bt-performance-hours-project {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
   gap: var(--bt-space-3);
   padding: var(--bt-space-2) var(--bt-space-3);
   font-size: var(--bt-font-size-xs);
@@ -252,10 +257,14 @@
   box-shadow: var(--bt-shadow-xs);
 }
 
-.bt-performance-rating--a { background: var(--bt-color-success); }
-.bt-performance-rating--b { background: var(--bt-color-primary); }
-.bt-performance-rating--c { background: var(--bt-color-warning); color: var(--bt-color-text); }
-.bt-performance-rating--d { background: var(--bt-color-error); }
+/* Overall ratings share one neutral brand blue: colour must not suggest a judgement. */
+.bt-performance-rating--a,
+.bt-performance-rating--b,
+.bt-performance-rating--c,
+.bt-performance-rating--d {
+  background: var(--bt-color-primary);
+  color: var(--bt-color-on-primary);
+}
 
 .bt-performance-section-title--sm {
   font-size: var(--bt-font-size-sm);
