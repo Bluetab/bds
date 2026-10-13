@@ -203,5 +203,25 @@ defmodule Bds.ComponentsA11yTest do
       assert html =~ ~s(aria-expanded="true")
       assert html =~ "data-bt-tree"
     end
+
+    test "selectable tree nodes send their key and mark the selected node" do
+      assigns = %{
+        nodes: [
+          %{key: "career:1", name: "Engineering", selectable: true, show_doc_badge: false},
+          %{key: "category:7", name: "Senior", selectable: true, selected: true, show_doc_badge: false}
+        ]
+      }
+
+      html =
+        rendered_to_string(
+          ~H|<.bt_tree id="nav" nodes={@nodes} expanded={MapSet.new()} select_event="select_node" />|
+        )
+
+      assert html =~ ~s(phx-value-key="career:1")
+      assert html =~ ~s(phx-value-key="category:7")
+      assert html =~ "bt-tree__label-row--selected"
+      assert html =~ ~s(aria-current="true")
+      refute html =~ "P-—"
+    end
   end
 end

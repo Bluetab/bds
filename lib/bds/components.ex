@@ -28,7 +28,7 @@ defmodule Bds.Components do
   @doc """
   Renders a design-system button (`bt-button` variants).
 
-  Text is 16px bold with 1.4px tracking; hover and keyboard focus share the
+  Text is 16px semibold with 0.4px tracking; hover and keyboard focus share the
   elevated state (shadow `--bt-shadow-button`). Icons are optional Material
   Symbols ligatures and are hidden from screen readers — the label names the
   button. For icon-only buttons use `bt_icon_button`.

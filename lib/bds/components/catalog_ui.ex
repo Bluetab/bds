@@ -1168,7 +1168,9 @@ defmodule Bds.Components.CatalogUi do
             class={@label_row_class}
             phx-click={@select_event}
             phx-target={@select_target}
+            phx-value-key={@key}
             phx-value-project_id={@node[:project_id]}
+            aria-current={@node[:selected] && "true"}
           >
             <.bt_tree_label_content node={@node} />
           </button>
@@ -1297,7 +1299,7 @@ defmodule Bds.Components.CatalogUi do
   end
 
   defp tree_project_doc_badge?(node) do
-    Map.get(node, :show_doc_badge, false) or Map.get(node, :selectable, false)
+    Map.get(node, :show_doc_badge, Map.get(node, :selectable, false))
   end
 
   defp tree_project_doc_label(node) do
@@ -1322,7 +1324,8 @@ defmodule Bds.Components.CatalogUi do
     [
       "bt-tree__label-row",
       Map.get(node, :avatar) && "bt-tree__label-row--with-avatar",
-      selectable? && "bt-tree__label-row--selectable"
+      selectable? && "bt-tree__label-row--selectable",
+      selectable? && Map.get(node, :selected, false) && "bt-tree__label-row--selected"
     ]
   end
 

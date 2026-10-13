@@ -285,7 +285,7 @@ src/main.js</pre>
     icon: "smart_button",
     title: "Buttons",
     description:
-      "Buttons trigger actions. Text is Titillium 16px bold with 1.4px letter-spacing on a pill shape; an icon is optional and always goes with a visible label. Hover and keyboard focus share the elevated state.",
+      "Buttons trigger actions. Text is Titillium 16px semibold with 0.4px letter-spacing on a pill shape; an icon is optional and always goes with a visible label. Hover and keyboard focus share the elevated state.",
     examples: [
       {
         title: "Primary and secondary",
@@ -1086,6 +1086,44 @@ initBtInteractions();</code></pre>
       {
         title: "Empty state",
         html: String.raw`<div class="bt-tree-empty">No nodes match your search.</div>`,
+      },
+      {
+        title: "Navigator (selected node)",
+        block: true,
+        html: String.raw`<ul class="bt-tree" role="list">
+  <li class="bt-tree__item">
+    <div class="bt-tree__row">
+      <div class="bt-tree__toggle-col">
+        <button type="button" class="bt-tree__toggle" aria-expanded="true" aria-label="Toggle branch">
+          <span class="bt-tree__chevron bt-symbol bt-tree__chevron--open" aria-hidden="true">chevron_right</span>
+        </button>
+      </div>
+      <div class="bt-tree__body">
+        <button type="button" class="bt-tree__label-row bt-tree__label-row--selectable">
+          <span class="bt-tree__kind">Career</span>
+          <span class="bt-tree__name">Engineering</span>
+          <span class="bt-tree__badges"><span class="bt-badge bt-badge--secondary"><span>5</span></span></span>
+        </button>
+        <ul class="bt-tree bt-tree--nested" role="list">
+          <li class="bt-tree__item">
+            <div class="bt-tree__row">
+              <div class="bt-tree__toggle-col">
+                <span class="bt-tree__toggle-spacer" aria-hidden="true"></span>
+              </div>
+              <div class="bt-tree__body">
+                <button type="button" class="bt-tree__label-row bt-tree__label-row--selectable bt-tree__label-row--selected" aria-current="true">
+                  <span class="bt-tree__kind">Category</span>
+                  <span class="bt-tree__name">Senior</span>
+                  <span class="bt-tree__badges"><span class="bt-badge bt-badge--secondary"><span>3</span></span></span>
+                </button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </li>
+</ul>`,
       },
     ],
   },

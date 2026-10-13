@@ -854,6 +854,35 @@ defmodule Bds.Catalog.Snippets.Bulk do
       """,
       "tree:1" => ~S"""
       <.bt_tree_empty>No nodes match your search.</.bt_tree_empty>
+      """,
+      "tree:2" => ~S"""
+      <.bt_tree
+        id="tree-navigator"
+        nodes={[
+          %{
+            key: "career:1",
+            kind_label: "Career",
+            name: "Engineering",
+            selectable: true,
+            show_doc_badge: false,
+            badges: [%{label: "5"}],
+            children: [
+              %{
+                key: "category:7",
+                kind_label: "Category",
+                name: "Senior",
+                selectable: true,
+                selected: true,
+                show_doc_badge: false,
+                badges: [%{label: "3"}],
+                children: []
+              }
+            ]
+          }
+        ]}
+        expanded={MapSet.new(["career:1"])}
+        select_event="select_node"
+      />
       """
     }
   end

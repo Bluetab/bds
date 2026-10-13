@@ -1104,6 +1104,22 @@ defmodule Bds.Catalog.Preview.Bulk do
     """
   end
 
+  def render("tree", 2, assigns) do
+    assigns =
+      assigns
+      |> assign(:nodes, tree_navigator_nodes())
+      |> assign(:expanded, MapSet.new(["career:1"]))
+
+    ~H"""
+    <.bt_tree
+      id="tree-navigator-demo"
+      nodes={@nodes}
+      expanded={@expanded}
+      select_event="select_node"
+    />
+    """
+  end
+
   def render("calendar-day", 0, assigns) do
     ~H"""
     <.bt_calendar_day
@@ -1510,4 +1526,29 @@ defmodule Bds.Catalog.Preview.Bulk do
   end
 
   def render(_, _, _assigns), do: nil
+
+  defp tree_navigator_nodes do
+    [
+      %{
+        key: "career:1",
+        kind_label: "Career",
+        name: "Engineering",
+        selectable: true,
+        show_doc_badge: false,
+        badges: [%{label: "5"}],
+        children: [
+          %{
+            key: "category:7",
+            kind_label: "Category",
+            name: "Senior",
+            selectable: true,
+            selected: true,
+            show_doc_badge: false,
+            badges: [%{label: "3"}],
+            children: []
+          }
+        ]
+      }
+    ]
+  end
 end
