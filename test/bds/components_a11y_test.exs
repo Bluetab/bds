@@ -46,6 +46,32 @@ defmodule Bds.ComponentsA11yTest do
     end
   end
 
+  describe "bt_performance_team_card" do
+    test "delegation label defaults to Delegated by and can be overridden" do
+      assigns = %{}
+
+      default =
+        rendered_to_string(~H"""
+        <Bds.Components.Performance.bt_performance_team_card name="Ana" delegator_name="Luis" show_delegator?={true} />
+        """)
+
+      assert default =~ "Delegated by"
+
+      custom =
+        rendered_to_string(~H"""
+        <Bds.Components.Performance.bt_performance_team_card
+          name="Ana"
+          delegator_name="Francisco"
+          show_delegator?={true}
+          delegation_label="Delegated to"
+        />
+        """)
+
+      assert custom =~ "Delegated to"
+      refute custom =~ "Delegated by"
+    end
+  end
+
   describe "forms" do
     test "bt_input links help and errors and flags invalid" do
       assigns = %{}

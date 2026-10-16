@@ -508,6 +508,8 @@ defmodule Bds.Components.Performance do
   attr :no_hours_message, :string, default: nil
   attr :delegator_name, :string, default: nil
   attr :show_delegator?, :boolean, default: false
+
+  attr :delegation_label, :string, default: nil
   attr :briefing_date_label, :string, default: nil
   attr :briefing_status, :string, default: nil
   attr :briefing_ack_state, :atom, default: nil
@@ -594,7 +596,7 @@ defmodule Bds.Components.Performance do
           </p>
         </div>
         <div :if={@show_delegator? && @delegator_name} class="bt-performance-team-card__delegation">
-          <span>{gettext("Delegated by")}</span>
+          <span>{@delegation_label || gettext("Delegated by")}</span>
           <strong>{@delegator_name}</strong>
         </div>
       </div>
