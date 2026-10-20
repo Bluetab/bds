@@ -1685,7 +1685,7 @@ initBtInteractions();</code></pre>
       {
         title: "Sidebar nav links",
         block: true,
-        html: String.raw`<nav class="bt-sidebar__nav" style="width: 16rem;">
+        html: String.raw`<nav class="bt-sidebar__nav" style="width: 16rem; max-width: 100%;">
   <a class="bt-nav-link" aria-current="page" href="#"><span class="bt-icon">home</span> Inicio</a>
   <a class="bt-nav-link" href="#"><span class="bt-icon">widgets</span> Componentes</a>
   <a class="bt-nav-link" href="#"><span class="bt-icon">settings</span> Ajustes</a>

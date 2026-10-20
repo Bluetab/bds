@@ -59,14 +59,14 @@ defmodule Bds.MixProject do
       maintainers: ["Bluetab"],
       licenses: ["UNLICENSED"],
       links: %{"GitHub" => @source_url},
-      files: ~w(lib priv mix.exs README.md .formatter.exs assets/src/catalog.js)
+      files: ~w(lib priv mix.exs README.md DESIGN.md .formatter.exs assets/src/catalog.js)
     ]
   end
 
   defp docs do
     [
       main: "Bds",
-      extras: ["README.md"]
+      extras: ["README.md", "DESIGN.md"]
     ]
   end
 

@@ -6,18 +6,20 @@ defmodule Bds.Components.Expense do
   use Phoenix.Component
   use Gettext, backend: Bds.Gettext
 
+  import Bds.Components.Helpers, only: [assign_default: 3]
+
   @workflow_pill %{
     "info" => "bt-expense-workflow__pill bt-expense-workflow__pill--info",
     "warning" => "bt-expense-workflow__pill bt-expense-workflow__pill--warning",
     "success" => "bt-expense-workflow__pill bt-expense-workflow__pill--success"
   }
 
-  attr :class, :any, default: nil
-  attr :title, :string, required: true
-  attr :meta, :string, default: nil
-  slot :actions
-  slot :filters
-  slot :status
+  attr(:class, :any, default: nil)
+  attr(:title, :string, required: true)
+  attr(:meta, :string, default: nil)
+  slot(:actions)
+  slot(:filters)
+  slot(:status)
 
   def bt_expense_toolbar(assigns) do
     ~H"""
@@ -26,27 +28,27 @@ defmodule Bds.Components.Expense do
         <h1 class="bt-expense-toolbar__title">{@title}</h1>
         <span :if={@meta} class="bt-expense-toolbar__meta">{@meta}</span>
       </div>
-      <div :if={render_slot(@actions) != []}>{render_slot(@actions)}</div>
-      <div :if={render_slot(@filters) != []}>{render_slot(@filters)}</div>
-      <div :if={render_slot(@status) != []}>{render_slot(@status)}</div>
+      <div :if={@actions != []}>{render_slot(@actions)}</div>
+      <div :if={@filters != []}>{render_slot(@filters)}</div>
+      <div :if={@status != []}>{render_slot(@status)}</div>
     </div>
     """
   end
 
-  attr :class, :any, default: nil
-  attr :filters, :list, required: true
-  attr :active, :string, required: true
-  attr :event, :string, default: "set_filter"
+  attr(:class, :any, default: nil)
+  attr(:filters, :list, required: true)
+  attr(:active, :string, required: true)
+  attr(:event, :string, default: "set_filter")
 
   def bt_expense_filter_bar(assigns) do
     ~H"""
-    <div class={["bt-expense-filter-bar", @class]} role="tablist" aria-label={gettext("Liquidaciones filters")}>
+    <%!-- Filters, not tabs: there are no tab panels, so a group of toggle buttons --%>
+    <div class={["bt-expense-filter-bar", @class]} role="group" aria-label={gettext("Liquidaciones filters")}>
       <button
         :for={filter <- @filters}
         id={filter[:dom_id] || filter.id}
         type="button"
-        role="tab"
-        aria-selected={to_string(filter_value(filter) == @active)}
+        aria-pressed={to_string(filter_value(filter) == @active)}
         phx-click={@event}
         phx-value-filter={filter_value(filter)}
         class={["bt-expense-filter-bar__btn", filter_value(filter) == @active && "is-active"]}
@@ -59,23 +61,23 @@ defmodule Bds.Components.Expense do
 
   defp filter_value(filter), do: filter[:value] || filter.id
 
-  attr :id, :string, required: true
-  attr :class, :any, default: nil
-  attr :concept, :string, required: true
-  attr :date_label, :string, required: true
-  attr :project_name, :string, required: true
-  attr :gasto_count, :integer, required: true
-  attr :rejected?, :boolean, default: false
-  attr :rejected_label, :string
-  attr :current_step_index, :integer, default: 1
-  attr :current_step_label, :string, default: nil
-  attr :pill_variant, :string, default: "info", values: ~w(info warning success)
-  attr :total_steps, :integer, default: 5
-  attr :navigate, :any, default: nil
-  attr :patch, :any, default: nil
-  attr :href, :string, default: nil
-  attr :rest, :global
-  slot :project_icon
+  attr(:id, :string, required: true)
+  attr(:class, :any, default: nil)
+  attr(:concept, :string, required: true)
+  attr(:date_label, :string, required: true)
+  attr(:project_name, :string, required: true)
+  attr(:gasto_count, :integer, required: true)
+  attr(:rejected?, :boolean, default: false)
+  attr(:rejected_label, :string)
+  attr(:current_step_index, :integer, default: 1)
+  attr(:current_step_label, :string, default: nil)
+  attr(:pill_variant, :string, default: "info", values: ~w(info warning success))
+  attr(:total_steps, :integer, default: 5)
+  attr(:navigate, :any, default: nil)
+  attr(:patch, :any, default: nil)
+  attr(:href, :string, default: nil)
+  attr(:rest, :global)
+  slot(:project_icon)
 
   def bt_expense_liquidacion_card(assigns) do
     pill_class =
@@ -136,17 +138,17 @@ defmodule Bds.Components.Expense do
     """
   end
 
-  attr :rejected?, :boolean, required: true
-  attr :rejected_label, :string, required: true
-  attr :current_step_index, :integer, required: true
-  attr :current_step_label, :string, default: nil
-  attr :pill_class, :string, required: true
-  attr :total_steps, :integer, required: true
-  attr :date_label, :string, required: true
-  attr :concept, :string, required: true
-  attr :project_name, :string, required: true
-  attr :gasto_count, :integer, required: true
-  slot :project_icon
+  attr(:rejected?, :boolean, required: true)
+  attr(:rejected_label, :string, required: true)
+  attr(:current_step_index, :integer, required: true)
+  attr(:current_step_label, :string, default: nil)
+  attr(:pill_class, :string, required: true)
+  attr(:total_steps, :integer, required: true)
+  attr(:date_label, :string, required: true)
+  attr(:concept, :string, required: true)
+  attr(:project_name, :string, required: true)
+  attr(:gasto_count, :integer, required: true)
+  slot(:project_icon)
 
   defp bt_expense_liquidacion_card_body(assigns) do
     ~H"""
@@ -166,7 +168,7 @@ defmodule Bds.Components.Expense do
     <p class="bt-expense-liquidacion-card__concept">{@concept}</p>
     <div class="bt-expense-liquidacion-card__meta">
       <div class="bt-expense-liquidacion-card__project">
-        <span :if={render_slot(@project_icon) != []} class="bt-expense-liquidacion-card__project-icon">
+        <span :if={@project_icon != []} class="bt-expense-liquidacion-card__project-icon">
           {render_slot(@project_icon)}
         </span>
         <span class="bt-expense-liquidacion-card__project-name">{@project_name}</span>
@@ -182,11 +184,11 @@ defmodule Bds.Components.Expense do
     assigns.navigate || assigns.patch || assigns.href
   end
 
-  attr :total_steps, :integer, default: 5
-  attr :current_index, :integer, required: true
-  attr :current_label, :string, required: true
-  attr :pill_class, :string, required: true
-  attr :class, :any, default: nil
+  attr(:total_steps, :integer, default: 5)
+  attr(:current_index, :integer, required: true)
+  attr(:current_label, :string, required: true)
+  attr(:pill_class, :string, required: true)
+  attr(:class, :any, default: nil)
 
   def bt_expense_workflow_track(assigns) do
     ~H"""
@@ -207,9 +209,9 @@ defmodule Bds.Components.Expense do
     """
   end
 
-  attr :class, :any, default: nil
-  attr :variant, :string, default: "info", values: ~w(info error success)
-  slot :inner_block, required: true
+  attr(:class, :any, default: nil)
+  attr(:variant, :string, default: "info", values: ~w(info error success))
+  slot(:inner_block, required: true)
 
   def bt_expense_callout(assigns) do
     variant_class = "bt-expense-callout bt-expense-callout--#{assigns.variant}"
@@ -222,9 +224,9 @@ defmodule Bds.Components.Expense do
     """
   end
 
-  attr :class, :any, default: nil
-  attr :label, :string, required: true
-  attr :value, :string, required: true
+  attr(:class, :any, default: nil)
+  attr(:label, :string, required: true)
+  attr(:value, :string, required: true)
 
   def bt_expense_summary(assigns) do
     ~H"""
@@ -235,15 +237,15 @@ defmodule Bds.Components.Expense do
     """
   end
 
-  attr :class, :any, default: nil
-  attr :projects, :list, required: true
-  attr :selected_id, :string, default: nil
-  attr :empty_message, :string, default: nil
-  attr :select_event, :string, default: "select_project"
+  attr(:class, :any, default: nil)
+  attr(:projects, :list, required: true)
+  attr(:selected_id, :string, default: nil)
+  attr(:empty_message, :string, default: nil)
+  attr(:select_event, :string, default: "select_project")
 
   def bt_expense_project_list(assigns) do
     assigns =
-      assign_new(assigns, :empty_message, fn -> gettext("No matching projects.") end)
+      assign_default(assigns, :empty_message, fn -> gettext("No matching projects.") end)
 
     ~H"""
     <div class={["bt-expense-project-list", @class]}>
@@ -267,12 +269,12 @@ defmodule Bds.Components.Expense do
     """
   end
 
-  attr :class, :any, default: nil
-  attr :title, :string, required: true
-  attr :subtitle, :string, default: nil
-  attr :total_label, :string, default: nil
-  slot :actions
-  slot :inner_block, required: true
+  attr(:class, :any, default: nil)
+  attr(:title, :string, required: true)
+  attr(:subtitle, :string, default: nil)
+  attr(:total_label, :string, default: nil)
+  slot(:actions)
+  slot(:inner_block, required: true)
 
   def bt_expense_section(assigns) do
     ~H"""
@@ -284,7 +286,7 @@ defmodule Bds.Components.Expense do
         </div>
         <div class="flex flex-wrap items-center gap-3">
           <span :if={@total_label} class="bt-expense-section__total">{@total_label}</span>
-          <div :if={render_slot(@actions) != []}>{render_slot(@actions)}</div>
+          <div :if={@actions != []}>{render_slot(@actions)}</div>
         </div>
       </header>
       <div class="bt-expense-section__body">{render_slot(@inner_block)}</div>
@@ -292,23 +294,23 @@ defmodule Bds.Components.Expense do
     """
   end
 
-  attr :id, :string, required: true
-  attr :class, :any, default: nil
-  attr :type_label, :string, required: true
-  attr :date_label, :string, required: true
-  attr :title, :string, required: true
-  attr :amount, :string, default: nil
-  attr :currency_suffix, :string, default: nil
-  attr :rebill?, :boolean, default: false
-  attr :rebill_label, :string, default: nil
-  attr :footer_label, :string, default: nil
-  attr :href, :string, default: nil
-  attr :navigate, :any, default: nil
-  slot :actions
-  slot :badges
+  attr(:id, :string, required: true)
+  attr(:class, :any, default: nil)
+  attr(:type_label, :string, required: true)
+  attr(:date_label, :string, required: true)
+  attr(:title, :string, required: true)
+  attr(:amount, :string, default: nil)
+  attr(:currency_suffix, :string, default: nil)
+  attr(:rebill?, :boolean, default: false)
+  attr(:rebill_label, :string, default: nil)
+  attr(:footer_label, :string, default: nil)
+  attr(:href, :string, default: nil)
+  attr(:navigate, :any, default: nil)
+  slot(:actions)
+  slot(:badges)
 
   def bt_expense_gasto_card(assigns) do
-    assigns = assign_new(assigns, :rebill_label, fn -> gettext("Rebill") end)
+    assigns = assign_default(assigns, :rebill_label, fn -> gettext("Rebill") end)
 
     ~H"""
     <article id={@id} class={["bt-expense-gasto-card", @class]}>
@@ -321,22 +323,22 @@ defmodule Bds.Components.Expense do
           <.bt_expense_gasto_card_body {assigns} />
         </div>
       <% end %>
-      <div :if={render_slot(@actions) != []} class="bt-expense-gasto-card__actions">
+      <div :if={@actions != []} class="bt-expense-gasto-card__actions">
         {render_slot(@actions)}
       </div>
     </article>
     """
   end
 
-  attr :type_label, :string, required: true
-  attr :date_label, :string, required: true
-  attr :title, :string, required: true
-  attr :amount, :string, default: nil
-  attr :currency_suffix, :string, default: nil
-  attr :rebill?, :boolean, default: false
-  attr :rebill_label, :string, default: nil
-  attr :footer_label, :string, default: nil
-  slot :badges
+  attr(:type_label, :string, required: true)
+  attr(:date_label, :string, required: true)
+  attr(:title, :string, required: true)
+  attr(:amount, :string, default: nil)
+  attr(:currency_suffix, :string, default: nil)
+  attr(:rebill?, :boolean, default: false)
+  attr(:rebill_label, :string, default: nil)
+  attr(:footer_label, :string, default: nil)
+  slot(:badges)
 
   defp bt_expense_gasto_card_body(assigns) do
     ~H"""

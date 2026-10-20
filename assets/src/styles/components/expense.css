@@ -27,7 +27,7 @@
   color: var(--bt-color-text);
 }
 
-@media (min-width: 640px) {
+@media (min-width: 40rem) {
   .bt-expense-toolbar__title {
     font-size: 1.625rem;
   }
@@ -69,7 +69,7 @@
     box-shadow var(--bt-duration-fast) var(--bt-ease-standard);
 }
 
-@media (min-width: 640px) {
+@media (min-width: 40rem) {
   .bt-expense-filter-bar__btn {
     font-size: var(--bt-font-size-sm);
     padding-inline: var(--bt-space-3);
@@ -118,10 +118,16 @@ a.bt-expense-liquidacion-card {
 
 .bt-expense-liquidacion-card__top {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--bt-space-3);
+  gap: var(--bt-space-2) var(--bt-space-3);
 }
+
+/* The workflow track keeps its shape; the date chip wraps under it instead of
+   sitting on top of the status pill */
+.bt-expense-liquidacion-card__top > .bt-expense-date-chip { flex-shrink: 0; }
+.bt-expense-workflow { flex-wrap: wrap; row-gap: var(--bt-space-1); }
 
 .bt-expense-liquidacion-card__concept {
   margin: var(--bt-space-2) 0 0;
@@ -215,25 +221,25 @@ a.bt-expense-liquidacion-card {
 .bt-expense-workflow__pill--info {
   border-color: color-mix(in srgb, var(--bt-color-info) 30%, transparent);
   background: var(--bt-color-info-soft);
-  color: var(--bt-color-info);
+  color: var(--bt-color-info-text);
 }
 
 .bt-expense-workflow__pill--warning {
   border-color: color-mix(in srgb, var(--bt-color-warning) 30%, transparent);
   background: var(--bt-color-warning-soft);
-  color: var(--bt-color-warning);
+  color: var(--bt-color-warning-text);
 }
 
 .bt-expense-workflow__pill--success {
   border-color: color-mix(in srgb, var(--bt-color-success) 30%, transparent);
   background: var(--bt-color-success-soft);
-  color: var(--bt-color-success);
+  color: var(--bt-color-success-text);
 }
 
 .bt-expense-workflow__pill--error {
   border-color: color-mix(in srgb, var(--bt-color-error) 30%, transparent);
   background: var(--bt-color-error-soft);
-  color: var(--bt-color-error);
+  color: var(--bt-color-error-text);
 }
 
 .bt-expense-date-chip {
@@ -369,7 +375,7 @@ a.bt-expense-liquidacion-card {
   border-bottom: 1px solid var(--bt-color-border);
 }
 
-@media (min-width: 640px) {
+@media (min-width: 40rem) {
   .bt-expense-section__header {
     flex-direction: row;
     align-items: center;

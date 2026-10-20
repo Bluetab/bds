@@ -45,7 +45,7 @@
 }
 
 .bt-combobox__clear .bt-symbol {
-  font-size: 1rem;
+  font-size: var(--bt-font-size-md);
 }
 
 .bt-combobox__clear:hover {
@@ -76,14 +76,16 @@
   right: 0;
   max-height: 15rem;
   overflow: auto;
+  overscroll-behavior: contain;
   border: 1px solid var(--bt-color-border-strong);
   border-radius: var(--bt-radius-lg);
   background: var(--bt-color-surface);
   box-shadow: var(--bt-shadow-md);
 }
 
+/* Portaled to <body>: above modal layers, since pickers live inside them */
 .bt-combobox__panel--portal {
-  z-index: 250;
+  z-index: calc(var(--bt-z-overlay) + 20);
 }
 
 .bt-combobox__footer {
@@ -134,7 +136,11 @@
   font-weight: 650;
 }
 
+/* A span is inline, so its margin-top never applied and the second line of the
+   option overlapped the first when the title wrapped; as a block it sits under
+   the title on its own line */
 .bt-combobox__option-sub {
+  display: block;
   margin-top: var(--bt-space-1);
   font-size: var(--bt-font-size-xs);
   color: var(--bt-color-text-subtle);

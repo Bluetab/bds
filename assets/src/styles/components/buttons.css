@@ -32,7 +32,13 @@
   line-height: 1.2;
   letter-spacing: var(--bt-button-letter-spacing);
   text-decoration: none;
-  white-space: nowrap;
+  /* A button is never wider than its container. It is sized by its content, so
+     with `normal` the label stays on one line while it fits and wraps (balanced)
+     only when it would not: before, `nowrap` let "Acknowledge evaluation" cut
+     itself against the edge of a 222px card. */
+  max-width: 100%;
+  white-space: normal;
+  text-wrap: balance;
 }
 
 .bt-button .bt-icon,

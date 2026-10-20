@@ -3,9 +3,10 @@ defmodule Bds.Tokens do
   Color tokens read at compile time from the shipped `priv/static/bds.css`,
   so documentation (e.g. the contrast audit) always matches the real CSS.
 
-  Only solid hex values are exposed; tokens defined with `color-mix()`, `rgba()`
-  or other variables are skipped. Dark values inherit light ones unless
-  the `[data-theme="dark"]` block overrides them.
+  Only solid hex values are exposed: a token defined as `var(--bt-other)` takes
+  the hex of `--bt-other`; `color-mix()`, `rgba()` and the like are skipped.
+  Dark values inherit light ones unless the `[data-theme="dark"]` block
+  overrides them.
   """
 
   alias Bds.Contrast
@@ -13,19 +14,41 @@ defmodule Bds.Tokens do
   @css_path Path.join([:code.priv_dir(:bds), "static", "bds.css"])
   @external_resource @css_path
 
+  # name → {:hex, "#rrggbb"} | {:ref, "--bt-other"}
   parse_block = fn css, selector_regex ->
     case Regex.run(~r/#{selector_regex}\s*\{([^}]*--bt-color-[^}]*)\}/s, css) do
       [_, body] ->
-        ~r/(--bt-[a-z0-9-]+)\s*:\s*(#[0-9a-fA-F]{3,6})\s*(?:;|$)/
+        ~r/(--bt-[a-z0-9-]+)\s*:\s*(?:(#[0-9a-fA-F]{3,6})|var\((--bt-[a-z0-9-]+)\))\s*(?:;|$)/
         |> Regex.scan(body)
-        |> Map.new(fn [_, name, hex] ->
-          {:ok, normalized} = Contrast.normalize_hex(hex)
-          {name, normalized}
+        |> Map.new(fn
+          [_, name, hex] ->
+            {:ok, normalized} = Contrast.normalize_hex(hex)
+            {name, {:hex, normalized}}
+
+          [_, name, "", ref] ->
+            {name, {:ref, ref}}
         end)
 
       nil ->
         %{}
     end
+  end
+
+  # Follows var() references (a few levels at most) and drops unresolved ones
+  resolve_refs = fn tokens ->
+    lookup = fn
+      lookup, name, depth when depth < 5 ->
+        case Map.get(tokens, name) do
+          {:hex, hex} -> hex
+          {:ref, ref} -> lookup.(lookup, ref, depth + 1)
+          nil -> nil
+        end
+
+      _lookup, _name, _depth ->
+        nil
+    end
+
+    for {name, _} <- tokens, hex = lookup.(lookup, name, 0), into: %{}, do: {name, hex}
   end
 
   css = if File.exists?(@css_path), do: File.read!(@css_path), else: ""
@@ -34,8 +57,8 @@ defmodule Bds.Tokens do
   light = parse_block.(css, ~S|:root(?:\s*,\s*\[data-theme=["']?light["']?\])?|)
   dark_overrides = parse_block.(css, ~S|(?:html)?\[data-theme=["']?dark["']?\]|)
 
-  @light light
-  @dark Map.merge(light, dark_overrides)
+  @light resolve_refs.(light)
+  @dark resolve_refs.(Map.merge(light, dark_overrides))
 
   @type theme :: :light | :dark
 
@@ -58,38 +81,207 @@ defmodule Bds.Tokens do
   def pairs do
     [
       # Body text on surfaces
-      pair("Body text", "bt-color-text", "bt-color-surface", :text, "Paragraphs, labels, table cells"),
-      pair("Body text on background", "bt-color-text", "bt-color-background", :text, "Page canvas"),
-      pair("Muted text", "bt-color-text-muted", "bt-color-surface", :text, "Descriptions, secondary copy"),
-      pair("Muted text on soft surface", "bt-color-text-muted", "bt-color-surface-soft", :text, "Sidebar, cards"),
-      pair("Subtle text", "bt-color-text-subtle", "bt-color-surface", :text, "Help text, captions, group titles"),
-      pair("Subtle text on background", "bt-color-text-subtle", "bt-color-background", :text, "Metadata on canvas"),
+      pair(
+        "Body text",
+        "bt-color-text",
+        "bt-color-surface",
+        :text,
+        "Paragraphs, labels, table cells"
+      ),
+      pair(
+        "Body text on background",
+        "bt-color-text",
+        "bt-color-background",
+        :text,
+        "Page canvas"
+      ),
+      pair(
+        "Muted text",
+        "bt-color-text-muted",
+        "bt-color-surface",
+        :text,
+        "Descriptions, secondary copy"
+      ),
+      pair(
+        "Muted text on soft surface",
+        "bt-color-text-muted",
+        "bt-color-surface-soft",
+        :text,
+        "Sidebar, cards"
+      ),
+      pair(
+        "Subtle text",
+        "bt-color-text-subtle",
+        "bt-color-surface",
+        :text,
+        "Help text, captions, group titles"
+      ),
+      pair(
+        "Subtle text on background",
+        "bt-color-text-subtle",
+        "bt-color-background",
+        :text,
+        "Metadata on canvas"
+      ),
       # Brand
-      pair("Primary link", "bt-color-primary", "bt-color-surface", :text, "Links, ghost/outline buttons"),
-      pair("Primary button", "bt-color-on-primary", "bt-color-primary", :text, "bt-button--primary, active nav link"),
-      pair("Primary on soft", "bt-color-primary", "bt-color-primary-soft", :text, "Selected chips, tinted cards"),
-      pair("Secondary button", "bt-color-on-secondary", "bt-color-secondary", :text, "bt-button--secondary, FAB"),
-      pair("Secondary as text", "bt-color-secondary", "bt-color-background", :text, "Eyebrows (bt-eyebrow)"),
-      pair("Tertiary button", "bt-color-on-tertiary", "bt-color-tertiary", :text, "bt-button--tertiary"),
-      # Semantic
-      pair("Success on soft", "bt-color-success", "bt-color-success-soft", :text, "Success badges, callouts"),
-      pair("Warning on soft", "bt-color-warning", "bt-color-warning-soft", :text, "Warning badges, callouts"),
-      pair("Error on soft", "bt-color-error", "bt-color-error-soft", :text, "Error badges, callouts"),
-      pair("Info on soft", "bt-color-info", "bt-color-info-soft", :text, "Info badges, callouts"),
-      pair("Error text", "bt-color-error", "bt-color-surface", :text, "Field validation messages"),
-      pair("White on success", "#ffffff", "bt-color-success", :text, "Solid success badge"),
-      pair("White on warning", "#ffffff", "bt-color-warning", :text, "Solid warning badge"),
+      pair(
+        "Primary link",
+        "bt-color-primary",
+        "bt-color-surface",
+        :text,
+        "Links, ghost/outline buttons"
+      ),
+      pair(
+        "Primary button",
+        "bt-color-on-primary",
+        "bt-color-primary",
+        :text,
+        "bt-button--primary, active nav link"
+      ),
+      pair(
+        "Primary on soft",
+        "bt-color-primary",
+        "bt-color-primary-soft",
+        :text,
+        "Selected chips, tinted cards"
+      ),
+      pair(
+        "Secondary badge",
+        "bt-color-on-secondary",
+        "bt-palette-bluetab-orange-50",
+        :text,
+        "bt-badge--secondary"
+      ),
+      pair(
+        "Secondary as text",
+        "bt-color-secondary-text",
+        "bt-color-background",
+        :text,
+        "Eyebrows (bt-eyebrow)"
+      ),
+      pair(
+        "Tertiary button",
+        "bt-color-on-tertiary",
+        "bt-color-tertiary",
+        :text,
+        "bt-button--tertiary"
+      ),
+      # Semantic: text uses the -text tokens, fills keep the base color
+      pair(
+        "Success on soft",
+        "bt-color-success-text",
+        "bt-color-success-soft",
+        :text,
+        "bt-status, callouts"
+      ),
+      pair(
+        "Warning on soft",
+        "bt-color-warning-text",
+        "bt-color-warning-soft",
+        :text,
+        "bt-status, callouts"
+      ),
+      pair(
+        "Error on soft",
+        "bt-color-error-text",
+        "bt-color-error-soft",
+        :text,
+        "bt-status, callouts"
+      ),
+      pair(
+        "Info on soft",
+        "bt-color-info-text",
+        "bt-color-info-soft",
+        :text,
+        "bt-status, callouts"
+      ),
+      pair(
+        "Error text",
+        "bt-color-error-text",
+        "bt-color-surface",
+        :text,
+        "Field validation messages"
+      ),
+      pair(
+        "White on success badge",
+        "#ffffff",
+        "bt-palette-teal-70",
+        :text,
+        "Solid success badge, rating A"
+      ),
+      pair(
+        "Dark on warning",
+        "bt-palette-neutral-black-60",
+        "bt-color-warning",
+        :text,
+        "Solid warning badge"
+      ),
       pair("White on error", "#ffffff", "bt-color-error", :text, "Danger button"),
       # Large text
-      pair("Primary heading", "bt-color-primary", "bt-color-surface", :large_text, "Headings ≥ 24px or ≥ 18.66px bold"),
-      pair("Secondary heading", "bt-color-secondary", "bt-color-surface", :large_text, "Display text"),
+      pair(
+        "Primary heading",
+        "bt-color-primary",
+        "bt-color-surface",
+        :large_text,
+        "Headings ≥ 24px or ≥ 18.66px bold"
+      ),
+      pair(
+        "Secondary heading",
+        "bt-color-secondary",
+        "bt-color-surface",
+        :large_text,
+        "Display text"
+      ),
       # Non-text (SC 1.4.11)
-      pair("Input border", "bt-color-border-strong", "bt-color-surface", :non_text, "Text fields, selects, checkboxes"),
-      pair("Divider / card border", "bt-color-border", "bt-color-surface", :non_text, "Decorative — exempt if not needed to identify a control"),
-      pair("Focus ring (secondary)", "bt-color-secondary", "bt-color-surface", :non_text, ":focus-visible outline (solid)"),
-      pair("Focus ring (primary)", "bt-color-primary", "bt-color-surface", :non_text, "Input focus border"),
-      pair("Primary button vs. page", "bt-color-primary", "bt-color-background", :non_text, "Button boundary against the canvas"),
-      pair("Icon (muted)", "bt-color-text-muted", "bt-color-surface", :non_text, "Meaningful icons")
+      pair(
+        "Input border",
+        "bt-color-border-input",
+        "bt-color-surface",
+        :non_text,
+        "Text fields, selects, switch track"
+      ),
+      pair(
+        "Input border on background",
+        "bt-color-border-input",
+        "bt-color-background",
+        :non_text,
+        "Fields placed on the page canvas"
+      ),
+      pair(
+        "Divider / card border",
+        "bt-color-border",
+        "bt-color-surface",
+        :non_text,
+        "Decorative — exempt if not needed to identify a control"
+      ),
+      pair(
+        "Focus ring (secondary)",
+        "bt-color-secondary",
+        "bt-color-surface",
+        :non_text,
+        ":focus-visible outline (solid)"
+      ),
+      pair(
+        "Focus ring (primary)",
+        "bt-color-primary",
+        "bt-color-surface",
+        :non_text,
+        "Input focus border"
+      ),
+      pair(
+        "Primary button vs. page",
+        "bt-color-primary",
+        "bt-color-background",
+        :non_text,
+        "Button boundary against the canvas"
+      ),
+      pair(
+        "Icon (muted)",
+        "bt-color-text-muted",
+        "bt-color-surface",
+        :non_text,
+        "Meaningful icons"
+      )
     ]
   end
 
@@ -115,9 +307,11 @@ defmodule Bds.Tokens do
   # changing the fill; otherwise the foreground changes.
   defp suggest_for(%{foreground: fg} = pair, fg_hex, bg_hex, theme) do
     if String.starts_with?(fg, "#") or String.starts_with?(fg, "bt-color-on-") do
-      with %{} = s <- suggest(bg_hex, fg_hex, pair.usage, theme), do: Map.put(s, :replaces, :background)
+      with %{} = s <- suggest(bg_hex, fg_hex, pair.usage, theme),
+           do: Map.put(s, :replaces, :background)
     else
-      with %{} = s <- suggest(fg_hex, bg_hex, pair.usage, theme), do: Map.put(s, :replaces, :foreground)
+      with %{} = s <- suggest(fg_hex, bg_hex, pair.usage, theme),
+           do: Map.put(s, :replaces, :foreground)
     end
   end
 
@@ -144,7 +338,8 @@ defmodule Bds.Tokens do
     # scale); only look elsewhere when no step of that family passes.
     family = palette |> Enum.min_by(&elem(&1, 2)) |> elem(0) |> palette_family()
 
-    {same, others} = Enum.split_with(palette, fn {name, _, _} -> palette_family(name) == family end)
+    {same, others} =
+      Enum.split_with(palette, fn {name, _, _} -> palette_family(name) == family end)
 
     (closest_passing(same, other, min) || closest_passing(others, other, min))
     |> case do

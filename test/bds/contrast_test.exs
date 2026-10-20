@@ -45,15 +45,35 @@ defmodule Bds.ContrastTest do
       assert Tokens.color("bt-color-primary", :light) == "#212492"
       assert Tokens.color("--bt-color-primary", :dark) == "#8da2ff"
       # not overridden in dark: inherits light
-      assert Tokens.color("bt-color-secondary", :dark) == Tokens.color("bt-color-secondary", :light)
+      assert Tokens.color("bt-color-secondary", :dark) ==
+               Tokens.color("bt-color-secondary", :light)
     end
 
     test "failing pairs get a passing palette suggestion" do
-      subtle = Enum.find(Tokens.audit(:light), &(&1.name == "Subtle text"))
-      refute subtle.passes
-      assert %{token: "--bt-palette-" <> _, ratio: ratio} = subtle.suggestion
-      assert ratio >= 4.5
+      # Card borders are decorative (exempt), so they stay below 3:1 on purpose
+      divider = Enum.find(Tokens.audit(:light), &(&1.name == "Divider / card border"))
+      refute divider.passes
+      assert %{token: "--bt-palette-" <> _, ratio: ratio} = divider.suggestion
+      assert ratio >= 3.0
       assert Enum.all?(Tokens.audit(:light), &(&1.passes or &1.suggestion))
+    end
+
+    test "tokens defined with var() resolve to the referenced hex" do
+      assert Tokens.color("bt-color-success-text", :light) ==
+               Tokens.color("bt-palette-teal-70", :light)
+
+      assert Tokens.color("bt-color-success-text", :dark) ==
+               Tokens.color("bt-palette-teal-40", :dark)
+    end
+
+    test "text, status and control pairs meet WCAG AA in both themes" do
+      for theme <- [:light, :dark],
+          pair <- Tokens.audit(theme),
+          pair.name != "Divider / card border" do
+        assert pair.passes,
+               "#{theme}: #{pair.name} #{pair.foreground_hex} on #{pair.background_hex} " <>
+                 "is #{Bds.Contrast.format_ratio(pair.result.ratio)}"
+      end
     end
 
     test "audit/1 resolves every pair" do

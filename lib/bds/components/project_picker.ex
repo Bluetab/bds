@@ -30,23 +30,29 @@ defmodule Bds.Components.ProjectPicker do
 
   import Bds.Components.CatalogUi
 
-  attr :class, :any, default: nil
-  attr :id, :string, required: true
-  attr :value, :string, default: nil
-  attr :search_fn, :any, default: nil
-  attr :tree_fn, :any, default: nil
-  attr :field_name, :string, default: "project_id"
-  attr :search_name, :string, default: "project_search"
-  attr :title, :string, default: "Project"
-  attr :description, :string, default: nil
-  attr :label, :string, default: nil
-  attr :placeholder, :string, default: "Search projects…"
-  attr :selected_project, :any, default: nil
-  attr :bare, :boolean, default: false, doc: "Form field layout without card chrome (e.g. day modal editor)"
+  attr(:class, :any, default: nil)
+  attr(:id, :string, required: true)
+  attr(:value, :string, default: nil)
+  attr(:search_fn, :any, default: nil)
+  attr(:tree_fn, :any, default: nil)
+  attr(:field_name, :string, default: "project_id")
+  attr(:search_name, :string, default: "project_search")
+  attr(:title, :string, default: "Project")
+  attr(:description, :string, default: nil)
+  attr(:label, :string, default: nil)
+  attr(:placeholder, :string, default: "Search projects…")
+  attr(:selected_project, :any, default: nil)
 
-  attr :form, :string,
+  attr(:bare, :boolean,
+    default: false,
+    doc: "Form field layout without card chrome (e.g. day modal editor)"
+  )
+
+  attr(:form, :string,
     default: nil,
-    doc: "Parent form id when the picker is rendered inside a LiveView form (associates hidden input)"
+    doc:
+      "Parent form id when the picker is rendered inside a LiveView form (associates hidden input)"
+  )
 
   @min_query_length 2
 
@@ -93,8 +99,12 @@ defmodule Bds.Components.ProjectPicker do
       |> assign_new(:description, fn -> nil end)
       |> assign_new(:placeholder, fn -> gettext("Search projects…") end)
       |> assign_new(:include_inactive_label, fn -> gettext("Include inactive projects") end)
-      |> assign_new(:show_clients_without_group_label, fn -> gettext("Show clients without group") end)
-      |> assign_new(:show_projects_without_client_label, fn -> gettext("Show projects without client") end)
+      |> assign_new(:show_clients_without_group_label, fn ->
+        gettext("Show clients without group")
+      end)
+      |> assign_new(:show_projects_without_client_label, fn ->
+        gettext("Show projects without client")
+      end)
       |> assign_new(:settings_label, fn -> gettext("Settings") end)
       |> assign_new(:collapse_all_label, fn -> gettext("Collapse all") end)
       |> assign_new(:expand_all_label, fn -> gettext("Expand all") end)
@@ -136,6 +146,7 @@ defmodule Bds.Components.ProjectPicker do
 
   def handle_event("project_picker_toggle_ended", _params, socket) do
     include_ended = not socket.assigns.include_ended
+
     socket =
       socket
       |> assign(:include_ended, include_ended)
@@ -264,7 +275,8 @@ defmodule Bds.Components.ProjectPicker do
       |> assign(:bare, bare?)
       |> assign(:search_input_id, "#{assigns.id}-search-input")
       |> assign(:field_label, if(bare?, do: assigns[:label], else: nil))
-      |> assign(:combobox_label, if(bare?, do: nil, else: assigns[:label]))
+      # Card mode: the visible <h3> title also names the search input
+      |> assign(:combobox_label, if(bare?, do: nil, else: assigns[:label] || assigns[:title]))
       |> assign(:panel_empty?, panel_empty?(assigns))
       |> assign(:empty_message, empty_message(assigns))
 
@@ -314,6 +326,7 @@ defmodule Bds.Components.ProjectPicker do
         input_id={@search_input_id}
         name={@search_name}
         label={@combobox_label}
+        hide_label={is_nil(@label)}
         value={@search_query}
         placeholder={@placeholder}
         open={@show_panel}
@@ -439,7 +452,7 @@ defmodule Bds.Components.ProjectPicker do
         <button
           type="button"
           class="bt-project-picker__clear"
-          aria-label={assigns[:clear_aria_label] || "Clear selection"}
+          aria-label={assigns[:clear_aria_label] || gettext("Clear selection")}
           phx-click="project_picker_clear"
           phx-target={@myself}
         >
@@ -557,11 +570,12 @@ defmodule Bds.Components.ProjectPicker do
 
   defp sync_from_value(socket, %{value: nil}), do: assign(socket, :value, nil)
 
-  defp sync_from_value(socket, %{value: ""}), do:
-    socket
-    |> assign(:value, nil)
-    |> assign(:selected_project, nil)
-    |> assign(:search_query, "")
+  defp sync_from_value(socket, %{value: ""}),
+    do:
+      socket
+      |> assign(:value, nil)
+      |> assign(:selected_project, nil)
+      |> assign(:search_query, "")
 
   defp sync_from_value(socket, assigns) do
     if Map.has_key?(assigns, :selected_project) do
@@ -623,8 +637,7 @@ defmodule Bds.Components.ProjectPicker do
     date = project_end_date(project)
 
     if date do
-      ended = Calendar.strftime(date, "%Y-%m-%d")
-      "Ended #{ended}"
+      gettext("Ended %{date}", date: Calendar.strftime(date, "%Y-%m-%d"))
     else
       ""
     end

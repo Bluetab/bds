@@ -3,9 +3,10 @@
 .bt-auth-page {
   display: grid;
   min-height: 100vh;
+  min-height: 100dvh;
   place-items: center;
   padding: var(--bt-space-6) var(--bt-space-4);
-  background: var(--bt-color-bg);
+  background: var(--bt-color-background);
 }
 
 .bt-auth-sign-in {
@@ -21,7 +22,7 @@
 
 .bt-auth-error {
   text-align: center;
-  color: var(--bt-color-error);
+  color: var(--bt-color-error-text);
   font-size: var(--bt-font-size-sm);
 }
 

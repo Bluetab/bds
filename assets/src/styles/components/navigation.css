@@ -1,4 +1,4 @@
-.bt-sidebar { position: sticky; top: 0; z-index: 50; height: 100vh; padding: var(--bt-space-4); overflow: auto; background: var(--bt-color-surface); border-right: 1px solid var(--bt-color-border); }
+.bt-sidebar { position: sticky; top: 0; z-index: 50; height: 100vh; height: 100dvh; padding: var(--bt-space-4); overflow: auto; overscroll-behavior: contain; background: var(--bt-color-surface); border-right: 1px solid var(--bt-color-border); }
 .bt-brand { display: flex; align-items: center; gap: var(--bt-space-3); padding: var(--bt-space-2); margin-bottom: var(--bt-space-4); border-radius: var(--bt-radius-lg); }
 .bt-brand:hover { background: var(--bt-color-surface-soft); }
 .bt-brand__logo { width: 100%; height: 4rem;}
@@ -6,6 +6,8 @@
 .bt-brand__text small { color: var(--bt-color-text-muted); }
 .bt-sidebar__search { display: flex; align-items: center; gap: var(--bt-space-2); min-height: 2.75rem; padding-inline: var(--bt-space-3); margin-bottom: var(--bt-space-4); background: var(--bt-color-surface-soft); border: 1px solid var(--bt-color-border); border-radius: var(--bt-radius-pill); }
 .bt-sidebar__search input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--bt-color-text); }
+/* The input draws no ring of its own: the pill shows focus for it */
+.bt-sidebar__search:focus-within { outline: var(--bt-focus-ring-width) solid var(--bt-focus-ring-color); outline-offset: 1px; }
 .bt-sidebar__group { margin-bottom: var(--bt-space-4); }
 .bt-sidebar__group-title { display: block; padding-inline: var(--bt-space-3); margin-bottom: var(--bt-space-1); color: var(--bt-color-text-subtle); font-size: var(--bt-font-size-xs); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .bt-nav-link { display: flex; align-items: center; gap: var(--bt-space-3); min-height: 2.75rem; padding: 0 var(--bt-space-3); border-radius: var(--bt-radius-pill); color: var(--bt-color-text-muted); font-weight: 650; transition: background var(--bt-duration-fast), color var(--bt-duration-fast), transform var(--bt-duration-fast); }
@@ -13,11 +15,22 @@
 .bt-nav-link[aria-current="page"] { color: var(--bt-color-on-primary); background: var(--bt-color-primary); box-shadow: var(--bt-shadow-xs); }
 .bt-nav-link.is-hidden { display: none; }
 .bt-icon { display: inline-grid; place-items: center; width: 1.25em; height: 1.25em; font-size: var(--bt-font-size-xl) }
+/* The bar wraps its actions onto a second line before it squeezes the title:
+   the title keeps room for ~12 characters and never breaks inside a word
+   (squeezing it made "Analytics Dashboard" a column of letters). */
+.bt-appbar { flex-wrap: wrap; }
+.bt-appbar > strong, .bt-appbar > .bt-appbar__title { flex: 1 1 9rem; min-width: min(9rem, 100%); text-wrap: balance; }
+.bt-appbar > .bt-button, .bt-appbar > .bt-icon-button { flex-shrink: 0; }
+/* The bottom bar is a row of equal tabs, not a title + actions: it never wraps */
+.bt-appbar--bottom { flex-wrap: nowrap; }
 .bt-appbar { display: flex; align-items: center; gap: var(--bt-space-3); width: 100%; min-height: 4rem; padding: var(--bt-space-2) var(--bt-space-3); background: var(--bt-color-surface); border: 1px solid var(--bt-color-border); border-radius: var(--bt-radius-lg); box-shadow: var(--bt-shadow-xs); }
 .bt-appbar--primary { background: var(--bt-color-primary); color: var(--bt-color-on-primary); }
+/* On a primary fill the orange ring drops to 1.6:1 in the dark theme: use the
+   on-primary color (≥ 7.9:1 in both themes) for controls inside it */
+.bt-appbar--primary, .bt-card--primary { --bt-focus-ring-color: var(--bt-color-on-primary); }
 .bt-appbar--bottom { justify-content: space-around; }
-.bt-bottom-nav { display: flex; justify-content: space-around; gap: var(--bt-space-2); width: 100%; padding: var(--bt-space-2); background: var(--bt-color-surface); border: 1px solid var(--bt-color-border); border-radius: var(--bt-radius-xl); }
-.bt-bottom-nav a { display: grid; place-items: center; gap: .15rem; min-width: 4.5rem; padding: var(--bt-space-2); color: var(--bt-color-text-muted); border-radius: var(--bt-radius-lg); font-size: var(--bt-font-size-xs); font-weight: 700; }
+.bt-bottom-nav { display: flex; justify-content: space-around; gap: var(--bt-space-1); width: 100%; padding: var(--bt-space-1) var(--bt-space-2); background: var(--bt-color-surface); border: 1px solid var(--bt-color-border); border-radius: var(--bt-radius-xl); }
+.bt-bottom-nav a { display: grid; place-items: center; gap: .15rem; min-width: 4.5rem; padding: var(--bt-space-2) var(--bt-space-1); color: var(--bt-color-text-muted); border-radius: var(--bt-radius-lg); font-size: var(--bt-font-size-xs); font-weight: 700; }
 .bt-bottom-nav a[aria-current="page"] { color: var(--bt-color-primary); background: var(--bt-color-primary-soft); }
 .bt-brand__logo--dark {display: none;}
 html[data-theme="dark"] .bt-brand__logo--light {display: none;}
@@ -48,7 +61,7 @@ html[data-theme="dark"] .bt-brand__logo--dark {display: block;}
   position: sticky;
   top: 0;
   width: 100%;
-  max-width: 100vw;
+  max-width: 100%;
   padding:
     var(--bt-site-header-padding-block-start)
     var(--bt-space-2)
@@ -117,7 +130,7 @@ html[data-theme="dark"] .bt-brand__logo--dark {display: block;}
   min-width: 0;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .bt-nav__links { display: flex; }
 }
 
@@ -188,7 +201,7 @@ html[data-theme="dark"] .bt-navbar-logo-img--dark {
 }
 
 .bt-theme-toggle-button [data-locale-icon] {
-  font-size: 0.62rem;
+  font-size: var(--bt-font-size-xs);
   font-weight: 700;
   letter-spacing: 0.04em;
   line-height: 1;
@@ -238,7 +251,7 @@ html[data-theme="dark"] .bt-navbar-logo-img--dark {
   justify-content: center;
   width: 1.08rem;
   height: 1.08rem;
-  font-size: 1.08rem;
+  font-size: var(--bt-font-size-lg);
   font-weight: 400;
   line-height: 1;
 }
@@ -311,7 +324,7 @@ html[data-theme="dark"] .bt-navbar-logo-img--dark {
   line-height: 1.15;
 }
 
-@media (min-width: 1280px) {
+@media (width >= 80rem) {
   .bt-navbar-user__meta,
   .bt-navbar-user__chevron,
   .bt-navbar-user__status {
@@ -372,7 +385,7 @@ html[data-theme="dark"] .bt-navbar-logo-img--dark {
   display: none;
   width: 1.125rem;
   height: 1.125rem;
-  font-size: 1.125rem;
+  font-size: var(--bt-font-size-lg);
   color: var(--bt-color-text-muted);
 }
 
@@ -385,7 +398,7 @@ html[data-theme="dark"] .bt-navbar-logo-img--dark {
   margin-top: 0;
   padding: var(--bt-space-1);
   border: 1px solid var(--bt-color-border);
-  border-radius: 0.6rem;
+  border-radius: var(--bt-radius-sm);
   background: var(--bt-color-surface);
   box-shadow: var(--bt-shadow-lg);
   color: var(--bt-color-text);
@@ -458,7 +471,7 @@ html[data-theme="dark"] .bt-navbar-logo-img--dark {
   gap: 0.65rem;
   padding: 0.55rem 0.62rem;
   border: 0;
-  border-radius: 0.6rem;
+  border-radius: var(--bt-radius-sm);
   background: transparent;
   color: var(--bt-color-text);
   font: inherit;
@@ -476,7 +489,7 @@ html[data-theme="dark"] .bt-navbar-logo-img--dark {
 }
 
 .bt-navbar-menu-item--danger {
-  color: var(--bt-color-error);
+  color: var(--bt-color-error-text);
 }
 
 .bt-navbar-menu-item--danger:hover {
@@ -513,7 +526,7 @@ html[data-theme="dark"] .bt-navbar-logo-img--dark {
   color: var(--bt-color-text);
 }
 
-@media (max-width: 1279px) {
+@media (width < 80rem) {
   .bt-nav__inner,
   .bt-topbar__inner {
     --bt-navbar-option-size: 1.75rem;
@@ -545,7 +558,7 @@ html[data-theme="dark"] .bt-navbar-logo-img--dark {
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .bt-site-header.bt-topbar {
     --bt-site-header-padding-block-start: var(--bt-space-1);
     padding-inline: var(--bt-space-2);

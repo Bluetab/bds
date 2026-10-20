@@ -5,11 +5,24 @@
   padding: 0;
 }
 
+/* Each nested level costs margin + padding + the toggle column. The guide line
+   is centered under the parent's toggle (toggle / 2), and the content then
+   needs only a small gap from it. Three levels used to take ~7rem of a 14rem
+   column and leave 10px for the text, so the gap is a clamp(): the full
+   space-2 on a wide tree, space-1 as the indentation adds up. */
 .bt-tree--nested {
   margin-top: var(--bt-space-2);
   margin-left: calc(var(--bt-tree-toggle) / 2);
-  padding-left: calc(var(--bt-tree-toggle) / 2 + var(--bt-space-2));
+  padding-left: clamp(var(--bt-space-1), 1.5vw, var(--bt-space-2));
   border-left: 1px solid var(--bt-color-border);
+  min-width: 0;
+}
+
+/* No container query for the tree: root and nested levels are the same
+   element (`.bt-tree`), so a container on it would make every level its own,
+   ever narrower, container. */
+@media (max-width: 40rem) {
+  .bt-tree { --bt-tree-toggle: 1.25rem; }
 }
 
 .bt-tree__item {
@@ -25,9 +38,12 @@
   margin-top: var(--bt-space-2);
 }
 
+/* `1fr` is minmax(auto, 1fr): the body could not shrink below its widest word
+   and the third level of a tree was cut off at 224px. minmax(0, 1fr) lets it
+   wrap instead. */
 .bt-tree__row {
   display: grid;
-  grid-template-columns: var(--bt-tree-toggle) 1fr;
+  grid-template-columns: var(--bt-tree-toggle) minmax(0, 1fr);
   gap: var(--bt-space-1) var(--bt-space-2);
   align-items: start;
 }
@@ -146,9 +162,11 @@ a.bt-tree__label-row--selectable {
 }
 
 .bt-tree__label-row--selectable:focus-visible {
-  outline: none;
+  /* transparent outline: invisible, but forced-colors mode paints it */
+  outline: 2px solid transparent;
+  outline-offset: -2px;
   background: color-mix(in srgb, var(--bt-color-primary), transparent 88%);
-  box-shadow: inset 0 0 0 1px var(--bt-color-primary);
+  box-shadow: inset 0 0 0 2px var(--bt-color-primary);
 }
 
 .bt-tree__label-row--selectable:active {
@@ -255,12 +273,12 @@ a.bt-tree__label-row--selectable {
 
 .bt-tree__badges .bt-badge--warning {
   background: var(--bt-color-warning-soft);
-  color: var(--bt-color-warning);
+  color: var(--bt-color-warning-text);
 }
 
 .bt-tree__badges .bt-badge--success {
   background: var(--bt-color-success-soft);
-  color: var(--bt-color-success);
+  color: var(--bt-color-success-text);
 }
 
 .bt-tree__kind {

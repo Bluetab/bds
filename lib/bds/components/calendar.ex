@@ -5,6 +5,8 @@ defmodule Bds.Components.Calendar do
   use Phoenix.Component
   use Gettext, backend: Bds.Gettext
 
+  import Bds.Components.Helpers, only: [assign_default: 3]
+
   import Bds.Components, only: [bt_input: 1]
   import Bds.Components.CatalogUi, only: [bt_icon_button: 1]
 
@@ -65,18 +67,18 @@ defmodule Bds.Components.Calendar do
         phx-click={@on_sidebar_close}
         aria-label={gettext("Close templates panel")}
       />
-      <div :if={render_slot(@toolbar) != []} class="bt-calendar-shell__toolbar shrink-0">
+      <div :if={@toolbar != []} class="bt-calendar-shell__toolbar shrink-0">
         {render_slot(@toolbar)}
       </div>
       <div class="bt-calendar-shell__workspace">
-        <aside :if={render_slot(@sidebar) != []} class="bt-calendar-shell__sidebar">
+        <aside :if={@sidebar != []} class="bt-calendar-shell__sidebar">
           {render_slot(@sidebar)}
         </aside>
         <div class="bt-calendar-shell__main">
           <div class="bt-calendar-shell__body">
             {render_slot(@inner_block)}
           </div>
-          <div :if={render_slot(@legend) != []} class="bt-calendar-shell__legend shrink-0">
+          <div :if={@legend != []} class="bt-calendar-shell__legend shrink-0">
             {render_slot(@legend)}
           </div>
         </div>
@@ -97,8 +99,8 @@ defmodule Bds.Components.Calendar do
   def bt_calendar_templates_panel(assigns) do
     assigns =
       assigns
-      |> assign_new(:title, fn -> gettext("Templates") end)
-      |> assign_new(:help_label, fn -> gettext("Template help") end)
+      |> assign_default(:title, fn -> gettext("Templates") end)
+      |> assign_default(:help_label, fn -> gettext("Template help") end)
 
     ~H"""
     <div class={["bt-calendar-templates h-full min-h-0 flex flex-col", @class]} {@rest}>
@@ -124,7 +126,7 @@ defmodule Bds.Components.Calendar do
           <span class="bt-icon" aria-hidden="true">help</span>
         </button>
       </div>
-      <div :if={render_slot(@actions) != []} class="shrink-0 px-4 py-2 border-b border-[var(--bt-color-border)] flex items-center justify-between">
+      <div :if={@actions != []} class="shrink-0 px-4 py-2 border-b border-[var(--bt-color-border)] flex items-center justify-between">
         {render_slot(@actions)}
       </div>
       <div class="bt-calendar-templates__body">
@@ -220,13 +222,13 @@ defmodule Bds.Components.Calendar do
         <div class="bt-calendar-toolbar__start">{render_slot(@left)}</div>
         <div class="bt-calendar-toolbar__center">
           {render_slot(@center)}
-          <span :if={@month_label && render_slot(@center) == []} class="bt-calendar-toolbar__month">
+          <span :if={@month_label && @center == []} class="bt-calendar-toolbar__month">
             {@month_label}
           </span>
         </div>
         <div class="bt-calendar-toolbar__end">{render_slot(@right)}</div>
         <div
-          :if={render_slot(@far_right) != []}
+          :if={@far_right != []}
           class="bt-calendar-toolbar__far-end"
         >
           {render_slot(@far_right)}
@@ -493,7 +495,7 @@ defmodule Bds.Components.Calendar do
             <% end %>
           <% end %>
           <span :if={length(@projects) > 2} class="bt-calendar-day__more">
-            +{length(@projects) - 2} more
+            {ngettext("+%{count} more", "+%{count} more", length(@projects) - 2)}
           </span>
         </div>
       <% true -> %>
@@ -526,7 +528,7 @@ defmodule Bds.Components.Calendar do
   attr(:rest, :global)
 
   def bt_calendar_legend(assigns) do
-    assigns = assign_new(assigns, :label, fn -> gettext("Calendar status legend") end)
+    assigns = assign_default(assigns, :label, fn -> gettext("Calendar status legend") end)
 
     items =
       Enum.filter(assigns.items, fn item ->
@@ -597,6 +599,14 @@ defmodule Bds.Components.Calendar do
   defp project_hours(%{hours: hours}), do: hours
   defp project_hours(%{"hours" => hours}), do: hours
   defp project_hours(hours) when is_number(hours), do: hours
+
+  # The submitted value stays the English key; only the label is translated
+  defp entry_type_options(types), do: Enum.map(types, &{entry_type_label(&1), &1})
+
+  defp entry_type_label("Billable"), do: gettext("Billable")
+  defp entry_type_label("Non-billable"), do: gettext("Non-billable")
+  defp entry_type_label("Absence"), do: gettext("Absence")
+  defp entry_type_label(other), do: other
 
   defp project_status(%{status: status}) when is_binary(status), do: status
   defp project_status(%{"status" => status}) when is_binary(status), do: status
@@ -797,12 +807,17 @@ defmodule Bds.Components.Calendar do
         class="bt-calendar-day-modal__backdrop"
         phx-click={@on_close}
         aria-label={gettext("Close day editor")}
+        tabindex="-1"
       />
-      <div
+      <.focus_wrap
+        id={"#{@id}-panel"}
         class="bt-calendar-day-modal__panel"
         role="dialog"
         aria-modal="true"
-        aria-label={gettext("Day %{day}", day: @date.day)}
+        aria-label={
+          Enum.join([gettext("Day %{day}", day: @date.day), @weekday_label, @month_label] |> Enum.reject(&(&1 in [nil, ""])), " · ")
+        }
+        phx-mounted={Phoenix.LiveView.JS.focus_first()}
       >
         <.bt_icon_button
           :if={@on_prev_day}
@@ -864,13 +879,13 @@ defmodule Bds.Components.Calendar do
                 </p>
                 <div class="bt-calendar-day-modal__editor-fields">
                   <div
-                    :if={render_slot(@entry_project) != []}
+                    :if={@entry_project != []}
                     class="bt-calendar-day-modal__editor-project"
                   >
                     {render_slot(@entry_project)}
                   </div>
                   <.bt_input
-                    :if={render_slot(@entry_project) == []}
+                    :if={@entry_project == []}
                     field={@entry_form[:project_name]}
                     type="text"
                     label={gettext("Project")}
@@ -900,7 +915,7 @@ defmodule Bds.Components.Calendar do
                           class="bt-button bt-button--secondary bt-button--sm"
                           phx-click={@on_hours_preset}
                           phx-value-hours={hours}
-                          aria-label={gettext("Set %{hours} hours", hours: hours)}
+                          aria-label={ngettext("Set %{count} hour", "Set %{count} hours", String.to_integer(hours))}
                         >
                           {label}
                         </button>
@@ -911,7 +926,7 @@ defmodule Bds.Components.Calendar do
                         field={@entry_form[:input_type]}
                         type="select"
                         label={gettext("Type")}
-                        options={@input_types}
+                        options={entry_type_options(@input_types)}
                       />
                     </div>
                   </div>
@@ -929,6 +944,8 @@ defmodule Bds.Components.Calendar do
                       <.bt_input
                         field={@entry_form[:comments]}
                         type="textarea"
+                        label={gettext("Comment")}
+                        hide_label
                         placeholder={gettext("Add a note (optional)")}
                         rows="2"
                       />
@@ -987,7 +1004,7 @@ defmodule Bds.Components.Calendar do
                           {entry_status_label(entry)}
                         </span>
                       </div>
-                      <p class="bt-calendar-day-modal__entry-type">{entry[:input_type] || entry["input_type"] || "Billable"}</p>
+                      <p class="bt-calendar-day-modal__entry-type">{entry_type_label(entry[:input_type] || entry["input_type"] || "Billable")}</p>
                     </div>
                     <span class={["bt-calendar-day-modal__entry-hours", entry_hours_status_class(entry)]}>
                       {entry[:hours] || entry["hours"]}h
@@ -1049,7 +1066,7 @@ defmodule Bds.Components.Calendar do
               <% end %>
             </div>
 
-            <div :if={render_slot(@footer_actions) != []} class="bt-calendar-day-modal__footer-actions px-4 pb-2">
+            <div :if={@footer_actions != []} class="bt-calendar-day-modal__footer-actions px-4 pb-2">
               {render_slot(@footer_actions)}
             </div>
             <div class="bt-calendar-day-modal__footer">
@@ -1066,7 +1083,7 @@ defmodule Bds.Components.Calendar do
           icon="chevron_right"
           phx-click={@on_next_day}
         />
-      </div>
+      </.focus_wrap>
     </div>
     """
   end

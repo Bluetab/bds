@@ -252,3 +252,15 @@ body.bt-panel-open .bt-panel-backdrop { opacity: 1; }
 }
 .bt-motion-demo[data-playing="true"] .bt-motion-demo__dot { left: calc(100% - 2rem); }
 .bt-motion-demo__surface { padding: var(--bt-space-4); border: 1px solid var(--bt-color-border); border-radius: var(--bt-radius-lg); background: var(--bt-color-surface); }
+
+/* Touch screens have no real hover: a tap leaves :hover on until the next
+   tap, so the lift / slide stays stuck. Drop the movement there (the color
+   and shadow feedback stays); data-demo-state demos are unaffected. */
+@media (hover: none) {
+  a.bt-card:hover,
+  button.bt-card:hover,
+  .bt-nav-link:hover,
+  .bt-expense-liquidacion-card:hover,
+  .bt-calendar-day--openable:hover,
+  .bt-calendar-day--selectable:hover { transform: none; }
+}

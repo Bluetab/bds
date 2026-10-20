@@ -12,6 +12,8 @@ defmodule Bds.Components do
   use Phoenix.Component
   use Gettext, backend: Bds.Gettext
 
+  import Bds.Components.Helpers, only: [assign_default: 3]
+
   import Bds.Components.CatalogUi, only: [bt_avatar: 1]
 
   alias Phoenix.LiveView.JS
@@ -40,18 +42,23 @@ defmodule Bds.Components do
       <.bt_button trailing_icon="arrow_forward" navigate={~p"/"}>Continue</.bt_button>
       <.bt_button disabled>Not available</.bt_button>
   """
-  attr :rest, :global
-  attr :class, :any
-  attr :variant, :string, default: "primary", values: ~w(primary secondary tertiary outline ghost danger)
-  attr :size, :string, default: nil, values: [nil, "xs", "sm", "md", "lg"]
-  attr :icon, :string, default: nil, doc: "Leading Material Symbols ligature, e.g. \"add\""
-  attr :trailing_icon, :string, default: nil, doc: "Trailing Material Symbols ligature"
-  attr :type, :string, default: "button"
-  attr :disabled, :boolean, default: false
-  attr :href, :string, default: nil
-  attr :navigate, :any, default: nil
-  attr :patch, :any, default: nil
-  slot :inner_block, required: true
+  attr(:rest, :global)
+  attr(:class, :any)
+
+  attr(:variant, :string,
+    default: "primary",
+    values: ~w(primary secondary tertiary outline ghost danger)
+  )
+
+  attr(:size, :string, default: nil, values: [nil, "xs", "sm", "md", "lg"])
+  attr(:icon, :string, default: nil, doc: "Leading Material Symbols ligature, e.g. \"add\"")
+  attr(:trailing_icon, :string, default: nil, doc: "Trailing Material Symbols ligature")
+  attr(:type, :string, default: "button")
+  attr(:disabled, :boolean, default: false)
+  attr(:href, :string, default: nil)
+  attr(:navigate, :any, default: nil)
+  attr(:patch, :any, default: nil)
+  slot(:inner_block, required: true)
 
   def bt_button(assigns) do
     assigns = assign(assigns, :class, button_class(assigns))
@@ -88,16 +95,16 @@ defmodule Bds.Components do
 
   Icon slots are optional — pass `icon` slot content from your app (e.g. Heroicons).
   """
-  attr :id, :string, doc: "the optional id of flash container"
-  attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
-  attr :title, :string, default: nil
-  attr :kind, :atom, values: [:info, :error], doc: "used for styling and flash lookup"
-  attr :auto_dismiss, :any, default: :unspecified, doc: "auto-dismiss delay in ms; nil disables"
-  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the flash container"
+  attr(:id, :string, doc: "the optional id of flash container")
+  attr(:flash, :map, default: %{}, doc: "the map of flash messages to display")
+  attr(:title, :string, default: nil)
+  attr(:kind, :atom, values: [:info, :error], doc: "used for styling and flash lookup")
+  attr(:auto_dismiss, :any, default: :unspecified, doc: "auto-dismiss delay in ms; nil disables")
+  attr(:rest, :global, doc: "the arbitrary HTML attributes to add to the flash container")
 
-  slot :inner_block, doc: "the optional inner block that renders the flash message"
-  slot :icon
-  slot :close
+  slot(:inner_block, doc: "the optional inner block that renders the flash message")
+  slot(:icon)
+  slot(:close)
 
   def bt_flash(assigns) do
     assigns = assign_new(assigns, :id, fn -> "flash-#{assigns.kind}" end)
@@ -166,33 +173,41 @@ defmodule Bds.Components do
 
   defp bt_flash_visible?(_), do: false
 
-  attr :id, :any, default: nil
-  attr :name, :any
-  attr :label, :string, default: nil
-  attr :value, :any, default: nil
+  attr(:id, :any, default: nil)
+  attr(:name, :any)
+  attr(:label, :string, default: nil)
+  attr(:value, :any, default: nil)
 
-  attr :type, :string,
+  attr(:type, :string,
     default: "text",
     values: ~w(checkbox color date datetime-local email file month number password
                search select tel text textarea time url week hidden)
+  )
 
-  attr :field, Phoenix.HTML.FormField,
+  attr(:field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
+  )
 
-  attr :errors, :list, default: []
-  attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
-  attr :prompt, :string, default: nil, doc: "the prompt for select inputs"
-  attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
-  attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
-  attr :class, :any, default: nil, doc: "the input class to use over defaults"
-  attr :error_class, :any, default: nil, doc: "extra class added to the control when it has errors"
-  attr :help, :string, default: nil, doc: "optional help text below the control"
-  attr :size, :string, default: "md", values: ~w(sm md lg), doc: "control height step"
-  attr :hide_label, :boolean, default: false, doc: "keep the label for screen readers only"
+  attr(:errors, :list, default: [])
+  attr(:checked, :boolean, doc: "the checked flag for checkbox inputs")
+  attr(:prompt, :string, default: nil, doc: "the prompt for select inputs")
+  attr(:options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2")
+  attr(:multiple, :boolean, default: false, doc: "the multiple flag for select inputs")
+  attr(:class, :any, default: nil, doc: "the input class to use over defaults")
 
-  attr :rest, :global,
+  attr(:error_class, :any,
+    default: nil,
+    doc: "extra class added to the control when it has errors"
+  )
+
+  attr(:help, :string, default: nil, doc: "optional help text below the control")
+  attr(:size, :string, default: "md", values: ~w(sm md lg), doc: "control height step")
+  attr(:hide_label, :boolean, default: false, doc: "keep the label for screen readers only")
+
+  attr(:rest, :global,
     include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
                 multiple pattern placeholder readonly required rows size step)
+  )
 
   @doc """
   Renders a form control with `bt-field`, `bt-input`, `bt-select`, etc.
@@ -338,10 +353,10 @@ defmodule Bds.Components do
     |> assign(:describedby, if(describedby == "", do: nil, else: describedby))
   end
 
-  attr :for, :string, default: nil
-  attr :hidden, :boolean, default: false
-  attr :required, :any, default: nil
-  slot :inner_block, required: true
+  attr(:for, :string, default: nil)
+  attr(:hidden, :boolean, default: false)
+  attr(:required, :any, default: nil)
+  slot(:inner_block, required: true)
 
   defp bt_field_label(assigns) do
     ~H"""
@@ -351,8 +366,8 @@ defmodule Bds.Components do
     """
   end
 
-  attr :id, :string, default: nil
-  slot :inner_block, required: true
+  attr(:id, :string, default: nil)
+  slot(:inner_block, required: true)
 
   defp bt_field_help(assigns) do
     ~H"""
@@ -360,8 +375,8 @@ defmodule Bds.Components do
     """
   end
 
-  attr :id, :string, default: nil
-  attr :errors, :list, required: true
+  attr(:id, :string, default: nil)
+  attr(:errors, :list, required: true)
 
   # Errors use an icon + text, never color alone (WCAG 1.4.1).
   defp bt_field_errors(assigns) do
@@ -376,10 +391,10 @@ defmodule Bds.Components do
   end
 
   @doc "Section header with `bt-section__title`."
-  attr :level, :atom, default: :page, values: [:page, :section]
-  slot :inner_block, required: true
-  slot :subtitle
-  slot :actions
+  attr(:level, :atom, default: :page, values: [:page, :section])
+  slot(:inner_block, required: true)
+  slot(:subtitle)
+  slot(:actions)
 
   def bt_header(assigns) do
     ~H"""
@@ -413,13 +428,13 @@ defmodule Bds.Components do
         </:actions>
       </.bt_topbar>
   """
-  attr :class, :any, default: nil
-  attr :contained, :boolean, default: false, doc: "constrain inner bar to --bt-content-max-width"
-  attr :rest, :global
-  slot :start
-  slot :brand
-  slot :nav
-  slot :actions
+  attr(:class, :any, default: nil)
+  attr(:contained, :boolean, default: false, doc: "constrain inner bar to --bt-content-max-width")
+  attr(:rest, :global)
+  slot(:start)
+  slot(:brand)
+  slot(:nav)
+  slot(:actions)
 
   def bt_topbar(assigns) do
     ~H"""
@@ -452,15 +467,20 @@ defmodule Bds.Components do
   When `logo_src_dark` is set, light and dark theme assets swap via
   `bt-navbar-logo-img--light` / `--dark` (same pattern as the auth banner).
   """
-  attr :class, :any, default: nil
-  attr :rest, :global
-  attr :href, :string, default: nil
-  attr :navigate, :any, default: nil
-  attr :patch, :any, default: nil
-  attr :logo_src, :string, required: true
-  attr :logo_src_dark, :string, default: nil
-  attr :logo_alt, :string, default: ""
-  slot :inner_block
+  attr(:class, :any, default: nil)
+  attr(:rest, :global)
+  attr(:href, :string, default: nil)
+  attr(:navigate, :any, default: nil)
+  attr(:patch, :any, default: nil)
+  attr(:logo_src, :string, required: true)
+  attr(:logo_src_dark, :string, default: nil)
+
+  attr(:logo_alt, :string,
+    default: "Bluetab",
+    doc: "Link name: the product or brand the logo shows"
+  )
+
+  slot(:inner_block)
 
   def bt_navbar_logo_link(%{navigate: navigate} = assigns) when not is_nil(navigate) do
     ~H"""
@@ -489,10 +509,12 @@ defmodule Bds.Components do
     """
   end
 
-  attr :logo_src, :string, required: true
-  attr :logo_src_dark, :string, default: nil
-  attr :logo_alt, :string, default: ""
+  attr(:logo_src, :string, required: true)
+  attr(:logo_src_dark, :string, default: nil)
+  attr(:logo_alt, :string, default: "Bluetab")
 
+  # Only one image is displayed per theme (display: none hides the other from
+  # assistive tech too), so both carry the alt: the link keeps its name in dark.
   defp bt_navbar_logo_imgs(%{logo_src_dark: logo_src_dark} = assigns)
        when is_binary(logo_src_dark) and logo_src_dark != "" do
     ~H"""
@@ -504,8 +526,7 @@ defmodule Bds.Components do
     />
     <img
       src={@logo_src_dark}
-      alt=""
-      aria-hidden="true"
+      alt={@logo_alt}
       class="bt-navbar-logo-img bt-navbar-logo-img--dark"
       fetchpriority="high"
     />
@@ -521,12 +542,12 @@ defmodule Bds.Components do
   @doc """
   Theme toggle styled for the brand topbar. Uses `data-theme-toggle` (see package interactions).
   """
-  attr :class, :any, default: nil
-  attr :rest, :global
-  attr :label, :string, default: nil
+  attr(:class, :any, default: nil)
+  attr(:rest, :global)
+  attr(:label, :string, default: nil)
 
   def bt_navbar_theme_toggle(assigns) do
-    assigns = assign_string_default(assigns, :label, fn -> gettext("Toggle theme") end)
+    assigns = assign_default(assigns, :label, fn -> gettext("Toggle theme") end)
 
     ~H"""
     <div class={["bt-navbar-theme-toggle", @class]}>
@@ -549,18 +570,18 @@ defmodule Bds.Components do
 
   Click fires `phx-click` with `phx-value-locale` set to the next locale (cycles the `locales` list).
   """
-  attr :class, :any, default: nil
-  attr :locale, :string, required: true
-  attr :locales, :list, required: true
-  attr :label, :string, default: nil
-  attr :event, :string, default: "set_locale"
-  attr :rest, :global
+  attr(:class, :any, default: nil)
+  attr(:locale, :string, required: true)
+  attr(:locales, :list, required: true)
+  attr(:label, :string, default: nil)
+  attr(:event, :string, default: "set_locale")
+  attr(:rest, :global)
 
   def bt_navbar_locale_toggle(assigns) do
     assigns =
       assigns
-      |> assign_string_default(:label, fn -> gettext("Toggle language") end)
-      |> assign_string_default(:event, fn -> "set_locale" end)
+      |> assign_default(:label, fn -> gettext("Toggle language") end)
+      |> assign_default(:event, fn -> "set_locale" end)
       |> assign(:next_locale, next_locale(assigns.locale, assigns.locales))
       |> assign(:locale_display, locale_display(assigns.locale))
 
@@ -594,28 +615,20 @@ defmodule Bds.Components do
   defp locale_display(code) when is_binary(code), do: String.upcase(code)
   defp locale_display(_), do: "ES"
 
-  defp assign_string_default(assigns, key, value) when is_function(value, 0) do
-    case Map.get(assigns, key) do
-      nil -> assign(assigns, key, value.())
-      "" -> assign(assigns, key, value.())
-      existing -> assign(assigns, key, existing)
-    end
-  end
-
   @doc """
   User menu trigger + hover/focus dropdown for the brand topbar.
 
   For signed-in apps, nest `<.bt_navbar_user_menu_prefs>` with locale/theme toggles
   instead of standalone `<.bt_navbar_locale_toggle>` / `<.bt_navbar_theme_toggle>` in `:actions`.
   """
-  attr :class, :any, default: nil
-  attr :id, :string, default: nil
-  attr :name, :string, required: true
-  attr :role, :string, default: nil
-  attr :email, :string, default: nil
-  attr :initials, :string, default: "?"
-  attr :avatar_src, :string, default: nil
-  slot :inner_block, required: true
+  attr(:class, :any, default: nil)
+  attr(:id, :string, default: nil)
+  attr(:name, :string, required: true)
+  attr(:role, :string, default: nil)
+  attr(:email, :string, default: nil)
+  attr(:initials, :string, default: "?")
+  attr(:avatar_src, :string, default: nil)
+  slot(:inner_block, required: true)
 
   def bt_navbar_user_menu(assigns) do
     assigns =
@@ -623,7 +636,7 @@ defmodule Bds.Components do
       # `id` defaults to nil, so assign_new would keep nil; derive a stable id
       # (same on the static and connected render) for aria-controls.
       |> assign(:id, assigns.id || "bt-navbar-user-#{:erlang.phash2(assigns.name)}")
-      |> assign_string_default(:role, fn -> gettext("User") end)
+      |> assign_default(:role, fn -> gettext("User") end)
 
     ~H"""
     <%!-- Disclosure (button + panel), not role=menu: the panel holds links,
@@ -668,11 +681,11 @@ defmodule Bds.Components do
     """
   end
 
-  attr :name, :string, required: true
-  attr :initials, :string, required: true
-  attr :avatar_src, :string, default: nil
-  attr :class, :any, default: nil
-  attr :show_status, :boolean, default: true
+  attr(:name, :string, required: true)
+  attr(:initials, :string, required: true)
+  attr(:avatar_src, :string, default: nil)
+  attr(:class, :any, default: nil)
+  attr(:show_status, :boolean, default: true)
 
   defp navbar_user_avatar(assigns) do
     ~H"""
@@ -699,11 +712,11 @@ defmodule Bds.Components do
         <.bt_navbar_user_menu_theme_toggle />
       </.bt_navbar_user_menu_prefs>
   """
-  attr :label, :string, default: nil
-  slot :inner_block, required: true
+  attr(:label, :string, default: nil)
+  slot(:inner_block, required: true)
 
   def bt_navbar_user_menu_prefs(assigns) do
-    assigns = assign_string_default(assigns, :label, fn -> gettext("Preferences") end)
+    assigns = assign_default(assigns, :label, fn -> gettext("Preferences") end)
 
     ~H"""
     <div class="bt-navbar-user__dropdown-prefs" role="group" aria-label={@label}>
@@ -715,17 +728,17 @@ defmodule Bds.Components do
   @doc """
   Language row for the user menu dropdown. Cycles `locales` on click (`phx-click` / `phx-value-locale`).
   """
-  attr :class, :any, default: nil
-  attr :locale, :string, required: true
-  attr :locales, :list, required: true
-  attr :label, :string, default: nil
-  attr :event, :string, default: "set_locale"
-  attr :rest, :global
+  attr(:class, :any, default: nil)
+  attr(:locale, :string, required: true)
+  attr(:locales, :list, required: true)
+  attr(:label, :string, default: nil)
+  attr(:event, :string, default: "set_locale")
+  attr(:rest, :global)
 
   def bt_navbar_user_menu_locale_toggle(assigns) do
     assigns =
       assigns
-      |> assign_string_default(:label, fn -> gettext("Language") end)
+      |> assign_default(:label, fn -> gettext("Language") end)
       |> assign(:next_locale, next_locale(assigns.locale, assigns.locales))
       |> assign(:current_label, locale_label(assigns.locale, assigns.locales))
 
@@ -747,20 +760,22 @@ defmodule Bds.Components do
   @doc """
   Theme row for the user menu dropdown. Uses `data-theme-toggle` (see package interactions).
   """
-  attr :class, :any, default: nil
-  attr :id, :string, default: nil
-  attr :label, :string, default: nil
-  attr :light_label, :string, default: nil
-  attr :dark_label, :string, default: nil
-  attr :rest, :global
+  attr(:class, :any, default: nil)
+  attr(:id, :string, default: nil)
+  attr(:label, :string, default: nil)
+  attr(:light_label, :string, default: nil)
+  attr(:dark_label, :string, default: nil)
+  attr(:rest, :global)
 
   def bt_navbar_user_menu_theme_toggle(assigns) do
     assigns =
       assigns
-      |> assign_new(:id, fn -> "bt-navbar-user-theme-#{System.unique_integer([:positive])}" end)
-      |> assign_string_default(:label, fn -> gettext("Theme") end)
-      |> assign_string_default(:light_label, fn -> gettext("Light") end)
-      |> assign_string_default(:dark_label, fn -> gettext("Dark") end)
+      |> assign_default(:id, fn ->
+        "bt-navbar-user-theme-#{System.unique_integer([:positive])}"
+      end)
+      |> assign_default(:label, fn -> gettext("Theme") end)
+      |> assign_default(:light_label, fn -> gettext("Light") end)
+      |> assign_default(:dark_label, fn -> gettext("Dark") end)
 
     ~H"""
     <button
@@ -789,20 +804,26 @@ defmodule Bds.Components do
     end
   end
 
-  attr :id, :string, required: true
-  attr :rows, :list, required: true
-  attr :row_id, :any, default: nil, doc: "the function for generating the row id"
-  attr :row_click, :any, default: nil, doc: "the function for handling phx-click on each row"
+  attr(:id, :string, required: true)
+  attr(:rows, :list, required: true)
+  attr(:row_id, :any, default: nil, doc: "the function for generating the row id")
 
-  attr :row_item, :any,
+  attr(:row_click, :any,
+    default: nil,
+    doc:
+      "the function for handling phx-click on each row. A mouse shortcut only: cells are not focusable, so also put the action in a link or button inside the row (e.g. an :action slot or a link in the first column)."
+  )
+
+  attr(:row_item, :any,
     default: &Function.identity/1,
     doc: "the function for mapping each row before calling the :col and :action slots"
+  )
 
   slot :col, required: true do
-    attr :label, :string
+    attr(:label, :string)
   end
 
-  slot :action, doc: "the slot for showing user actions in the last table column"
+  slot(:action, doc: "the slot for showing user actions in the last table column")
 
   @doc "Data table with `bt-table` styling."
   def bt_table(assigns) do
@@ -816,9 +837,9 @@ defmodule Bds.Components do
       <table class="bt-table">
         <thead>
           <tr>
-            <th :for={col <- @col}>{col[:label]}</th>
-            <th :if={@action != []}>
-              <span class="sr-only">Actions</span>
+            <th :for={col <- @col} scope="col">{col[:label]}</th>
+            <th :if={@action != []} scope="col">
+              <span class="sr-only">{gettext("Actions")}</span>
             </th>
           </tr>
         </thead>
@@ -846,7 +867,7 @@ defmodule Bds.Components do
   end
 
   slot :item, required: true do
-    attr :title, :string, required: true
+    attr(:title, :string, required: true)
   end
 
   @doc "Description list with `bt-list` styling."
@@ -863,8 +884,8 @@ defmodule Bds.Components do
     """
   end
 
-  attr :class, :any, default: nil
-  slot :inner_block, required: true
+  attr(:class, :any, default: nil)
+  slot(:inner_block, required: true)
 
   @doc "Inline code (`bt-code-inline`)."
   def bt_code(assigns) do
@@ -873,8 +894,8 @@ defmodule Bds.Components do
     """
   end
 
-  attr :class, :any, default: nil
-  slot :inner_block, required: true
+  attr(:class, :any, default: nil)
+  slot(:inner_block, required: true)
 
   @doc "Multiline code block (`bt-code-block`)."
   def bt_code_block(assigns) do

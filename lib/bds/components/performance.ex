@@ -6,6 +6,8 @@ defmodule Bds.Components.Performance do
   use Phoenix.Component
   use Gettext, backend: Bds.Gettext
 
+  import Bds.Components.Helpers, only: [assign_default: 3]
+
   import Bds.Components, only: [bt_button: 1]
   import Bds.Components.CatalogUi, only: [bt_icon: 1]
 
@@ -22,13 +24,13 @@ defmodule Bds.Components.Performance do
     "total" => "bt-performance-completion--total"
   }
 
-  attr :id, :string, default: nil
-  attr :class, :any, default: nil
-  attr :name, :string, required: true
-  attr :email, :string, default: nil
-  attr :picture, :string, default: nil
-  attr :detail, :string, default: nil
-  attr :rest, :global
+  attr(:id, :string, default: nil)
+  attr(:class, :any, default: nil)
+  attr(:name, :string, required: true)
+  attr(:email, :string, default: nil)
+  attr(:picture, :string, default: nil)
+  attr(:detail, :string, default: nil)
+  attr(:rest, :global)
 
   def bt_performance_evaluator_card(assigns) do
     ~H"""
@@ -53,21 +55,21 @@ defmodule Bds.Components.Performance do
     """
   end
 
-  attr :id, :string, default: nil
-  attr :class, :any, default: nil
-  attr :hours_groups, :list, required: true
-  attr :expanded_keys, :any, default: MapSet.new()
-  attr :show_all_groups?, :boolean, default: false
-  attr :hidden_group_count, :integer, default: 0
-  attr :toggle_group_event, :string, default: "toggle_hours_group"
-  attr :toggle_more_event, :string, default: "toggle_more_hours_groups"
-  attr :empty_message, :string, default: nil
-  attr :rest, :global
+  attr(:id, :string, default: nil)
+  attr(:class, :any, default: nil)
+  attr(:hours_groups, :list, required: true)
+  attr(:expanded_keys, :any, default: MapSet.new())
+  attr(:show_all_groups?, :boolean, default: false)
+  attr(:hidden_group_count, :integer, default: 0)
+  attr(:toggle_group_event, :string, default: "toggle_hours_group")
+  attr(:toggle_more_event, :string, default: "toggle_more_hours_groups")
+  attr(:empty_message, :string, default: nil)
+  attr(:rest, :global)
 
   def bt_performance_hours_panel(assigns) do
     assigns =
       assigns
-      |> assign_new(:empty_message, fn -> gettext("No reported hours for this scope.") end)
+      |> assign_default(:empty_message, fn -> gettext("No reported hours for this scope.") end)
 
     visible =
       if assigns.show_all_groups? or assigns.hidden_group_count == 0 do
@@ -127,30 +129,34 @@ defmodule Bds.Components.Performance do
     """
   end
 
-  attr :id, :string, required: true
-  attr :class, :any, default: nil
-  attr :status, :string, required: true
-  attr :date_label, :string, required: true
-  attr :period_name, :string, default: nil
-  attr :show_period_chip?, :boolean, default: true
-  attr :creator_label, :string, required: true
-  attr :role_description, :string, required: true
-  attr :objectives, :list, default: []
-  attr :competencies, :list, default: []
-  attr :competency_category, :string, default: nil
-  attr :evaluation, :map, default: nil
-  attr :ack_state, :atom,
+  attr(:id, :string, required: true)
+  attr(:class, :any, default: nil)
+  attr(:status, :string, required: true)
+  attr(:date_label, :string, required: true)
+  attr(:period_name, :string, default: nil)
+  attr(:show_period_chip?, :boolean, default: true)
+  attr(:creator_label, :string, required: true)
+  attr(:role_description, :string, required: true)
+  attr(:objectives, :list, default: [])
+  attr(:competencies, :list, default: [])
+  attr(:competency_category, :string, default: nil)
+  attr(:evaluation, :map, default: nil)
+
+  attr(:ack_state, :atom,
     default: :hidden,
     values: [:hidden, :pending, :acknowledged, :disagreed]
-  attr :ack_comment, :string, default: nil
-  attr :default_expanded?, :boolean, default: false
-  attr :draft_label, :string, default: nil
-  attr :rest, :global
-  slot :actions
-  slot :evaluation_actions
+  )
+
+  attr(:ack_comment, :string, default: nil)
+  attr(:default_expanded?, :boolean, default: false)
+  attr(:draft_label, :string, default: nil)
+  attr(:rest, :global)
+  slot(:actions)
+  slot(:evaluation_actions)
 
   def bt_performance_briefing_card(assigns) do
-    assigns = assign_new(assigns, :draft_label, fn -> gettext("Draft · only visible to you") end)
+    assigns =
+      assign_default(assigns, :draft_label, fn -> gettext("Draft · only visible to you") end)
 
     has_evaluation = is_map(assigns.evaluation) and map_size(assigns.evaluation) > 0
     assigns = assign(assigns, :has_evaluation, has_evaluation)
@@ -190,7 +196,7 @@ defmodule Bds.Components.Performance do
             <span class="bt-performance-ack-comment__body">{@ack_comment}</span>
           </p>
         </div>
-        <div :if={render_slot(@actions) != []} class="bt-performance-actions">
+        <div :if={@actions != []} class="bt-performance-actions">
           {render_slot(@actions)}
         </div>
       </header>
@@ -228,7 +234,7 @@ defmodule Bds.Components.Performance do
               </p>
             </div>
             <div class="bt-performance-evaluation__header-end">
-              <div :if={render_slot(@evaluation_actions) != []} class="bt-performance-evaluation__actions">
+              <div :if={@evaluation_actions != []} class="bt-performance-evaluation__actions">
                 {render_slot(@evaluation_actions)}
               </div>
               <span class={[
@@ -370,9 +376,9 @@ defmodule Bds.Components.Performance do
     """
   end
 
-  attr :state, :atom, required: true, values: [:pending, :acknowledged, :disagreed]
-  attr :date_label, :string, default: nil
-  attr :comment, :string, default: nil
+  attr(:state, :atom, required: true, values: [:pending, :acknowledged, :disagreed])
+  attr(:date_label, :string, default: nil)
+  attr(:comment, :string, default: nil)
 
   def bt_performance_ack_chip(assigns) do
     label =
@@ -430,13 +436,13 @@ defmodule Bds.Components.Performance do
     """
   end
 
-  attr :id, :string, default: nil
-  attr :class, :any, default: nil
-  attr :people_count, :integer, required: true
-  attr :rest, :global
-  slot :search, required: true
-  slot :filters
-  slot :controls
+  attr(:id, :string, default: nil)
+  attr(:class, :any, default: nil)
+  attr(:people_count, :integer, required: true)
+  attr(:rest, :global)
+  slot(:search, required: true)
+  slot(:filters)
+  slot(:controls)
 
   def bt_performance_team_toolbar(assigns) do
     ~H"""
@@ -447,7 +453,7 @@ defmodule Bds.Components.Performance do
     >
       <div class="bt-performance-team-toolbar__filters">
         <div class="bt-performance-team-toolbar__search">{render_slot(@search)}</div>
-        <div :if={render_slot(@filters) != []} class="bt-performance-team-toolbar__filter-actions">
+        <div :if={@filters != []} class="bt-performance-team-toolbar__filter-actions">
           {render_slot(@filters)}
         </div>
       </div>
@@ -462,11 +468,11 @@ defmodule Bds.Components.Performance do
     """
   end
 
-  attr :class, :any, default: nil
-  attr :label, :string, required: true
-  attr :active?, :boolean, default: false
-  attr :arrow, :string, default: nil
-  attr :rest, :global
+  attr(:class, :any, default: nil)
+  attr(:label, :string, required: true)
+  attr(:active?, :boolean, default: false)
+  attr(:arrow, :string, default: nil)
+  attr(:rest, :global)
 
   def bt_performance_toolbar_pill(assigns) do
     ~H"""
@@ -485,9 +491,9 @@ defmodule Bds.Components.Performance do
     """
   end
 
-  attr :class, :any, default: nil
-  attr :label, :string, required: true
-  attr :rest, :global
+  attr(:class, :any, default: nil)
+  attr(:label, :string, required: true)
+  attr(:rest, :global)
 
   def bt_performance_toolbar_section_label(assigns) do
     ~H"""
@@ -497,35 +503,36 @@ defmodule Bds.Components.Performance do
     """
   end
 
-  attr :id, :string, default: nil
-  attr :class, :any, default: nil
-  attr :name, :string, required: true
-  attr :email, :string, default: nil
-  attr :picture, :string, default: nil
-  attr :category, :string, default: nil
-  attr :project_label, :string, default: nil
-  attr :hours_label, :string, default: nil
-  attr :no_hours_message, :string, default: nil
-  attr :delegator_name, :string, default: nil
-  attr :show_delegator?, :boolean, default: false
-  attr :briefing_date_label, :string, default: nil
-  attr :briefing_status, :string, default: nil
-  attr :briefing_ack_state, :atom, default: nil
-  attr :evaluation_date_label, :string, default: nil
-  attr :evaluation_rating, :string, default: nil
-  attr :evaluation_status, :string, default: nil
-  attr :evaluation_ack_state, :atom, default: nil
-  attr :rating, :string, default: nil
-  attr :rating_label, :string, default: nil
-  attr :profile_navigate, :any, default: nil
-  attr :briefing_navigate, :any, default: nil
-  attr :evaluation_navigate, :any, default: nil
-  attr :create_evaluation_navigate, :any, default: nil
-  attr :rest, :global
-  slot :actions
+  attr(:id, :string, default: nil)
+  attr(:class, :any, default: nil)
+  attr(:name, :string, required: true)
+  attr(:email, :string, default: nil)
+  attr(:picture, :string, default: nil)
+  attr(:category, :string, default: nil)
+  attr(:project_label, :string, default: nil)
+  attr(:hours_label, :string, default: nil)
+  attr(:no_hours_message, :string, default: nil)
+  attr(:delegator_name, :string, default: nil)
+  attr(:show_delegator?, :boolean, default: false)
+  attr(:briefing_date_label, :string, default: nil)
+  attr(:briefing_status, :string, default: nil)
+  attr(:briefing_ack_state, :atom, default: nil)
+  attr(:evaluation_date_label, :string, default: nil)
+  attr(:evaluation_rating, :string, default: nil)
+  attr(:evaluation_status, :string, default: nil)
+  attr(:evaluation_ack_state, :atom, default: nil)
+  attr(:rating, :string, default: nil)
+  attr(:rating_label, :string, default: nil)
+  attr(:profile_navigate, :any, default: nil)
+  attr(:briefing_navigate, :any, default: nil)
+  attr(:evaluation_navigate, :any, default: nil)
+  attr(:create_evaluation_navigate, :any, default: nil)
+  attr(:rest, :global)
+  slot(:actions)
 
   def bt_performance_team_card(assigns) do
     evaluation_rating = assigns.evaluation_rating || assigns.rating
+
     {briefing_mark, briefing_mark_class} =
       briefing_status_mark(assigns.briefing_status, assigns.briefing_ack_state)
 
@@ -542,7 +549,7 @@ defmodule Bds.Components.Performance do
 
     assigns =
       assigns
-      |> assign_new(:no_hours_message, fn ->
+      |> assign_default(:no_hours_message, fn ->
         gettext("No reported hours in this period for this person.")
       end)
       |> assign(:briefing_mark, briefing_mark)
@@ -645,7 +652,7 @@ defmodule Bds.Components.Performance do
           <span class="bt-performance-empty bt-performance-empty--inline">
             {gettext("No briefing yet")}
           </span>
-          <div :if={render_slot(@actions) != []} class="bt-performance-actions">
+          <div :if={@actions != []} class="bt-performance-actions">
             {render_slot(@actions)}
           </div>
         </div>
@@ -654,11 +661,11 @@ defmodule Bds.Components.Performance do
     """
   end
 
-  attr :navigate, :any, default: nil
-  attr :class, :any, required: true
-  attr :fallback_tag, :string, default: "div"
-  attr :rest, :global, include: ~w(aria-label)
-  slot :inner_block, required: true
+  attr(:navigate, :any, default: nil)
+  attr(:class, :any, required: true)
+  attr(:fallback_tag, :string, default: "div")
+  attr(:rest, :global, include: ~w(aria-label))
+  slot(:inner_block, required: true)
 
   defp team_card_nav(assigns) do
     if assigns.navigate do
@@ -866,7 +873,8 @@ defmodule Bds.Components.Performance do
   defp briefing_status_mark("acknowledged", _),
     do: {"check", "bt-performance-status-mark--agreed bt-symbol"}
 
-  defp briefing_status_mark(status, _ack_state) when status in ["published", "draft", "created"] do
+  defp briefing_status_mark(status, _ack_state)
+       when status in ["published", "draft", "created"] do
     case status do
       "published" -> {"P", "bt-performance-status-mark--published"}
       _ -> {"D", "bt-performance-status-mark--draft"}
@@ -891,7 +899,9 @@ defmodule Bds.Components.Performance do
   defp evaluation_status_mark(_, _), do: {"P", "bt-performance-status-mark--published"}
 
   defp rating_class(nil), do: nil
-  defp rating_class(rating) when is_binary(rating), do: Map.get(@rating_classes, String.downcase(rating))
+
+  defp rating_class(rating) when is_binary(rating),
+    do: Map.get(@rating_classes, String.downcase(rating))
 
   defp completion_class(nil), do: nil
 

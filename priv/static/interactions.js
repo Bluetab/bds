@@ -30,7 +30,7 @@ var e = [
 	}), t && e.focus());
 }, s = (e) => {
 	let t = e.target.closest("[role=\"tab\"]"), n = t?.closest("[role=\"tablist\"]");
-	if (!n) return !1;
+	if (!n || !n.closest("[data-tabs]")) return !1;
 	let i = [...n.querySelectorAll("[role=\"tab\"]")], a = r(e.key, i.indexOf(t), i.length);
 	return a === null ? !1 : (e.preventDefault(), o(i[a], { focus: !0 }), !0);
 }, c = (e) => [...e.querySelectorAll("[role=\"menuitem\"]")].filter(t), l = (e, t, n) => {
@@ -78,26 +78,26 @@ var e = [
 	if (e.key !== "Escape") return !1;
 	let r = [...t.querySelectorAll("[data-focus-trap][open]")].filter(f), i = r[r.length - 1];
 	return i ? (e.preventDefault(), n(i), !0) : !1;
-}, x = (e) => {
+}, ee = (e) => {
 	let t = e.dataset.tooltipDescribes, r = n(e)[0];
 	if (!t || !r) return;
 	let i = (r.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
 	i.includes(t) || r.setAttribute("aria-describedby", [...i, t].join(" "));
-}, S = (e, n) => {
+}, x = (e, n) => {
 	let r = n.getElementById(e.getAttribute("aria-controls"));
 	return r ? [...r.querySelectorAll("[role=\"option\"]")].filter(t) : [];
-}, C = (e, t) => {
+}, S = (e, t) => {
 	if (e.closest(".bt-combobox")?.querySelectorAll("[role=\"option\"][data-active]").forEach((e) => e.removeAttribute("data-active")), !t) {
 		e.removeAttribute("aria-activedescendant");
 		return;
 	}
 	t.dataset.active = "true", e.setAttribute("aria-activedescendant", a(t, "bt-option")), t.scrollIntoView({ block: "nearest" });
-}, w = (e, t) => {
+}, C = (e, t) => {
 	let n = e.target.closest("[data-combobox-input]");
 	if (!n) return !1;
-	let r = S(n, t), i = n.getAttribute("aria-activedescendant"), a = r.findIndex((e) => e.id === i);
-	return e.key === "ArrowDown" || e.key === "ArrowUp" ? r.length === 0 ? !1 : (e.preventDefault(), C(n, r[e.key === "ArrowDown" ? (a + 1) % r.length : (a - 1 + r.length) % r.length]), !0) : e.key === "Enter" && a >= 0 ? (e.preventDefault(), r[a].click(), C(n, null), !0) : e.key === "Escape" && i ? (e.preventDefault(), C(n, null), !0) : !1;
-}, T = (e) => e.querySelector(".bt-tree__body button, .bt-tree__body a[href]") || e.querySelector("[data-tree-toggle]"), E = (e) => {
+	let r = x(n, t), i = n.getAttribute("aria-activedescendant"), a = r.findIndex((e) => e.id === i);
+	return e.key === "ArrowDown" || e.key === "ArrowUp" ? r.length === 0 ? !1 : (e.preventDefault(), S(n, r[e.key === "ArrowDown" ? (a + 1) % r.length : (a - 1 + r.length) % r.length]), !0) : e.key === "Enter" && a >= 0 ? (e.preventDefault(), r[a].click(), S(n, null), !0) : e.key === "Escape" && i ? (e.preventDefault(), S(n, null), !0) : !1;
+}, w = (e) => e.querySelector(".bt-tree__body button, .bt-tree__body a[href]") || e.querySelector("[data-tree-toggle]"), T = (e) => {
 	let n = e.target.closest("[data-bt-tree]");
 	if (!n || ![
 		"ArrowUp",
@@ -109,46 +109,46 @@ var e = [
 	].includes(e.key)) return !1;
 	let i = e.target.closest(".bt-tree__row");
 	if (!i) return !1;
-	let a = [...n.querySelectorAll(".bt-tree__row")].filter(t).filter(T), o = i.querySelector("[data-tree-toggle]"), s = o?.getAttribute("aria-expanded") === "true";
-	if (e.key === "ArrowRight") o && !s ? o.click() : o && a[a.indexOf(i) + 1] && T(a[a.indexOf(i) + 1]).focus();
-	else if (e.key === "ArrowLeft") o && s ? o.click() : T(i.closest(".bt-tree--nested")?.closest(".bt-tree__item")?.querySelector(".bt-tree__row") || i)?.focus();
+	let a = [...n.querySelectorAll(".bt-tree__row")].filter(t).filter(w), o = i.querySelector("[data-tree-toggle]"), s = o?.getAttribute("aria-expanded") === "true";
+	if (e.key === "ArrowRight") o && !s ? o.click() : o && a[a.indexOf(i) + 1] && w(a[a.indexOf(i) + 1]).focus();
+	else if (e.key === "ArrowLeft") o && s ? o.click() : w(i.closest(".bt-tree--nested")?.closest(".bt-tree__item")?.querySelector(".bt-tree__row") || i)?.focus();
 	else {
 		let t = r(e.key, a.indexOf(i), a.length);
 		if (t === null) return !1;
 		if (e.key === "ArrowDown" && t === 0 || e.key === "ArrowUp" && t === a.length - 1) return e.preventDefault(), !0;
-		T(a[t])?.focus();
+		w(a[t])?.focus();
 	}
 	return e.preventDefault(), !0;
-}, D = (e) => {
+}, E = (e) => {
 	let t = e.querySelector("[data-navbar-user-trigger]");
 	if (!t) return;
 	let n = e.dataset.dismissed !== "true" && (e.dataset.open === "true" || e.matches(":hover") || e.matches(":focus-within"));
 	t.setAttribute("aria-expanded", String(n));
 };
-function O(e, { signal: t, closeDialog: n }) {
+function D(e, { signal: t, closeDialog: n }) {
 	let r = null;
 	e.addEventListener("focusin", (e) => {
 		e.target.closest("[data-focus-trap], .bt-modal") || (r = e.target);
 		let t = e.target.closest(".bt-tooltip");
-		t && x(t);
+		t && ee(t);
 		let n = e.target.closest("[data-navbar-user]");
-		n && D(n);
+		n && E(n);
 	}, { signal: t }), e.addEventListener("focusout", (e) => {
 		let t = e.target.closest("[data-navbar-user]");
-		t && !t.contains(e.relatedTarget) && (delete t.dataset.dismissed, t.dataset.open = "false", setTimeout(() => D(t), 0));
+		t && !t.contains(e.relatedTarget) && (delete t.dataset.dismissed, t.dataset.open = "false", setTimeout(() => E(t), 0));
 		let n = e.target.closest(".bt-tooltip");
 		n && !n.contains(e.relatedTarget) && delete n.dataset.tooltipHidden;
 	}, { signal: t }), e.addEventListener("mouseover", (e) => {
 		let t = e.target.closest("[data-navbar-user]");
-		t && D(t);
+		t && E(t);
 	}, { signal: t }), e.addEventListener("mouseout", (e) => {
 		let t = e.target.closest("[data-navbar-user]");
-		t && !t.contains(e.relatedTarget) && setTimeout(() => D(t), 0);
+		t && !t.contains(e.relatedTarget) && setTimeout(() => E(t), 0);
 	}, { signal: t }), e.addEventListener("click", (e) => {
 		let t = e.target.closest("[data-navbar-user-trigger]");
 		if (t) {
 			let e = t.closest("[data-navbar-user]");
-			t.getAttribute("aria-expanded") === "true" && e.dataset.dismissed !== "true" ? (e.dataset.dismissed = "true", e.dataset.open = "false") : (delete e.dataset.dismissed, e.dataset.open = "true"), D(e);
+			t.getAttribute("aria-expanded") === "true" && e.dataset.dismissed !== "true" ? (e.dataset.dismissed = "true", e.dataset.open = "false") : (delete e.dataset.dismissed, e.dataset.open = "true"), E(e);
 			return;
 		}
 		let n = e.target.closest("[data-expansion-toggle]");
@@ -159,12 +159,16 @@ function O(e, { signal: t, closeDialog: n }) {
 		let r = e.target.closest("[role=\"tab\"][data-tab]");
 		r && o(r);
 	}, { signal: t }), e.addEventListener("keydown", (t) => {
-		if (!t.defaultPrevented && !s(t) && !d(t, e) && !w(t, e) && !E(t) && !h(t, e) && !b(t, e, n)) {
+		if (!t.defaultPrevented && !s(t) && !d(t, e) && !C(t, e) && !T(t) && !h(t, e) && !b(t, e, n)) {
 			if (t.key === "Escape") {
-				let e = t.target.closest(".bt-tooltip");
-				e && (e.dataset.tooltipHidden = "true");
-				let n = t.target.closest("[data-navbar-user]");
-				n && (n.dataset.dismissed = "true", n.dataset.open = "false", D(n), n.querySelector("[data-navbar-user-trigger]")?.focus());
+				let n = t.target.closest(".bt-tooltip");
+				n && (n.dataset.tooltipHidden = "true");
+				let r = t.target.closest("[data-navbar-user]");
+				if (r && (r.dataset.dismissed = "true", r.dataset.open = "false", E(r), r.querySelector("[data-navbar-user-trigger]")?.focus()), e.body?.classList.contains("bt-sidebar-open")) {
+					e.body.classList.remove("bt-sidebar-open");
+					let t = e.querySelector("[data-toggle-sidebar]");
+					t?.setAttribute("aria-expanded", "false"), t?.focus();
+				}
 				return;
 			}
 			(t.key === "Enter" || t.key === " ") && t.target.matches("[role=\"button\"]:not(button):not(a):not(input)") && (t.preventDefault(), t.target.click());
@@ -180,16 +184,16 @@ function O(e, { signal: t, closeDialog: n }) {
 }
 //#endregion
 //#region src/lib/calendar-day-selection.js
-var k = {
+var O = {
 	mounted() {
 		this.dragging = !1, this.dragMoved = !1, this.anchorDate = null, this.lastFocusDate = null, this.onPointerDown = (e) => {
 			if (e.button !== 0 || e.shiftKey || e.metaKey || e.ctrlKey || e.target.closest("[data-calendar-day-open]")) return;
-			let t = A(e.target);
-			!t || !j(t) || M(t) || (this.anchorDate = t.dataset.calendarDay, this.lastFocusDate = this.anchorDate, this.dragging = !0, this.dragMoved = !1, this.el.classList.add("bt-calendar-month-grid--dragging"), this.pushBox(this.anchorDate, this.anchorDate));
+			let t = k(e.target);
+			!t || !A(t) || te(t) || (this.anchorDate = t.dataset.calendarDay, this.lastFocusDate = this.anchorDate, this.dragging = !0, this.dragMoved = !1, this.el.classList.add("bt-calendar-month-grid--dragging"), this.pushBox(this.anchorDate, this.anchorDate));
 		}, this.onPointerOver = (e) => {
 			if (!this.dragging) return;
-			let t = A(e.target);
-			if (!t || !j(t)) return;
+			let t = k(e.target);
+			if (!t || !A(t)) return;
 			let n = t.dataset.calendarDay;
 			n !== this.lastFocusDate && (this.lastFocusDate = n, this.dragMoved = !0, this.pushBox(this.anchorDate, n));
 		}, this.onPointerUp = () => {
@@ -198,8 +202,8 @@ var k = {
 			}, 0));
 		}, this.onClickCapture = (e) => {
 			if (e.target.closest("[data-calendar-day-open]")) return;
-			let t = A(e.target);
-			if (!(!t || !j(t))) {
+			let t = k(e.target);
+			if (!(!t || !A(t))) {
 				if (this.dragMoved) {
 					e.preventDefault(), e.stopPropagation();
 					return;
@@ -211,8 +215,8 @@ var k = {
 				});
 			}
 		}, this.onKeyDown = (e) => {
-			let t = A(e.target);
-			if (!t || !j(t) || e.target !== t) return;
+			let t = k(e.target);
+			if (!t || !A(t) || e.target !== t) return;
 			if (e.key === " " || e.key === "Enter") {
 				e.preventDefault(), this.pushEvent("day_select", {
 					date: t.dataset.calendarDay,
@@ -223,10 +227,10 @@ var k = {
 			}
 			let n = this.neighbour(t, e.key);
 			n && (e.preventDefault(), n.focus());
-		}, this.el.addEventListener("keydown", this.onKeyDown), this.el.addEventListener("pointerdown", this.onPointerDown), this.el.addEventListener("pointerover", this.onPointerOver), this.el.addEventListener("click", this.onClickCapture, !0), window.addEventListener("pointerup", this.onPointerUp);
+		}, this.el.addEventListener("keydown", this.onKeyDown), this.el.addEventListener("pointerdown", this.onPointerDown), this.el.addEventListener("pointerover", this.onPointerOver), this.el.addEventListener("click", this.onClickCapture, !0), window.addEventListener("pointerup", this.onPointerUp), window.addEventListener("pointercancel", this.onPointerUp);
 	},
 	destroyed() {
-		this.el.removeEventListener("keydown", this.onKeyDown), this.el.removeEventListener("pointerdown", this.onPointerDown), this.el.removeEventListener("pointerover", this.onPointerOver), this.el.removeEventListener("click", this.onClickCapture, !0), window.removeEventListener("pointerup", this.onPointerUp);
+		this.el.removeEventListener("keydown", this.onKeyDown), this.el.removeEventListener("pointerdown", this.onPointerDown), this.el.removeEventListener("pointerover", this.onPointerOver), this.el.removeEventListener("click", this.onClickCapture, !0), window.removeEventListener("pointerup", this.onPointerUp), window.removeEventListener("pointercancel", this.onPointerUp);
 	},
 	neighbour(e, t) {
 		let n = parseInt(e.dataset.calendarGridRow, 10), r = parseInt(e.dataset.calendarGridCol, 10);
@@ -249,18 +253,18 @@ var k = {
 		});
 	}
 };
-function A(e) {
+function k(e) {
 	return e.closest("[data-calendar-day]");
 }
-function j(e) {
+function A(e) {
 	return e.dataset.calendarSelectable === "true";
 }
-function M(e) {
+function te(e) {
 	return e.dataset.templateDraggable === "true";
 }
 //#endregion
 //#region src/lib/combobox.js
-var N = 4, P = 250, F = {
+var j = 4, ne = 250, M = {
 	mounted() {
 		this.sync();
 	},
@@ -294,18 +298,18 @@ var N = 4, P = 250, F = {
 	position() {
 		if (!this.anchor || !this.panel) return;
 		let e = this.anchor.getBoundingClientRect(), t = this.panel;
-		t.style.position = "fixed", t.style.zIndex = String(P), t.style.left = `${e.left}px`, t.style.width = `${e.width}px`, t.style.right = "auto";
-		let n = t.offsetHeight, r = window.innerHeight - e.bottom, i = r < n + N && e.top > r;
-		t.style.top = i ? `${Math.max(N, e.top - N - n)}px` : `${e.bottom + N}px`;
+		t.style.position = "fixed", t.style.zIndex = String(ne), t.style.left = `${e.left}px`, t.style.width = `${e.width}px`, t.style.right = "auto";
+		let n = t.offsetHeight, r = window.innerHeight - e.bottom, i = r < n + j && e.top > r;
+		t.style.top = i ? `${Math.max(j, e.top - j - n)}px` : `${e.bottom + j}px`;
 	}
-}, I = {
+}, N = {
 	mounted() {
 		this.pause = () => this.clearDismiss(), this.resume = () => {
 			!this.el.matches(":hover") && !this.el.contains(document.activeElement) && this.scheduleDismiss();
 		}, this.el.addEventListener("mouseenter", this.pause), this.el.addEventListener("focusin", this.pause), this.el.addEventListener("mouseleave", this.resume), this.el.addEventListener("focusout", this.resume), this.scheduleDismiss();
 	},
 	updated() {
-		this.scheduleDismiss();
+		this.resume();
 	},
 	destroyed() {
 		this.clearDismiss();
@@ -320,28 +324,28 @@ var N = 4, P = 250, F = {
 	clearDismiss() {
 		this.dismissTimer &&= (clearTimeout(this.dismissTimer), null);
 	}
-}, L = (e, t) => {
+}, P = (e, t) => {
 	let n = parseFloat(e);
 	return Number.isFinite(n) ? n : t;
-}, R = (e, t = 2) => Math.round(e * 10 ** t) / 10 ** t, z = {
+}, F = (e, t = 2) => Math.round(e * 10 ** t) / 10 ** t, I = {
 	mounted() {
-		this.increment = L(this.el.dataset.stepIncrement, .5), this.min = this.el.hasAttribute("min") ? L(this.el.min, null) : null, this.max = this.el.hasAttribute("max") ? L(this.el.max, null) : null, this.typing = !1, this.pasting = !1, this.adjusting = !1, this.previousValue = L(this.el.value, 0), this.el.setAttribute("step", "any"), this.onKeyDown = (e) => {
+		this.increment = P(this.el.dataset.stepIncrement, .5), this.min = this.el.hasAttribute("min") ? P(this.el.min, null) : null, this.max = this.el.hasAttribute("max") ? P(this.el.max, null) : null, this.typing = !1, this.pasting = !1, this.adjusting = !1, this.previousValue = P(this.el.value, 0), this.el.setAttribute("step", "any"), this.onKeyDown = (e) => {
 			if (e.key === "ArrowUp" || e.key === "ArrowDown") {
 				e.preventDefault(), this.stepBy(e.key === "ArrowUp" ? this.increment : -this.increment);
 				return;
 			}
 			(e.key.length === 1 || e.key === "Backspace" || e.key === "Delete" || e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "Home" || e.key === "End") && (this.typing = !0);
 		}, this.onKeyUp = () => {
-			this.typing = !1, this.previousValue = L(this.el.value, this.previousValue);
+			this.typing = !1, this.previousValue = P(this.el.value, this.previousValue);
 		}, this.onPaste = () => {
 			this.pasting = !0;
 		}, this.onInput = () => {
 			if (this.adjusting) return;
 			if (this.typing || this.pasting) {
-				this.pasting = !1, this.previousValue = L(this.el.value, this.previousValue);
+				this.pasting = !1, this.previousValue = P(this.el.value, this.previousValue);
 				return;
 			}
-			let e = L(this.el.value, this.previousValue), t = R(e - this.previousValue, 4);
+			let e = P(this.el.value, this.previousValue), t = F(e - this.previousValue, 4);
 			if (Math.abs(Math.abs(t) - 1) < 1e-4) {
 				this.stepBy(t > 0 ? this.increment : -this.increment, !0);
 				return;
@@ -355,15 +359,15 @@ var N = 4, P = 250, F = {
 		this.el.removeEventListener("keydown", this.onKeyDown), this.el.removeEventListener("keyup", this.onKeyUp), this.el.removeEventListener("paste", this.onPaste), this.el.removeEventListener("input", this.onInput), this.el.removeEventListener("wheel", this.onWheel);
 	},
 	stepBy(e, t = !1) {
-		let n = R((t ? this.previousValue : L(this.el.value, this.previousValue)) + e);
+		let n = F((t ? this.previousValue : P(this.el.value, this.previousValue)) + e);
 		this.min != null && n < this.min && (n = this.min), this.max != null && n > this.max && (n = this.max), this.adjusting = !0, this.el.value = String(n), this.previousValue = n, this.adjusting = !1, this.el.dispatchEvent(new Event("input", { bubbles: !0 })), this.el.dispatchEvent(new Event("change", { bubbles: !0 }));
 	}
-}, B = "bt-theme", V = (e, t = document) => [...t.querySelectorAll(e)], H = (e = document) => e.querySelector("[data-theme-icon]"), U = (e = document, t = e.documentElement.dataset.theme) => {
-	let n = H(e);
-	n && (n.textContent = t === "dark" ? "light_mode" : "dark_mode"), V("[data-theme-value]", e).forEach((e) => {
+}, L = "bt-theme", R = (e, t = document) => [...t.querySelectorAll(e)], z = (e = document) => e.querySelector("[data-theme-icon]"), B = (e = document, t = e.documentElement.dataset.theme) => {
+	let n = z(e);
+	n && (n.textContent = t === "dark" ? "light_mode" : "dark_mode"), R("[data-theme-value]", e).forEach((e) => {
 		e.textContent = t === "dark" ? e.dataset.dark || "Dark" : e.dataset.light || "Light";
 	});
-}, W = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), G = (e) => {
+}, V = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), H = (e) => {
 	if (e) {
 		if (typeof HTMLDialogElement < "u" && e instanceof HTMLDialogElement) {
 			!e.open && typeof e.showModal == "function" && e.showModal();
@@ -371,7 +375,7 @@ var N = 4, P = 250, F = {
 		}
 		e.setAttribute("open", "");
 	}
-}, K = (e) => {
+}, U = (e) => {
 	if (e) {
 		if (typeof HTMLDialogElement < "u" && e instanceof HTMLDialogElement) {
 			e.open && typeof e.close == "function" && e.close();
@@ -379,38 +383,63 @@ var N = 4, P = 250, F = {
 		}
 		e.removeAttribute("open");
 	}
-}, q = (e, t, n = document) => {
-	e.dataset.open = String(t), V(`[data-menu-toggle="${CSS.escape(e.id)}"]`, n).forEach((e) => {
+}, W = (e, t, n = document) => {
+	e.dataset.open = String(t), R(`[data-menu-toggle="${CSS.escape(e.id)}"]`, n).forEach((e) => {
 		e.setAttribute("aria-expanded", String(t));
 	});
-}, J = (e = document, t) => {
-	V("[data-open=\"true\"].bt-menu", e).forEach((n) => {
-		n !== t && q(n, !1, e);
+}, G = (e = document, t) => {
+	R("[data-open=\"true\"].bt-menu", e).forEach((n) => {
+		n !== t && W(n, !1, e);
 	});
+}, K = 3200, q = (e) => {
+	clearTimeout(e._btHide), e.dataset.open = "true";
+	let t = () => e.matches(":hover") || e.contains(document.activeElement), n = () => {
+		clearTimeout(e._btHide), e._btHide = setTimeout(() => {
+			t() || (e.dataset.open = "false");
+		}, K);
+	};
+	e._btPauseBound || (e._btPauseBound = !0, e.addEventListener("mouseenter", () => clearTimeout(e._btHide)), e.addEventListener("focusin", () => clearTimeout(e._btHide)), e.addEventListener("mouseleave", () => {
+		e.dataset.open === "true" && n();
+	}), e.addEventListener("focusout", () => {
+		e.dataset.open === "true" && n();
+	})), n();
+}, J = (e) => {
+	e && (e.classList.contains("bt-overlay") ? e.removeAttribute("open") : U(e), y(e));
 }, Y = (e) => {
-	e && (e.classList.contains("bt-overlay") ? e.removeAttribute("open") : K(e), y(e));
-}, X = (e, t = {}) => {
-	let { root: n = document, storageKey: r = B, persist: i = !0 } = t;
-	n.documentElement.dataset.theme = e, U(n, e), i && localStorage.setItem(r, e);
-}, Z = (e = {}) => {
-	let t = (e.root || document).documentElement.dataset.theme === "dark" ? "light" : "dark";
-	return X(t, e), t;
+	try {
+		return localStorage.getItem(e);
+	} catch {
+		return null;
+	}
+}, X = (e = document) => {
+	let t = e.querySelector("meta[name=\"theme-color\"]:not([media])");
+	if (!t) return;
+	let n = getComputedStyle(e.documentElement).getPropertyValue("--bt-color-background").trim();
+	n && t.setAttribute("content", n);
+}, Z = (e, t = {}) => {
+	let { root: n = document, storageKey: r = L, persist: i = !0 } = t;
+	if (n.documentElement.dataset.theme = e, B(n, e), X(n), i) try {
+		localStorage.setItem(r, e);
+	} catch {}
 }, Q = (e = {}) => {
-	let { root: t = document, storageKey: n = B, fallbackTheme: r = "light" } = e, i = localStorage.getItem(n) || r;
-	return X(i, {
+	let t = (e.root || document).documentElement.dataset.theme === "dark" ? "light" : "dark";
+	return Z(t, e), t;
+}, $ = (e = {}) => {
+	let { root: t = document, storageKey: n = L, fallbackTheme: r = "light" } = e, i = Y(n) || r;
+	return Z(i, {
 		...e,
 		root: t,
 		persist: !1
 	}), i;
 };
-function $(e = {}) {
-	let { root: t = document, storageKey: n = B, autoApplyStoredTheme: r = !0 } = e, i = new AbortController(), { signal: a } = i;
-	r ? Q({
+function re(e = {}) {
+	let { root: t = document, storageKey: n = L, autoApplyStoredTheme: r = !0 } = e, i = new AbortController(), { signal: a } = i;
+	r ? $({
 		root: t,
 		storageKey: n,
 		fallbackTheme: t.documentElement.dataset.theme || "light"
-	}) : U(t);
-	let o = new MutationObserver(() => U(t));
+	}) : B(t);
+	let o = new MutationObserver(() => B(t));
 	o.observe(t.documentElement, {
 		attributes: !0,
 		attributeFilter: ["data-theme"]
@@ -418,7 +447,7 @@ function $(e = {}) {
 		e.target.closest(".bt-combobox__panel") && e.preventDefault();
 	}, { signal: a }), t.addEventListener("click", (e) => {
 		if (e.target.closest("[data-theme-toggle]")) {
-			Z({
+			Q({
 				root: t,
 				storageKey: n
 			});
@@ -426,38 +455,38 @@ function $(e = {}) {
 		}
 		let r = e.target.closest("[data-dialog-open]");
 		if (r) {
-			let e = W(r, r.dataset.dialogOpen, t);
-			e && (_(e, r), G(e), v(e));
+			let e = V(r, r.dataset.dialogOpen, t);
+			e && (_(e, r), H(e), v(e));
 			return;
 		}
 		let i = e.target.closest("[data-dialog-close]");
 		if (i) {
-			Y(i.closest(".bt-dialog"));
+			J(i.closest(".bt-dialog"));
 			return;
 		}
 		let a = e.target.closest("[data-overlay-open]");
 		if (a) {
-			let e = W(a, a.dataset.overlayOpen, t);
+			let e = V(a, a.dataset.overlayOpen, t);
 			e && (_(e, a), e.setAttribute("open", ""), v(e));
 			return;
 		}
 		let o = e.target.closest("[data-overlay-close]");
 		if (o) {
-			Y(o.closest(".bt-overlay"));
+			J(o.closest(".bt-overlay"));
 			return;
 		}
 		let s = e.target.closest("[data-menu-toggle]");
 		if (s) {
-			let e = W(s, s.dataset.menuToggle, t), n = e?.dataset.open !== "true";
-			J(t, e), e && q(e, n, t);
+			let e = V(s, s.dataset.menuToggle, t), n = e?.dataset.open !== "true";
+			G(t, e), e && W(e, n, t);
 			return;
 		}
 		let c = e.target.closest(".bt-menu [role=\"menuitem\"]");
 		if (c) {
 			let e = c.closest(".bt-menu");
-			q(e, !1, t), t.querySelector(`[data-menu-toggle="${CSS.escape(e.id)}"]`)?.focus();
+			W(e, !1, t), t.querySelector(`[data-menu-toggle="${CSS.escape(e.id)}"]`)?.focus();
 		}
-		e.target.closest(".bt-menu-wrap") || J(t);
+		e.target.closest(".bt-menu-wrap") || G(t);
 		let l = e.target.closest("[data-expansion-toggle]");
 		if (l) {
 			let e = l.closest("[data-expansion]");
@@ -466,10 +495,8 @@ function $(e = {}) {
 		}
 		let u = e.target.closest("[data-snackbar-open]");
 		if (u) {
-			let e = W(u, u.dataset.snackbarOpen, t);
-			e && (e.dataset.open = "true", setTimeout(() => {
-				e.dataset.open = "false";
-			}, 3200));
+			let e = V(u, u.dataset.snackbarOpen, t);
+			e && q(e);
 			return;
 		}
 		let d = e.target.closest("[data-snackbar-close]");
@@ -479,7 +506,8 @@ function $(e = {}) {
 			return;
 		}
 		if (e.target.closest("[data-toggle-sidebar]")) {
-			t.body.classList.toggle("bt-sidebar-open");
+			let e = t.body.classList.toggle("bt-sidebar-open");
+			R("[data-toggle-sidebar]", t).forEach((t) => t.setAttribute("aria-expanded", String(e)));
 			return;
 		}
 		if (t.body.classList.contains("bt-sidebar-open") && e.target.closest(".bt-sidebar a, .bt-sidebar .bt-nav-link")) {
@@ -490,20 +518,20 @@ function $(e = {}) {
 		if (f) {
 			let e = f.closest("[data-tabs]");
 			if (!e) return;
-			V("[role=\"tab\"]", e).forEach((e) => {
+			R("[role=\"tab\"]", e).forEach((e) => {
 				e.setAttribute("aria-selected", String(e === f));
-			}), V(".bt-tab-panel", e).forEach((e) => {
+			}), R(".bt-tab-panel", e).forEach((e) => {
 				e.setAttribute("aria-hidden", String(e.id !== f.dataset.tab));
 			});
 		}
 	}, { signal: a });
-	let s = O(t, {
+	let s = D(t, {
 		signal: a,
-		closeDialog: Y
+		closeDialog: J
 	});
 	return () => {
 		i.abort(), o.disconnect(), s();
 	};
 }
 //#endregion
-export { F as BtCombobox, I as BtFlash, z as BtNumberStep, k as CalendarDaySelection, B as DEFAULT_THEME_STORAGE_KEY, Q as applyStoredTheme, $ as initBtInteractions, X as setTheme, U as syncThemeLabels, Z as toggleTheme };
+export { M as BtCombobox, N as BtFlash, I as BtNumberStep, O as CalendarDaySelection, L as DEFAULT_THEME_STORAGE_KEY, $ as applyStoredTheme, re as initBtInteractions, Z as setTheme, B as syncThemeLabels, Q as toggleTheme };

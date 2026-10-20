@@ -26,25 +26,30 @@ defmodule Bds.Components.UserPicker do
 
   import Bds.Components.CatalogUi
 
-  attr :class, :any, default: nil
-  attr :id, :string, required: true
-  attr :value, :any, default: nil
-  attr :search_fn, :any, required: true
-  attr :field_name, :string, default: "user_id"
-  attr :search_name, :string, default: "user_search"
-  attr :title, :string, default: "User"
-  attr :description, :string, default: nil
-  attr :label, :string, default: nil
-  attr :placeholder, :string, default: "Search users…"
-  attr :selected_user, :any, default: nil
-  attr :selected_users, :list, default: []
-  attr :bare, :boolean, default: false, doc: "Form field layout without card chrome"
-  attr :multi, :boolean, default: false, doc: "Allow selecting multiple users"
-  attr :debug_scores, :boolean, default: false, doc: "Show search similarity score on each option"
+  attr(:class, :any, default: nil)
+  attr(:id, :string, required: true)
+  attr(:value, :any, default: nil)
+  attr(:search_fn, :any, required: true)
+  attr(:field_name, :string, default: "user_id")
+  attr(:search_name, :string, default: "user_search")
+  attr(:title, :string, default: "User")
+  attr(:description, :string, default: nil)
+  attr(:label, :string, default: nil)
+  attr(:placeholder, :string, default: "Search users…")
+  attr(:selected_user, :any, default: nil)
+  attr(:selected_users, :list, default: [])
+  attr(:bare, :boolean, default: false, doc: "Form field layout without card chrome")
+  attr(:multi, :boolean, default: false, doc: "Allow selecting multiple users")
 
-  attr :form, :string,
+  attr(:debug_scores, :boolean,
+    default: false,
+    doc: "Show search similarity score on each option"
+  )
+
+  attr(:form, :string,
     default: nil,
     doc: "Parent form id when the picker is rendered inside a LiveView form"
+  )
 
   @impl true
   def mount(socket) do
@@ -212,7 +217,8 @@ defmodule Bds.Components.UserPicker do
       |> assign(:bare, bare?)
       |> assign(:search_input_id, "#{assigns.id}-search-input")
       |> assign(:field_label, if(bare?, do: assigns[:label], else: nil))
-      |> assign(:combobox_label, if(bare?, do: nil, else: assigns[:label]))
+      # Card mode: the visible <h3> title also names the search input
+      |> assign(:combobox_label, if(bare?, do: nil, else: assigns[:label] || assigns[:title]))
       |> assign(:panel_empty?, assigns.users == [])
       |> assign(:empty_message, empty_message(assigns))
       |> assign(:has_selection?, has_selection?(assigns))
@@ -278,6 +284,7 @@ defmodule Bds.Components.UserPicker do
         input_id={@search_input_id}
         name={@search_name}
         label={@combobox_label}
+        hide_label={is_nil(@label)}
         value={@search_query}
         placeholder={@placeholder}
         open={@show_panel}
@@ -359,7 +366,7 @@ defmodule Bds.Components.UserPicker do
           <button
             type="button"
             class="bt-user-picker__clear"
-            aria-label={assigns[:clear_aria_label] || "Remove selection"}
+            aria-label={assigns[:clear_aria_label] || gettext("Remove %{name}", name: user_display_name(user))}
             phx-click="user_picker_remove"
             phx-target={@myself}
             phx-value-user_id={user_id(user)}
@@ -380,7 +387,7 @@ defmodule Bds.Components.UserPicker do
         <button
           type="button"
           class="bt-user-picker__clear"
-          aria-label={assigns[:clear_aria_label] || "Clear selection"}
+          aria-label={assigns[:clear_aria_label] || gettext("Clear selection")}
           phx-click="user_picker_clear"
           phx-target={@myself}
         >

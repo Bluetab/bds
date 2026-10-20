@@ -20,7 +20,8 @@ export const BtFlash = {
   },
 
   updated() {
-    this.scheduleDismiss()
+    // A patch must not restart the timer while the message is being read
+    this.resume()
   },
 
   destroyed() {

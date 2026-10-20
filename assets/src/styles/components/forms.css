@@ -1,14 +1,19 @@
 .bt-field { display: grid; gap: var(--bt-space-1); min-width: min(100%, 18rem); }
 .bt-field label, .bt-label { color: var(--bt-color-text-muted); font-size: var(--bt-font-size-sm); font-weight: 700; }
-.bt-input, .bt-select, .bt-textarea { width: 100%; min-height: 2.75rem; padding: 0 var(--bt-space-3); border: 1px solid var(--bt-color-border-strong); border-radius: var(--bt-radius-md); background: var(--bt-color-surface); color: var(--bt-color-text); outline: 0; transition: border var(--bt-duration-fast), box-shadow var(--bt-duration-fast), background var(--bt-duration-fast); }
+.bt-input, .bt-select, .bt-textarea { width: 100%; min-height: 2.75rem; padding: 0 var(--bt-space-3); border: 1px solid var(--bt-color-border-input); border-radius: var(--bt-radius-md); background: var(--bt-color-surface); color: var(--bt-color-text); outline: 2px solid transparent; outline-offset: 2px; transition: border var(--bt-duration-fast), box-shadow var(--bt-duration-fast), background var(--bt-duration-fast); }
+/* Explicit placeholder color: browsers and resets default to ~50 % text (below 4.5:1) */
+.bt-input::placeholder, .bt-textarea::placeholder { color: var(--bt-color-text-subtle); opacity: 1; }
 .bt-textarea { min-height: 7rem; padding-block: var(--bt-space-3); resize: vertical; }
 .bt-input:is(:focus, [data-demo-state="focus"]), .bt-select:is(:focus, [data-demo-state="focus"]), .bt-textarea:is(:focus, [data-demo-state="focus"]) { border-color: var(--bt-color-primary); box-shadow: 0 0 0 4px color-mix(in srgb, var(--bt-color-primary), transparent 84%); }
 .bt-field--error .bt-input, .bt-field--error .bt-select, .bt-field--error .bt-textarea { border-color: var(--bt-color-error); }
+/* The error border wins over the focus border, so focus adds a solid 2px
+   error-text ring (≥ 3:1) instead of the faint primary halo */
+.bt-field--error .bt-input:is(:focus, [data-demo-state="focus"]), .bt-field--error .bt-select:is(:focus, [data-demo-state="focus"]), .bt-field--error .bt-textarea:is(:focus, [data-demo-state="focus"]) { border-color: var(--bt-color-error-text); box-shadow: 0 0 0 2px var(--bt-color-error-text); }
 .bt-help { color: var(--bt-color-text-subtle); font-size: var(--bt-font-size-xs); }
 .bt-checkbox, .bt-radio, .bt-switch { display: inline-flex; align-items: center; gap: var(--bt-space-2); color: var(--bt-color-text); font-weight: 650; cursor: pointer; }
 .bt-checkbox input, .bt-radio input { width: 1.15rem; height: 1.15rem; accent-color: var(--bt-color-primary); }
 .bt-switch input { position: absolute; opacity: 0; pointer-events: none; }
-.bt-switch__track { position: relative; width: 3rem; height: 1.65rem; border-radius: var(--bt-radius-pill); background: var(--bt-color-surface-muted); border: 1px solid var(--bt-color-border-strong); transition: background var(--bt-duration-fast); }
+.bt-switch__track { position: relative; width: 3rem; height: 1.65rem; border-radius: var(--bt-radius-pill); background: var(--bt-color-surface-muted); border: 1px solid var(--bt-color-border-input); transition: background var(--bt-duration-fast); }
 .bt-switch__track::after { content: ""; position: absolute; top: .18rem; left: .18rem; width: 1.15rem; height: 1.15rem; border-radius: 50%; background: var(--bt-color-surface); box-shadow: var(--bt-shadow-xs); transition: transform var(--bt-duration-fast) var(--bt-ease); }
 .bt-switch input:checked + .bt-switch__track { background: var(--bt-color-primary); border-color: var(--bt-color-primary); }
 .bt-switch input:checked + .bt-switch__track::after { transform: translateX(1.35rem); }
@@ -20,7 +25,7 @@
 .bt-color-swatch { overflow: hidden; border: 1px solid var(--bt-color-border); border-radius: var(--bt-radius-lg); background: var(--bt-color-surface); }
 .bt-color-swatch__color { height: 4rem; background: var(--swatch); }
 .bt-color-swatch__text { padding: var(--bt-space-3); font-size: var(--bt-font-size-sm); font-weight: var(--bt-font-weight-heavy); letter-spacing: var(--bt-letter-spacing-heavy); }
-.bt-color-scale { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); width: 100%; overflow: hidden; border: 1px solid var(--bt-color-border); border-radius: var(--bt-radius-lg); background: var(--bt-color-surface); }
+.bt-color-scale { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 7rem), 1fr)); width: 100%; overflow: hidden; border: 1px solid var(--bt-color-border); border-radius: var(--bt-radius-lg); background: var(--bt-color-surface); }
 .bt-color-scale__step { position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: var(--bt-space-4); min-height: 10rem; padding: var(--bt-space-3); background: var(--swatch); }
 .bt-color-scale__step--on-dark { color: var(--bt-palette-neutral-black-60); }
 .bt-color-scale__step--on-light { color: #ffffff; }
@@ -34,10 +39,8 @@
 .bt-color-scale__data b { display: block; font-size: var(--bt-font-size-xs); font-weight: var(--bt-font-weight-heavy); letter-spacing: var(--bt-letter-spacing-heavy); }
 .bt-color-scale__contrast { font-size: var(--bt-font-size-xs); font-weight: var(--bt-font-weight-heavy); letter-spacing: var(--bt-letter-spacing-heavy); font-variant-numeric: tabular-nums; }
 
-/* Columns follow the space the scale gets (container), not the viewport.
-   Each step needs ~7rem for "RGB 224 / 82 / 6" without breaking every word. */
-.bt-color-scale-wrap { width: 100%; container-type: inline-size; }
-@container (min-width: 72rem) { .bt-color-scale { grid-template-columns: repeat(10, minmax(0, 1fr)); } }
-@container (max-width: 36rem) { .bt-color-scale { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-/* Fallback for plain-HTML scales without the wrapper */
-@media (max-width: 40rem) { .bt-color-scale { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* Columns follow the space the scale gets, with no query and no wrapper
+   needed: each step wants ~7rem for "RGB 224 / 82 / 6" without breaking every
+   word, so ten steps fit from ~70rem, five from ~35rem, and so on down to
+   one column. (The wrapper stays for markup that already uses it.) */
+.bt-color-scale-wrap { width: 100%; }
