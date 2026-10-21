@@ -691,6 +691,14 @@ defmodule Bds.Catalog.Snippets.Bulk do
       """,
       "progress:1" => ~S"""
       <.bt_progress_circle value={72} label="72%" />
+      """,
+      "progress:2" => ~S"""
+      <.bt_stacked_bar label="Assignments by stage">
+        <:segment label="Complete" value={18} tone="success" />
+        <:segment label="Awaiting acknowledgement" value={7} tone="info" />
+        <:segment label="Draft" value={5} tone="warning" />
+        <:segment label="Not started" value={9} tone="error" patch="?stage=none" />
+      </.bt_stacked_bar>
       """
     }
   end

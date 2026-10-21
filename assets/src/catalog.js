@@ -1814,6 +1814,24 @@ initBtInteractions();</code></pre>
         title: "Circular progress",
         html: String.raw`<div class="bt-progress-circle" style="--value: 72%" data-label="72%"></div>`,
       },
+      {
+        title: "Stacked bar",
+        block: true,
+        html: String.raw`<div class="bt-stacked-bar" role="group" aria-label="Assignments by stage">
+  <div class="bt-stacked-bar__track">
+    <span class="bt-stacked-bar__segment bt-stacked-bar__segment--success" style="flex-grow: 18"></span>
+    <span class="bt-stacked-bar__segment bt-stacked-bar__segment--info" style="flex-grow: 7"></span>
+    <span class="bt-stacked-bar__segment bt-stacked-bar__segment--warning" style="flex-grow: 5"></span>
+    <span class="bt-stacked-bar__segment bt-stacked-bar__segment--error" style="flex-grow: 9"></span>
+  </div>
+  <ul class="bt-stacked-bar__legend">
+    <li><span class="bt-stacked-bar__entry"><span class="bt-stacked-bar__swatch bt-stacked-bar__segment--success"></span><span class="bt-stacked-bar__count">18</span><span class="bt-stacked-bar__name">Complete</span></span></li>
+    <li><span class="bt-stacked-bar__entry"><span class="bt-stacked-bar__swatch bt-stacked-bar__segment--info"></span><span class="bt-stacked-bar__count">7</span><span class="bt-stacked-bar__name">Awaiting acknowledgement</span></span></li>
+    <li><span class="bt-stacked-bar__entry"><span class="bt-stacked-bar__swatch bt-stacked-bar__segment--warning"></span><span class="bt-stacked-bar__count">5</span><span class="bt-stacked-bar__name">Draft</span></span></li>
+    <li><span class="bt-stacked-bar__entry"><span class="bt-stacked-bar__swatch bt-stacked-bar__segment--error"></span><span class="bt-stacked-bar__count">9</span><span class="bt-stacked-bar__name">Not started</span></span></li>
+  </ul>
+</div>`,
+      },
     ],
   },
   {

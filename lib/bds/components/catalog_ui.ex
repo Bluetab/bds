@@ -819,20 +819,125 @@ defmodule Bds.Components.CatalogUi do
   slot :item, required: true do
     attr :label, :string, required: true
     attr :pressed, :boolean
+    attr :patch, :string, doc: "Renders the item as a LiveView patch link."
+    attr :navigate, :string, doc: "Renders the item as a LiveView navigate link."
+    attr :href, :string, doc: "Renders the item as a plain link."
   end
 
+  @doc """
+  Segmented control. Items are buttons by default; give an item `patch`,
+  `navigate` or `href` to make it a link (the current one gets `aria-current`),
+  so the selection can live in the URL.
+  """
   def bt_segmented(assigns) do
     assigns = assign_new(assigns, :label, fn -> gettext("Segmented control") end)
 
     ~H"""
     <div class={["bt-segmented", @class]} role="group" aria-label={@label} {@rest}>
-      <button
-        :for={item <- @item}
-        type="button"
-        aria-pressed={to_string(Map.get(item, :pressed, false))}
-      >
-        {item.label}
-      </button>
+      <%= for item <- @item do %>
+        <%= if segmented_link?(item) do %>
+          <.link
+            patch={Map.get(item, :patch)}
+            navigate={Map.get(item, :navigate)}
+            href={Map.get(item, :href)}
+            aria-current={if(Map.get(item, :pressed, false), do: "true")}
+          >
+            {item.label}
+          </.link>
+        <% else %>
+          <button type="button" aria-pressed={to_string(Map.get(item, :pressed, false))}>
+            {item.label}
+          </button>
+        <% end %>
+      <% end %>
+    </div>
+    """
+  end
+
+  defp segmented_link?(item),
+    do: Enum.any?([:patch, :navigate, :href], &(Map.get(item, &1) != nil))
+
+  @stacked_bar_tones ~w(neutral primary info success warning error)
+
+  attr :label, :string, required: true, doc: "Accessible name of the whole bar."
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  slot :segment, required: true do
+    attr :label, :string, required: true
+    attr :value, :integer, required: true
+    attr :tone, :string, doc: "One of neutral, primary, info, success, warning, error."
+    attr :patch, :string, doc: "Makes the segment and its legend entry a patch link."
+    attr :navigate, :string
+    attr :href, :string
+  end
+
+  @doc """
+  Part-to-whole bar: one segment per category, sized by `value`, with a legend
+  that repeats every label and count (zero-value segments stay in the legend).
+  Segments with `patch`/`navigate`/`href` are links.
+  """
+  def bt_stacked_bar(assigns) do
+    segments =
+      Enum.map(assigns.segment, fn seg ->
+        tone = Map.get(seg, :tone, "neutral")
+        tone = if tone in @stacked_bar_tones, do: tone, else: "neutral"
+        Map.merge(seg, %{tone: tone, value: max(seg.value, 0)})
+      end)
+
+    assigns =
+      assigns
+      |> assign(:segments, segments)
+      |> assign(:total, Enum.sum(Enum.map(segments, & &1.value)))
+
+    ~H"""
+    <div class={["bt-stacked-bar", @class]} role="group" aria-label={@label} {@rest}>
+      <div class={["bt-stacked-bar__track", @total == 0 && "bt-stacked-bar__track--empty"]}>
+        <%= for seg <- @segments, seg.value > 0 do %>
+          <%= if segmented_link?(seg) do %>
+            <.link
+              class={["bt-stacked-bar__segment", "bt-stacked-bar__segment--#{seg.tone}"]}
+              style={"flex-grow: #{seg.value}"}
+              title={"#{seg.label}: #{seg.value}"}
+              aria-label={"#{seg.label}: #{seg.value}"}
+              patch={Map.get(seg, :patch)}
+              navigate={Map.get(seg, :navigate)}
+              href={Map.get(seg, :href)}
+            >
+            </.link>
+          <% else %>
+            <span
+              class={["bt-stacked-bar__segment", "bt-stacked-bar__segment--#{seg.tone}"]}
+              style={"flex-grow: #{seg.value}"}
+              title={"#{seg.label}: #{seg.value}"}
+              aria-hidden="true"
+            >
+            </span>
+          <% end %>
+        <% end %>
+      </div>
+      <ul class="bt-stacked-bar__legend">
+        <li :for={seg <- @segments} class={seg.value == 0 && "bt-stacked-bar__item--zero"}>
+          <%= if segmented_link?(seg) do %>
+            <.link
+              class="bt-stacked-bar__entry"
+              patch={Map.get(seg, :patch)}
+              navigate={Map.get(seg, :navigate)}
+              href={Map.get(seg, :href)}
+            >
+              <span class={["bt-stacked-bar__swatch", "bt-stacked-bar__segment--#{seg.tone}"]}></span>
+              <span class="bt-stacked-bar__count">{seg.value}</span>
+              <span class="bt-stacked-bar__name">{seg.label}</span>
+            </.link>
+          <% else %>
+            <span class="bt-stacked-bar__entry">
+              <span class={["bt-stacked-bar__swatch", "bt-stacked-bar__segment--#{seg.tone}"]}></span>
+              <span class="bt-stacked-bar__count">{seg.value}</span>
+              <span class="bt-stacked-bar__name">{seg.label}</span>
+            </span>
+          <% end %>
+        </li>
+      </ul>
     </div>
     """
   end

@@ -897,6 +897,17 @@ defmodule Bds.Catalog.Preview.Bulk do
     """
   end
 
+  def render("progress", 2, assigns) do
+    ~H"""
+    <.bt_stacked_bar label="Assignments by stage">
+      <:segment label="Complete" value={18} tone="success" />
+      <:segment label="Awaiting acknowledgement" value={7} tone="info" />
+      <:segment label="Draft" value={5} tone="warning" />
+      <:segment label="Not started" value={9} tone="error" />
+    </.bt_stacked_bar>
+    """
+  end
+
   def render("radio", 0, assigns) do
     ~H"""
     <.bt_radio name="view" label="Weekly" checked />

@@ -158,6 +158,44 @@ defmodule Bds.ComponentsA11yTest do
       assert html =~ "--value: 75%"
     end
 
+    test "bt_stacked_bar names the group, sizes segments and keeps zero entries in the legend" do
+      assigns = %{}
+
+      html =
+        rendered_to_string(~H"""
+        <.bt_stacked_bar label="By stage">
+          <:segment label="Done" value={3} tone="success" patch="?stage=done" />
+          <:segment label="Empty" value={0} tone="error" />
+          <:segment label="Bad tone" value={1} tone="nope" patch={nil} />
+        </.bt_stacked_bar>
+        """)
+
+      assert html =~ ~s(role="group")
+      assert html =~ ~s(aria-label="By stage")
+      assert html =~ "flex-grow: 3"
+      assert html =~ ~s(href="?stage=done")
+      assert html =~ "bt-stacked-bar__segment--neutral"
+      refute html =~ "flex-grow: 0"
+      assert html =~ "Empty"
+    end
+
+    test "bt_segmented renders link items with aria-current" do
+      assigns = %{}
+
+      html =
+        rendered_to_string(~H"""
+        <.bt_segmented label="View">
+          <:item label="A" href="/a" pressed />
+          <:item label="B" href="/b" />
+          <:item label="C" />
+        </.bt_segmented>
+        """)
+
+      assert html =~ ~s(aria-current="true")
+      assert html =~ ~s(href="/b")
+      assert html =~ ~s(aria-pressed="false")
+    end
+
     test "bt_modal is named and traps focus" do
       assigns = %{}
 
