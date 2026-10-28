@@ -1413,6 +1413,25 @@ defmodule Bds.Catalog.Preview.Bulk do
     """
   end
 
+  def render("performance-team-card", 1, assigns) do
+    ~H"""
+    <.bt_performance_team_card
+      id="catalog-performance-team-many"
+      name="Sam Okonkwo"
+      category="Consultant"
+      briefing_date_label="2026-04-01"
+      briefing_status="published"
+      briefing_count={3}
+      briefing_count_label="3 briefings"
+      briefing_navigate="#"
+    >
+      <:actions>
+        <.bt_button size="sm" variant="secondary">Create another briefing</.bt_button>
+      </:actions>
+    </.bt_performance_team_card>
+    """
+  end
+
   def render("typography", 0, assigns) do
     ~H"""
     <div class="bt-stack">

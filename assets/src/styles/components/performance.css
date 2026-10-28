@@ -1093,6 +1093,24 @@ a.bt-performance-team-card__status-row:focus-visible {
   min-width: 0;
 }
 
+/* Count of briefings in scope, shown next to the "Briefing" label when a person has more than one. */
+.bt-performance-team-card__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  padding-inline: 0.3125rem;
+  border-radius: var(--bt-radius-pill);
+  background: var(--bt-color-primary-soft);
+  color: var(--bt-color-primary);
+  font-size: var(--bt-font-size-xs);
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
 .bt-performance-team-card__status-date {
   margin-left: auto;
   font-size: var(--bt-font-size-xs);

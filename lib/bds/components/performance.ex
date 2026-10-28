@@ -519,6 +519,15 @@ defmodule Bds.Components.Performance do
   attr :briefing_date_label, :string, default: nil
   attr :briefing_status, :string, default: nil
   attr :briefing_ack_state, :atom, default: nil
+
+  attr :briefing_count, :integer,
+    default: 1,
+    doc: "Briefings in scope; the row shows a count pill when more than one."
+
+  attr :briefing_count_label, :string,
+    default: nil,
+    doc: "Accessible label for the count pill, e.g. \"3 briefings\"."
+
   attr :evaluation_date_label, :string, default: nil
   attr :evaluation_rating, :string, default: nil
   attr :evaluation_status, :string, default: nil
@@ -549,8 +558,12 @@ defmodule Bds.Components.Performance do
     show_evaluation_cta? =
       not has_evaluation? and briefing_allows_evaluation?(assigns.briefing_status)
 
+    show_briefing_count? = is_integer(assigns.briefing_count) and assigns.briefing_count > 1
+
     assigns =
       assigns
+      |> assign(:show_briefing_count?, show_briefing_count?)
+      |> assign(:briefing_count_text, assigns.briefing_count_label || "#{assigns.briefing_count}")
       |> assign_default(:no_hours_message, fn ->
         gettext("No reported hours in this period for this person.")
       end)
@@ -612,9 +625,24 @@ defmodule Bds.Components.Performance do
           <.team_card_nav
             navigate={@briefing_navigate}
             class="bt-performance-team-card__status-row"
-            aria-label={@briefing_navigate && gettext("Open briefing")}
+            aria-label={
+              @briefing_navigate &&
+                if(@show_briefing_count?,
+                  do: "#{gettext("Open briefing")} (#{@briefing_count_text})",
+                  else: gettext("Open briefing")
+                )
+            }
           >
-            <span class="bt-performance-team-card__status-label">{gettext("Briefing")}</span>
+            <span class="bt-performance-team-card__status-leading">
+              <span class="bt-performance-team-card__status-label">{gettext("Briefing")}</span>
+              <span
+                :if={@show_briefing_count?}
+                class="bt-performance-team-card__count"
+                title={@briefing_count_text}
+              >
+                {@briefing_count}
+              </span>
+            </span>
             <span class="bt-performance-team-card__status-date">{@briefing_date_label}</span>
             <span class={["bt-performance-status-mark", @briefing_mark_class]}>{@briefing_mark}</span>
           </.team_card_nav>
@@ -649,6 +677,9 @@ defmodule Bds.Components.Performance do
               do: gettext("No evaluation yet - Create"),
               else: gettext("No evaluation yet")}
           </.team_card_nav>
+          <div :if={@actions != []} class="bt-performance-actions">
+            {render_slot(@actions)}
+          </div>
         </div>
         <div :if={!@briefing_date_label} class="bt-performance-team-card__pending">
           <span class="bt-performance-empty bt-performance-empty--inline">

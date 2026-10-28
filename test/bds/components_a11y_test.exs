@@ -70,6 +70,99 @@ defmodule Bds.ComponentsA11yTest do
       assert custom =~ "Delegated to"
       refute custom =~ "Delegated by"
     end
+
+    test "shows a count pill only when there is more than one briefing" do
+      assigns = %{}
+
+      many =
+        rendered_to_string(~H"""
+        <Bds.Components.Performance.bt_performance_team_card
+          name="Ana"
+          briefing_date_label="2026-04-01"
+          briefing_status="published"
+          briefing_navigate="/briefings/1"
+          briefing_count={3}
+          briefing_count_label="3 briefings"
+        />
+        """)
+
+      assert many =~ "bt-performance-team-card__count"
+      assert many =~ ~s(title="3 briefings")
+      assert many =~ ~s|aria-label="Open briefing (3 briefings)"|
+
+      for count <- [1, 0] do
+        assigns = %{count: count}
+
+        single =
+          rendered_to_string(~H"""
+          <Bds.Components.Performance.bt_performance_team_card
+            name="Ana"
+            briefing_date_label="2026-04-01"
+            briefing_status="published"
+            briefing_navigate="/briefings/1"
+            briefing_count={@count}
+          />
+          """)
+
+        refute single =~ "bt-performance-team-card__count"
+        assert single =~ ~s(aria-label="Open briefing")
+      end
+    end
+
+    test "falls back to the bare count when no label is given" do
+      assigns = %{}
+
+      html =
+        rendered_to_string(~H"""
+        <Bds.Components.Performance.bt_performance_team_card
+          name="Ana"
+          briefing_date_label="2026-04-01"
+          briefing_status="published"
+          briefing_count={2}
+        />
+        """)
+
+      assert html =~ ~s(title="2")
+    end
+
+    test "renders the actions slot with and without a briefing" do
+      assigns = %{}
+
+      with_briefing =
+        rendered_to_string(~H"""
+        <Bds.Components.Performance.bt_performance_team_card
+          name="Ana"
+          briefing_date_label="2026-04-01"
+          briefing_status="published"
+        >
+          <:actions><button id="another">Create another</button></:actions>
+        </Bds.Components.Performance.bt_performance_team_card>
+        """)
+
+      assert with_briefing =~ ~s(id="another")
+      refute with_briefing =~ "No briefing yet"
+
+      without_briefing =
+        rendered_to_string(~H"""
+        <Bds.Components.Performance.bt_performance_team_card name="Ana">
+          <:actions><button id="first">Create</button></:actions>
+        </Bds.Components.Performance.bt_performance_team_card>
+        """)
+
+      assert without_briefing =~ ~s(id="first")
+      assert without_briefing =~ "No briefing yet"
+
+      no_actions =
+        rendered_to_string(~H"""
+        <Bds.Components.Performance.bt_performance_team_card
+          name="Ana"
+          briefing_date_label="2026-04-01"
+          briefing_status="published"
+        />
+        """)
+
+      refute no_actions =~ "bt-performance-actions"
+    end
   end
 
   describe "forms" do

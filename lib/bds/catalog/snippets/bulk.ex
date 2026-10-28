@@ -1144,6 +1144,22 @@ defmodule Bds.Catalog.Snippets.Bulk do
         evaluation_rating="a"
         evaluation_status="published"
       />
+      """,
+      "performance-team-card:1" => ~S"""
+      <.bt_performance_team_card
+        id="catalog-performance-team-many"
+        name="Sam Okonkwo"
+        category="Consultant"
+        briefing_date_label="2026-04-01"
+        briefing_status="published"
+        briefing_count={3}
+        briefing_count_label="3 briefings"
+        briefing_navigate="#"
+      >
+        <:actions>
+          <.bt_button size="sm" variant="secondary">Create another briefing</.bt_button>
+        </:actions>
+      </.bt_performance_team_card>
       """
     }
   end

@@ -1616,6 +1616,36 @@ initBtInteractions();</code></pre>
   </div>
 </article>`,
       },
+      {
+        title: "Team member with several briefings",
+        block: true,
+        html: String.raw`<article class="bt-performance-card bt-performance-team-card">
+  <div class="bt-performance-team-card__main">
+    <img src="https://www.gravatar.com/avatar/?d=mp" alt="Sam Okonkwo" class="bt-performance-evaluator__avatar bt-performance-evaluator__avatar--sm" />
+    <div class="bt-performance-team-card__identity">
+      <div class="bt-performance-team-card__name-row">
+        <span class="bt-performance-team-card__name">Sam Okonkwo</span>
+        <span class="bt-performance-chip bt-performance-chip--category">Consultant</span>
+      </div>
+    </div>
+  </div>
+  <div class="bt-performance-team-card__aside">
+    <div class="bt-performance-team-card__status-panel">
+      <a href="#" class="bt-performance-team-card__status-row" aria-label="Open briefing (3 briefings)">
+        <span class="bt-performance-team-card__status-leading">
+          <span class="bt-performance-team-card__status-label">Briefing</span>
+          <span class="bt-performance-team-card__count" title="3 briefings">3</span>
+        </span>
+        <span class="bt-performance-team-card__status-date">2026-04-01</span>
+        <span class="bt-performance-status-mark">&#9679;</span>
+      </a>
+      <div class="bt-performance-actions">
+        <button class="bt-button bt-button--secondary">Create another briefing</button>
+      </div>
+    </div>
+  </div>
+</article>`,
+      },
     ],
   },
   {
