@@ -3,14 +3,18 @@
 .bt-overlay {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: var(--bt-z-overlay);
   display: none;
-  place-items: center;
   padding: var(--bt-space-4);
   margin: 0;
   border: none;
   max-width: none;
   max-height: none;
+  /* safe: a surface taller than the viewport starts at the top and scrolls
+     instead of overflowing above it (WCAG 1.4.10) */
+  place-items: safe center;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background: var(--bt-glass-overlay-bg);
   backdrop-filter: var(--bt-glass-overlay-backdrop);
   -webkit-backdrop-filter: var(--bt-glass-overlay-backdrop);
@@ -204,14 +208,14 @@ html[data-theme="dark"] .bt-overlay__surface::before {
 .bt-modal {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: var(--bt-z-overlay);
   display: flex;
   align-items: flex-end;
   justify-content: center;
   padding: var(--bt-space-4);
 }
 
-@media (min-width: 640px) {
+@media (min-width: 40rem) {
   .bt-modal {
     align-items: center;
   }
@@ -276,6 +280,7 @@ html[data-theme="dark"] .bt-overlay__surface::before {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: var(--bt-space-5);
 }
 

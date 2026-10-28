@@ -98,7 +98,7 @@
 }
 
 .bt-project-picker__clear .bt-symbol {
-  font-size: 1rem;
+  font-size: var(--bt-font-size-md);
 }
 
 .bt-project-picker__clear:hover {

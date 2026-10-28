@@ -2,7 +2,8 @@
 .bt-card--elevated { box-shadow: var(--bt-shadow-md); border-color: transparent; }
 .bt-card--filled { background: var(--bt-color-surface-soft); }
 .bt-card--primary { background: var(--bt-color-primary); color: var(--bt-color-on-primary); }
-.bt-card--primary p, .bt-card--primary h4 { color: inherit; }
+/* typography.css colors every heading; on the primary fill they all inherit on-primary */
+.bt-card--primary :is(h1, h2, h3, h4, h5, h6, p) { color: inherit; }
 .bt-card__media { min-height: 9rem; border-radius: var(--bt-radius-md); background: linear-gradient(135deg, var(--bt-color-primary), var(--bt-color-secondary)); }
 .bt-card__actions { display: flex; justify-content: flex-end; gap: var(--bt-space-2); }
 .bt-container { width: 100%; padding: var(--bt-space-4); background: var(--bt-color-surface); border: 1px dashed var(--bt-color-border-strong); border-radius: var(--bt-radius-lg); }

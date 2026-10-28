@@ -492,9 +492,9 @@ msgid "Above expected"
 msgstr "Above expected"
 
 #: lib/bds/components/performance.ex:381
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Acknowledged %{date}"
-msgstr "Acknowledged"
+msgstr ""
 
 #: lib/bds/components/calendar.ex:879
 #, elixir-autogen, elixir-format
@@ -586,14 +586,14 @@ msgid "People"
 msgstr "People"
 
 #: lib/bds/components/calendar.ex:376
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Open"
-msgstr "Open day"
+msgstr ""
 
 #: lib/bds/components/calendar.ex:98
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Template help"
-msgstr "Templates"
+msgstr ""
 
 #: lib/bds/components/expense.ex:175
 #, elixir-autogen, elixir-format
@@ -608,9 +608,9 @@ msgid "Breadcrumb"
 msgstr "Breadcrumb"
 
 #: lib/bds/components/catalog_ui.ex:1296
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Close dialog"
-msgstr "Close"
+msgstr ""
 
 #: lib/bds/components/expense.ex:43
 #, elixir-autogen, elixir-format
@@ -689,9 +689,9 @@ msgid "Inactive"
 msgstr "Inactive"
 
 #: lib/bds/components/user_picker.ex:91
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "No users available."
-msgstr "No projects available."
+msgstr ""
 
 #: lib/bds/components/user_picker.ex:90
 #, elixir-autogen, elixir-format
@@ -699,9 +699,9 @@ msgid "No users match your search."
 msgstr "No users match your search."
 
 #: lib/bds/components/user_picker.ex:87
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Search users…"
-msgstr "Search projects…"
+msgstr ""
 
 #: lib/bds/components/user_picker.ex:88
 #, elixir-autogen, elixir-format
@@ -785,9 +785,9 @@ msgid "evaluated"
 msgstr ""
 
 #: lib/bds/components/performance.ex:821
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "expected"
-msgstr "Selected"
+msgstr ""
 
 #: lib/bds/components/performance.ex:797
 #, elixir-autogen, elixir-format
@@ -1070,3 +1070,47 @@ msgstr ""
 
 msgid "Extra small"
 msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Billable"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Non-billable"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Absence"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Master"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Clear selection"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Ended %{date}"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Remove %{name}"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "+%{count} more"
+msgid_plural "+%{count} more"
+msgstr[0] ""
+msgstr[1] ""
+
+#, elixir-autogen, elixir-format
+msgid "Set %{count} hour"
+msgid_plural "Set %{count} hours"
+msgstr[0] ""
+msgstr[1] ""

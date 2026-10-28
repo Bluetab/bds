@@ -60,12 +60,49 @@ const closeMenus = (root = document, except) => {
   });
 };
 
+// Auto-hides after 3.2s, but waits while the pointer or focus is on it, so
+// its action stays reachable (WCAG 2.2.1); same rule as BtFlash
+const SNACKBAR_MS = 3200;
+const openSnackbar = (snackbar) => {
+  clearTimeout(snackbar._btHide);
+  snackbar.dataset.open = 'true';
+  const busy = () => snackbar.matches(':hover') || snackbar.contains(document.activeElement);
+  const schedule = () => {
+    clearTimeout(snackbar._btHide);
+    snackbar._btHide = setTimeout(() => {
+      if (busy()) return;
+      snackbar.dataset.open = 'false';
+    }, SNACKBAR_MS);
+  };
+  if (!snackbar._btPauseBound) {
+    snackbar._btPauseBound = true;
+    snackbar.addEventListener('mouseenter', () => clearTimeout(snackbar._btHide));
+    snackbar.addEventListener('focusin', () => clearTimeout(snackbar._btHide));
+    snackbar.addEventListener('mouseleave', () => { if (snackbar.dataset.open === 'true') schedule(); });
+    snackbar.addEventListener('focusout', () => { if (snackbar.dataset.open === 'true') schedule(); });
+  }
+  schedule();
+};
+
 // Closes a dialog or overlay and returns focus to the control that opened it
 const closeModalLike = (el) => {
   if (!el) return;
   if (el.classList.contains('bt-overlay')) el.removeAttribute('open');
   else closeDialog(el);
   afterDialogClose(el);
+};
+
+// Storage can throw (private mode, blocked site data): the theme still applies
+const readStoredTheme = (storageKey) => {
+  try { return localStorage.getItem(storageKey); } catch { return null; }
+};
+
+// Keeps <meta name="theme-color"> (mobile browser chrome) on the page background
+const syncThemeColor = (root = document) => {
+  const meta = root.querySelector('meta[name="theme-color"]:not([media])');
+  if (!meta) return;
+  const color = getComputedStyle(root.documentElement).getPropertyValue('--bt-color-background').trim();
+  if (color) meta.setAttribute('content', color);
 };
 
 const setTheme = (theme, options = {}) => {
@@ -77,8 +114,11 @@ const setTheme = (theme, options = {}) => {
 
   root.documentElement.dataset.theme = theme;
   syncThemeLabels(root, theme);
+  syncThemeColor(root);
 
-  if (persist) localStorage.setItem(storageKey, theme);
+  if (persist) {
+    try { localStorage.setItem(storageKey, theme); } catch { /* not persisted */ }
+  }
 };
 
 const toggleTheme = (options = {}) => {
@@ -95,7 +135,7 @@ const applyStoredTheme = (options = {}) => {
     fallbackTheme = 'light'
   } = options;
 
-  const storedTheme = localStorage.getItem(storageKey) || fallbackTheme;
+  const storedTheme = readStoredTheme(storageKey) || fallbackTheme;
   setTheme(storedTheme, { ...options, root, persist: false });
   return storedTheme;
 };
@@ -197,12 +237,7 @@ function initBtInteractions(options = {}) {
     const snackbarOpen = event.target.closest('[data-snackbar-open]');
     if (snackbarOpen) {
       const snackbar = findLocalTarget(snackbarOpen, snackbarOpen.dataset.snackbarOpen, root);
-      if (snackbar) {
-        snackbar.dataset.open = 'true';
-        setTimeout(() => {
-          snackbar.dataset.open = 'false';
-        }, 3200);
-      }
+      if (snackbar) openSnackbar(snackbar);
       return;
     }
 
@@ -215,7 +250,8 @@ function initBtInteractions(options = {}) {
 
     const sidebarToggle = event.target.closest('[data-toggle-sidebar]');
     if (sidebarToggle) {
-      root.body.classList.toggle('bt-sidebar-open');
+      const open = root.body.classList.toggle('bt-sidebar-open');
+      toArray('[data-toggle-sidebar]', root).forEach((toggle) => toggle.setAttribute('aria-expanded', String(open)));
       return;
     }
 

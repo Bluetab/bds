@@ -46,7 +46,7 @@
   font-size: var(--bt-font-size-sm);
   font-weight: 600;
 }
-.bt-field__error .bt-icon { flex-shrink: 0; color: var(--bt-color-error); font-size: 1.125rem; }
+.bt-field__error .bt-icon { flex-shrink: 0; color: var(--bt-color-error-text); font-size: var(--bt-font-size-lg); }
 
 .bt-fieldset { display: grid; gap: var(--bt-space-2); min-width: 0; margin: 0; padding: 0; border: 0; }
 .bt-fieldset__legend { margin-bottom: var(--bt-space-1); padding: 0; color: var(--bt-color-text-muted); font-size: var(--bt-font-size-sm); font-weight: 700; }
@@ -107,7 +107,7 @@ ul.bt-list, ol.bt-list { margin: 0; padding: 0; list-style: none; }
 /* Topbar: brand and actions never touch; on phones the product label gives
    way to the logo so the actions (links, user menu) keep their space. */
 .bt-nav__inner, .bt-topbar__inner { column-gap: var(--bt-space-3); }
-@media (max-width: 560px) {
+@media (max-width: 40rem) {
   .bt-navbar-logo-label { display: none; }
   .bt-navbar-logo-img { max-width: 7.5rem; }
   .bt-nav__actions .bt-nav-link, .bt-topbar__actions .bt-nav-link { padding-inline: var(--bt-space-2); }
@@ -127,6 +127,15 @@ ul.bt-list, ol.bt-list { margin: 0; padding: 0; list-style: none; }
 /* Menu items reachable with arrows */
 .bt-menu [role="menuitem"]:focus-visible { outline-offset: -3px; }
 
+/* Full-bleed controls inside an overflow: hidden parent: the 3px ring drawn
+   outside (offset 3px) is clipped, so draw it inside instead */
+.bt-expansion__button:focus-visible,
+.bt-segmented button:focus-visible,
+.bt-expense-filter-bar__btn:focus-visible,
+.bt-expense-project-list__item:focus-visible,
+.bt-expense-gasto-card__body--link:focus-visible,
+.bt-performance-objective-row__summary:focus-visible { outline-offset: -3px; }
+
 /* Tooltip: also shown on keyboard focus; Escape hides it (data-tooltip-hidden) */
 .bt-tooltip[data-tooltip-hidden="true"]::after { opacity: 0 !important; }
 
@@ -141,7 +150,14 @@ ul.bt-list, ol.bt-list { margin: 0; padding: 0; list-style: none; }
   .bt-tab[aria-selected="true"],
   .bt-nav-link[aria-current="page"],
   .bt-chip--selected,
-  [aria-pressed="true"] { outline: 2px solid CanvasText; outline-offset: -2px; }
+  .bt-combobox__option--selected,
+  .bt-calendar-day--selected,
+  .bt-expense-project-list__item.is-selected,
+  .bt-performance-toolbar-pill--active,
+  .bt-project-picker__config-toggle--active,
+  .bt-user-picker__config-toggle--active,
+  [aria-pressed="true"],
+  [aria-selected="true"][role="option"] { outline: 2px solid CanvasText; outline-offset: -2px; }
   .bt-switch__track { border: 1px solid CanvasText; }
   .bt-progress { border: 1px solid CanvasText; }
 }

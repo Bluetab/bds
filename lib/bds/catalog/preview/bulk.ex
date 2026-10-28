@@ -833,7 +833,7 @@ defmodule Bds.Catalog.Preview.Bulk do
 
   def render("navigation", 0, assigns) do
     ~H"""
-    <nav class="bt-sidebar__nav" style="width: 16rem;">
+    <nav class="bt-sidebar__nav" style="width: 16rem; max-width: 100%;">
       <.bt_nav_link icon="home" current>Home</.bt_nav_link>
       <.bt_nav_link icon="widgets">Components</.bt_nav_link>
       <.bt_nav_link icon="settings">Settings</.bt_nav_link>

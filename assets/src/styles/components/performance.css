@@ -1,7 +1,36 @@
 /* Performance cycle workspace — briefings, evaluations, reported hours, team review */
 
+/* Single-column grids here have an implicit `auto` track, and an `auto` track
+   never shrinks below the widest child's minimum content: one long unbroken
+   line made the whole card overflow by ~20px at 320px. `minmax(0, 1fr)` lets
+   the track follow the card and the children wrap or truncate. It changes
+   nothing when the content fits. (Grids that already declare their columns
+   - the team card, the competency row - are not listed.) */
+.bt-performance-card__body,
+.bt-performance-competencies,
+.bt-performance-competency-list,
+.bt-performance-competency-row,
+.bt-performance-objectives-block,
+.bt-performance-objective-list,
+.bt-performance-evaluation,
+.bt-performance-evaluation__meta,
+.bt-performance-evaluation__details,
+.bt-performance-team-card__identity,
+.bt-performance-team-card__briefing,
+.bt-performance-team-card__status-panel,
+.bt-performance-team-card__pending {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* No `container-type` here: a size container ignores its content when it
+   computes its own width, and these cards sit in flex rows that size them from
+   their content (the draft card collapsed to a 2px line). Layout inside the
+   card uses intrinsic rules (auto-fit, flex-wrap) instead of queries. */
 .bt-performance-card {
   display: grid;
+  /* An implicit `auto` track will not shrink below its widest child's minimum
+     content, so the header/body overflowed the card by ~20px at 320px */
+  grid-template-columns: minmax(0, 1fr);
   gap: 0;
   padding: 0;
   overflow: hidden;
@@ -34,11 +63,11 @@
 
 .bt-performance-kicker {
   margin: 0;
-  font-size: 0.625rem;
+  font-size: var(--bt-font-size-xs);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--bt-color-warning);
+  color: var(--bt-color-warning-text);
 }
 
 .bt-performance-section-title {
@@ -74,7 +103,7 @@
   align-items: center;
   padding: 0.125rem 0.5rem;
   border-radius: var(--bt-radius-pill);
-  font-size: 0.7rem;
+  font-size: var(--bt-font-size-xs);
   font-weight: 600;
   border: 1px solid var(--bt-color-border);
   background: var(--bt-color-surface-soft);
@@ -87,7 +116,7 @@
   gap: 0.125rem;
   padding: 0.125rem 0.375rem;
   border-radius: var(--bt-radius-pill);
-  font-size: 0.6875rem;
+  font-size: var(--bt-font-size-xs);
   font-weight: 600;
   line-height: 1;
   white-space: nowrap;
@@ -114,13 +143,13 @@
 .bt-performance-ack--done {
   border-color: color-mix(in oklab, var(--bt-color-success) 40%, transparent);
   background: var(--bt-color-success-soft);
-  color: var(--bt-color-success);
+  color: var(--bt-color-success-text);
 }
 
 .bt-performance-ack--disagreed {
   border-color: color-mix(in oklab, var(--bt-color-error) 40%, transparent);
   background: var(--bt-color-error-soft);
-  color: var(--bt-color-error);
+  color: var(--bt-color-error-text);
 }
 
 .bt-performance-ack-comment {
@@ -136,7 +165,7 @@
 .bt-performance-ack-comment__label {
   display: block;
   font-weight: 600;
-  color: var(--bt-color-error);
+  color: var(--bt-color-error-text);
 }
 
 .bt-performance-ack-comment__body {
@@ -319,7 +348,20 @@
   gap: var(--bt-space-2);
 }
 
-@media (min-width: 40rem) {
+/* Narrow: name, bar and level are three stacked rows (the bar needs the full
+   width to be readable; auto-fit put it beside the name and collapsed it to 0) */
+.bt-performance-competency-row__main {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.bt-performance-competency-bar { width: 100%; }
+
+/* The competencies block is the container, not the card: the card cannot be
+   one (it is sized by its content in flex rows and collapsed to 2px), but the
+   block is a full-width grid item. Three columns once it has the room. */
+.bt-performance-competencies { container: bt-competencies / inline-size; }
+
+@container bt-competencies (width >= 32rem) {
   .bt-performance-competency-row__main {
     grid-template-columns: minmax(0, 9.75rem) minmax(0, 1fr) auto;
     gap: var(--bt-space-3);
@@ -330,11 +372,17 @@
   margin-top: 0;
 }
 
+/* A competency name is the information of the row: it wraps to two lines
+   before it is cut, and only then does it get an ellipsis */
 .bt-performance-competency-row__name {
   margin: 0;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow-wrap: break-word;
+  hyphens: auto;
   font-size: var(--bt-font-size-sm);
   font-weight: 600;
   color: var(--bt-color-text);
@@ -351,7 +399,7 @@
   height: 0.5rem;
   flex: 1;
   min-width: 0;
-  border-radius: 999px;
+  border-radius: var(--bt-radius-pill);
   background: color-mix(in oklab, var(--bt-color-border) 55%, transparent);
 }
 
@@ -406,7 +454,7 @@
 .bt-performance-competency-vs {
   border-radius: var(--bt-radius-pill);
   padding: 0.125rem 0.375rem;
-  font-size: 0.6rem;
+  font-size: var(--bt-font-size-xs);
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -419,12 +467,12 @@
 
 .bt-performance-competency-vs--below {
   background: color-mix(in oklab, var(--bt-color-warning) 18%, transparent);
-  color: var(--bt-color-warning);
+  color: var(--bt-color-warning-text);
 }
 
 .bt-performance-competency-vs--above {
   background: color-mix(in oklab, var(--bt-color-success) 16%, transparent);
-  color: var(--bt-color-success);
+  color: var(--bt-color-success-text);
 }
 
 .bt-performance-competencies__legend {
@@ -432,7 +480,7 @@
   align-items: center;
   gap: var(--bt-space-2);
   margin: 0;
-  font-size: 0.65rem;
+  font-size: var(--bt-font-size-xs);
   color: var(--bt-color-text-muted);
 }
 
@@ -488,9 +536,11 @@
   gap: var(--bt-space-2);
 }
 
+/* The leading group keeps room for a readable title before the trailing
+   badges wrap under it (otherwise the title shrank to a 4px sliver) */
 .bt-performance-objective-row__leading {
-  flex: 1;
-  min-width: 0;
+  flex: 1 1 10rem;
+  min-width: min(10rem, 100%);
 }
 
 .bt-performance-objective-row__trailing {
@@ -498,14 +548,14 @@
 }
 
 .bt-performance-objective-row__index {
-  font-size: 0.65rem;
+  font-size: var(--bt-font-size-xs);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--bt-color-text-subtle);
 }
 
 .bt-performance-objective-row__chevron {
-  font-size: 1rem;
+  font-size: var(--bt-font-size-md);
   line-height: 1;
   color: var(--bt-color-text-subtle);
   transition: transform var(--bt-duration-fast) var(--bt-ease);
@@ -518,7 +568,7 @@
 .bt-performance-objective-row__weight {
   padding: 0.0625rem 0.375rem;
   border-radius: var(--bt-radius-pill);
-  font-size: 0.65rem;
+  font-size: var(--bt-font-size-xs);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
   color: var(--bt-color-text-muted);
@@ -531,7 +581,7 @@
 
 .bt-performance-objective-row__title {
   margin: 0;
-  flex: 1;
+  flex: 1 1 6rem;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -575,25 +625,25 @@
   min-width: 0;
   padding: 0.125rem 0.5rem;
   border-radius: var(--bt-radius-pill);
-  font-size: 0.65rem;
+  font-size: var(--bt-font-size-xs);
   font-weight: 600;
   line-height: 1.2;
   box-shadow: none;
 }
 
 .bt-performance-completion--total {
-  background: var(--bt-color-success);
-  color: #fff;
+  background: var(--bt-palette-teal-70);
+  color: var(--bt-color-on-success);
 }
 
 .bt-performance-completion--partial {
   background: var(--bt-color-warning);
-  color: var(--bt-color-text);
+  color: var(--bt-color-on-warning);
 }
 
 .bt-performance-completion--no {
   background: var(--bt-color-error);
-  color: #fff;
+  color: var(--bt-color-on-error);
 }
 
 .bt-performance-rating--overall {
@@ -621,11 +671,16 @@
   gap: var(--bt-space-3);
 }
 
+/* margin-inline-start: auto pushes the group to the end when it shares a row
+   with the title (what flex-end did), but when it wraps onto its own row the
+   items start at the left like the rest of the card instead of hugging the
+   right edge */
 .bt-performance-evaluation__header-end {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  margin-inline-start: auto;
   gap: var(--bt-space-3);
 }
 
@@ -702,7 +757,42 @@
 .bt-performance-evaluator__row {
   display: flex;
   align-items: center;
-  gap: var(--bt-space-4);
+  gap: var(--bt-space-3);
+  min-width: 0;
+}
+
+/* The row inside the card is the container (the card itself cannot query its
+   own width), so the avatar and the padding give way when the card is narrow:
+   on a 14rem card the name keeps room for ~8 characters, not 4. The row is
+   `display: flex` full width and sized by its parent, so `inline-size`
+   containment does not collapse it the way it collapsed the briefing card. */
+.bt-performance-evaluator { padding: var(--bt-space-3); }
+.bt-performance-evaluator__row { container: bt-evaluator / inline-size; }
+
+@container bt-evaluator (width >= 16rem) {
+  .bt-performance-evaluator__avatar { width: 4rem; height: 4rem; }
+}
+
+@container bt-evaluator (width < 16rem) {
+  .bt-performance-evaluator__avatar:not(.bt-performance-evaluator__avatar--sm) {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+/* The text column is a flex item: without min-width: 0 it will not shrink
+   below its content and the ellipsis never gets a chance */
+.bt-performance-evaluator__row > div { min-width: 0; flex: 1 1 0; }
+
+/* Truncate from the component's own classes: the Phoenix template adds
+   Tailwind's `truncate`, the plain-HTML catalog markup does not, and the
+   component must look the same in both */
+.bt-performance-evaluator__name,
+.bt-performance-evaluator .bt-performance-meta-sub,
+.bt-performance-evaluator__detail {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .bt-performance-evaluator__avatar {
@@ -784,7 +874,7 @@
 }
 
 .bt-performance-team-toolbar__section-label {
-  font-size: 0.625rem;
+  font-size: var(--bt-font-size-xs);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -801,7 +891,7 @@
 
 .bt-performance-team-toolbar__count {
   margin: 0 0 0 auto;
-  font-size: 0.6875rem;
+  font-size: var(--bt-font-size-xs);
   font-weight: 500;
   color: var(--bt-color-text-subtle);
 }
@@ -822,7 +912,7 @@
   border: 1px solid var(--bt-color-border);
   border-radius: var(--bt-radius-lg, 0.625rem);
   background: var(--bt-color-surface);
-  font-size: 0.6875rem;
+  font-size: var(--bt-font-size-xs);
   font-weight: 500;
   line-height: 1;
   white-space: nowrap;
@@ -845,13 +935,17 @@
 }
 
 .bt-performance-toolbar-pill__arrow {
-  font-size: 1rem;
+  font-size: var(--bt-font-size-md);
   line-height: 1;
 }
 
+/* The card is its own container (.bt-performance-card) and an element cannot
+   query itself, so the stacked/side-by-side switch needs no query at all:
+   main takes the free space and aside keeps its natural width, and the grid
+   wraps aside under main when the card is too narrow for both. */
 .bt-performance-team-card {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
   gap: var(--bt-space-3);
   padding: var(--bt-space-3) var(--bt-space-4);
 }
@@ -864,7 +958,7 @@
 .bt-performance-meta-row--compact .bt-icon {
   width: 1rem;
   height: 1rem;
-  font-size: 1rem;
+  font-size: var(--bt-font-size-md);
 }
 
 .bt-performance-team-card__identity {
@@ -888,7 +982,7 @@
   line-height: 0;
   text-decoration: none;
   color: inherit;
-  border-radius: 999px;
+  border-radius: var(--bt-radius-pill);
   transition: opacity 0.15s ease;
 }
 
@@ -965,7 +1059,7 @@ a.bt-performance-team-card__name:focus-visible {
   border: 1px solid var(--bt-color-border);
   border-radius: var(--bt-radius-md);
   background: color-mix(in oklab, var(--bt-color-surface) 72%, var(--bt-color-surface-soft));
-  font-size: 0.6875rem;
+  font-size: var(--bt-font-size-xs);
   font-weight: 500;
   color: color-mix(in oklab, var(--bt-color-text) 82%, transparent);
   text-decoration: none;
@@ -1001,7 +1095,7 @@ a.bt-performance-team-card__status-row:focus-visible {
 
 .bt-performance-team-card__status-date {
   margin-left: auto;
-  font-size: 0.625rem;
+  font-size: var(--bt-font-size-xs);
   color: var(--bt-color-text-subtle);
 }
 
@@ -1014,20 +1108,20 @@ a.bt-performance-team-card__status-row:focus-visible {
   height: 1.25rem;
   border-radius: var(--bt-radius-xs);
   border: 1px solid transparent;
-  font-size: 0.6875rem;
+  font-size: var(--bt-font-size-xs);
   font-weight: 800;
   line-height: 1;
 }
 
 .bt-performance-status-mark.bt-symbol {
-  font-size: 0.875rem;
+  font-size: var(--bt-font-size-sm);
   font-weight: 400;
 }
 
 .bt-performance-status-mark--published {
   border-color: color-mix(in oklab, var(--bt-color-warning) 70%, transparent);
   background: var(--bt-color-warning);
-  color: var(--bt-color-warning-contrast, #fff);
+  color: var(--bt-color-on-warning);
 }
 
 .bt-performance-status-mark--draft {
@@ -1038,14 +1132,14 @@ a.bt-performance-team-card__status-row:focus-visible {
 
 .bt-performance-status-mark--agreed {
   border-color: color-mix(in oklab, var(--bt-color-success) 70%, transparent);
-  background: var(--bt-color-success);
-  color: var(--bt-color-success-contrast, #fff);
+  background: var(--bt-palette-teal-70);
+  color: var(--bt-color-on-success);
 }
 
 .bt-performance-status-mark--disagreed {
   border-color: color-mix(in oklab, var(--bt-color-error) 70%, transparent);
   background: var(--bt-color-error);
-  color: var(--bt-color-error-contrast, #fff);
+  color: var(--bt-color-on-error);
 }
 
 .bt-performance-rating-mark {
@@ -1058,7 +1152,7 @@ a.bt-performance-team-card__status-row:focus-visible {
   border-radius: var(--bt-radius-xs);
   border: 1px solid var(--bt-color-border);
   background: var(--bt-color-surface);
-  font-size: 0.6875rem;
+  font-size: var(--bt-font-size-xs);
   font-weight: 700;
   line-height: 1;
 }
@@ -1070,7 +1164,7 @@ a.bt-performance-team-card__status-row:focus-visible {
   border-radius: var(--bt-radius-full, 999px);
   border: 1px solid color-mix(in oklab, var(--bt-color-warning) 30%, transparent);
   background: color-mix(in oklab, var(--bt-color-warning) 14%, var(--bt-color-surface));
-  font-size: 0.6875rem;
+  font-size: var(--bt-font-size-xs);
   font-weight: 600;
   color: color-mix(in oklab, var(--bt-color-text) 78%, transparent);
   text-decoration: none;
@@ -1110,25 +1204,11 @@ a.bt-performance-team-card__no-eval:focus-visible {
 
 .bt-status--sm {
   padding: 0.0625rem 0.375rem;
-  font-size: 0.65rem;
+  font-size: var(--bt-font-size-xs);
   font-weight: 600;
   line-height: 1.2;
 }
 
-@media (min-width: 640px) {
-  .bt-performance-team-card {
-    flex-direction: row;
-    align-items: stretch;
-    justify-content: space-between;
-  }
-
-  .bt-performance-team-card__aside {
-    border-top: 0;
-    border-left: 1px solid var(--bt-color-border);
-    padding-top: 0;
-    padding-left: var(--bt-space-4);
-  }
-}
 
 .bt-performance-team-card__main {
   display: flex;
@@ -1153,7 +1233,7 @@ a.bt-performance-team-card__no-eval:focus-visible {
   align-self: flex-start;
   max-width: 11rem;
   text-align: right;
-  font-size: 0.65rem;
+  font-size: var(--bt-font-size-xs);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--bt-color-text-subtle);

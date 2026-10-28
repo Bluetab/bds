@@ -493,7 +493,7 @@ msgid "Above expected"
 msgstr "Por encima de lo esperado"
 
 #: lib/bds/components/performance.ex:356
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Acknowledged %{date}"
 msgstr "Reconocido %{date}"
 
@@ -600,8 +600,8 @@ msgstr "Ayuda de plantillas"
 #, elixir-autogen, elixir-format
 msgid "%{count} expense"
 msgid_plural "%{count} expenses"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%{count} gasto"
+msgstr[1] "%{count} gastos"
 
 #: lib/bds/components/catalog_ui.ex:1150
 #, elixir-autogen, elixir-format
@@ -609,9 +609,9 @@ msgid "Breadcrumb"
 msgstr "Breadcrumb"
 
 #: lib/bds/components/catalog_ui.ex:1296
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Close dialog"
-msgstr "Cerrar"
+msgstr "Cerrar diálogo"
 
 #: lib/bds/components/expense.ex:43
 #, elixir-autogen, elixir-format
@@ -1769,6 +1769,60 @@ msgstr "lg reproduce el diseño (60px); md es el tamaño por defecto para formul
 
 msgid "Extra small"
 msgstr "Extra pequeño"
+
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "Acciones"
+
+#, elixir-autogen, elixir-format
+msgid "Billable"
+msgstr "Facturable"
+
+#, elixir-autogen, elixir-format
+msgid "Non-billable"
+msgstr "No facturable"
+
+#, elixir-autogen, elixir-format
+msgid "Absence"
+msgstr "Ausencia"
+
+#, elixir-autogen, elixir-format
+msgid "Master"
+msgstr "Master"
+
+#, elixir-autogen, elixir-format
+msgid "Not accepted %{date}"
+msgstr "No aceptado %{date}"
+
+#, elixir-autogen, elixir-format
+msgid "Not accepted"
+msgstr "No aceptado"
+
+#, elixir-autogen, elixir-format
+msgid "Clear selection"
+msgstr "Borrar selección"
+
+#, elixir-autogen, elixir-format
+msgid "Ended %{date}"
+msgstr "Finalizado %{date}"
+
+#, elixir-autogen, elixir-format
+msgid "Remove %{name}"
+msgstr "Quitar a %{name}"
+
+#, elixir-autogen, elixir-format
+msgid "+%{count} more"
+msgid_plural "+%{count} more"
+msgstr[0] "+%{count} más"
+msgstr[1] "+%{count} más"
+
+#, elixir-autogen, elixir-format
+msgid "Set %{count} hour"
+msgid_plural "Set %{count} hours"
+msgstr[0] "Poner %{count} hora"
+msgstr[1] "Poner %{count} horas"
+
+#, elixir-autogen, elixir-format
 msgid "Buttons trigger actions. Text is Titillium 16px semibold with 0.4px letter-spacing on a pill shape; an icon is optional and always goes with a visible label. Hover and keyboard focus share the elevated state."
 msgstr "Buttons trigger actions. Text is Titillium 16px semibold with 0.4px letter-spacing on a pill shape; an icon is optional and always goes with a visible label. Hover and keyboard focus share the elevated state."
 

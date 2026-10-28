@@ -103,6 +103,8 @@ export const CalendarDaySelection = {
     this.el.addEventListener("pointerover", this.onPointerOver)
     this.el.addEventListener("click", this.onClickCapture, true)
     window.addEventListener("pointerup", this.onPointerUp)
+    // A touch pan cancels the pointer: end the drag as if it was released
+    window.addEventListener("pointercancel", this.onPointerUp)
   },
 
   destroyed() {
@@ -111,6 +113,7 @@ export const CalendarDaySelection = {
     this.el.removeEventListener("pointerover", this.onPointerOver)
     this.el.removeEventListener("click", this.onClickCapture, true)
     window.removeEventListener("pointerup", this.onPointerUp)
+    window.removeEventListener("pointercancel", this.onPointerUp)
   },
 
   neighbour(day, key) {

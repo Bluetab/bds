@@ -1,4 +1,4 @@
-.bt-shell { display: grid; grid-template-columns: var(--bt-sidebar-width) minmax(0, 1fr); min-height: 100vh; }
+.bt-shell { display: grid; grid-template-columns: var(--bt-sidebar-width) minmax(0, 1fr); min-height: 100vh; min-height: 100dvh; }
 
 /* Topbar + main only (no sidebar). Without this, the first child lands in the sidebar column. */
 .bt-shell.bt-shell--app {
@@ -64,11 +64,11 @@
 /* Dialogs/snackbars rendered as direct children of .bt-shell (e.g. Phoenix overlay slot) */
 .bt-shell > .bt-dialog[open],
 .bt-shell > .bt-overlay[open] {
-  z-index: 200;
+  z-index: var(--bt-z-overlay);
 }
 
 .bt-shell > .bt-snackbar[data-open="true"] {
-  z-index: 210;
+  z-index: calc(var(--bt-z-overlay) + 10);
 }
 .bt-main-wrap { min-width: 0; }
 .bt-main { width: min(100%, var(--bt-content-max-width)); margin-inline: auto; padding: var(--bt-space-6); }
@@ -89,9 +89,11 @@
 .bt-example__title { margin: 0; font-size: var(--bt-font-size-md); }
 .bt-example__preview { display: flex; align-items: center; flex-wrap: wrap; gap: var(--bt-space-3); min-height: 4rem; padding: var(--bt-space-4); background: var(--bt-color-surface); border-radius: var(--bt-radius-md); overflow: auto; }
 .bt-example__preview--block { display: block; }
-.bt-layout-demo { width: 100%; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--bt-space-3); }
+/* Up to three columns, fewer when the space is short (≥ 6rem each) */
+.bt-layout-demo { width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 6rem), 1fr)); gap: var(--bt-space-3); }
 .bt-layout-demo > div { min-height: 4rem; display: grid; place-items: center; background: var(--bt-color-primary-soft); color: var(--bt-color-primary); border-radius: var(--bt-radius-md); font-weight: 700; }
-@media (max-width: 980px) {
+/* lg (64rem): the sidebar leaves the grid and becomes an off-canvas drawer */
+@media (max-width: 64rem) {
   .bt-shell { grid-template-columns: 1fr; }
   .bt-shell.bt-shell--storybook {
     grid-template-columns: 1fr;
@@ -130,4 +132,5 @@
   .bt-card--half,
   .bt-card--third { grid-column: span 12; }
 }
-@media (max-width: 640px) { .bt-section__header { align-items: flex-start; flex-direction: column; } }
+/* sm (40rem) */
+@media (max-width: 40rem) { .bt-section__header { align-items: flex-start; flex-direction: column; } }

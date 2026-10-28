@@ -30,7 +30,7 @@ var e = [
 	}), t && e.focus());
 }, s = (e) => {
 	let t = e.target.closest("[role=\"tab\"]"), n = t?.closest("[role=\"tablist\"]");
-	if (!n) return !1;
+	if (!n || !n.closest("[data-tabs]")) return !1;
 	let i = [...n.querySelectorAll("[role=\"tab\"]")], a = r(e.key, i.indexOf(t), i.length);
 	return a === null ? !1 : (e.preventDefault(), o(i[a], { focus: !0 }), !0);
 }, c = (e) => [...e.querySelectorAll("[role=\"menuitem\"]")].filter(t), l = (e, t, n) => {
@@ -161,10 +161,14 @@ function O(e, { signal: t, closeDialog: n }) {
 	}, { signal: t }), e.addEventListener("keydown", (t) => {
 		if (!t.defaultPrevented && !s(t) && !d(t, e) && !w(t, e) && !E(t) && !h(t, e) && !b(t, e, n)) {
 			if (t.key === "Escape") {
-				let e = t.target.closest(".bt-tooltip");
-				e && (e.dataset.tooltipHidden = "true");
-				let n = t.target.closest("[data-navbar-user]");
-				n && (n.dataset.dismissed = "true", n.dataset.open = "false", D(n), n.querySelector("[data-navbar-user-trigger]")?.focus());
+				let n = t.target.closest(".bt-tooltip");
+				n && (n.dataset.tooltipHidden = "true");
+				let r = t.target.closest("[data-navbar-user]");
+				if (r && (r.dataset.dismissed = "true", r.dataset.open = "false", D(r), r.querySelector("[data-navbar-user-trigger]")?.focus()), e.body?.classList.contains("bt-sidebar-open")) {
+					e.body.classList.remove("bt-sidebar-open");
+					let t = e.querySelector("[data-toggle-sidebar]");
+					t?.setAttribute("aria-expanded", "false"), t?.focus();
+				}
 				return;
 			}
 			(t.key === "Enter" || t.key === " ") && t.target.matches("[role=\"button\"]:not(button):not(a):not(input)") && (t.preventDefault(), t.target.click());
@@ -209,25 +213,50 @@ var k = "bt-theme", A = (e, t = document) => [...t.querySelectorAll(e)], j = (e 
 	A("[data-open=\"true\"].bt-menu", e).forEach((n) => {
 		n !== t && I(n, !1, e);
 	});
-}, R = (e) => {
+}, R = 3200, z = (e) => {
+	clearTimeout(e._btHide), e.dataset.open = "true";
+	let t = () => e.matches(":hover") || e.contains(document.activeElement), n = () => {
+		clearTimeout(e._btHide), e._btHide = setTimeout(() => {
+			t() || (e.dataset.open = "false");
+		}, R);
+	};
+	e._btPauseBound || (e._btPauseBound = !0, e.addEventListener("mouseenter", () => clearTimeout(e._btHide)), e.addEventListener("focusin", () => clearTimeout(e._btHide)), e.addEventListener("mouseleave", () => {
+		e.dataset.open === "true" && n();
+	}), e.addEventListener("focusout", () => {
+		e.dataset.open === "true" && n();
+	})), n();
+}, B = (e) => {
 	e && (e.classList.contains("bt-overlay") ? e.removeAttribute("open") : F(e), y(e));
-}, z = (e, t = {}) => {
+}, V = (e) => {
+	try {
+		return localStorage.getItem(e);
+	} catch {
+		return null;
+	}
+}, H = (e = document) => {
+	let t = e.querySelector("meta[name=\"theme-color\"]:not([media])");
+	if (!t) return;
+	let n = getComputedStyle(e.documentElement).getPropertyValue("--bt-color-background").trim();
+	n && t.setAttribute("content", n);
+}, U = (e, t = {}) => {
 	let { root: n = document, storageKey: r = k, persist: i = !0 } = t;
-	n.documentElement.dataset.theme = e, M(n, e), i && localStorage.setItem(r, e);
-}, B = (e = {}) => {
+	if (n.documentElement.dataset.theme = e, M(n, e), H(n), i) try {
+		localStorage.setItem(r, e);
+	} catch {}
+}, W = (e = {}) => {
 	let t = (e.root || document).documentElement.dataset.theme === "dark" ? "light" : "dark";
-	return z(t, e), t;
-}, V = (e = {}) => {
-	let { root: t = document, storageKey: n = k, fallbackTheme: r = "light" } = e, i = localStorage.getItem(n) || r;
-	return z(i, {
+	return U(t, e), t;
+}, G = (e = {}) => {
+	let { root: t = document, storageKey: n = k, fallbackTheme: r = "light" } = e, i = V(n) || r;
+	return U(i, {
 		...e,
 		root: t,
 		persist: !1
 	}), i;
 };
-function H(e = {}) {
+function K(e = {}) {
 	let { root: t = document, storageKey: n = k, autoApplyStoredTheme: r = !0 } = e, i = new AbortController(), { signal: a } = i;
-	r ? V({
+	r ? G({
 		root: t,
 		storageKey: n,
 		fallbackTheme: t.documentElement.dataset.theme || "light"
@@ -240,7 +269,7 @@ function H(e = {}) {
 		e.target.closest(".bt-combobox__panel") && e.preventDefault();
 	}, { signal: a }), t.addEventListener("click", (e) => {
 		if (e.target.closest("[data-theme-toggle]")) {
-			B({
+			W({
 				root: t,
 				storageKey: n
 			});
@@ -254,7 +283,7 @@ function H(e = {}) {
 		}
 		let i = e.target.closest("[data-dialog-close]");
 		if (i) {
-			R(i.closest(".bt-dialog"));
+			B(i.closest(".bt-dialog"));
 			return;
 		}
 		let a = e.target.closest("[data-overlay-open]");
@@ -265,7 +294,7 @@ function H(e = {}) {
 		}
 		let o = e.target.closest("[data-overlay-close]");
 		if (o) {
-			R(o.closest(".bt-overlay"));
+			B(o.closest(".bt-overlay"));
 			return;
 		}
 		let s = e.target.closest("[data-menu-toggle]");
@@ -289,9 +318,7 @@ function H(e = {}) {
 		let u = e.target.closest("[data-snackbar-open]");
 		if (u) {
 			let e = N(u, u.dataset.snackbarOpen, t);
-			e && (e.dataset.open = "true", setTimeout(() => {
-				e.dataset.open = "false";
-			}, 3200));
+			e && z(e);
 			return;
 		}
 		let d = e.target.closest("[data-snackbar-close]");
@@ -301,7 +328,8 @@ function H(e = {}) {
 			return;
 		}
 		if (e.target.closest("[data-toggle-sidebar]")) {
-			t.body.classList.toggle("bt-sidebar-open");
+			let e = t.body.classList.toggle("bt-sidebar-open");
+			A("[data-toggle-sidebar]", t).forEach((t) => t.setAttribute("aria-expanded", String(e)));
 			return;
 		}
 		if (t.body.classList.contains("bt-sidebar-open") && e.target.closest(".bt-sidebar a, .bt-sidebar .bt-nav-link")) {
@@ -321,11 +349,11 @@ function H(e = {}) {
 	}, { signal: a });
 	let s = O(t, {
 		signal: a,
-		closeDialog: R
+		closeDialog: B
 	});
 	return () => {
 		i.abort(), o.disconnect(), s();
 	};
 }
 //#endregion
-export { k as DEFAULT_THEME_STORAGE_KEY, V as applyStoredTheme, H as initBtInteractions, z as setTheme, B as toggleTheme };
+export { k as DEFAULT_THEME_STORAGE_KEY, G as applyStoredTheme, K as initBtInteractions, U as setTheme, W as toggleTheme };

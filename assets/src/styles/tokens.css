@@ -39,6 +39,21 @@
   --bt-color-info: #0065ff;
   --bt-color-info-soft: #e8f2ff;
 
+  /* Semantic and accent colors used as TEXT (status chips, messages,
+     eyebrows): darker palette steps that reach 4.5:1 on surface and on
+     their -soft fill. Fills (badges, bars, buttons) keep the base tokens. */
+  --bt-color-secondary-text: var(--bt-palette-bluetab-orange-70);
+  --bt-color-tertiary-text: var(--bt-color-tertiary);
+  --bt-color-success-text: var(--bt-palette-teal-70);
+  --bt-color-warning-text: var(--bt-palette-amber-80);
+  --bt-color-error-text: var(--bt-color-error);
+  --bt-color-info-text: var(--bt-palette-electric-blue-70);
+
+  /* Text on solid semantic fills (status marks, counters) */
+  --bt-color-on-success: #ffffff;
+  --bt-color-on-warning: var(--bt-palette-neutral-black-60);
+  --bt-color-on-error: #ffffff;
+
   /* Color families — generated from src/color-families.js (level 60 = Bluetab master) */
   /* Bluetab Blue · PANTONE 2746 C */
   --bt-palette-bluetab-blue-10: #e9e9f4;
@@ -216,9 +231,12 @@
   --bt-color-surface-muted: #e8ebf4;
   --bt-color-border: #dce1ee;
   --bt-color-border-strong: #c4ccdd;
+  /* Boundary of text fields/selects: ≥ 3:1 on surface and background (WCAG 1.4.11) */
+  --bt-color-border-input: #80889d;
   --bt-color-text: #1f222d;
   --bt-color-text-muted: #4a4a4a;
-  --bt-color-text-subtle: #959595;
+  /* #6b6c75: 5.2:1 on surface, 4.6:1 on background (was #959595, 3.0:1) */
+  --bt-color-text-subtle: #6b6c75;
 
   /* Typography */
   --bt-font-family: "Titillium Web", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -264,14 +282,28 @@
   --bt-shadow-md: 0 12px 32px rgba(17, 19, 45, 0.12);
   --bt-shadow-lg: 0 24px 60px rgba(17, 19, 45, 0.18);
 
+  /* Breakpoints. Documentation only: @media and @container cannot read
+     var(), so components write these literals. Four steps, mobile first:
+       sm  40rem  (640px)   phones in landscape, 2-column forms
+       md  48rem  (768px)   tablets: shell stacks, glass blur lightens
+       lg  64rem (1024px)   small laptops: sidebars dock
+       xl  80rem (1280px)   desktop: full toolbar, docked templates
+     Prefer @container over @media for anything that can sit in a column
+     narrower than the window (cards, calendar, forms); keep @media for page
+     shells that own the viewport (.bt-shell, topbar). */
+
   /* Layout */
   --bt-sidebar-width: 17.5rem;
   --bt-topbar-height: calc(0.5rem + 4rem + 0.5rem);
   --bt-content-max-width: 76rem;
   --bt-panel-width: min(46rem, 92vw);
 
-  /* Stacking (topbar 220, user menu 230 — flash above chrome) */
+  /* Stacking: header 220, user menu 230, flash 240, doc panel 250.
+     Modal layers rendered by LiveView (not the top layer of showModal())
+     go above all of that, so the header is covered while they are open. */
   --bt-z-flash: 240;
+  --bt-z-overlay: 300;
+  --bt-z-skip-link: 1000;
 
   /* Control sizes (xs/sm/md/lg) shared by buttons, inputs, chips… see scale.css */
   --bt-control-height-xs: 1.75rem;
@@ -299,8 +331,9 @@
   --bt-button-disabled-bg: var(--bt-palette-bluetab-blue-10);
   --bt-button-disabled-fg: var(--bt-palette-bluetab-blue-30);
 
-  /* Focus (WCAG 2.4.7 / 1.4.11). Override per app; see Accessibility › Color in the storybook. */
-  --bt-focus-ring-color: color-mix(in srgb, var(--bt-color-secondary), transparent 40%);
+  /* Focus (WCAG 2.4.7 / 1.4.11). Override per app; see Accessibility › Color in the storybook.
+     Solid secondary: ≥ 3:1 on surface, background and primary in both themes. */
+  --bt-focus-ring-color: var(--bt-color-secondary);
   --bt-focus-ring-width: 3px;
   --bt-focus-ring-offset: 3px;
 
@@ -375,6 +408,16 @@
   --bt-color-primary: #8da2ff;
   --bt-color-primary-hover: #b3c2ff;
   --bt-color-primary-active: #6b82e8;
+  /* dark text on the light dark-theme primary: 7.97:1 (white was 2.40:1) */
+  --bt-color-on-primary: #0a0b2c;
+  --bt-color-tertiary: #bba8c8;
+  --bt-color-on-tertiary: #190b23;
+  --bt-color-secondary-text: var(--bt-palette-bluetab-orange-50);
+  --bt-color-tertiary-text: var(--bt-color-tertiary);
+  --bt-color-success-text: var(--bt-palette-teal-40);
+  --bt-color-warning-text: var(--bt-color-warning);
+  --bt-color-error-text: var(--bt-palette-red-40);
+  --bt-color-info-text: var(--bt-palette-electric-blue-40);
   --bt-color-background: #1f222d;
   --bt-color-surface: #17182b;
   --bt-color-surface-raised: #1e2035;
@@ -382,6 +425,7 @@
   --bt-color-surface-muted: #2c3048;
   --bt-color-border: #333850;
   --bt-color-border-strong: #47506b;
+  --bt-color-border-input: #6c7593;
   --bt-color-text: #f5f7ff;
   --bt-color-text-muted: #b9bfd4;
   --bt-color-text-subtle: #8e96b1;
@@ -414,7 +458,7 @@
   --bt-glass-mesh-opacity: 0.85;
 }
 
-@media (max-width: 767px) {
+@media (width < 48rem) {
   :root,
   [data-theme] {
     --bt-glass-panel-backdrop: blur(16px) saturate(135%);
@@ -422,7 +466,10 @@
   }
 }
 
-/* Nested zones: text and native controls follow the zone's theme */
+/* Native UI (scrollbars, inputs, selects, date pickers) follows the theme:
+   on <html> for the page, and on nested zones for previews and panels */
+:root, [data-theme="light"] { color-scheme: light; }
+[data-theme="dark"] { color-scheme: dark; }
+
+/* Nested zones: text follows the zone's theme */
 [data-theme]:not(html) { color: var(--bt-color-text); }
-[data-theme="light"]:not(html) { color-scheme: light; }
-[data-theme="dark"]:not(html) { color-scheme: dark; }

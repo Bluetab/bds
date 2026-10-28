@@ -69,3 +69,5 @@ Gettext.put_locale(Bds.Gettext, "es")
 After changing strings in this package, run `mix gettext.extract` in **bds**, then merge updated `.po` files in the host app.
 
 See [`assets/docs/bds-how-to-use-design-system.md`](assets/docs/bds-how-to-use-design-system.md) and [`assets/docs/bds-integration-patterns.md`](assets/docs/bds-integration-patterns.md).
+
+For AI agents and designers, [`DESIGN.md`](DESIGN.md) summarizes the tokens, components, rules and known gaps in the [DESIGN.md](https://github.com/VoltAgent/awesome-design-md) format.

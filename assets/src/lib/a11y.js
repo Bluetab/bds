@@ -65,7 +65,8 @@ const selectTab = (tab, { focus = false } = {}) => {
 const onTabsKeydown = (event) => {
   const tab = event.target.closest('[role="tab"]');
   const list = tab?.closest('[role="tablist"]');
-  if (!list) return false;
+  // Server-driven tablists (no [data-tabs] container) handle their own keys
+  if (!list || !list.closest('[data-tabs]')) return false;
   const tabs = [...list.querySelectorAll('[role="tab"]')];
   const next = moveIndex(event.key, tabs.indexOf(tab), tabs.length);
   if (next === null) return false;
@@ -371,6 +372,14 @@ export function installA11y(root, { signal, closeDialog }) {
         user.dataset.open = 'false';
         syncUserMenu(user);
         user.querySelector('[data-navbar-user-trigger]')?.focus();
+      }
+
+      // Mobile sidebar drawer: close it and return focus to its toggle
+      if (root.body?.classList.contains('bt-sidebar-open')) {
+        root.body.classList.remove('bt-sidebar-open');
+        const toggle = root.querySelector('[data-toggle-sidebar]');
+        toggle?.setAttribute('aria-expanded', 'false');
+        toggle?.focus();
       }
       return;
     }

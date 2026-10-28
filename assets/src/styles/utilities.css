@@ -38,12 +38,22 @@
   border: 0;
 }
 
+/* Layout aliases used by component templates (calendar, expense, performance).
+   Same behaviour as the Tailwind utilities of the same name, defined here for
+   the same reason as `.sr-only`: BDS must not depend on Tailwind, and without
+   them a flex child never shrinks and `truncate` never truncates. Tailwind
+   emits identical rules, so apps that use it are unaffected. */
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.min-w-0 { min-width: 0; }
+.flex-1 { flex: 1 1 0%; }
+.shrink-0 { flex-shrink: 0; }
+
 /* Skip link: first focusable element, only visible on focus (WCAG 2.4.1) */
 .bt-skip-link {
   position: fixed;
   top: var(--bt-space-2);
   left: var(--bt-space-2);
-  z-index: calc(var(--bt-z-flash) + 10);
+  z-index: var(--bt-z-skip-link);
   padding: var(--bt-space-2) var(--bt-space-4);
   border-radius: var(--bt-radius-sm);
   background: var(--bt-color-text);
