@@ -897,6 +897,17 @@ defmodule Bds.Catalog.Preview.Bulk do
     """
   end
 
+  def render("progress", 2, assigns) do
+    ~H"""
+    <.bt_stacked_bar label="Assignments by stage">
+      <:segment label="Complete" value={18} tone="success" />
+      <:segment label="Awaiting acknowledgement" value={7} tone="info" />
+      <:segment label="Draft" value={5} tone="warning" />
+      <:segment label="Not started" value={9} tone="error" />
+    </.bt_stacked_bar>
+    """
+  end
+
   def render("radio", 0, assigns) do
     ~H"""
     <.bt_radio name="view" label="Weekly" checked />
@@ -1101,6 +1112,22 @@ defmodule Bds.Catalog.Preview.Bulk do
   def render("tree", 1, assigns) do
     ~H"""
     <.bt_tree_empty>No nodes match your search.</.bt_tree_empty>
+    """
+  end
+
+  def render("tree", 2, assigns) do
+    assigns =
+      assigns
+      |> assign(:nodes, tree_navigator_nodes())
+      |> assign(:expanded, MapSet.new(["career:1"]))
+
+    ~H"""
+    <.bt_tree
+      id="tree-navigator-demo"
+      nodes={@nodes}
+      expanded={@expanded}
+      select_event="select_node"
+    />
     """
   end
 
@@ -1510,4 +1537,29 @@ defmodule Bds.Catalog.Preview.Bulk do
   end
 
   def render(_, _, _assigns), do: nil
+
+  defp tree_navigator_nodes do
+    [
+      %{
+        key: "career:1",
+        kind_label: "Career",
+        name: "Engineering",
+        selectable: true,
+        show_doc_badge: false,
+        badges: [%{label: "5"}],
+        children: [
+          %{
+            key: "category:7",
+            kind_label: "Category",
+            name: "Senior",
+            selectable: true,
+            selected: true,
+            show_doc_badge: false,
+            badges: [%{label: "3"}],
+            children: []
+          }
+        ]
+      }
+    ]
+  end
 end

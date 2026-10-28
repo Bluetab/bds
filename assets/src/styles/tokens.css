@@ -314,8 +314,8 @@
   /* Buttons (Figma spec). lg reproduces the design frame; md/sm keep the
      same style at denser sizes for toolbars and tables. */
   --bt-button-font-size: var(--bt-font-size-md);
-  --bt-button-font-weight: 700;
-  --bt-button-letter-spacing: 1.4px;
+  --bt-button-font-weight: 600;
+  --bt-button-letter-spacing: 0.4px;
   --bt-button-icon-size: 1.5rem;
   --bt-button-gap: var(--bt-space-4);
   --bt-button-height-xs: 1.75rem;

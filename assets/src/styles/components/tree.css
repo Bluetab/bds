@@ -173,6 +173,17 @@ a.bt-tree__label-row--selectable {
   background: color-mix(in srgb, var(--bt-color-primary), transparent 82%);
 }
 
+/* Navigator trees: the node whose content is currently shown. */
+.bt-tree__label-row--selected {
+  background: color-mix(in srgb, var(--bt-color-primary), transparent 86%);
+  box-shadow: inset 2px 0 0 var(--bt-color-primary);
+}
+
+.bt-tree__label-row--selected .bt-tree__name {
+  color: var(--bt-color-primary);
+  font-weight: 600;
+}
+
 /* When hovering a report, highlight parents up through "me" (not ancestors above). */
 .bt-tree__item--self > .bt-tree__row > .bt-tree__body > .bt-tree__label-row,
 .bt-tree__item--descendant > .bt-tree__row > .bt-tree__body > .bt-tree__label-row {

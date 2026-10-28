@@ -72,7 +72,7 @@
 .bt-chip,
 .bt-nav-link,
 .bt-tab,
-.bt-segmented button,
+.bt-segmented :is(button, a),
 .bt-theme-toggle-button,
 .bt-navbar-menu-item,
 .bt-combobox__option,

@@ -285,7 +285,7 @@ src/main.js</pre>
     icon: "smart_button",
     title: "Buttons",
     description:
-      "Buttons trigger actions. Text is Titillium 16px bold with 1.4px letter-spacing on a pill shape; an icon is optional and always goes with a visible label. Hover and keyboard focus share the elevated state.",
+      "Buttons trigger actions. Text is Titillium 16px semibold with 0.4px letter-spacing on a pill shape; an icon is optional and always goes with a visible label. Hover and keyboard focus share the elevated state.",
     examples: [
       {
         title: "Primary and secondary",
@@ -1087,6 +1087,44 @@ initBtInteractions();</code></pre>
         title: "Empty state",
         html: String.raw`<div class="bt-tree-empty">No nodes match your search.</div>`,
       },
+      {
+        title: "Navigator (selected node)",
+        block: true,
+        html: String.raw`<ul class="bt-tree" role="list">
+  <li class="bt-tree__item">
+    <div class="bt-tree__row">
+      <div class="bt-tree__toggle-col">
+        <button type="button" class="bt-tree__toggle" aria-expanded="true" aria-label="Toggle branch">
+          <span class="bt-tree__chevron bt-symbol bt-tree__chevron--open" aria-hidden="true">chevron_right</span>
+        </button>
+      </div>
+      <div class="bt-tree__body">
+        <button type="button" class="bt-tree__label-row bt-tree__label-row--selectable">
+          <span class="bt-tree__kind">Career</span>
+          <span class="bt-tree__name">Engineering</span>
+          <span class="bt-tree__badges"><span class="bt-badge bt-badge--secondary"><span>5</span></span></span>
+        </button>
+        <ul class="bt-tree bt-tree--nested" role="list">
+          <li class="bt-tree__item">
+            <div class="bt-tree__row">
+              <div class="bt-tree__toggle-col">
+                <span class="bt-tree__toggle-spacer" aria-hidden="true"></span>
+              </div>
+              <div class="bt-tree__body">
+                <button type="button" class="bt-tree__label-row bt-tree__label-row--selectable bt-tree__label-row--selected" aria-current="true">
+                  <span class="bt-tree__kind">Category</span>
+                  <span class="bt-tree__name">Senior</span>
+                  <span class="bt-tree__badges"><span class="bt-badge bt-badge--secondary"><span>3</span></span></span>
+                </button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </li>
+</ul>`,
+      },
     ],
   },
   {
@@ -1775,6 +1813,24 @@ initBtInteractions();</code></pre>
       {
         title: "Circular progress",
         html: String.raw`<div class="bt-progress-circle" style="--value: 72%" data-label="72%"></div>`,
+      },
+      {
+        title: "Stacked bar",
+        block: true,
+        html: String.raw`<div class="bt-stacked-bar" role="group" aria-label="Assignments by stage">
+  <div class="bt-stacked-bar__track">
+    <span class="bt-stacked-bar__segment bt-stacked-bar__segment--success" style="flex-grow: 18"></span>
+    <span class="bt-stacked-bar__segment bt-stacked-bar__segment--info" style="flex-grow: 7"></span>
+    <span class="bt-stacked-bar__segment bt-stacked-bar__segment--warning" style="flex-grow: 5"></span>
+    <span class="bt-stacked-bar__segment bt-stacked-bar__segment--error" style="flex-grow: 9"></span>
+  </div>
+  <ul class="bt-stacked-bar__legend">
+    <li><span class="bt-stacked-bar__entry"><span class="bt-stacked-bar__swatch bt-stacked-bar__segment--success"></span><span class="bt-stacked-bar__count">18</span><span class="bt-stacked-bar__name">Complete</span></span></li>
+    <li><span class="bt-stacked-bar__entry"><span class="bt-stacked-bar__swatch bt-stacked-bar__segment--info"></span><span class="bt-stacked-bar__count">7</span><span class="bt-stacked-bar__name">Awaiting acknowledgement</span></span></li>
+    <li><span class="bt-stacked-bar__entry"><span class="bt-stacked-bar__swatch bt-stacked-bar__segment--warning"></span><span class="bt-stacked-bar__count">5</span><span class="bt-stacked-bar__name">Draft</span></span></li>
+    <li><span class="bt-stacked-bar__entry"><span class="bt-stacked-bar__swatch bt-stacked-bar__segment--error"></span><span class="bt-stacked-bar__count">9</span><span class="bt-stacked-bar__name">Not started</span></span></li>
+  </ul>
+</div>`,
       },
     ],
   },

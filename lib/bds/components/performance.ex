@@ -503,32 +503,34 @@ defmodule Bds.Components.Performance do
     """
   end
 
-  attr(:id, :string, default: nil)
-  attr(:class, :any, default: nil)
-  attr(:name, :string, required: true)
-  attr(:email, :string, default: nil)
-  attr(:picture, :string, default: nil)
-  attr(:category, :string, default: nil)
-  attr(:project_label, :string, default: nil)
-  attr(:hours_label, :string, default: nil)
-  attr(:no_hours_message, :string, default: nil)
-  attr(:delegator_name, :string, default: nil)
-  attr(:show_delegator?, :boolean, default: false)
-  attr(:briefing_date_label, :string, default: nil)
-  attr(:briefing_status, :string, default: nil)
-  attr(:briefing_ack_state, :atom, default: nil)
-  attr(:evaluation_date_label, :string, default: nil)
-  attr(:evaluation_rating, :string, default: nil)
-  attr(:evaluation_status, :string, default: nil)
-  attr(:evaluation_ack_state, :atom, default: nil)
-  attr(:rating, :string, default: nil)
-  attr(:rating_label, :string, default: nil)
-  attr(:profile_navigate, :any, default: nil)
-  attr(:briefing_navigate, :any, default: nil)
-  attr(:evaluation_navigate, :any, default: nil)
-  attr(:create_evaluation_navigate, :any, default: nil)
-  attr(:rest, :global)
-  slot(:actions)
+  attr :id, :string, default: nil
+  attr :class, :any, default: nil
+  attr :name, :string, required: true
+  attr :email, :string, default: nil
+  attr :picture, :string, default: nil
+  attr :category, :string, default: nil
+  attr :project_label, :string, default: nil
+  attr :hours_label, :string, default: nil
+  attr :no_hours_message, :string, default: nil
+  attr :delegator_name, :string, default: nil
+  attr :show_delegator?, :boolean, default: false
+
+  attr :delegation_label, :string, default: nil
+  attr :briefing_date_label, :string, default: nil
+  attr :briefing_status, :string, default: nil
+  attr :briefing_ack_state, :atom, default: nil
+  attr :evaluation_date_label, :string, default: nil
+  attr :evaluation_rating, :string, default: nil
+  attr :evaluation_status, :string, default: nil
+  attr :evaluation_ack_state, :atom, default: nil
+  attr :rating, :string, default: nil
+  attr :rating_label, :string, default: nil
+  attr :profile_navigate, :any, default: nil
+  attr :briefing_navigate, :any, default: nil
+  attr :evaluation_navigate, :any, default: nil
+  attr :create_evaluation_navigate, :any, default: nil
+  attr :rest, :global
+  slot :actions
 
   def bt_performance_team_card(assigns) do
     evaluation_rating = assigns.evaluation_rating || assigns.rating
@@ -601,7 +603,7 @@ defmodule Bds.Components.Performance do
           </p>
         </div>
         <div :if={@show_delegator? && @delegator_name} class="bt-performance-team-card__delegation">
-          <span>{gettext("Delegated by")}</span>
+          <span>{@delegation_label || gettext("Delegated by")}</span>
           <strong>{@delegator_name}</strong>
         </div>
       </div>

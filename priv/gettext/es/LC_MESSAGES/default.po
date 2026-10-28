@@ -1821,3 +1821,13 @@ msgid "Set %{count} hour"
 msgid_plural "Set %{count} hours"
 msgstr[0] "Poner %{count} hora"
 msgstr[1] "Poner %{count} horas"
+
+#, elixir-autogen, elixir-format
+msgid "Buttons trigger actions. Text is Titillium 16px semibold with 0.4px letter-spacing on a pill shape; an icon is optional and always goes with a visible label. Hover and keyboard focus share the elevated state."
+msgstr "Buttons trigger actions. Text is Titillium 16px semibold with 0.4px letter-spacing on a pill shape; an icon is optional and always goes with a visible label. Hover and keyboard focus share the elevated state."
+
+msgid "Navigator (selected node)"
+msgstr "Navigator (selected node)"
+
+msgid "Stacked bar"
+msgstr "Stacked bar"

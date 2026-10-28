@@ -1,7 +1,7 @@
 /*
   BUTTONS — Bluetab spec (Figma)
   ------------------------------------------------------------------
-  Type      Titillium 16px bold, letter-spacing 1.4px, pill shape
+  Type      Titillium 16px semibold, letter-spacing 0.4px, pill shape
   Primary   --bt-color-primary fill, white text/icon
   Secondary surface fill, primary text/icon
   Hover / focus  fill or text turns --bt-color-primary-hover and the button
@@ -94,5 +94,5 @@
 .bt-fab { width: 3.5rem; min-height: 3.5rem; border-radius: var(--bt-radius-lg); background: var(--bt-color-primary); color: var(--bt-color-on-primary); box-shadow: var(--bt-shadow-md); }
 .bt-fab--extended { width: auto; padding-inline: var(--bt-space-4); }
 .bt-segmented { display: inline-flex; overflow: hidden; border: 1px solid var(--bt-color-border-strong); border-radius: var(--bt-radius-pill); }
-.bt-segmented button { min-height: 2.5rem; padding-inline: var(--bt-space-4); background: transparent; color: var(--bt-color-text-muted); cursor: pointer; }
-.bt-segmented button[aria-pressed="true"] { background: var(--bt-color-primary); color: var(--bt-color-on-primary); }
+.bt-segmented :is(button, a) { display: inline-flex; align-items: center; min-height: 2.5rem; padding-inline: var(--bt-space-4); background: transparent; color: var(--bt-color-text-muted); cursor: pointer; }
+.bt-segmented :is(button[aria-pressed="true"], a[aria-current="true"]) { background: var(--bt-color-primary); color: var(--bt-color-on-primary); }

@@ -1634,7 +1634,7 @@
       "group": "Components",
       "icon": "smart_button",
       "title": "Buttons",
-      "description": "Buttons trigger actions. Text is Titillium 16px bold with 1.4px letter-spacing on a pill shape; an icon is optional and always goes with a visible label. Hover and keyboard focus share the elevated state.",
+      "description": "Buttons trigger actions. Text is Titillium 16px semibold with 0.4px letter-spacing on a pill shape; an icon is optional and always goes with a visible label. Hover and keyboard focus share the elevated state.",
       "intro": false,
       "examples": [
         {
@@ -2206,6 +2206,12 @@
           "block": false,
           "note": null,
           "html": "<div class=\"bt-tree-empty\">No nodes match your search.</div>"
+        },
+        {
+          "title": "Navigator (selected node)",
+          "block": true,
+          "note": null,
+          "html": "<ul class=\"bt-tree\" role=\"list\">\n  <li class=\"bt-tree__item\">\n    <div class=\"bt-tree__row\">\n      <div class=\"bt-tree__toggle-col\">\n        <button type=\"button\" class=\"bt-tree__toggle\" aria-expanded=\"true\" aria-label=\"Toggle branch\">\n          <span class=\"bt-tree__chevron bt-symbol bt-tree__chevron--open\" aria-hidden=\"true\">chevron_right</span>\n        </button>\n      </div>\n      <div class=\"bt-tree__body\">\n        <button type=\"button\" class=\"bt-tree__label-row bt-tree__label-row--selectable\">\n          <span class=\"bt-tree__kind\">Career</span>\n          <span class=\"bt-tree__name\">Engineering</span>\n          <span class=\"bt-tree__badges\"><span class=\"bt-badge bt-badge--secondary\"><span>5</span></span></span>\n        </button>\n        <ul class=\"bt-tree bt-tree--nested\" role=\"list\">\n          <li class=\"bt-tree__item\">\n            <div class=\"bt-tree__row\">\n              <div class=\"bt-tree__toggle-col\">\n                <span class=\"bt-tree__toggle-spacer\" aria-hidden=\"true\"></span>\n              </div>\n              <div class=\"bt-tree__body\">\n                <button type=\"button\" class=\"bt-tree__label-row bt-tree__label-row--selectable bt-tree__label-row--selected\" aria-current=\"true\">\n                  <span class=\"bt-tree__kind\">Category</span>\n                  <span class=\"bt-tree__name\">Senior</span>\n                  <span class=\"bt-tree__badges\"><span class=\"bt-badge bt-badge--secondary\"><span>3</span></span></span>\n                </button>\n              </div>\n            </div>\n          </li>\n        </ul>\n      </div>\n    </div>\n  </li>\n</ul>"
         }
       ]
     },
@@ -2558,6 +2564,12 @@
           "block": false,
           "note": null,
           "html": "<div class=\"bt-progress-circle\" style=\"--value: 72%\" data-label=\"72%\"></div>"
+        },
+        {
+          "title": "Stacked bar",
+          "block": true,
+          "note": null,
+          "html": "<div class=\"bt-stacked-bar\" role=\"group\" aria-label=\"Assignments by stage\">\n  <div class=\"bt-stacked-bar__track\">\n    <span class=\"bt-stacked-bar__segment bt-stacked-bar__segment--success\" style=\"flex-grow: 18\"></span>\n    <span class=\"bt-stacked-bar__segment bt-stacked-bar__segment--info\" style=\"flex-grow: 7\"></span>\n    <span class=\"bt-stacked-bar__segment bt-stacked-bar__segment--warning\" style=\"flex-grow: 5\"></span>\n    <span class=\"bt-stacked-bar__segment bt-stacked-bar__segment--error\" style=\"flex-grow: 9\"></span>\n  </div>\n  <ul class=\"bt-stacked-bar__legend\">\n    <li><span class=\"bt-stacked-bar__entry\"><span class=\"bt-stacked-bar__swatch bt-stacked-bar__segment--success\"></span><span class=\"bt-stacked-bar__count\">18</span><span class=\"bt-stacked-bar__name\">Complete</span></span></li>\n    <li><span class=\"bt-stacked-bar__entry\"><span class=\"bt-stacked-bar__swatch bt-stacked-bar__segment--info\"></span><span class=\"bt-stacked-bar__count\">7</span><span class=\"bt-stacked-bar__name\">Awaiting acknowledgement</span></span></li>\n    <li><span class=\"bt-stacked-bar__entry\"><span class=\"bt-stacked-bar__swatch bt-stacked-bar__segment--warning\"></span><span class=\"bt-stacked-bar__count\">5</span><span class=\"bt-stacked-bar__name\">Draft</span></span></li>\n    <li><span class=\"bt-stacked-bar__entry\"><span class=\"bt-stacked-bar__swatch bt-stacked-bar__segment--error\"></span><span class=\"bt-stacked-bar__count\">9</span><span class=\"bt-stacked-bar__name\">Not started</span></span></li>\n  </ul>\n</div>"
         }
       ]
     },

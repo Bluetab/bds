@@ -691,6 +691,14 @@ defmodule Bds.Catalog.Snippets.Bulk do
       """,
       "progress:1" => ~S"""
       <.bt_progress_circle value={72} label="72%" />
+      """,
+      "progress:2" => ~S"""
+      <.bt_stacked_bar label="Assignments by stage">
+        <:segment label="Complete" value={18} tone="success" />
+        <:segment label="Awaiting acknowledgement" value={7} tone="info" />
+        <:segment label="Draft" value={5} tone="warning" />
+        <:segment label="Not started" value={9} tone="error" patch="?stage=none" />
+      </.bt_stacked_bar>
       """
     }
   end
@@ -854,6 +862,35 @@ defmodule Bds.Catalog.Snippets.Bulk do
       """,
       "tree:1" => ~S"""
       <.bt_tree_empty>No nodes match your search.</.bt_tree_empty>
+      """,
+      "tree:2" => ~S"""
+      <.bt_tree
+        id="tree-navigator"
+        nodes={[
+          %{
+            key: "career:1",
+            kind_label: "Career",
+            name: "Engineering",
+            selectable: true,
+            show_doc_badge: false,
+            badges: [%{label: "5"}],
+            children: [
+              %{
+                key: "category:7",
+                kind_label: "Category",
+                name: "Senior",
+                selectable: true,
+                selected: true,
+                show_doc_badge: false,
+                badges: [%{label: "3"}],
+                children: []
+              }
+            ]
+          }
+        ]}
+        expanded={MapSet.new(["career:1"])}
+        select_event="select_node"
+      />
       """
     }
   end

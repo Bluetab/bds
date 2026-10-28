@@ -1,0 +1,25 @@
+---
+description: Never change remotes when editing this BDS checkout
+alwaysApply: true
+---
+
+# Git: keep SSH origin
+
+Hard enforcement: Cursor `beforeShellExecution` hooks in this repo's
+`.cursor/hooks.json` and Gedex's `.cursor/hooks.json` deny remote rewrites for BDS.
+
+## Allowed
+
+- Branches and worktrees (e.g. `git worktree add -b <topic> ../bds-<topic> main`) so parallel
+  agents don't collide. Don't switch the branch of a checkout another agent is using.
+
+## Forbidden
+
+- Do **not** change git remotes, remote URLs, or rewrite SSH to HTTPS (`git remote set-url`, `git remote add`, insteadOf, credential helpers that swap the URL).
+- Do **not** run `git init`, change `origin`, or touch `.git/config` remotes.
+
+## Required
+
+- `origin` **must remain** SSH: `git@github.com:Bluetab/bds.git`
+- If you find origin on HTTPS (`https://github.com/Bluetab/bds.git`), restore SSH immediately and do not leave it that way.
+- Commit / push only when the user explicitly asks.

@@ -46,6 +46,32 @@ defmodule Bds.ComponentsA11yTest do
     end
   end
 
+  describe "bt_performance_team_card" do
+    test "delegation label defaults to Delegated by and can be overridden" do
+      assigns = %{}
+
+      default =
+        rendered_to_string(~H"""
+        <Bds.Components.Performance.bt_performance_team_card name="Ana" delegator_name="Luis" show_delegator?={true} />
+        """)
+
+      assert default =~ "Delegated by"
+
+      custom =
+        rendered_to_string(~H"""
+        <Bds.Components.Performance.bt_performance_team_card
+          name="Ana"
+          delegator_name="Francisco"
+          show_delegator?={true}
+          delegation_label="Delegated to"
+        />
+        """)
+
+      assert custom =~ "Delegated to"
+      refute custom =~ "Delegated by"
+    end
+  end
+
   describe "forms" do
     test "bt_input links help and errors and flags invalid" do
       assigns = %{}
@@ -132,6 +158,44 @@ defmodule Bds.ComponentsA11yTest do
       assert html =~ "--value: 75%"
     end
 
+    test "bt_stacked_bar names the group, sizes segments and keeps zero entries in the legend" do
+      assigns = %{}
+
+      html =
+        rendered_to_string(~H"""
+        <.bt_stacked_bar label="By stage">
+          <:segment label="Done" value={3} tone="success" patch="?stage=done" />
+          <:segment label="Empty" value={0} tone="error" />
+          <:segment label="Bad tone" value={1} tone="nope" patch={nil} />
+        </.bt_stacked_bar>
+        """)
+
+      assert html =~ ~s(role="group")
+      assert html =~ ~s(aria-label="By stage")
+      assert html =~ "flex-grow: 3"
+      assert html =~ ~s(href="?stage=done")
+      assert html =~ "bt-stacked-bar__segment--neutral"
+      refute html =~ "flex-grow: 0"
+      assert html =~ "Empty"
+    end
+
+    test "bt_segmented renders link items with aria-current" do
+      assigns = %{}
+
+      html =
+        rendered_to_string(~H"""
+        <.bt_segmented label="View">
+          <:item label="A" href="/a" pressed />
+          <:item label="B" href="/b" />
+          <:item label="C" />
+        </.bt_segmented>
+        """)
+
+      assert html =~ ~s(aria-current="true")
+      assert html =~ ~s(href="/b")
+      assert html =~ ~s(aria-pressed="false")
+    end
+
     test "bt_modal is named and traps focus" do
       assigns = %{}
 
@@ -202,6 +266,26 @@ defmodule Bds.ComponentsA11yTest do
       refute html =~ ~s(role="option")
       assert html =~ ~s(aria-expanded="true")
       assert html =~ "data-bt-tree"
+    end
+
+    test "selectable tree nodes send their key and mark the selected node" do
+      assigns = %{
+        nodes: [
+          %{key: "career:1", name: "Engineering", selectable: true, show_doc_badge: false},
+          %{key: "category:7", name: "Senior", selectable: true, selected: true, show_doc_badge: false}
+        ]
+      }
+
+      html =
+        rendered_to_string(
+          ~H|<.bt_tree id="nav" nodes={@nodes} expanded={MapSet.new()} select_event="select_node" />|
+        )
+
+      assert html =~ ~s(phx-value-key="career:1")
+      assert html =~ ~s(phx-value-key="category:7")
+      assert html =~ "bt-tree__label-row--selected"
+      assert html =~ ~s(aria-current="true")
+      refute html =~ "P-—"
     end
   end
 end

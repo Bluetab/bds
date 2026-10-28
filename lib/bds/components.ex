@@ -30,7 +30,7 @@ defmodule Bds.Components do
   @doc """
   Renders a design-system button (`bt-button` variants).
 
-  Text is 16px bold with 1.4px tracking; hover and keyboard focus share the
+  Text is 16px semibold with 0.4px tracking; hover and keyboard focus share the
   elevated state (shadow `--bt-shadow-button`). Icons are optional Material
   Symbols ligatures and are hidden from screen readers — the label names the
   button. For icon-only buttons use `bt_icon_button`.
@@ -428,13 +428,17 @@ defmodule Bds.Components do
         </:actions>
       </.bt_topbar>
   """
-  attr(:class, :any, default: nil)
-  attr(:contained, :boolean, default: false, doc: "constrain inner bar to --bt-content-max-width")
-  attr(:rest, :global)
-  slot(:start)
-  slot(:brand)
-  slot(:nav)
-  slot(:actions)
+  attr :class, :any, default: nil
+  attr :contained, :boolean, default: false, doc: "constrain inner bar to --bt-content-max-width"
+  attr :rest, :global
+  slot :start
+  slot :brand
+  slot :nav
+
+  slot :context,
+    doc: "contextual status (e.g. an impersonation badge) shown between nav and actions on all viewports"
+
+  slot :actions
 
   def bt_topbar(assigns) do
     ~H"""
@@ -450,6 +454,9 @@ defmodule Bds.Components do
           </div>
           <div :if={@nav != []} class="bt-nav__links">
             {render_slot(@nav)}
+          </div>
+          <div :if={@context != []} class="bt-nav__context">
+            {render_slot(@context)}
           </div>
           <div :if={@actions != []} class="bt-nav__actions">
             {render_slot(@actions)}
