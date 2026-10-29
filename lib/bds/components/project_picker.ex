@@ -326,7 +326,7 @@ defmodule Bds.Components.ProjectPicker do
         input_id={@search_input_id}
         name={@search_name}
         label={@combobox_label}
-        hide_label={is_nil(@label)}
+        hide_label={is_nil(assigns[:label])}
         value={@search_query}
         placeholder={@placeholder}
         open={@show_panel}
