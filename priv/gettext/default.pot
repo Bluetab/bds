@@ -814,3 +814,23 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Disagreement comment"
 msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Copy %{hex} (%{family}, %{mix})"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Black %{percent}%"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Copied"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "Copy %{hex}"
+msgstr ""
+
+#, elixir-autogen, elixir-format
+msgid "White %{percent}%"
+msgstr ""

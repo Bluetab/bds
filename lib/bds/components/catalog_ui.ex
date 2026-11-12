@@ -1000,41 +1000,89 @@ defmodule Bds.Components.CatalogUi do
   def bt_color_scale(assigns) do
     assigns = assign(assigns, :color_family, Bds.Catalog.color_family!(assigns.family))
 
-    # The wrapper is a size container: the scale picks 2, 5 or 10 columns from
-    # the space it actually has, not from the viewport width.
+    # The wrapper is a size container: the scale lays its nine bars side by side
+    # when it has the room and stacks them as rows when it does not, whatever
+    # the viewport width. Each bar copies its HEX (data-copy-hex).
     ~H"""
     <div class={["bt-color-scale-wrap", @class]} {@rest}>
-    <div class="bt-color-scale" role="list" aria-label={@color_family["name"]}>
-      <div
-        :for={step <- @color_family["steps"]}
-        class={[
-          "bt-color-scale__step",
-          "bt-color-scale__step--on-#{step["tone"]}",
-          step["master"] && "bt-color-scale__step--master"
-        ]}
-        role="listitem"
-        style={"--swatch: var(#{step["token"]})"}
-      >
-        <span class="bt-color-scale__head">
-          <span class="bt-color-scale__level">{step["level"]}</span>
-          <span :if={step["master"]} class="bt-color-scale__badge">{gettext("Master")}</span>
-        </span>
-        <span class="bt-color-scale__data">
-          <b>{step["hex"]}</b>RGB {step["rgb"]}<br />CMYK {step["cmyk"]}<br />{step["spot"]}
-        </span>
-        <span :if={@show_contrast} class="bt-color-scale__contrast">
-          {swatch_contrast_label(step)}
-        </span>
+      <div class="bt-color-scale" role="list" aria-label={@color_family["name"]}>
+        <div
+          :for={step <- @color_family["steps"]}
+          class={[
+            "bt-color-scale__step",
+            "bt-color-scale__step--on-#{step["tone"]}",
+            step["master"] && "bt-color-scale__step--master"
+          ]}
+          role="listitem"
+          style={"--swatch: var(#{step["token"]})"}
+        >
+          <button
+            type="button"
+            class="bt-color-scale__bar"
+            data-copy-hex={step["hex"]}
+            data-copied-label={gettext("Copied")}
+            aria-label={bar_label(@color_family, step)}
+            title={gettext("Copy %{hex}", hex: step["hex"])}
+          >
+            <span :if={step["master"]} class="bt-color-scale__chip">{gettext("Master")}</span>
+          </button>
+          <span class="bt-color-scale__info">
+            <span class="bt-color-scale__mix">{mix_label(step)}</span>
+            <span class="bt-color-scale__hex">{step["hex"]}</span>
+            <dl class="bt-color-scale__data">
+              <div>
+                <dt>RGB</dt>
+                <dd class="bt-color-scale__values">{channel_values(step["rgb"])}</dd>
+              </div>
+              <div>
+                <dt>CMYK</dt>
+                <dd class="bt-color-scale__values">{channel_values(step["cmyk"])}</dd>
+              </div>
+              <div :if={step["spot"]}>
+                <dt>Pantone</dt>
+                <dd>{String.replace_prefix(step["spot"], "PANTONE ", "")}</dd>
+              </div>
+            </dl>
+            <span :if={@show_contrast} class="bt-color-scale__contrast">
+              <span class="bt-color-scale__ratio">{elem(swatch_contrast(step), 0)}</span>
+              <span class="bt-color-scale__level-note">{elem(swatch_contrast(step), 1)}</span>
+            </span>
+          </span>
+        </div>
       </div>
     </div>
-    </div>
     """
+  end
+
+  defp mix_label(%{"master" => true}), do: gettext("Master")
+  defp mix_label(%{"mix" => "white", "mix_percent" => percent}),
+    do: gettext("White %{percent}%", percent: percent) |> keep_percent_together()
+
+  defp mix_label(%{"mix" => "black", "mix_percent" => percent}),
+    do: gettext("Black %{percent}%", percent: percent) |> keep_percent_together()
+
+  # "Blanco 80 %" → a no-break space so the % never lands alone on the next line
+  defp keep_percent_together(label), do: String.replace(label, " %", "\u00A0%")
+
+  # The visible text under the bar already reads the tone and the HEX. The button only
+  # adds what is new: the action. Repeating tone + HEX here made a screen reader say
+  # every color twice.
+  defp bar_label(family, step) do
+    gettext("Copy %{hex} (%{family}, %{mix})",
+      family: family["name"],
+      mix: mix_label(step),
+      hex: step["hex"]
+    )
   end
 
   # Label text colors used by .bt-color-scale__step--on-{tone} (forms.css)
   @swatch_text %{"dark" => "#1f222d", "light" => "#ffffff"}
 
-  defp swatch_contrast_label(%{"hex" => hex, "tone" => tone}) do
+  # "21 / 21 / 0 / 17" → "21 21 0 17": plain spaces, so the group fits one line in a narrow column
+  defp channel_values(values), do: String.replace(values, " / ", " ")
+
+  # {ratio, level}: shown on two lines so a long level never splits the ratio
+  defp swatch_contrast(%{"hex" => hex, "tone" => tone}) do
     ratio = Bds.Contrast.ratio(Map.get(@swatch_text, tone, "#1f222d"), hex)
 
     level =
@@ -1045,7 +1093,7 @@ defmodule Bds.Components.CatalogUi do
         true -> gettext("Fails")
       end
 
-    "#{Bds.Contrast.format_ratio(ratio)} · #{level}"
+    {Bds.Contrast.format_ratio(ratio), level}
   end
 
   attr(:class, :any, default: nil)

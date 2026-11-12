@@ -60,10 +60,10 @@ defmodule Bds.ContrastTest do
 
     test "tokens defined with var() resolve to the referenced hex" do
       assert Tokens.color("bt-color-success-text", :light) ==
-               Tokens.color("bt-palette-teal-70", :light)
+               Tokens.color("bt-palette-teal-60", :light)
 
       assert Tokens.color("bt-color-success-text", :dark) ==
-               Tokens.color("bt-palette-teal-40", :dark)
+               Tokens.color("bt-palette-teal-30", :dark)
     end
 
     test "text, status and control pairs meet WCAG AA in both themes" do

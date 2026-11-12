@@ -28,7 +28,7 @@ export const snippets = {
   --bt-color-info: #0065ff;
   --bt-color-info-soft: #e8f2ff;
 
-  /* Color families (level 60 = Bluetab master) */
+  /* Color families (level 50 = Bluetab master) */
 ${paletteTokensCss()}
 
   /* Neutral / surfaces */
@@ -492,7 +492,7 @@ initBtInteractions();</code></pre>
     icon: "palette",
     title: "Colors",
     description:
-      "Base palette editable from CSS tokens. Each color family has 10 steps: level 60 is the Bluetab master, 10–50 are tints toward white and 70–100 are shades toward black.",
+      "Base palette editable from CSS tokens. Each color family has 9 steps: level 50 is the Bluetab master, 10–40 mix it with white (80, 60, 40 and 20 %) and 60–90 mix it with black (20, 40, 60 and 80 %).",
     examples: [
       {
         title: "Brand colors",

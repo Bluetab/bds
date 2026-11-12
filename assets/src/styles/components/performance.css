@@ -632,7 +632,7 @@
 }
 
 .bt-performance-completion--total {
-  background: var(--bt-palette-teal-70);
+  background: var(--bt-palette-teal-60);
   color: var(--bt-color-on-success);
 }
 
@@ -1150,7 +1150,7 @@ a.bt-performance-team-card__status-row:focus-visible {
 
 .bt-performance-status-mark--agreed {
   border-color: color-mix(in oklab, var(--bt-color-success) 70%, transparent);
-  background: var(--bt-palette-teal-70);
+  background: var(--bt-palette-teal-60);
   color: var(--bt-color-on-success);
 }
 

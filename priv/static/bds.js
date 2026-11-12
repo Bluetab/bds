@@ -225,38 +225,54 @@ var k = "bt-theme", A = (e, t = document) => [...t.querySelectorAll(e)], j = (e 
 	}), e.addEventListener("focusout", () => {
 		e.dataset.open === "true" && n();
 	})), n();
-}, B = (e) => {
+}, B = async (e, t = document) => {
+	try {
+		if (navigator.clipboard && window.isSecureContext) return await navigator.clipboard.writeText(e), !0;
+		throw Error("clipboard unavailable");
+	} catch {
+		let n = t.createElement("textarea");
+		n.value = e, n.setAttribute("readonly", ""), n.style.cssText = "position:fixed;left:-9999px;top:0", t.body.append(n), n.select();
+		let r = !1;
+		try {
+			r = t.execCommand("copy");
+		} catch {}
+		return n.remove(), r;
+	}
+}, V = "bt-copy-feedback", H = (e, t = document) => {
+	let n = t.getElementById(V);
+	n || (n = t.createElement("div"), n.id = V, n.className = "bt-snackbar", n.setAttribute("role", "status"), n.setAttribute("aria-atomic", "true"), n.dataset.open = "false", t.body.append(n)), n.textContent = e, z(n);
+}, U = (e) => {
 	e && (e.classList.contains("bt-overlay") ? e.removeAttribute("open") : F(e), y(e));
-}, V = (e) => {
+}, W = (e) => {
 	try {
 		return localStorage.getItem(e);
 	} catch {
 		return null;
 	}
-}, H = (e = document) => {
+}, G = (e = document) => {
 	let t = e.querySelector("meta[name=\"theme-color\"]:not([media])");
 	if (!t) return;
 	let n = getComputedStyle(e.documentElement).getPropertyValue("--bt-color-background").trim();
 	n && t.setAttribute("content", n);
-}, U = (e, t = {}) => {
+}, K = (e, t = {}) => {
 	let { root: n = document, storageKey: r = k, persist: i = !0 } = t;
-	if (n.documentElement.dataset.theme = e, M(n, e), H(n), i) try {
+	if (n.documentElement.dataset.theme = e, M(n, e), G(n), i) try {
 		localStorage.setItem(r, e);
 	} catch {}
-}, W = (e = {}) => {
+}, q = (e = {}) => {
 	let t = (e.root || document).documentElement.dataset.theme === "dark" ? "light" : "dark";
-	return U(t, e), t;
-}, G = (e = {}) => {
-	let { root: t = document, storageKey: n = k, fallbackTheme: r = "light" } = e, i = V(n) || r;
-	return U(i, {
+	return K(t, e), t;
+}, J = (e = {}) => {
+	let { root: t = document, storageKey: n = k, fallbackTheme: r = "light" } = e, i = W(n) || r;
+	return K(i, {
 		...e,
 		root: t,
 		persist: !1
 	}), i;
 };
-function K(e = {}) {
+function Y(e = {}) {
 	let { root: t = document, storageKey: n = k, autoApplyStoredTheme: r = !0 } = e, i = new AbortController(), { signal: a } = i;
-	r ? G({
+	r ? J({
 		root: t,
 		storageKey: n,
 		fallbackTheme: t.documentElement.dataset.theme || "light"
@@ -269,7 +285,7 @@ function K(e = {}) {
 		e.target.closest(".bt-combobox__panel") && e.preventDefault();
 	}, { signal: a }), t.addEventListener("click", (e) => {
 		if (e.target.closest("[data-theme-toggle]")) {
-			W({
+			q({
 				root: t,
 				storageKey: n
 			});
@@ -283,7 +299,7 @@ function K(e = {}) {
 		}
 		let i = e.target.closest("[data-dialog-close]");
 		if (i) {
-			B(i.closest(".bt-dialog"));
+			U(i.closest(".bt-dialog"));
 			return;
 		}
 		let a = e.target.closest("[data-overlay-open]");
@@ -294,7 +310,7 @@ function K(e = {}) {
 		}
 		let o = e.target.closest("[data-overlay-close]");
 		if (o) {
-			B(o.closest(".bt-overlay"));
+			U(o.closest(".bt-overlay"));
 			return;
 		}
 		let s = e.target.closest("[data-menu-toggle]");
@@ -321,9 +337,17 @@ function K(e = {}) {
 			e && z(e);
 			return;
 		}
-		let d = e.target.closest("[data-snackbar-close]");
+		let d = e.target.closest("[data-copy-hex]");
 		if (d) {
-			let e = d.closest(".bt-snackbar");
+			let e = d.dataset.copyHex;
+			B(e, t).then((n) => {
+				H(n ? `${d.dataset.copiedLabel || "Copied"}: ${e}` : e, t);
+			});
+			return;
+		}
+		let f = e.target.closest("[data-snackbar-close]");
+		if (f) {
+			let e = f.closest(".bt-snackbar");
 			e && (e.dataset.open = "false");
 			return;
 		}
@@ -336,24 +360,24 @@ function K(e = {}) {
 			t.body.classList.remove("bt-sidebar-open");
 			return;
 		}
-		let f = e.target.closest("[data-tab]");
-		if (f) {
-			let e = f.closest("[data-tabs]");
+		let p = e.target.closest("[data-tab]");
+		if (p) {
+			let e = p.closest("[data-tabs]");
 			if (!e) return;
 			A("[role=\"tab\"]", e).forEach((e) => {
-				e.setAttribute("aria-selected", String(e === f));
+				e.setAttribute("aria-selected", String(e === p));
 			}), A(".bt-tab-panel", e).forEach((e) => {
-				e.setAttribute("aria-hidden", String(e.id !== f.dataset.tab));
+				e.setAttribute("aria-hidden", String(e.id !== p.dataset.tab));
 			});
 		}
 	}, { signal: a });
 	let s = O(t, {
 		signal: a,
-		closeDialog: B
+		closeDialog: U
 	});
 	return () => {
 		i.abort(), o.disconnect(), s();
 	};
 }
 //#endregion
-export { k as DEFAULT_THEME_STORAGE_KEY, G as applyStoredTheme, K as initBtInteractions, U as setTheme, W as toggleTheme };
+export { k as DEFAULT_THEME_STORAGE_KEY, J as applyStoredTheme, Y as initBtInteractions, K as setTheme, q as toggleTheme };

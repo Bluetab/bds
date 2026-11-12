@@ -1114,3 +1114,23 @@ msgid "Set %{count} hour"
 msgid_plural "Set %{count} hours"
 msgstr[0] ""
 msgstr[1] ""
+
+#, elixir-autogen, elixir-format
+msgid "Copy %{hex} (%{family}, %{mix})"
+msgstr "Copy %{hex} (%{family}, %{mix})"
+
+#, elixir-autogen, elixir-format
+msgid "Black %{percent}%"
+msgstr "Black %{percent}%"
+
+#, elixir-autogen, elixir-format
+msgid "Copied"
+msgstr "Copied"
+
+#, elixir-autogen, elixir-format
+msgid "Copy %{hex}"
+msgstr "Copy %{hex}"
+
+#, elixir-autogen, elixir-format
+msgid "White %{percent}%"
+msgstr "White %{percent}%"

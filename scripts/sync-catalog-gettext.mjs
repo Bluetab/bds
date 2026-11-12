@@ -26,8 +26,8 @@ const es = {
   "Material Symbols": "Material Symbols",
   "Filled variant": "Variante rellena",
   English: "Inglés",
-  "Base palette editable from CSS tokens. Each color family has 10 steps: level 60 is the Bluetab master, 10–50 are tints toward white and 70–100 are shades toward black.":
-    "Paleta base editable desde tokens CSS. Cada familia de color tiene 10 niveles: el 60 es el color master de Bluetab, del 10 al 50 son tintes hacia blanco y del 70 al 100 son sombras hacia negro.",
+  "Base palette editable from CSS tokens. Each color family has 9 steps: level 50 is the Bluetab master, 10–40 mix it with white (80, 60, 40 and 20 %) and 60–90 mix it with black (20, 40, 60 and 80 %).":
+    "Paleta base editable desde tokens CSS. Cada familia de color tiene 9 niveles: el 50 es el color master de Bluetab, del 10 al 40 lo mezclan con blanco (80, 60, 40 y 20 %) y del 60 al 90 lo mezclan con negro (20, 40, 60 y 80 %).",
 };
 
 function collectMsgids(payload) {

@@ -84,6 +84,48 @@ const openSnackbar = (snackbar) => {
   schedule();
 };
 
+// Copies text with the async clipboard API, falling back to a hidden textarea
+// where it is unavailable (insecure context, older browsers). Resolves to
+// whether the copy worked.
+const copyText = async (text, root = document) => {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+    throw new Error('clipboard unavailable');
+  } catch {
+    const area = root.createElement('textarea');
+    area.value = text;
+    area.setAttribute('readonly', '');
+    area.style.cssText = 'position:fixed;left:-9999px;top:0';
+    root.body.append(area);
+    area.select();
+    let copied = false;
+    try { copied = root.execCommand('copy'); } catch { /* copy blocked */ }
+    area.remove();
+    return copied;
+  }
+};
+
+// One shared status snackbar for "copied" feedback. It is created on first use
+// so a page does not have to declare it, and announced through role="status".
+const COPY_SNACKBAR_ID = 'bt-copy-feedback';
+const showCopyFeedback = (message, root = document) => {
+  let snackbar = root.getElementById(COPY_SNACKBAR_ID);
+  if (!snackbar) {
+    snackbar = root.createElement('div');
+    snackbar.id = COPY_SNACKBAR_ID;
+    snackbar.className = 'bt-snackbar';
+    snackbar.setAttribute('role', 'status');
+    snackbar.setAttribute('aria-atomic', 'true');
+    snackbar.dataset.open = 'false';
+    root.body.append(snackbar);
+  }
+  snackbar.textContent = message;
+  openSnackbar(snackbar);
+};
+
 // Closes a dialog or overlay and returns focus to the control that opened it
 const closeModalLike = (el) => {
   if (!el) return;
@@ -238,6 +280,15 @@ function initBtInteractions(options = {}) {
     if (snackbarOpen) {
       const snackbar = findLocalTarget(snackbarOpen, snackbarOpen.dataset.snackbarOpen, root);
       if (snackbar) openSnackbar(snackbar);
+      return;
+    }
+
+    const copyHex = event.target.closest('[data-copy-hex]');
+    if (copyHex) {
+      const hex = copyHex.dataset.copyHex;
+      copyText(hex, root).then((copied) => {
+        showCopyFeedback(copied ? `${copyHex.dataset.copiedLabel || 'Copied'}: ${hex}` : hex, root);
+      });
       return;
     }
 
