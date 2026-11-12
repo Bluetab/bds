@@ -25,22 +25,121 @@
 .bt-color-swatch { overflow: hidden; border: 1px solid var(--bt-color-border); border-radius: var(--bt-radius-lg); background: var(--bt-color-surface); }
 .bt-color-swatch__color { height: 4rem; background: var(--swatch); }
 .bt-color-swatch__text { padding: var(--bt-space-3); font-size: var(--bt-font-size-sm); font-weight: var(--bt-font-weight-heavy); letter-spacing: var(--bt-letter-spacing-heavy); }
-.bt-color-scale { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 7rem), 1fr)); width: 100%; overflow: hidden; border: 1px solid var(--bt-color-border); border-radius: var(--bt-radius-lg); background: var(--bt-color-surface); }
-.bt-color-scale__step { position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: var(--bt-space-4); min-height: 10rem; padding: var(--bt-space-3); background: var(--swatch); }
-.bt-color-scale__step--on-dark { color: var(--bt-palette-neutral-black-60); }
-.bt-color-scale__step--on-light { color: #ffffff; }
-.bt-color-scale__step--master { box-shadow: inset 0 0 0 3px currentColor; }
-/* Plain-HTML scales (no badge element) keep the pseudo-element label */
-.bt-color-scale__step--master:not(:has(.bt-color-scale__badge))::after { content: "Master"; position: absolute; top: var(--bt-space-2); right: var(--bt-space-2); padding: 0.125rem var(--bt-space-1); border: 1px solid currentColor; border-radius: var(--bt-radius-xs); font-size: 0.625rem; font-weight: var(--bt-font-weight-heavy); letter-spacing: max(var(--bt-letter-spacing-heavy), 0.06em); text-transform: uppercase; }
-.bt-color-scale__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--bt-space-1) var(--bt-space-2); }
-.bt-color-scale__badge { padding: 0.125rem var(--bt-space-1); border: 1px solid currentColor; border-radius: var(--bt-radius-xs); font-size: 0.625rem; font-weight: var(--bt-font-weight-heavy); letter-spacing: max(var(--bt-letter-spacing-heavy), 0.06em); line-height: 1.2; text-transform: uppercase; }
-.bt-color-scale__level { font-size: var(--bt-font-size-lg); font-weight: var(--bt-font-weight-heavy); letter-spacing: var(--bt-letter-spacing-heavy); line-height: var(--bt-line-height-tight); }
-.bt-color-scale__data { font-size: 0.6875rem; line-height: 1.45; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-.bt-color-scale__data b { display: block; font-size: var(--bt-font-size-xs); font-weight: var(--bt-font-weight-heavy); letter-spacing: var(--bt-letter-spacing-heavy); }
-.bt-color-scale__contrast { font-size: var(--bt-font-size-xs); font-weight: var(--bt-font-weight-heavy); letter-spacing: var(--bt-letter-spacing-heavy); font-variant-numeric: tabular-nums; }
+/* Color scale: one rounded bar per step, tallest at the master, with the
+   values underneath. The wrapper is an inline-size container, so the layout
+   follows the space the scale gets and not the viewport: nine columns from
+   44rem (9 x 72px + 8 x 6px gaps; the widest CMYK, "100 95 35 26", is 68.4px at 12px), one row per step below that (no sideways scrolling).
+   Type: Titillium Web only has 300/400/600/700/900 loaded, so this block uses
+   400/600/700 (never the 750 "heavy" weight, which the browser would paint as
+   900 and crush at 12px), and nothing under 12px. */
+.bt-color-scale-wrap { container: bt-color-scale / inline-size; width: 100%; }
+.bt-color-scale {
+  --bt-scale-bar-height: 16rem;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 6px;
+  width: 100%;
+}
+.bt-color-scale__step {
+  --bar-scale: 1;
+  display: grid;
+  grid-template-rows: var(--bt-scale-bar-height) 1fr;
+  min-width: 0;
+}
+/* Bar heights rise to the master and fall away again */
+.bt-color-scale__step:nth-child(1), .bt-color-scale__step:nth-child(9) { --bar-scale: 0.52; }
+.bt-color-scale__step:nth-child(2), .bt-color-scale__step:nth-child(8) { --bar-scale: 0.6; }
+.bt-color-scale__step:nth-child(3), .bt-color-scale__step:nth-child(7) { --bar-scale: 0.75; }
+.bt-color-scale__step:nth-child(4), .bt-color-scale__step:nth-child(6) { --bar-scale: 0.84; }
+.bt-color-scale__step--on-dark { --bar-label: var(--bt-palette-neutral-black-50); }
+.bt-color-scale__step--on-light { --bar-label: #ffffff; }
 
-/* Columns follow the space the scale gets, with no query and no wrapper
-   needed: each step wants ~7rem for "RGB 224 / 82 / 6" without breaking every
-   word, so ten steps fit from ~70rem, five from ~35rem, and so on down to
-   one column. (The wrapper stays for markup that already uses it.) */
-.bt-color-scale-wrap { width: 100%; }
+.bt-color-scale__bar {
+  position: relative;
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--bt-space-2);
+  width: 100%;
+  height: calc(var(--bt-scale-bar-height) * var(--bar-scale));
+  padding: var(--bt-space-3) var(--bt-space-1);
+  border: 1px solid color-mix(in srgb, var(--bt-color-text), transparent 90%);
+  border-radius: 2rem;
+  background: var(--swatch);
+  color: var(--bar-label);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    translate var(--bt-duration-moderate-01) var(--bt-ease-standard),
+    box-shadow var(--bt-duration-moderate-01) var(--bt-ease-standard);
+}
+@media (hover: hover) {
+  .bt-color-scale__bar:hover { translate: 0 calc(var(--bt-space-1) * -1); box-shadow: var(--bt-shadow-md); }
+}
+/* The MASTER chip carries its own background so its 12px text reaches 4.5:1 on every
+   family: four master colors (orange, periwinkle, warm red, teal) fall below 4.5:1 with
+   either ink, so the chip cannot borrow the bar's color. */
+.bt-color-scale__chip {
+  padding: 0.125rem var(--bt-space-2);
+  border-radius: var(--bt-radius-pill);
+  background: var(--bt-color-surface);
+  color: var(--bt-color-text);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--bt-color-text), transparent 75%);
+  font-size: var(--bt-font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Text under the bar: tone name, HEX, then label/value pairs */
+.bt-color-scale__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bt-space-2);
+  min-width: 0;
+  margin-top: var(--bt-space-3);
+  padding: var(--bt-space-3) 0 0;
+  border-top: 1px solid var(--bt-color-border);
+  color: var(--bt-color-text);
+  font-size: var(--bt-font-size-xs);
+  line-height: 1.35;
+}
+.bt-color-scale__step--master .bt-color-scale__info { border-top: 2px solid var(--bt-color-primary); padding-top: calc(var(--bt-space-3) - 1px); }
+.bt-color-scale__mix { font-size: 0.8125rem; font-weight: 700; line-height: 1.25; white-space: nowrap; }
+.bt-color-scale__step--master .bt-color-scale__mix { color: var(--bt-color-primary); }
+.bt-color-scale__hex { font-size: var(--bt-font-size-sm); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+.bt-color-scale__data { display: grid; gap: var(--bt-space-2); margin: 0; }
+.bt-color-scale__data > div { display: grid; gap: 1px; min-width: 0; }
+.bt-color-scale__data dt { color: var(--bt-color-text-muted); font-size: var(--bt-font-size-xs); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.bt-color-scale__data dd { margin: 0; font-size: var(--bt-font-size-xs); font-variant-numeric: tabular-nums; overflow-wrap: break-word; text-wrap: balance; }
+/* Channel values (RGB 3, CMYK 4) are plain numbers separated by spaces, on ONE line.
+   Measured with Titillium Web 12px: the widest CMYK ("100 95 35 26") is 68px and the
+   usable column is 70px, so they must never wrap or gain a separator. */
+.bt-color-scale__values { white-space: nowrap; word-spacing: 0.04em; }
+
+/* WCAG contrast of the label color on this swatch: ratio, then level */
+.bt-color-scale__contrast { display: grid; gap: 1px; margin-top: var(--bt-space-1); padding-top: var(--bt-space-2); border-top: 1px dashed var(--bt-color-border); font-variant-numeric: tabular-nums; }
+.bt-color-scale__ratio { font-size: var(--bt-font-size-xs); font-weight: 600; }
+.bt-color-scale__level-note { color: var(--bt-color-text-muted); font-size: var(--bt-font-size-xs); }
+
+@container bt-color-scale (width < 44rem) {
+  .bt-color-scale { grid-auto-flow: row; grid-auto-columns: auto; gap: var(--bt-space-3); }
+  .bt-color-scale__step { grid-template-rows: none; grid-template-columns: minmax(5.5rem, 2fr) minmax(0, 3fr); align-items: center; column-gap: var(--bt-space-4); }
+  .bt-color-scale__bar { align-self: center; flex-direction: row; justify-content: flex-start; align-items: center; width: 100%; min-width: 0; height: 3.5rem; padding: 0 var(--bt-space-3); border-radius: var(--bt-radius-pill); }
+  .bt-color-scale__info { margin: 0; padding: 0; border-top: 0; }
+  .bt-color-scale__step--master .bt-color-scale__info { border-top: 0; padding-top: 0; }
+  .bt-color-scale__data { grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr)); gap: var(--bt-space-1) var(--bt-space-3); }
+}
+/* Very narrow containers: stack the pill above its text so neither gets squeezed */
+@container bt-color-scale (width < 22rem) {
+  .bt-color-scale__step { grid-template-columns: minmax(0, 1fr); row-gap: var(--bt-space-2); }
+}
+
+/* Forced colors drop background colors: keep the swatch and give it an edge */
+@media (forced-colors: active) {
+  .bt-color-scale__bar { forced-color-adjust: none; border-color: CanvasText; }
+}

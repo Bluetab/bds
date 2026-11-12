@@ -3,6 +3,6 @@
 .bt-badge--dot { min-width: .55rem; width: .55rem; height: .55rem; padding: 0; }
 .bt-badge--inline { position: static; margin-left: var(--bt-space-1); box-shadow: none; }
 .bt-badge--primary { background: var(--bt-color-primary); color: var(--bt-color-on-primary); }
-.bt-badge--secondary { background: var(--bt-palette-bluetab-orange-50); color: var(--bt-color-on-secondary); }
-.bt-badge--success { background: var(--bt-palette-teal-70); }
-.bt-badge--warning { background: var(--bt-color-warning); color: var(--bt-palette-neutral-black-60); }
+.bt-badge--secondary { background: var(--bt-palette-bluetab-orange-40); color: var(--bt-color-on-secondary); }
+.bt-badge--success { background: var(--bt-palette-teal-60); }
+.bt-badge--warning { background: var(--bt-color-warning); color: var(--bt-palette-neutral-black-50); }

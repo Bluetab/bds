@@ -37,7 +37,10 @@ defmodule Bds.Catalog do
   @doc """
   Color families shown on the Colors page, in display order.
 
-  Each family has 10 steps (levels 10–100); level 60 is the Bluetab master color.
+  Each family has 9 steps (levels 10–90); level 50 is the Bluetab master color.
+  Levels 10–40 mix the master with white (80, 60, 40, 20 %) and 60–90 with black
+  (20, 40, 60, 80 %). Each step also carries `mix` (`"white"`, `"black"` or
+  `"master"`) and `mix_percent`.
   Step `token` names the CSS custom property defined in `tokens.css`.
   """
   @spec color_families() :: [map()]

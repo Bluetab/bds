@@ -61,7 +61,7 @@ var e = [
 }, f = (e) => t(e) && !e.closest("[data-demo-static]"), p = (e) => [...e.querySelectorAll("[data-focus-trap][open], .bt-modal [role=\"dialog\"]")].filter(f), m = (e) => {
 	let t = e.querySelector("[autofocus]") || n(e)[0] || e;
 	t === e && !e.hasAttribute("tabindex") && (e.tabIndex = -1), t.focus();
-}, h = (e, t) => {
+}, ee = (e, t) => {
 	if (e.key !== "Tab") return !1;
 	let r = p(t), i = r[r.length - 1];
 	if (!i) return !1;
@@ -69,16 +69,16 @@ var e = [
 	if (a.length === 0) return e.preventDefault(), !0;
 	let o = a[0], s = a[a.length - 1];
 	return i.contains(document.activeElement) ? e.shiftKey && document.activeElement === o ? (e.preventDefault(), s.focus()) : !e.shiftKey && document.activeElement === s && (e.preventDefault(), o.focus()) : (e.preventDefault(), o.focus()), !0;
-}, g = /* @__PURE__ */ new WeakMap(), _ = (e, t) => {
-	t && g.set(e, t);
-}, v = (e) => setTimeout(() => m(e), 0), y = (e) => {
-	let t = g.get(e);
-	g.delete(e), t?.isConnected && t.focus();
-}, b = (e, t, n) => {
+}, h = /* @__PURE__ */ new WeakMap(), g = (e, t) => {
+	t && h.set(e, t);
+}, _ = (e) => setTimeout(() => m(e), 0), v = (e) => {
+	let t = h.get(e);
+	h.delete(e), t?.isConnected && t.focus();
+}, y = (e, t, n) => {
 	if (e.key !== "Escape") return !1;
 	let r = [...t.querySelectorAll("[data-focus-trap][open]")].filter(f), i = r[r.length - 1];
 	return i ? (e.preventDefault(), n(i), !0) : !1;
-}, ee = (e) => {
+}, b = (e) => {
 	let t = e.dataset.tooltipDescribes, r = n(e)[0];
 	if (!t || !r) return;
 	let i = (r.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
@@ -130,7 +130,7 @@ function D(e, { signal: t, closeDialog: n }) {
 	e.addEventListener("focusin", (e) => {
 		e.target.closest("[data-focus-trap], .bt-modal") || (r = e.target);
 		let t = e.target.closest(".bt-tooltip");
-		t && ee(t);
+		t && b(t);
 		let n = e.target.closest("[data-navbar-user]");
 		n && E(n);
 	}, { signal: t }), e.addEventListener("focusout", (e) => {
@@ -159,7 +159,7 @@ function D(e, { signal: t, closeDialog: n }) {
 		let r = e.target.closest("[role=\"tab\"][data-tab]");
 		r && o(r);
 	}, { signal: t }), e.addEventListener("keydown", (t) => {
-		if (!t.defaultPrevented && !s(t) && !d(t, e) && !C(t, e) && !T(t) && !h(t, e) && !b(t, e, n)) {
+		if (!t.defaultPrevented && !s(t) && !d(t, e) && !C(t, e) && !T(t) && !ee(t, e) && !y(t, e, n)) {
 			if (t.key === "Escape") {
 				let n = t.target.closest(".bt-tooltip");
 				n && (n.dataset.tooltipHidden = "true");
@@ -189,7 +189,7 @@ var O = {
 		this.dragging = !1, this.dragMoved = !1, this.anchorDate = null, this.lastFocusDate = null, this.onPointerDown = (e) => {
 			if (e.button !== 0 || e.shiftKey || e.metaKey || e.ctrlKey || e.target.closest("[data-calendar-day-open]")) return;
 			let t = k(e.target);
-			!t || !A(t) || te(t) || (this.anchorDate = t.dataset.calendarDay, this.lastFocusDate = this.anchorDate, this.dragging = !0, this.dragMoved = !1, this.el.classList.add("bt-calendar-month-grid--dragging"), this.pushBox(this.anchorDate, this.anchorDate));
+			!t || !A(t) || j(t) || (this.anchorDate = t.dataset.calendarDay, this.lastFocusDate = this.anchorDate, this.dragging = !0, this.dragMoved = !1, this.el.classList.add("bt-calendar-month-grid--dragging"), this.pushBox(this.anchorDate, this.anchorDate));
 		}, this.onPointerOver = (e) => {
 			if (!this.dragging) return;
 			let t = k(e.target);
@@ -259,12 +259,12 @@ function k(e) {
 function A(e) {
 	return e.dataset.calendarSelectable === "true";
 }
-function te(e) {
+function j(e) {
 	return e.dataset.templateDraggable === "true";
 }
 //#endregion
 //#region src/lib/combobox.js
-var j = 4, ne = 250, M = {
+var M = 4, te = 250, ne = {
 	mounted() {
 		this.sync();
 	},
@@ -298,11 +298,11 @@ var j = 4, ne = 250, M = {
 	position() {
 		if (!this.anchor || !this.panel) return;
 		let e = this.anchor.getBoundingClientRect(), t = this.panel;
-		t.style.position = "fixed", t.style.zIndex = String(ne), t.style.left = `${e.left}px`, t.style.width = `${e.width}px`, t.style.right = "auto";
-		let n = t.offsetHeight, r = window.innerHeight - e.bottom, i = r < n + j && e.top > r;
-		t.style.top = i ? `${Math.max(j, e.top - j - n)}px` : `${e.bottom + j}px`;
+		t.style.position = "fixed", t.style.zIndex = String(te), t.style.left = `${e.left}px`, t.style.width = `${e.width}px`, t.style.right = "auto";
+		let n = t.offsetHeight, r = window.innerHeight - e.bottom, i = r < n + M && e.top > r;
+		t.style.top = i ? `${Math.max(M, e.top - M - n)}px` : `${e.bottom + M}px`;
 	}
-}, N = {
+}, re = {
 	mounted() {
 		this.pause = () => this.clearDismiss(), this.resume = () => {
 			!this.el.matches(":hover") && !this.el.contains(document.activeElement) && this.scheduleDismiss();
@@ -324,28 +324,28 @@ var j = 4, ne = 250, M = {
 	clearDismiss() {
 		this.dismissTimer &&= (clearTimeout(this.dismissTimer), null);
 	}
-}, P = (e, t) => {
+}, N = (e, t) => {
 	let n = parseFloat(e);
 	return Number.isFinite(n) ? n : t;
-}, F = (e, t = 2) => Math.round(e * 10 ** t) / 10 ** t, I = {
+}, P = (e, t = 2) => Math.round(e * 10 ** t) / 10 ** t, F = {
 	mounted() {
-		this.increment = P(this.el.dataset.stepIncrement, .5), this.min = this.el.hasAttribute("min") ? P(this.el.min, null) : null, this.max = this.el.hasAttribute("max") ? P(this.el.max, null) : null, this.typing = !1, this.pasting = !1, this.adjusting = !1, this.previousValue = P(this.el.value, 0), this.el.setAttribute("step", "any"), this.onKeyDown = (e) => {
+		this.increment = N(this.el.dataset.stepIncrement, .5), this.min = this.el.hasAttribute("min") ? N(this.el.min, null) : null, this.max = this.el.hasAttribute("max") ? N(this.el.max, null) : null, this.typing = !1, this.pasting = !1, this.adjusting = !1, this.previousValue = N(this.el.value, 0), this.el.setAttribute("step", "any"), this.onKeyDown = (e) => {
 			if (e.key === "ArrowUp" || e.key === "ArrowDown") {
 				e.preventDefault(), this.stepBy(e.key === "ArrowUp" ? this.increment : -this.increment);
 				return;
 			}
 			(e.key.length === 1 || e.key === "Backspace" || e.key === "Delete" || e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "Home" || e.key === "End") && (this.typing = !0);
 		}, this.onKeyUp = () => {
-			this.typing = !1, this.previousValue = P(this.el.value, this.previousValue);
+			this.typing = !1, this.previousValue = N(this.el.value, this.previousValue);
 		}, this.onPaste = () => {
 			this.pasting = !0;
 		}, this.onInput = () => {
 			if (this.adjusting) return;
 			if (this.typing || this.pasting) {
-				this.pasting = !1, this.previousValue = P(this.el.value, this.previousValue);
+				this.pasting = !1, this.previousValue = N(this.el.value, this.previousValue);
 				return;
 			}
-			let e = P(this.el.value, this.previousValue), t = F(e - this.previousValue, 4);
+			let e = N(this.el.value, this.previousValue), t = P(e - this.previousValue, 4);
 			if (Math.abs(Math.abs(t) - 1) < 1e-4) {
 				this.stepBy(t > 0 ? this.increment : -this.increment, !0);
 				return;
@@ -359,15 +359,15 @@ var j = 4, ne = 250, M = {
 		this.el.removeEventListener("keydown", this.onKeyDown), this.el.removeEventListener("keyup", this.onKeyUp), this.el.removeEventListener("paste", this.onPaste), this.el.removeEventListener("input", this.onInput), this.el.removeEventListener("wheel", this.onWheel);
 	},
 	stepBy(e, t = !1) {
-		let n = F((t ? this.previousValue : P(this.el.value, this.previousValue)) + e);
+		let n = P((t ? this.previousValue : N(this.el.value, this.previousValue)) + e);
 		this.min != null && n < this.min && (n = this.min), this.max != null && n > this.max && (n = this.max), this.adjusting = !0, this.el.value = String(n), this.previousValue = n, this.adjusting = !1, this.el.dispatchEvent(new Event("input", { bubbles: !0 })), this.el.dispatchEvent(new Event("change", { bubbles: !0 }));
 	}
-}, L = "bt-theme", R = (e, t = document) => [...t.querySelectorAll(e)], z = (e = document) => e.querySelector("[data-theme-icon]"), B = (e = document, t = e.documentElement.dataset.theme) => {
-	let n = z(e);
-	n && (n.textContent = t === "dark" ? "light_mode" : "dark_mode"), R("[data-theme-value]", e).forEach((e) => {
+}, I = "bt-theme", L = (e, t = document) => [...t.querySelectorAll(e)], R = (e = document) => e.querySelector("[data-theme-icon]"), z = (e = document, t = e.documentElement.dataset.theme) => {
+	let n = R(e);
+	n && (n.textContent = t === "dark" ? "light_mode" : "dark_mode"), L("[data-theme-value]", e).forEach((e) => {
 		e.textContent = t === "dark" ? e.dataset.dark || "Dark" : e.dataset.light || "Light";
 	});
-}, V = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), H = (e) => {
+}, B = (e, t, n = document) => (e.closest(".bt-example, .bt-doc-card, .bt-shell, main, body") || n).querySelector(`#${CSS.escape(t)}`) || n.getElementById(t), V = (e) => {
 	if (e) {
 		if (typeof HTMLDialogElement < "u" && e instanceof HTMLDialogElement) {
 			!e.open && typeof e.showModal == "function" && e.showModal();
@@ -375,7 +375,7 @@ var j = 4, ne = 250, M = {
 		}
 		e.setAttribute("open", "");
 	}
-}, U = (e) => {
+}, H = (e) => {
 	if (e) {
 		if (typeof HTMLDialogElement < "u" && e instanceof HTMLDialogElement) {
 			e.open && typeof e.close == "function" && e.close();
@@ -383,63 +383,79 @@ var j = 4, ne = 250, M = {
 		}
 		e.removeAttribute("open");
 	}
-}, W = (e, t, n = document) => {
-	e.dataset.open = String(t), R(`[data-menu-toggle="${CSS.escape(e.id)}"]`, n).forEach((e) => {
+}, U = (e, t, n = document) => {
+	e.dataset.open = String(t), L(`[data-menu-toggle="${CSS.escape(e.id)}"]`, n).forEach((e) => {
 		e.setAttribute("aria-expanded", String(t));
 	});
-}, G = (e = document, t) => {
-	R("[data-open=\"true\"].bt-menu", e).forEach((n) => {
-		n !== t && W(n, !1, e);
+}, W = (e = document, t) => {
+	L("[data-open=\"true\"].bt-menu", e).forEach((n) => {
+		n !== t && U(n, !1, e);
 	});
-}, K = 3200, q = (e) => {
+}, G = 3200, K = (e) => {
 	clearTimeout(e._btHide), e.dataset.open = "true";
 	let t = () => e.matches(":hover") || e.contains(document.activeElement), n = () => {
 		clearTimeout(e._btHide), e._btHide = setTimeout(() => {
 			t() || (e.dataset.open = "false");
-		}, K);
+		}, G);
 	};
 	e._btPauseBound || (e._btPauseBound = !0, e.addEventListener("mouseenter", () => clearTimeout(e._btHide)), e.addEventListener("focusin", () => clearTimeout(e._btHide)), e.addEventListener("mouseleave", () => {
 		e.dataset.open === "true" && n();
 	}), e.addEventListener("focusout", () => {
 		e.dataset.open === "true" && n();
 	})), n();
-}, J = (e) => {
-	e && (e.classList.contains("bt-overlay") ? e.removeAttribute("open") : U(e), y(e));
-}, Y = (e) => {
+}, q = async (e, t = document) => {
+	try {
+		if (navigator.clipboard && window.isSecureContext) return await navigator.clipboard.writeText(e), !0;
+		throw Error("clipboard unavailable");
+	} catch {
+		let n = t.createElement("textarea");
+		n.value = e, n.setAttribute("readonly", ""), n.style.cssText = "position:fixed;left:-9999px;top:0", t.body.append(n), n.select();
+		let r = !1;
+		try {
+			r = t.execCommand("copy");
+		} catch {}
+		return n.remove(), r;
+	}
+}, J = "bt-copy-feedback", Y = (e, t = document) => {
+	let n = t.getElementById(J);
+	n || (n = t.createElement("div"), n.id = J, n.className = "bt-snackbar", n.setAttribute("role", "status"), n.setAttribute("aria-atomic", "true"), n.dataset.open = "false", t.body.append(n)), n.textContent = e, K(n);
+}, X = (e) => {
+	e && (e.classList.contains("bt-overlay") ? e.removeAttribute("open") : H(e), v(e));
+}, ie = (e) => {
 	try {
 		return localStorage.getItem(e);
 	} catch {
 		return null;
 	}
-}, X = (e = document) => {
+}, ae = (e = document) => {
 	let t = e.querySelector("meta[name=\"theme-color\"]:not([media])");
 	if (!t) return;
 	let n = getComputedStyle(e.documentElement).getPropertyValue("--bt-color-background").trim();
 	n && t.setAttribute("content", n);
 }, Z = (e, t = {}) => {
-	let { root: n = document, storageKey: r = L, persist: i = !0 } = t;
-	if (n.documentElement.dataset.theme = e, B(n, e), X(n), i) try {
+	let { root: n = document, storageKey: r = I, persist: i = !0 } = t;
+	if (n.documentElement.dataset.theme = e, z(n, e), ae(n), i) try {
 		localStorage.setItem(r, e);
 	} catch {}
 }, Q = (e = {}) => {
 	let t = (e.root || document).documentElement.dataset.theme === "dark" ? "light" : "dark";
 	return Z(t, e), t;
 }, $ = (e = {}) => {
-	let { root: t = document, storageKey: n = L, fallbackTheme: r = "light" } = e, i = Y(n) || r;
+	let { root: t = document, storageKey: n = I, fallbackTheme: r = "light" } = e, i = ie(n) || r;
 	return Z(i, {
 		...e,
 		root: t,
 		persist: !1
 	}), i;
 };
-function re(e = {}) {
-	let { root: t = document, storageKey: n = L, autoApplyStoredTheme: r = !0 } = e, i = new AbortController(), { signal: a } = i;
+function oe(e = {}) {
+	let { root: t = document, storageKey: n = I, autoApplyStoredTheme: r = !0 } = e, i = new AbortController(), { signal: a } = i;
 	r ? $({
 		root: t,
 		storageKey: n,
 		fallbackTheme: t.documentElement.dataset.theme || "light"
-	}) : B(t);
-	let o = new MutationObserver(() => B(t));
+	}) : z(t);
+	let o = new MutationObserver(() => z(t));
 	o.observe(t.documentElement, {
 		attributes: !0,
 		attributeFilter: ["data-theme"]
@@ -455,38 +471,38 @@ function re(e = {}) {
 		}
 		let r = e.target.closest("[data-dialog-open]");
 		if (r) {
-			let e = V(r, r.dataset.dialogOpen, t);
-			e && (_(e, r), H(e), v(e));
+			let e = B(r, r.dataset.dialogOpen, t);
+			e && (g(e, r), V(e), _(e));
 			return;
 		}
 		let i = e.target.closest("[data-dialog-close]");
 		if (i) {
-			J(i.closest(".bt-dialog"));
+			X(i.closest(".bt-dialog"));
 			return;
 		}
 		let a = e.target.closest("[data-overlay-open]");
 		if (a) {
-			let e = V(a, a.dataset.overlayOpen, t);
-			e && (_(e, a), e.setAttribute("open", ""), v(e));
+			let e = B(a, a.dataset.overlayOpen, t);
+			e && (g(e, a), e.setAttribute("open", ""), _(e));
 			return;
 		}
 		let o = e.target.closest("[data-overlay-close]");
 		if (o) {
-			J(o.closest(".bt-overlay"));
+			X(o.closest(".bt-overlay"));
 			return;
 		}
 		let s = e.target.closest("[data-menu-toggle]");
 		if (s) {
-			let e = V(s, s.dataset.menuToggle, t), n = e?.dataset.open !== "true";
-			G(t, e), e && W(e, n, t);
+			let e = B(s, s.dataset.menuToggle, t), n = e?.dataset.open !== "true";
+			W(t, e), e && U(e, n, t);
 			return;
 		}
 		let c = e.target.closest(".bt-menu [role=\"menuitem\"]");
 		if (c) {
 			let e = c.closest(".bt-menu");
-			W(e, !1, t), t.querySelector(`[data-menu-toggle="${CSS.escape(e.id)}"]`)?.focus();
+			U(e, !1, t), t.querySelector(`[data-menu-toggle="${CSS.escape(e.id)}"]`)?.focus();
 		}
-		e.target.closest(".bt-menu-wrap") || G(t);
+		e.target.closest(".bt-menu-wrap") || W(t);
 		let l = e.target.closest("[data-expansion-toggle]");
 		if (l) {
 			let e = l.closest("[data-expansion]");
@@ -495,43 +511,51 @@ function re(e = {}) {
 		}
 		let u = e.target.closest("[data-snackbar-open]");
 		if (u) {
-			let e = V(u, u.dataset.snackbarOpen, t);
-			e && q(e);
+			let e = B(u, u.dataset.snackbarOpen, t);
+			e && K(e);
 			return;
 		}
-		let d = e.target.closest("[data-snackbar-close]");
+		let d = e.target.closest("[data-copy-hex]");
 		if (d) {
-			let e = d.closest(".bt-snackbar");
+			let e = d.dataset.copyHex;
+			q(e, t).then((n) => {
+				Y(n ? `${d.dataset.copiedLabel || "Copied"}: ${e}` : e, t);
+			});
+			return;
+		}
+		let f = e.target.closest("[data-snackbar-close]");
+		if (f) {
+			let e = f.closest(".bt-snackbar");
 			e && (e.dataset.open = "false");
 			return;
 		}
 		if (e.target.closest("[data-toggle-sidebar]")) {
 			let e = t.body.classList.toggle("bt-sidebar-open");
-			R("[data-toggle-sidebar]", t).forEach((t) => t.setAttribute("aria-expanded", String(e)));
+			L("[data-toggle-sidebar]", t).forEach((t) => t.setAttribute("aria-expanded", String(e)));
 			return;
 		}
 		if (t.body.classList.contains("bt-sidebar-open") && e.target.closest(".bt-sidebar a, .bt-sidebar .bt-nav-link")) {
 			t.body.classList.remove("bt-sidebar-open");
 			return;
 		}
-		let f = e.target.closest("[data-tab]");
-		if (f) {
-			let e = f.closest("[data-tabs]");
+		let p = e.target.closest("[data-tab]");
+		if (p) {
+			let e = p.closest("[data-tabs]");
 			if (!e) return;
-			R("[role=\"tab\"]", e).forEach((e) => {
-				e.setAttribute("aria-selected", String(e === f));
-			}), R(".bt-tab-panel", e).forEach((e) => {
-				e.setAttribute("aria-hidden", String(e.id !== f.dataset.tab));
+			L("[role=\"tab\"]", e).forEach((e) => {
+				e.setAttribute("aria-selected", String(e === p));
+			}), L(".bt-tab-panel", e).forEach((e) => {
+				e.setAttribute("aria-hidden", String(e.id !== p.dataset.tab));
 			});
 		}
 	}, { signal: a });
 	let s = D(t, {
 		signal: a,
-		closeDialog: J
+		closeDialog: X
 	});
 	return () => {
 		i.abort(), o.disconnect(), s();
 	};
 }
 //#endregion
-export { M as BtCombobox, N as BtFlash, I as BtNumberStep, O as CalendarDaySelection, L as DEFAULT_THEME_STORAGE_KEY, $ as applyStoredTheme, re as initBtInteractions, Z as setTheme, B as syncThemeLabels, Q as toggleTheme };
+export { ne as BtCombobox, re as BtFlash, F as BtNumberStep, O as CalendarDaySelection, I as DEFAULT_THEME_STORAGE_KEY, $ as applyStoredTheme, oe as initBtInteractions, Z as setTheme, z as syncThemeLabels, Q as toggleTheme };

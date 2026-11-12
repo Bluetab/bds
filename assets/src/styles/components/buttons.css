@@ -67,7 +67,7 @@
 .bt-button--outline { --bt-button-bg: transparent; --bt-button-fg: var(--bt-color-primary); --bt-button-bg-hover: var(--bt-color-surface); --bt-button-fg-hover: var(--bt-color-primary-hover); --bt-button-ring: var(--bt-color-border-strong); }
 .bt-button--ghost { --bt-button-bg: transparent; --bt-button-fg: var(--bt-color-primary); --bt-button-bg-hover: var(--bt-color-primary-soft); --bt-button-fg-hover: var(--bt-color-primary-hover); }
 .bt-button--ghost:is(:hover, :focus-visible, [data-demo-state="hover"], [data-demo-state="focus"], [data-demo-state="pressed"]):not([disabled], [aria-disabled="true"]) { box-shadow: none; }
-.bt-button--danger { --bt-button-bg: var(--bt-color-error); --bt-button-fg: #fff; --bt-button-bg-hover: var(--bt-palette-red-70); --bt-button-fg-hover: #fff; }
+.bt-button--danger { --bt-button-bg: var(--bt-color-error); --bt-button-fg: #fff; --bt-button-bg-hover: var(--bt-palette-red-60); --bt-button-fg-hover: #fff; }
 
 /* Disabled: explicit colors from the spec, no hover/shadow/press */
 .bt-button[disabled],

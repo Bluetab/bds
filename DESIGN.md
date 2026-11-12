@@ -89,7 +89,7 @@ Each role has three tokens:
 
 ### Palette
 
-Twelve families in ten steps (`--bt-palette-<family>-10…100`, step 60 is
+Fourteen families in nine steps (`--bt-palette-<family>-10…90`, step 50 is
 the Bluetab master): bluetab-blue, bluetab-orange, purple, deep-purple,
 royal-blue, soft-blue, periwinkle, electric-blue, navy, red, warm-red,
 amber, teal, neutral-black. Use them for charts and illustrations, not for

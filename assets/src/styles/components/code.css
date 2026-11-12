@@ -4,9 +4,9 @@
    Dark in both themes; attribute names in the corporate orange family
    (orange-50: 5.26:1 on neutral-black-60, the 60 master only reaches 4.06:1) */
 .bt-code {
-  --bt-code-bg: var(--bt-palette-neutral-black-60);
+  --bt-code-bg: var(--bt-palette-neutral-black-50);
   --bt-code-fg: #f5f7ff;
-  --bt-code-accent: var(--bt-palette-bluetab-orange-50);
+  --bt-code-accent: var(--bt-palette-bluetab-orange-40);
   max-height: 22rem;
   overflow: auto;
   margin: 0;

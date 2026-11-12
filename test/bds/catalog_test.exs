@@ -46,15 +46,34 @@ defmodule Bds.CatalogTest do
     assert component["title"] == "Botones"
   end
 
-  test "color_families/0 exposes 10-step scales with level 60 as master" do
+  test "color_families/0 exposes 9-step scales with level 50 as master" do
     families = Catalog.color_families()
 
     assert length(families) == 14
 
     for family <- families do
-      assert Enum.map(family["steps"], & &1["level"]) == Enum.to_list(10..100//10)
-      assert [%{"level" => 60, "hex" => master}] = Enum.filter(family["steps"], & &1["master"])
+      steps = family["steps"]
+
+      assert Enum.map(steps, & &1["level"]) == Enum.to_list(10..90//10)
+      assert [%{"level" => 50, "hex" => master}] = Enum.filter(steps, & &1["master"])
       assert master == family["master"]
+
+      # 10–40 mix the master with white (80 → 20 %), 60–90 with black (20 → 80 %)
+      assert Enum.map(steps, &{&1["mix"], &1["mix_percent"]}) ==
+               [
+                 {"white", 80},
+                 {"white", 60},
+                 {"white", 40},
+                 {"white", 20},
+                 {"master", nil},
+                 {"black", 20},
+                 {"black", 40},
+                 {"black", 60},
+                 {"black", 80}
+               ]
+
+      # Only the master keeps a Pantone reference; derived tones have none
+      assert [family["pantone"]] == steps |> Enum.map(& &1["spot"]) |> Enum.reject(&is_nil/1)
     end
 
     assert Catalog.color_family!("bluetab-blue")["master"] == "#212492"
@@ -63,7 +82,7 @@ defmodule Bds.CatalogTest do
 
   test "colors examples render one scale per family" do
     assert Catalog.example_heex("colors:2") =~ ~s(<.bt_color_scale family="bluetab-blue")
-    assert Catalog.example_html("colors:2") =~ "--bt-palette-bluetab-blue-60"
+    assert Catalog.example_html("colors:2") =~ "--bt-palette-bluetab-blue-50"
     assert length(Catalog.get!("colors")["examples"]) == 2 + length(Catalog.color_families())
   end
 

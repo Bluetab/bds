@@ -148,7 +148,7 @@ defmodule Bds.Tokens do
       pair(
         "Secondary badge",
         "bt-color-on-secondary",
-        "bt-palette-bluetab-orange-50",
+        "bt-palette-bluetab-orange-40",
         :text,
         "bt-badge--secondary"
       ),
@@ -205,13 +205,13 @@ defmodule Bds.Tokens do
       pair(
         "White on success badge",
         "#ffffff",
-        "bt-palette-teal-70",
+        "bt-palette-teal-60",
         :text,
         "Solid success badge, rating A"
       ),
       pair(
         "Dark on warning",
-        "bt-palette-neutral-black-60",
+        "bt-palette-neutral-black-50",
         "bt-color-warning",
         :text,
         "Solid warning badge"
@@ -321,7 +321,7 @@ defmodule Bds.Tokens do
   `other`. Use it to fix a failing pair with the least visual change.
   Returns `nil` when no palette step passes.
 
-      %{token: "--bt-palette-amber-80", hex: "#a26205", ratio: 4.59}
+      %{token: "--bt-palette-amber-70", hex: "#a26205", ratio: 4.59}
   """
   @spec suggest(String.t(), String.t(), Contrast.usage(), theme()) :: map() | nil
   def suggest(color, other, usage, theme \\ :light) do
@@ -359,7 +359,7 @@ defmodule Bds.Tokens do
     end
   end
 
-  # "--bt-palette-neutral-black-40" → "neutral-black"
+  # "--bt-palette-neutral-black-30" → "neutral-black"
   defp palette_family("--bt-palette-" <> rest), do: rest |> String.replace(~r/-\d+$/, "")
 
   # Hue/chroma changes weigh more than lightness changes: fixing contrast means
